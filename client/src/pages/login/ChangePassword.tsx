@@ -37,7 +37,6 @@ const ChangePassword: React.FC = () => {
     const newPassword = e.target.value;
     setPassword(newPassword);
     validatePassword(newPassword);
-    console.log("empty");
   };
 
   const validationCircles = [
@@ -61,8 +60,10 @@ const ChangePassword: React.FC = () => {
       : "bg-gray-200";
 
   const [isPasswordChanged, setIsPasswordChanged] = useState(false);
+
   function handleChangePassword() {
     setIsPasswordChanged(true);
+    console.log(password)
   }
 
   return (
@@ -123,9 +124,10 @@ const ChangePassword: React.FC = () => {
       </div>
 
       <div
-        className={`w-full opacity-50 ${
-          validConditionsCount == 3 && "opacity-100"
-        } `}
+        className={`w-full ${
+          validConditionsCount === 3 ? "opacity-100" : "opacity-50"
+        }`}
+        onClick={handleChangePassword}
       >
         <PrimaryButton
           style={""}

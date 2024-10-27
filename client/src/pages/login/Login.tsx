@@ -17,6 +17,16 @@ const Login: React.FC = () => {
     setIsKeepLogged(!isKeepLogged);
   }
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  function handleLogin() {
+    console.log(email, "email", password, "password");
+
+    if (isKeepLogged) {
+      // save local storage
+    }
+  }
+
   return (
     <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
       <div className="flex flex-col w-full gap-3">
@@ -38,16 +48,16 @@ const Login: React.FC = () => {
           type="email"
           placeholder={t("email_example")}
           title={t("البريد الإلكتروني")}
-          onChange={() => console.log("empty")}
-          value=""
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
         />
         <div className="flex flex-col gap-5">
           <GenericInput
             type="password"
             placeholder={t("ادخل كلمة السر")}
             title={t("كلمة السر")}
-            onChange={() => console.log("empty")}
-            value=""
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
           />
           <div className="flex  items-center justify-between">
             <IonRouterLink routerLink="/forgotpassword">
@@ -70,7 +80,9 @@ const Login: React.FC = () => {
         </div>
       </div>
 
-      <PrimaryButton style="fill" text={t("تسجيل الدخول")} arrow="none" />
+      <div className="w-full" onClick={handleLogin}>
+        <PrimaryButton style="fill" text={t("تسجيل الدخول")} arrow="none" />
+      </div>
 
       <IonRouterLink routerLink="/signup" className="text-md">
         <h1 className="text-[#8E99A4] font-semibold">

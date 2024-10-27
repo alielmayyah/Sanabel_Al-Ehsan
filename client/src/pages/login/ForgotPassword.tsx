@@ -2,18 +2,22 @@ import { useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import PrimaryButton from "../../components/PrimaryButton";
 import { IonRouterLink } from "@ionic/react";
-
 import GenericInput from "../../components/GenericInput";
 import BackArrow from "../../icons/BackArrow";
 import GoBackButton from "../../components/GoBackButton";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 const ForgotPassword: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
-  const [isOtpSent, setIsOtpSent] = useState(true);
+
+  const [email, setEmail] = useState("");
+  const [isOtpSent, setIsOtpSent] = useState(false);
 
   const [otp, setOtp] = useState(["", "", "", ""]);
+
+  const history = useHistory();
 
   const handleOtpChange = (value: string, index: number) => {
     if (!/^\d*$/.test(value)) return; // Prevents entering non-numeric values
@@ -26,6 +30,18 @@ const ForgotPassword: React.FC = () => {
       const nextInput = document.getElementById(`otp-${index + 1}`);
       if (nextInput) nextInput.focus();
     }
+  };
+
+  const handleSendOTP = () => {
+    console.log(email);
+    console.log("Email sent");
+    setIsOtpSent(true);
+  };
+
+  const handleConfirmOTP = () => {
+    console.log(otp);
+    console.log("Enter the otp now");
+    history.push("/changepassword");
   };
 
   return (
@@ -83,16 +99,18 @@ const ForgotPassword: React.FC = () => {
             type="email"
             placeholder={t("email_example")}
             title={t("البريد الإلكتروني")}
-            onChange={() => console.log("empty")}
-            value=""
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
           />
         )}
 
-        <PrimaryButton
-          style="fill"
-          text={`${isOtpSent ? "تأكيد الرمز" : "ارسل الرمز"}`}
-          arrow="none"
-        />
+        <div onClick={isOtpSent ? handleConfirmOTP : handleSendOTP}>
+          <PrimaryButton
+            style="fill"
+            text={`${isOtpSent ? "تأكيد الرمز" : "ارسل الرمز"}`}
+            arrow="none"
+          />
+        </div>
         <h1 className="text-[#B3B3B3] text-center">
           {t("لم تتلق رمز")} <span dir="ltr">OTP</span> {t("بعد؟")}{" "}
           <span className="text-blueprimary ">{t("إعادة الإرسال")}</span>
