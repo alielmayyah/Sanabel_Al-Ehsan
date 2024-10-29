@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import userdata from "../models/user.model";
 import User from "../models/user.model";
 import Student from "../models/student.model";
 import Teacher from "../models/teacher.model";
@@ -17,7 +16,7 @@ const login = async (req: Request, res: Response) => {
 
   try {
     // Find the user by email
-    const account = await userdata.findOne({ where: { email } });
+    const account = await User.findOne({ where: { email } });
 
     // Check if account exists and password is correct
     if (account && bcrypt.compareSync(password, account.password)) {
@@ -27,7 +26,7 @@ const login = async (req: Request, res: Response) => {
         process.env.JWT_SECRET, // Use a fallback secret during development
         { expiresIn: "1h" }
       );
-      await userdata.update(
+      await User.update(
         { token: token },
         {
           where: {
@@ -61,7 +60,8 @@ const login = async (req: Request, res: Response) => {
 // Registration function with role-based user creation
 const registration = async (req: Request, res: Response) => {
   const {
-    name,
+    firstName,
+    lastName,
     email,
     password,
     role,
@@ -73,17 +73,24 @@ const registration = async (req: Request, res: Response) => {
   } = req.body;
 
   try {
-    // Validate email uniqueness
-    const existingUser = await User.findOne({ where: { email: email } });
-    if (existingUser) {
-      return res
-        .status(400)
-        .json({ status: 400, message: "Email already in use" });
+    const checkValidation = await User.findOne({ where: { email: email } });
+    if (!checkValidation) {
+      return res.status(403).json({
+        status: 403,
+        message: "OTP record not found. Please verify OTP before registering.",
+      });
     }
 
-    // Hash password
+    if (!checkValidation.isAccess) {
+      return res.status(403).json({
+        status: 403,
+        message:
+          "OTP not verified. Please verify OTP before resetting password.",
+      });
+    }
     const hashedPassword = bcrypt.hashSync(password, 10);
 
+<<<<<<< HEAD
     
     // Create User
     const newUser = await User.create({
@@ -94,30 +101,48 @@ const registration = async (req: Request, res: Response) => {
     });
 
     // Generate Token
+=======
+>>>>>>> 01f795ad2b8e7fa742c22cde3d42a150fb75c29c
     const token = jwt.sign(
-      { id: newUser.id, email: newUser.email, role: newUser.role },
-      process.env.JWT_SECRET, // Ensure to set this in production
+      {
+        id: checkValidation.id,
+        email: checkValidation.email,
+        role: checkValidation.role,
+      },
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
+    // Create User
+    await checkValidation.update({
+      firstName,
+      lastName,
+      password: hashedPassword,
+      role,
+      token,
+    });
 
-    switch (role) {
+    switch (checkValidation.role) {
       case "Student":
-        await Student.create({ age, userId: newUser.id });
+        await Student.create({ age, userId: checkValidation.id });
         break;
       case "Teacher":
-        await Teacher.create({ subject, userId: newUser.id });
+        await Teacher.create({ subject, userId: checkValidation.id });
         break;
       case "Parent":
-        await Parent.create({ contactInfo, userId: newUser.id });
+        await Parent.create({ contactInfo, userId: checkValidation.id });
         break;
       case "Organization":
-        await Organization.create({ address, type, user_id: newUser.id });
+        await Organization.create({
+          address,
+          type,
+          user_id: checkValidation.id,
+        });
         break;
       case "Representative":
-        await Representative.create({ userId: newUser.id });
+        await Representative.create({ userId: checkValidation.id });
         break;
       case "Class":
-        await Class.create({ classId: newUser.id });
+        await Class.create({ classId: checkValidation.id });
         break;
       default:
         break;
@@ -129,7 +154,11 @@ const registration = async (req: Request, res: Response) => {
       message: "Registration successful",
       data: {
         token,
-        user: { id: newUser.id, email: newUser.email, role: newUser.role },
+        user: {
+          id: checkValidation.id,
+          email: checkValidation.email,
+          role: checkValidation.role,
+        },
       },
     });
   } catch (error) {
