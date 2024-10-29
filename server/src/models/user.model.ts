@@ -17,18 +17,27 @@ export enum UserRole {
   Class = "Class",
 }
 
+export enum UserGenre {
+  Male = "Male",
+  Female = "Female",
+}
+
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: CreationOptional<number>;
-  declare Name: string;
-  declare email: string;
-  declare password: string;
-  declare role: UserRole;
+  declare firstName: CreationOptional<string>;
+  declare lastName: CreationOptional<string>;
+  declare email: CreationOptional<string>;
+  declare password: CreationOptional<string>;
+  declare role: CreationOptional<UserRole>;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare token: CreationOptional<string>;
   declare resetOTP: CreationOptional<string> | null;
   declare otpExpiry: CreationOptional<Date> | null;
   declare otpVerified: CreationOptional<boolean>;
+  declare genre: CreationOptional<UserGenre>;
+  declare dateOfBirth: CreationOptional<Date>;
+  declare isAccess: CreationOptional<Boolean>;
   static initModel(sequelize: Sequelize) {
     User.init(
       {
@@ -37,9 +46,13 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
           primaryKey: true,
           autoIncrement: true,
         },
-        Name: {
+        firstName: {
           type: DataTypes.STRING,
-          allowNull: false,
+          allowNull: true,
+        },
+        lastName: {
+          type: DataTypes.STRING,
+          allowNull: true,
         },
         email: {
           type: DataTypes.STRING,
@@ -51,11 +64,12 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
         },
         password: {
           type: DataTypes.STRING,
-          allowNull: false,
+          allowNull: true,
         },
         role: {
           type: DataTypes.ENUM(...Object.values(UserRole)),
           allowNull: false,
+          defaultValue: "Student",
         },
         token: {
           type: DataTypes.STRING,
@@ -65,7 +79,6 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
           type: DataTypes.STRING,
           allowNull: true,
         },
-        // OTP expiry time
         otpExpiry: {
           type: DataTypes.DATE,
           allowNull: true,
@@ -73,6 +86,19 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
         otpVerified: {
           type: DataTypes.BOOLEAN,
           allowNull: true,
+          defaultValue: false,
+        },
+        genre: {
+          type: DataTypes.ENUM(...Object.values(UserGenre)),
+          allowNull: true,
+        },
+        dateOfBirth: {
+          type: DataTypes.DATEONLY,
+          allowNull: true,
+        },
+        isAccess: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
           defaultValue: false,
         },
       },
