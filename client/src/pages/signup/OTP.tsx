@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import dummyImage from "../../assets/boarding/vector-tree-logo-template-1911680730.jpg";
 
 import { MdCancel } from "react-icons/md";
+import i18n from "../../i18n";
 
 interface OTPProps {
   onContinue: () => void;
@@ -18,6 +19,8 @@ interface OTPProps {
   otp: string[];
   setOtp: (otp: string[]) => void;
 }
+
+
 
 const OTP: React.FC<OTPProps> = ({ onContinue, onBack, otp, setOtp }) => {
   const { darkMode, toggleDarkMode } = useTheme();
@@ -38,6 +41,7 @@ const OTP: React.FC<OTPProps> = ({ onContinue, onBack, otp, setOtp }) => {
     }
   };
 
+  
   return (
     <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
       <div className="flex flex-col w-full gap-3">
@@ -65,7 +69,11 @@ const OTP: React.FC<OTPProps> = ({ onContinue, onBack, otp, setOtp }) => {
       <div className="w-full flex flex-col gap-7">
         <div className="flex flex-col items-center gap-6">
           <h1 className="self-end text-[#121212] ">{t("الرمز")}</h1>
-          <div className="flex gap-3">
+          <div
+            className={`flex gap-3   ${
+              i18n.language === "en" && "flex-row-reverse"
+            } `}
+          >
             {otp.map((digit, index) => (
               <input
                 key={index}

@@ -5,6 +5,12 @@ const en = {
     المتصدرين: "Leaderboards",
     التقدم: "Progress",
     البروفايل: "Profile",
+
+    "سجل الآن وابدأ": "Register now and begin",
+"رحلة الإحسان": "Journey of Benevolence",
+
+
+
     "!هيا بنا نصنع الخير معًا": "!Let's do good together",
     "تقدم حسناتك": "Advance your good deeds",
     "مرحباً": "Hello",
@@ -66,6 +72,7 @@ const en = {
   "إعادة الإرسال": "Resend",
   "email_example": "Ex: mohamedmonge7@gmail.com",
 
+
 // Login component translations
 
   "سجل الآن واستمتع بتجربة تفاعلية تبني العطاء والانتماء":"Sign in now and enjoy an interactive experience that builds generosity and belonging",
@@ -74,6 +81,8 @@ const en = {
 
    // Signup process
    "انشاء حساب جديد": "Create a new account",
+   "هل لديك حساب؟": "Already have an account?",
+
    "انشاء حساب واستمتع بتجربة تفاعلية تبني العطاء والانتماء": "Sign up and enjoy an interactive experience that builds giving and belonging",
    "ادخل اسمك واسم والدك": "Enter your name and your father's name",
    "اكمل حسابك واستمتع بتجربة تفاعلية تبني العطاء والانتماء": "Complete your account and enjoy an interactive experience that fosters giving and belonging",
@@ -96,7 +105,57 @@ const en = {
    "اصنع رمز لوالديك حتي يمكنهم تحرير تقدمك": "Create a code for your parents to track your progress",
    "اضع صورة شخصية لك": "Upload a profile picture",
    "أبدا رحلة جمع الحسنات": "Start your journey of gathering good deeds",
+
+
+   // login toaster messages
+   "fill_all_fields": "Please fill in all fields",
+   "invalid_email": "Invalid email format",
+   "short_password": "Password must be at least 8 characters",
+   "login_successful": "Login successful!",
+   "login_failed": "Login failed. Invalid email or password.",
+   
+   // Signup OTP toaster messages
+   "otpSentSuccess": "OTP sent successfully!",
+   "enter4DigitOTP": "Please enter a 4-digit OTP.",
+   "otpVerifySuccess": "OTP verified successfully!",
+   "invalidOTP": "Invalid OTP. Please try again.",
+   "passwordNotMeetRequirements": "Password does not meet all requirements.",
+   "passwordChangeFailed": "Failed to change password. Please try again.",
+   "fillEmailField": "Please fill in the email field.",
+   "invalidEmailFormat": "Invalid email format.",
+
+ "Create Password" :"Create Password" ,
+"Secure your account with a strong password":"Secure your account with a strong password",
+   
+
+// FIRST AND LAST NAME ERRORS
+"enterFirstNameAndParentName": "Please enter your first name and your parent's name",
+"noNumbersOrSymbols": "Please enter letters only, without numbers or symbols",
+"emptyFieldError": "This field is required",
+
+// Birthdate
+
+"numbers_only": "Only numbers are allowed",
+"invalid_date": "Please enter a valid date",
+"enter_birthdate": "Enter your birthdate 🎂",
+"complete_account": "Complete your account for a rewarding experience",
+"year": "Year",
+"month": "Month",
+"day": "Day",
+"continue": "Continue",
+
+
+
+"year_out_of_range": "The year must be between 1940 and the current year",
+"four_digit_year": "The year must be four digits long",
+
+
+
+  
+
+
   },
+  
 };
 
 export default en;

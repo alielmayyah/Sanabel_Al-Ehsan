@@ -1,5 +1,5 @@
 import crypto from "crypto";
 
-export default function generateOTP(length = 6): string {
-  return crypto.randomInt(100000, 999999).toString();
+export default function generateOTP(): string {
+  return crypto.randomInt(1000, 9999).toString();
 }

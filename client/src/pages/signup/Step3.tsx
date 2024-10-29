@@ -8,8 +8,27 @@ import BackArrow from "../../icons/BackArrow";
 import GoBackButton from "../../components/GoBackButton";
 import { useTranslation } from "react-i18next";
 
-import dummyImage from "../../assets/boarding/vector-tree-logo-template-1911680730.jpg";
+import cakeImage from "../../assets/signup/birthday.png";
 import ProgressBar from "./ProgressBar";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import i18n from "../../i18n";
+
+const Toaster = () => (
+  <ToastContainer
+    position="top-center"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="light"
+  />
+);
 
 interface Step3Props {
   onContinue: () => void;
@@ -32,11 +51,47 @@ const Step3: React.FC<Step3Props> = ({
   const { t } = useTranslation();
 
   const handleInputChange = (field: string, value: string) => {
-    setBirthdate({ ...birthdate, [field]: value });
+    if (/^\d*$/.test(value)) {
+      // Allow only numbers
+      setBirthdate({ ...birthdate, [field]: value });
+    } else {
+      toast.error(t("numbers_only"));
+    }
   };
 
+  const isValidDate = (day: number, month: number, year: number): boolean => {
+    const currentYear = new Date().getFullYear();
+
+    // Year validation
+    if (year < 1940 || year > currentYear || year.toString().length !== 4) {
+      toast.error(t("invalid_date"));
+      return false;
+    }
+
+    // Month and day validation
+    if (month < 1 || month > 12) return false;
+    const daysInMonth = new Date(year, month, 0).getDate();
+    return day > 0 && day <= daysInMonth;
+  };
+
+  function handleBirthdayStep() {
+    const day = parseInt(birthdate.day, 10);
+    const month = parseInt(birthdate.month, 10);
+    const year = parseInt(birthdate.year, 10);
+
+    if (!birthdate.day || !birthdate.month || !birthdate.year) {
+      toast.error(t("fill_all_fields"));
+    } else if (!isValidDate(day, month, year)) {
+      toast.error(t("invalid_date"));
+    } else {
+      onContinue();
+    }
+  }
   return (
     <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+      <div className="absolute">
+        <Toaster />
+      </div>
       <div className="flex flex-col w-full gap-3">
         <GoBackButton onClick={onBack} />
 
@@ -55,7 +110,7 @@ const Step3: React.FC<Step3Props> = ({
 
       <div className="flex w-full gap-3 justify-center items-center">
         <div className="flex flex-col w-full gap-3 justify-center items-center">
-          <img src={dummyImage} alt="" className="w-32 h-32" />
+          <img src={cakeImage} alt="" className="w-64 h-64" />
           <div className="flex w-full gap-3">
             <GenericInput
               type="text"
@@ -83,7 +138,7 @@ const Step3: React.FC<Step3Props> = ({
       </div>
 
       <div className="w-full ">
-        <div onClick={onContinue}>
+        <div onClick={handleBirthdayStep}>
           <PrimaryButton style="fill" text={t("متابعة")} arrow="left" />
         </div>
       </div>

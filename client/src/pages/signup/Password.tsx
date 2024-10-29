@@ -15,6 +15,7 @@ import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import i18n from "../../i18n";
 
 const Toaster = () => (
   <ToastContainer
@@ -31,12 +32,16 @@ const Toaster = () => (
   />
 );
 
-const ChangePassword: React.FC = () => {
+const Password: React.FC<{
+  onContinue: () => void;
+  setPassword: (value: string) => void;
+  password: string;
+}> = ({ onContinue, setPassword, password }) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
   const { t } = useTranslation();
-  const { darkMode, toggleDarkMode } = useTheme();
 
-
-  const [password, setPassword] = useState("");
   const [isValid, setIsValid] = useState({
     minLength: false,
     hasNumber: false,
@@ -51,10 +56,10 @@ const ChangePassword: React.FC = () => {
     });
   };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPassword = e.target.value;
-    setPassword(newPassword);
-    validatePassword(newPassword);
+  const finishPasswordStep = async () => {
+    if (validConditionsCount < 3) {
+      toast.error(t("passwordNotMeetRequirements"));
+    } else onContinue();
   };
 
   const validationCircles = [
@@ -77,51 +82,20 @@ const ChangePassword: React.FC = () => {
       ? "bg-green-500"
       : "bg-gray-200";
 
-  const [isPasswordChanged, setIsPasswordChanged] = useState(false);
-
-  const location = useLocation<{ email: string }>();
-  const email = location.state?.email || "";
-
-  const handleChangePassword = async () => {
-    // Check if all conditions are met
-    if (validConditionsCount < 3) {
-      toast.error(t("passwordNotMeetRequirements"));
-      return;
-    }
-
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/users/reset-password",
-        {
-          email: email,
-          newPassword: password,
-        }
-      );
-
-      if (response.status === 200) {
-        setIsPasswordChanged(true);
-        toast.success(t("passwordChangeSuccess"));
-      }
-    } catch (error) {
-      console.error("Error during password change:", error);
-
-      toast.error(t("passwordChangeFailed"));
-    }
-  };
   return (
     <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
       <div className="absolute">
-        <Toaster />
+        <Toaster></Toaster>
       </div>
       <div className="flex flex-col w-full gap-3">
         <GoBackButton />
 
         <div className="flex flex-col gap-2 self-end">
           <h1 className="text-black font-bold text-2xl text-end ">
-            {t("إعادة تعيين كلمة السر")}
+            {t("Create Password")}
           </h1>
           <p className="text-[#B3B3B3] text-sm  text-end ">
-            {t("تأمين حسابك بكلمة مرور جديدة")}
+            {t("Secure your account with a strong password")}
           </p>
         </div>
       </div>
@@ -132,8 +106,8 @@ const ChangePassword: React.FC = () => {
             type="password"
             placeholder={t("ادخل كلمة السر")}
             title={t("كلمة السر")}
-            value={password}
-            onChange={handlePasswordChange}
+            value={""}
+            onChange={(e) => validatePassword(e.target.value)}
           />
         </div>
         <div className="flex w-full bg-gray-200 h-2 rounded-xl gap-0">
@@ -172,52 +146,19 @@ const ChangePassword: React.FC = () => {
         className={`w-full ${
           validConditionsCount === 3 ? "opacity-100" : "opacity-50"
         }`}
-        onClick={handleChangePassword}
+        onClick={finishPasswordStep}
       >
-        <PrimaryButton
-          style={""}
-          text={"حفظ"}
-          arrow={"none"}
-          onClick={handleChangePassword}
-        />
+        <PrimaryButton style={""} text={"حفظ"} arrow={"none"} />
       </div>
 
-      <IonRouterLink routerLink="/signup" className="text-md ">
+      <IonRouterLink routerLink="/login" className="text-md">
         <h1 className="text-[#8E99A4] font-semibold">
-          {t("ليس لديك حساب؟")}{" "}
-          <span className="text-blueprimary ">{t("إنشاء حساب")}</span>
+          {t("هل لديك حساب؟")}{" "}
+          <span className="text-blueprimary ">{t("تسجيل الدخول")}</span>
         </h1>
       </IonRouterLink>
-      {isPasswordChanged && (
-        <motion.div
-          initial={{ opacity: 1, y: 250 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="absolute  h-full  w-full rounded-lg bottom-0 border-2 bg-gradient-to-t"
-        >
-          <div className="h-1/3 bg-black opacity-10 w-full"></div>
-          <div className="h-2/3 w-full flex flex-col p-5  items-center justify-around bg-white">
-            <div className="w-64 h-64 bg-redprimary rounded-full"></div>
-            <div className="flex flex-col gap-2 text-center">
-              <h1 className="text-black font-bold text-2xl text-center ">
-                {t("تم تغير كلمة السر بنجاح")}
-              </h1>
-              <p className="text-[#B3B3B3] text-sm  text-center ">
-                {t("قم بتسجيل الدخول و ابدأ في جمع الحسنات")}
-              </p>
-            </div>
-            <IonRouterLink routerLink="/login" className="text-md w-full">
-              <PrimaryButton
-                style={""}
-                text={t("تسجيل الدخول")}
-                arrow={"none"}
-              />
-            </IonRouterLink>
-          </div>
-        </motion.div>
-      )}
     </div>
   );
 };
 
-export default ChangePassword;
+export default Password;

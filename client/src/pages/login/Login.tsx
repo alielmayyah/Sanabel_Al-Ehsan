@@ -8,10 +8,32 @@ import GenericInput from "../../components/GenericInput";
 import GoBackButton from "../../components/GoBackButton";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const Toaster = () => (
+  <ToastContainer
+    position="top-right"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="light"
+  />
+);
+
 const Login: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
   const [isKeepLogged, setIsKeepLogged] = useState(false);
+  const history = useHistory();
 
   function handleKeepLogged() {
     setIsKeepLogged(!isKeepLogged);
@@ -19,16 +41,47 @@ const Login: React.FC = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  function handleLogin() {
-    console.log(email, "email", password, "password");
+  console.log(email);
+  console.log(password);
 
-    if (isKeepLogged) {
-      // save local storage
+  const handleLogin = async () => {
+    // Simple validation
+    // Validation
+    if (!email || !password) {
+      toast.error(t("fill_all_fields"));
+      return;
     }
-  }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      toast.error(t("invalid_email"));
+      return;
+    }
+    if (password.length < 8) {
+      toast.error(t("short_password"));
+      return;
+    }
+    try {
+      // API call to the backend for login
+      const response = await axios.post("http://localhost:3000/users/login", {
+        email: email,
+        password: password,
+      });
+
+      if (response.status === 200) {
+        toast.success(t("login_successful"));
+        history.push("/");
+        
+      }
+    } catch (error) {
+      toast.error(t("login_failed"));
+    }
+  };
 
   return (
     <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+      <div className="absolute">
+        <Toaster />
+      </div>
+
       <div className="flex flex-col w-full gap-3">
         <GoBackButton />
 

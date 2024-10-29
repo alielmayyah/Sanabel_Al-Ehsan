@@ -84,6 +84,7 @@ const registration = async (req: Request, res: Response) => {
     // Hash password
     const hashedPassword = bcrypt.hashSync(password, 10);
 
+    
     // Create User
     const newUser = await User.create({
       Name: name,

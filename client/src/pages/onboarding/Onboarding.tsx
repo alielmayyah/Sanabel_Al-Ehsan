@@ -1,6 +1,8 @@
 import { useTheme } from "../../context/ThemeContext";
 import PrimaryButton from "../../components/PrimaryButton";
-import dummiImg from "../../assets/boarding/--a-symbolic-and-heartwarming-illustration-focused.png";
+import slide1Img from "../../assets/boarding/Asset 4.jpg";
+import slide2Img from "../../assets/boarding/finish-line.png";
+import slide3Img from "../../assets/boarding/leaves.png";
 import i18n from "i18next";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
@@ -13,19 +15,19 @@ const onboardingData = [
   {
     title: "مرحباً بك في",
     span: "👋سنابل الإحسان",
-    img: dummiImg,
+    img: slide1Img,
     description: "سنابل الإحسان هو تطبيق تفاعلي يعزز القيم النبيلة للأطفال",
   },
   {
     title: "ازرع سنبلة تُثمر",
     span: "خيراً وأجراً",
-    img: dummiImg,
+    img: slide2Img,
     description: "إغتنم الفرص لفعل الخير، فالحسنات تتضاعف مع كل عمل صالح",
   },
   {
     title: "تسابقوا إلى",
     span: "الخيرات، فإنها لا تدوم",
-    img: dummiImg,
+    img: slide3Img,
     description: "لا تفوّت الفرصة لفعل الخير، فالأجر يعمّ والحسنات تُكتب",
   },
 ];
@@ -72,12 +74,12 @@ const OnBoarding: React.FC = () => {
       </div>
 
       {/* Animated Image with key and exit animation */}
-      <div className="w-screen bg-blueprimary h-1/3">
+      <div className="w-screen h-1/3 flex-center">
         <motion.img
-          key={stepCount} // This key ensures that the image changes properly
+          key={stepCount}
           src={onboardingData[stepCount].img}
-          className="w-full h-full"
-          initial={{ opacity: 0, y: 50 }}
+          className="w-2/3 "
+          initial={{ opacity: 0, y: -250 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }} // Exit animation for the old image
           transition={{ duration: 0.6 }}
@@ -127,11 +129,7 @@ const OnBoarding: React.FC = () => {
         <div className="flex w-full items-center gap-2">
           <div onClick={changeStepIncrement} className="w-full">
             {" "}
-            <PrimaryButton
-              style="fill"
-              text={t("متابعة")}
-              arrow={`${i18n.language === "ar" ? "left" : "right"}`}
-            />
+            <PrimaryButton style="fill" text={t("متابعة")} arrow={`left`} />
           </div>
 
           {stepCount !== 0 && (

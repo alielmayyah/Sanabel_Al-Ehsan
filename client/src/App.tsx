@@ -31,6 +31,7 @@ import ChangePassword from "./pages/login/ChangePassword";
 // SUB Pages
 
 import ChooseSignMethod from "./pages/onboarding/ChooseSignMethod";
+
 import OnBoarding from "./pages/onboarding/Onboarding";
 
 import { useTheme } from "./context/ThemeContext";
@@ -44,19 +45,53 @@ import Navbar from "./components/Navbar";
 const App: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
+
+  const [firstTime, setFirstTime] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check if the user has opened the app before
+    const hasVisited = localStorage.getItem("hasVisited");
+    if (hasVisited) {
+      setFirstTime(false);
+    } else {
+      // Mark that the user has now opened the app
+      localStorage.setItem("hasVisited", "true");
+    }
+
+    // Check for login token to determine logged-in status
+    const token = localStorage.getItem("authToken"); // replace with your actual token check
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   return (
     <ThemeProvider>
       <IonReactRouter>
         <IonRouterOutlet>
           <div className="bg-white dark:bg-[#121212]   w-screen h-screen">
             <Switch>
-              <Route exact path="/" component={OnBoarding} />
-              {/* <Route exact path="/" component={ChangePassword} /> */}
+              <Route
+                exact
+                path="/"
+                render={() => {
+                  // Navigate based on user status
+                  if (firstTime) {
+                    return <OnBoarding />;
+                  } else if (isLoggedIn) {
+                    return <Redirect to="/home" />;
+                  } else {
+                    return <Redirect to="/choosesignmethod" />;
+                  }
+                }}
+              />
               <Route
                 exact
                 path="/choosesignmethod"
                 component={ChooseSignMethod}
               />
+
               {/* //SIGNUP PAGES */}
               <Route exact path="/signup" component={Signup} />
               <Route exact path="/email" component={Email} />

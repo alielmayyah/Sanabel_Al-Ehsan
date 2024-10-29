@@ -7,15 +7,49 @@ import GenericInput from "../../components/GenericInput";
 import BackArrow from "../../icons/BackArrow";
 import GoBackButton from "../../components/GoBackButton";
 import { useTranslation } from "react-i18next";
+// Import AVATARS
+// Boys Avatars
+import boy1 from "../../assets/signup/Avatar/Boys/boy1.png";
+import boy2 from "../../assets/signup/Avatar/Boys/boy2.png";
+import boy3 from "../../assets/signup/Avatar/Boys/boy3.png";
+import boy4 from "../../assets/signup/Avatar/Boys/boy4.png";
+import boy5 from "../../assets/signup/Avatar/Boys/boy5.png";
+import boy6 from "../../assets/signup/Avatar/Boys/boy6.png";
+import boy7 from "../../assets/signup/Avatar/Boys/boy7.png";
 
-import dummyImage from "../../assets/boarding/vector-tree-logo-template-1911680730.jpg";
+// Girls Avatars
+import girl1 from "../../assets/signup/Avatar/Girls/girl1.png";
+import girl2 from "../../assets/signup/Avatar/Girls/girl2.png";
+import girl3 from "../../assets/signup/Avatar/Girls/girl3.png";
+import girl4 from "../../assets/signup/Avatar/Girls/girl4.png";
+import girl5 from "../../assets/signup/Avatar/Girls/girl5.png";
+import girl6 from "../../assets/signup/Avatar/Girls/girl6.png";
+import girl7 from "../../assets/signup/Avatar/Girls/girl7.png";
+import girl8 from "../../assets/signup/Avatar/Girls/girl8.png";
+import girl9 from "../../assets/signup/Avatar/Girls/girl9.png";
+
 import ProgressBar from "./ProgressBar";
+
+// Grouped arrays for easier access
+const boysAvatars = [boy1, boy2, boy3, boy4, boy5, boy6, boy7];
+const girlsAvatars = [
+  girl1,
+  girl2,
+  girl3,
+  girl4,
+  girl5,
+  girl6,
+  girl7,
+  girl8,
+  girl9,
+];
 
 interface Step6Props {
   onComplete: () => void;
   character: string;
   setCharacter: React.Dispatch<React.SetStateAction<string>>;
   onBack: () => void;
+  gender: string;
 }
 
 const Step6: React.FC<Step6Props> = ({
@@ -23,10 +57,15 @@ const Step6: React.FC<Step6Props> = ({
   character,
   setCharacter,
   onBack,
+  gender,
 }) => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
 
+  function handleGenderStep() {
+    onComplete();
+  }
+  console.log(character);
   return (
     <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
       <div className="flex flex-col w-full gap-3">
@@ -45,21 +84,24 @@ const Step6: React.FC<Step6Props> = ({
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center gap-5 w-full">
-        <div className="w-52 h-52 bg-blueprimary rounded-full"></div>
-        <div className="flex gap-3 justify-between">
-          <div className="w-12 h-12 bg-redprimary rounded-full"></div>
-          <div className="w-12 h-12 bg-redprimary rounded-full"></div>
-          <div className="w-12 h-12 bg-redprimary rounded-full"></div>
-          <div className="w-12 h-12 bg-redprimary rounded-full"></div>
-          <div className="w-12 h-12 bg-redprimary rounded-full"></div>
-          <div className="w-12 h-12 bg-redprimary rounded-full"></div>
-          <div className="w-12 h-12 bg-redprimary rounded-full"></div>
-        </div>
+      <div className="flex flex-wrap gap-5 items-center justify-between">
+        {(gender === "boy" ? boysAvatars : girlsAvatars).map(
+          (avatar, index) => (
+            <img
+              key={index}
+              src={avatar}
+              alt={`Avatar ${index + 1}`}
+              className={`w-20 h-20 bg-redprimary rounded-full  ${
+                character == avatar ? "scale-125 opacity-100" : "opacity-70"
+              }`}
+              onClick={() => setCharacter(avatar)}
+            />
+          )
+        )}
       </div>
 
       <div className="w-full ">
-        <div onClick={onComplete}>
+        <div onClick={handleGenderStep}>
           <PrimaryButton
             style="fill"
             text={t("أبدا رحلة جمع الحسنات")}

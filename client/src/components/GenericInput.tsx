@@ -40,6 +40,7 @@ function GenericInput({
         } border-2 border-[#EAECF0] rounded-xl w-full p-3 placeholder:text-[#ccc] `}
         // value={value}
         onChange={onChange}
+        dir="ltr"
       />
       <div
         onClick={handleShowPassword}

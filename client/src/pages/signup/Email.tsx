@@ -10,10 +10,29 @@ import { useTranslation } from "react-i18next";
 
 import dummyImage from "../../assets/boarding/vector-tree-logo-template-1911680730.jpg";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const Toaster = () => (
+  <ToastContainer
+    position="top-center"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="light"
+  />
+);
+
 const Email: React.FC<{
   onContinue: () => void;
   setEmail: (value: string) => void;
-}> = ({ onContinue, setEmail }) => {
+  email: string;
+}> = ({ onContinue, setEmail, email }) => {
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
@@ -21,8 +40,29 @@ const Email: React.FC<{
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
 
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleSendOTP = () => {
+    if (!email) {
+      toast.error(t("يرجى إدخال بريد إلكتروني"));
+      return;
+    }
+    if (!validateEmail(email)) {
+      toast.error(t("البريد الإلكتروني غير صالح"));
+      return;
+    }
+    toast.success(t("تم إرسال رمز OTP بنجاح!"));
+    onContinue();
+  };
+
   return (
     <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+      <div className="absolute">
+        <Toaster />
+      </div>
       <div className="flex flex-col w-full gap-3">
         <GoBackButton />
 
@@ -42,11 +82,11 @@ const Email: React.FC<{
           type="email"
           placeholder={t("email_example")}
           title={t("البريد الإلكتروني")}
-          onChange={() => console.log("empty")}
-          value=""
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
         />
 
-        <div onClick={onContinue}>
+        <div onClick={handleSendOTP}>
           <PrimaryButton style="fill" text={t("متابعة")} arrow="left" />
         </div>
       </div>

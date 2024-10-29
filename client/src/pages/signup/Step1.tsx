@@ -8,8 +8,27 @@ import BackArrow from "../../icons/BackArrow";
 import GoBackButton from "../../components/GoBackButton";
 import { useTranslation } from "react-i18next";
 
-import dummyImage from "../../assets/boarding/vector-tree-logo-template-1911680730.jpg";
+import nameImg from "../../assets/signup/name.png";
 import ProgressBar from "./ProgressBar";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import i18n from "../../i18n";
+
+const Toaster = () => (
+  <ToastContainer
+    position="top-right"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="light"
+  />
+);
 
 interface Step1Props {
   onContinue: () => void;
@@ -22,12 +41,35 @@ const Step1: React.FC<Step1Props> = ({ onContinue, onBack, name, setName }) => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
 
+  console.log(name.firstName);
+  console.log(name.parentName);
   const handleNameChange = (key: string, value: string) => {
     setName({ ...name, [key]: value });
+    console.log(name.firstName);
+    console.log(name.parentName);
   };
+
+  // Validation helper to check if a string contains only letters
+  const isAlphabetic = (str: string) => /^[A-Za-z\u0621-\u064A ]+$/.test(str);
+
+  function finishStep1() {
+    if (!name.firstName || !name.parentName) {
+      toast.error(t("enterFirstNameAndParentName"));
+    } else if (
+      !isAlphabetic(name.firstName) ||
+      !isAlphabetic(name.parentName)
+    ) {
+      toast.error(t("noNumbersOrSymbols"));
+    } else {
+      onContinue();
+    }
+  }
 
   return (
     <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+      <div className="absolute">
+        <Toaster />
+      </div>
       <div className="flex flex-col w-full gap-3">
         <GoBackButton onClick={onBack} />
 
@@ -46,7 +88,7 @@ const Step1: React.FC<Step1Props> = ({ onContinue, onBack, name, setName }) => {
 
       <div className="w-full flex flex-col gap-7">
         <div className="flex flex-col">
-          <img src={dummyImage} alt="" className="h-1/3" />
+          <img src={nameImg} alt="" className="w-full" />
           <div className="flex gap-3">
             <GenericInput
               type="text"
@@ -64,9 +106,9 @@ const Step1: React.FC<Step1Props> = ({ onContinue, onBack, name, setName }) => {
             />
           </div>
         </div>
-        <div onClick={onContinue}>
-          <PrimaryButton style="fill" text={t("متابعة")} arrow="left" />
-        </div>
+      </div>
+      <div className=" w-full" onClick={finishStep1}>
+        <PrimaryButton style="fill" text={t("متابعة")} arrow="left" />
       </div>
     </div>
   );

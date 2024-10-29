@@ -11,6 +11,7 @@ import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import i18n from "../../i18n";
 
 const Toaster = () => (
   <ToastContainer
@@ -27,16 +28,25 @@ const Toaster = () => (
   />
 );
 
-const ForgotPassword: React.FC = () => {
-  const { darkMode, toggleDarkMode } = useTheme();
+interface OTPProps {
+  onContinue: () => void;
+  onBack: () => void;
+  otp: string[];
+  setOtp: (otp: string[]) => void;
+  setEmail: (value: string) => void;
+  email: string;
+}
+
+const EmailOTP: React.FC<OTPProps> = ({
+  onContinue,
+  onBack,
+  otp,
+  setOtp,
+  setEmail,
+  email,
+}) => {
   const { t } = useTranslation();
-
-  const [email, setEmail] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
-
-  const [otp, setOtp] = useState(["", "", "", ""]);
-
-  const history = useHistory();
 
   const handleOtpChange = (value: string, index: number) => {
     if (!/^\d*$/.test(value)) return; // Prevents entering non-numeric values
@@ -94,10 +104,7 @@ const ForgotPassword: React.FC = () => {
 
       if (response.status === 200) {
         toast.success(t("otpVerifySuccess"));
-        history.push({
-          pathname: "/changepassword",
-          state: { email },
-        });
+        onContinue();
       }
     } catch (error) {
       console.error("Error verifying OTP:", error);
@@ -117,14 +124,14 @@ const ForgotPassword: React.FC = () => {
           <h1 className="text-black font-bold text-2xl text-end " dir="ltr">
             {isOtpSent
               ? t("التحقق من البريد الإلكتروني")
-              : t("هل نسيت كلمة السر؟")}
+              : t("انشاء حساب جديد")}
           </h1>
           <p className="text-[#B3B3B3] text-sm text-end">
             {!isOtpSent ? (
-              t("أدخل بريدك الالكتروني لإعادة تعيين كلمة السر")
+              t("انشاء حساب واستمتع بتجربة تفاعلية تبني العطاء والانتماء")
             ) : (
               <span>
-                {t("لقد أرسلنا للتو الرمز المكون من 5 أرقام إلى")}{" "}
+                {t("لقد أرسلنا للتو الرمز المكون من 4 أرقام إلى")}{" "}
                 <span className="font-semibold text-blueprimary">{email}</span>{" "}
                 {t("أدخله أدناه:")}
               </span>
@@ -137,7 +144,11 @@ const ForgotPassword: React.FC = () => {
         {isOtpSent ? (
           <div className="flex flex-col items-center gap-6">
             <h1 className="self-end text-[#121212] ">{t("الرمز")}</h1>
-            <div className="flex gap-3">
+            <div
+              className={`flex gap-3   ${
+                i18n.language === "en" && "flex-row-reverse"
+              } `}
+            >
               {otp.map((digit, index) => (
                 <input
                   key={index}
@@ -179,15 +190,14 @@ const ForgotPassword: React.FC = () => {
         </h1>
       </div>
 
-      <IonRouterLink routerLink="/signup" className="text-md ">
+      <IonRouterLink routerLink="/login" className="text-md">
         <h1 className="text-[#8E99A4] font-semibold">
-          {t("ليس لديك حساب؟")}
-
-          <span className="text-blueprimary "> {t("إنشاء حساب")}</span>
+          {t("هل لديك حساب؟")}{" "}
+          <span className="text-blueprimary ">{t("تسجيل الدخول")}</span>
         </h1>
       </IonRouterLink>
     </div>
   );
 };
 
-export default ForgotPassword;
+export default EmailOTP;

@@ -7,12 +7,15 @@ import Step5 from "./Step5";
 import Step6 from "./Step6";
 import Email from "./Email";
 import OTP from "./OTP";
+import Password from "./Password";
+import EmailOTP from "./Email_OTP";
 
 const Signup: React.FC = () => {
-  const [stepIndex, setStepIndex] = useState(0);
+  const [stepIndex, setStepIndex] = useState(2);
 
   // State for storing data from each step
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [name, setName] = useState({ firstName: "", parentName: "" });
   const [gender, setGender] = useState("");
@@ -22,15 +25,21 @@ const Signup: React.FC = () => {
   const [character, setCharacter] = useState("");
 
   const steps = [
-    <Email
-      onContinue={() => setStepIndex(stepIndex + 1)}
+    <EmailOTP
+      onContinue={() => {
+        setStepIndex(stepIndex + 1);
+      }}
+      email={email}
       setEmail={setEmail}
-    />,
-    <OTP
-      onContinue={() => setStepIndex(stepIndex + 1)}
       onBack={() => setStepIndex(stepIndex - 1)}
       otp={otp}
       setOtp={setOtp}
+    />,
+
+    <Password
+      onContinue={() => setStepIndex(stepIndex + 1)}
+      setPassword={setPassword}
+      password={password}
     />,
     <Step1
       onContinue={() => setStepIndex(stepIndex + 1)}
@@ -65,6 +74,7 @@ const Signup: React.FC = () => {
     <Step6
       onComplete={() => handleSubmit()}
       onBack={() => setStepIndex(stepIndex - 1)}
+      gender={gender}
       character={character}
       setCharacter={setCharacter}
     />,
@@ -74,7 +84,7 @@ const Signup: React.FC = () => {
     // Combine all collected data here
     const formData = {
       email,
-      otp,
+      password,
       name,
       gender,
       birthdate,
