@@ -29,7 +29,7 @@ class Student extends Model {
           autoIncrement: true,
         },
         grade: {
-          type: DataTypes.ENUM(...Object.values(Grade)),
+          type: DataTypes.STRING,
           allowNull: true,
         },
         points: {
@@ -37,7 +37,7 @@ class Student extends Model {
           defaultValue: 0,
         },
         profileImg: {
-          type: DataTypes.INTEGER,
+          type: DataTypes.STRING,
           allowNull: true,
         },
       },
