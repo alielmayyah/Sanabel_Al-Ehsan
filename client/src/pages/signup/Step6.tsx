@@ -30,6 +30,25 @@ import girl9 from "../../assets/signup/Avatar/Girls/girl9.png";
 
 import ProgressBar from "./ProgressBar";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import i18n from "../../i18n";
+
+const Toaster = () => (
+  <ToastContainer
+    position="top-right"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="light"
+  />
+);
+
 // Grouped arrays for easier access
 const boysAvatars = [boy1, boy2, boy3, boy4, boy5, boy6, boy7];
 const girlsAvatars = [
@@ -63,11 +82,18 @@ const Step6: React.FC<Step6Props> = ({
   const { t } = useTranslation();
 
   function handleGenderStep() {
-    onComplete();
+    if (!character) {
+      toast.error(t("يرجى اختيار صورة شخصية قبل المتابعة"));
+    } else {
+      onComplete();
+    }
   }
   console.log(character);
   return (
     <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+      <div className="absolute">
+        <Toaster />
+      </div>
       <div className="flex flex-col w-full gap-3">
         <GoBackButton onClick={onBack} />
 

@@ -90,19 +90,6 @@ const registration = async (req: Request, res: Response) => {
     }
     const hashedPassword = bcrypt.hashSync(password, 10);
 
-<<<<<<< HEAD
-    
-    // Create User
-    const newUser = await User.create({
-      Name: name,
-      email,
-      password: hashedPassword,
-      role,
-    });
-
-    // Generate Token
-=======
->>>>>>> 01f795ad2b8e7fa742c22cde3d42a150fb75c29c
     const token = jwt.sign(
       {
         id: checkValidation.id,

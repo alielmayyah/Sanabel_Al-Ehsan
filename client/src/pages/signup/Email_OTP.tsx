@@ -74,13 +74,15 @@ const EmailOTP: React.FC<OTPProps> = ({
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/users/send-otp",
+        "http://localhost:3000/users/send-auth",
         { email }
       );
 
       if (response.status === 200) {
         setIsOtpSent(true);
         toast.success(t("otpSentSuccess"));
+      }
+      if (response.status === 202) {
       }
     } catch (error) {
       console.error("Error sending OTP:", error);
@@ -98,7 +100,7 @@ const EmailOTP: React.FC<OTPProps> = ({
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/users/verify-otp",
+        "http://localhost:3000/users/verfication-auth",
         { email, otp: otpCode }
       );
 

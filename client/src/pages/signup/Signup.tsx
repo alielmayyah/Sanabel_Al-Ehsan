@@ -9,9 +9,12 @@ import Email from "./Email";
 import OTP from "./OTP";
 import Password from "./Password";
 import EmailOTP from "./Email_OTP";
+import axios from "axios";
+import { t } from "i18next";
+import { toast } from "react-toastify";
 
 const Signup: React.FC = () => {
-  const [stepIndex, setStepIndex] = useState(2);
+  const [stepIndex, setStepIndex] = useState(0);
 
   // State for storing data from each step
   const [email, setEmail] = useState("");
@@ -80,21 +83,45 @@ const Signup: React.FC = () => {
     />,
   ];
 
-  const handleSubmit = () => {
-    // Combine all collected data here
+  const handleSubmit = async () => {
+    // Format name and date of birth
+    const formattedName = {
+      firstName: name.firstName,
+      lastName: name.parentName,
+    };
+
+    const formattedBirthdate = `${birthdate.year}-${birthdate.month.padStart(
+      2,
+      "0"
+    )}-${birthdate.day.padStart(2, "0")}`;
+
+    // Final data structure
     const formData = {
+      firstName: formattedName.firstName,
+      lastName: formattedName.lastName,
       email,
       password,
-      name,
-      gender,
-      birthdate,
-      gradeYear,
-      parentCode,
-      character,
+      genre: gender,
+      dateOfBirth: formattedBirthdate,
+      grade: gradeYear,
+      profileImg: character,
     };
+
     console.log("Submitting form data:", formData);
 
-    // Call API or handle form data submission
+    // Handle API submission here
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/users/registration",
+        formData
+      );
+      if (response.status === 200) {
+        toast.success(t("otpSentSuccess"));
+      }
+    } catch (error) {
+      console.error("Error", error);
+      toast.error(t("Error"));
+    }
   };
 
   return (

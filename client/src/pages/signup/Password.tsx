@@ -37,9 +37,6 @@ const Password: React.FC<{
   setPassword: (value: string) => void;
   password: string;
 }> = ({ onContinue, setPassword, password }) => {
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
   const { t } = useTranslation();
 
   const [isValid, setIsValid] = useState({
@@ -48,18 +45,27 @@ const Password: React.FC<{
     hasSpecialChar: false,
   });
 
-  const validatePassword = (password: string) => {
+  const validatePassword = (newPassword: string) => {
     setIsValid({
-      minLength: password.length >= 8,
-      hasNumber: /\d/.test(password),
-      hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+      minLength: newPassword.length >= 8,
+      hasNumber: /\d/.test(newPassword),
+      hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(newPassword),
     });
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword); // Update the password state
+    validatePassword(newPassword); // Validate the password
   };
 
   const finishPasswordStep = async () => {
     if (validConditionsCount < 3) {
       toast.error(t("passwordNotMeetRequirements"));
-    } else onContinue();
+    } else {
+      setPassword(password);
+      onContinue();
+    }
   };
 
   const validationCircles = [
@@ -68,10 +74,8 @@ const Password: React.FC<{
     { condition: isValid.hasSpecialChar, text: t("رمز") },
   ];
 
-  // Count the number of valid conditions
   const validConditionsCount = Object.values(isValid).filter(Boolean).length;
 
-  // Determine width and color based on valid conditions
   const progressWidth = `${(validConditionsCount / 3) * 100}%`;
   const progressColor =
     validConditionsCount === 1
@@ -106,8 +110,8 @@ const Password: React.FC<{
             type="password"
             placeholder={t("ادخل كلمة السر")}
             title={t("كلمة السر")}
-            value={""}
-            onChange={(e) => validatePassword(e.target.value)}
+            value={password}
+            onChange={handlePasswordChange} // Updated onChange
           />
         </div>
         <div className="flex w-full bg-gray-200 h-2 rounded-xl gap-0">
@@ -116,7 +120,6 @@ const Password: React.FC<{
             style={{ width: progressWidth }}
           ></div>
         </div>
-        {/* className="bg-redprimary w-1/3 h-2  rounded-xl" */}
         <div className="flex flex-col gap-3 items-end self-end">
           {validationCircles.map((circle) => (
             <div className="flex-center gap-3 ">
