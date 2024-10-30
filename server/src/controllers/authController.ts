@@ -11,8 +11,8 @@ const sendOtp = async (req: Request, res: Response) => {
     if (existingUser && existingUser.isAccess) {
       if (existingUser.password == null) {
         return res
-          .status(200)
-          .json({ status: 200, message: "you already access before" });
+          .status(202)
+          .json({ status: 202, message: "you already access before" });
       } else {
         return res
           .status(400)

@@ -65,11 +65,13 @@ const registration = async (req: Request, res: Response) => {
     email,
     password,
     role,
-    age,
     subject,
     contactInfo,
     address,
     type,
+    dateOfBirth,
+    grade,
+    profileImg,
   } = req.body;
 
   try {
@@ -103,14 +105,13 @@ const registration = async (req: Request, res: Response) => {
     await checkValidation.update({
       firstName,
       lastName,
+      dateOfBirth,
       password: hashedPassword,
-      role,
-      token,
     });
 
     switch (checkValidation.role) {
       case "Student":
-        await Student.create({ age, userId: checkValidation.id });
+        await Student.create({ grade, userId: checkValidation.id, profileImg });
         break;
       case "Teacher":
         await Teacher.create({ subject, userId: checkValidation.id });
