@@ -35,7 +35,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare resetOTP: CreationOptional<string> | null;
   declare otpExpiry: CreationOptional<Date> | null;
   declare otpVerified: CreationOptional<boolean>;
-  declare genre: CreationOptional<UserGenre>;
+  declare genre: CreationOptional<String>;
   declare dateOfBirth: CreationOptional<Date>;
   declare isAccess: CreationOptional<Boolean>;
   static initModel(sequelize: Sequelize) {
@@ -89,7 +89,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
           defaultValue: false,
         },
         genre: {
-          type: DataTypes.ENUM(...Object.values(UserGenre)),
+          type: DataTypes.STRING,
           allowNull: true,
         },
         dateOfBirth: {
