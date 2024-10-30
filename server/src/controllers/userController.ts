@@ -70,6 +70,7 @@ const registration = async (req: Request, res: Response) => {
     address,
     type,
     dateOfBirth,
+    genre,
     grade,
     profileImg,
   } = req.body;
@@ -105,6 +106,7 @@ const registration = async (req: Request, res: Response) => {
     await checkValidation.update({
       firstName,
       lastName,
+      genre,
       dateOfBirth,
       password: hashedPassword,
     });
