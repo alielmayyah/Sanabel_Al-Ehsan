@@ -49,7 +49,7 @@ const Step4: React.FC<Step4Props> = ({
 
       <div className="flex flex-col gap-5 w-full">
         {/* {["الابتدائي", "الإعدادي", "الثانوي"].map((grade) => ( */}
-        {["Primary", "Preparatory ", "Secondary"].map((grade) => (
+        {["primary", "preparatory ", "secondary"].map((grade) => (
           <div
             key={grade}
             onClick={() => handleGradeSelect(grade)}
