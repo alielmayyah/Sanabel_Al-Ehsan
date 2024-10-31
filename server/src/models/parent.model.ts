@@ -3,9 +3,9 @@ import User from "./user.model";
 
 class Parent extends Model {
   declare id: CreationOptional<number>;
-  declare contactInfo: string;
+  declare contactInfo: CreationOptional<string>;
   declare parentId: CreationOptional<number>; // Explicit parentId field as a foreign key
-  declare userId: number; // Add userId field
+  declare userId: CreationOptional<number>; // Add userId field
   declare user: User | null;
 
   static initModel(sequelize: Sequelize) {
@@ -19,7 +19,7 @@ class Parent extends Model {
         },
         contactInfo: {
           type: DataTypes.STRING,
-          allowNull: false,
+          allowNull: true,
         },
       },
       {

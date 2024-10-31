@@ -3,8 +3,8 @@ import User from "./user.model";
 import Organization from "./oraganization.model";
 class Teacher extends Model {
   declare id: CreationOptional<number>;
-  declare subject: string;
-  declare organizationId: number;
+  declare subject: CreationOptional<string>;
+  declare organizationId: CreationOptional<number>;
   declare teacherId: CreationOptional<number>; // Explicit teacherId field as a foreign key
   declare user: User | null;
 
@@ -19,7 +19,7 @@ class Teacher extends Model {
         },
         subject: {
           type: DataTypes.STRING,
-          allowNull: false,
+          allowNull: true,
         },
       },
       {
