@@ -12,19 +12,10 @@ import Leaderboards from "./pages/Leaderboards";
 import Profile from "./pages/Profile";
 import Progress from "./pages/Progress";
 
-import Signup from "./pages/signup/Signup";
+import Signup from "./pages/signup/student/Signup";
 import Login from "./pages/login/Login";
 
-// signup steps
-import Step1 from "./pages/signup/Step1";
-import Step2 from "./pages/signup/Step2";
-import Step3 from "./pages/signup/Step3";
-import Step4 from "./pages/signup/Step4";
-import Step5 from "./pages/signup/Step5";
-import Step6 from "./pages/signup/Step6";
-
-import Email from "./pages/signup/Email";
-import OTP from "./pages/signup/OTP";
+import SignupParentOrTeacher from "./pages/signup/parent_teacher/SignupParentOrTeacher";
 
 import ForgotPassword from "./pages/login/ForgotPassword";
 import ChangePassword from "./pages/login/ChangePassword";
@@ -41,6 +32,7 @@ setupIonicReact();
 import { useTranslation } from "react-i18next";
 import "./i18n";
 import Navbar from "./components/Navbar";
+import SplashScreen from "./pages/onboarding/SplashScreen";
 
 const App: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
@@ -50,18 +42,11 @@ const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Check if the user has opened the app before
-    const hasVisited = localStorage.getItem("hasVisited");
-    if (hasVisited) {
-      setFirstTime(false);
-    } else {
-      // Mark that the user has now opened the app
-      localStorage.setItem("hasVisited", "true");
-    }
+    // Check for login token and "keep me logged in" status
 
-    // Check for login token to determine logged-in status
-    const token = localStorage.getItem("authToken"); // replace with your actual token check
-    if (token) {
+    const keepLoggedIn = localStorage.getItem("keepLoggedIn") === "true";
+
+    if (keepLoggedIn) {
       setIsLoggedIn(true);
     }
   }, []);
@@ -76,40 +61,39 @@ const App: React.FC = () => {
                 exact
                 path="/"
                 render={() => {
-                  // Navigate based on user status
-                  if (firstTime) {
-                    return <OnBoarding />;
-                  } else if (isLoggedIn) {
+                  const hasVisited =
+                    localStorage.getItem("hasVisited") === "true";
+                  const keepLoggedIn =
+                    localStorage.getItem("keepLoggedIn") === "true";
+
+                  if (keepLoggedIn) {
+                    // User is logged in, redirect to home
                     return <Redirect to="/home" />;
+                  } else if (!hasVisited) {
+                    // First time user, show SplashScreen
+                    return <SplashScreen />;
                   } else {
+                    // If the user has visited before, go to ChooseSignMethod
                     return <Redirect to="/choosesignmethod" />;
                   }
                 }}
               />
+              <Route exact path="/onboarding" component={OnBoarding} />
               <Route
                 exact
                 path="/choosesignmethod"
                 component={ChooseSignMethod}
               />
-
               {/* //SIGNUP PAGES */}
               <Route exact path="/signup" component={Signup} />
-              <Route exact path="/email" component={Email} />
-              <Route exact path="/otp" component={OTP} />
-
-              {/* //SIGNUP STEPS */}
-              <Route exact path="/step1" component={Step1} />
-              <Route exact path="/step2" component={Step2} />
-              <Route exact path="/step3" component={Step3} />
-              <Route exact path="/step4" component={Step4} />
-              <Route exact path="/step5" component={Step5} />
-              <Route exact path="/step6" component={Step6} />
-
+              <Route
+                exact
+                path="/signupparentorteacher"
+                component={SignupParentOrTeacher}
+              />
               <Route exact path="/login" component={Login} />
-
               <Route exact path="/forgotpassword" component={ForgotPassword} />
               <Route exact path="/changepassword" component={ChangePassword} />
-
               <Route exact path="/home" component={Home} />
               <Route exact path="/progress" component={Progress} />
               <Route exact path="/challenges" component={Challenges} />

@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { useTheme } from "../../context/ThemeContext";
-import PrimaryButton from "../../components/PrimaryButton";
+import { useTheme } from "../../../context/ThemeContext";
+import PrimaryButton from "../../../components/PrimaryButton";
 import { IonRouterLink } from "@ionic/react";
 
-import GenericInput from "../../components/GenericInput";
-import BackArrow from "../../icons/BackArrow";
-import GoBackButton from "../../components/GoBackButton";
+import GenericInput from "../../../components/GenericInput";
+import BackArrow from "../../../icons/BackArrow";
+import GoBackButton from "../../../components/GoBackButton";
 import { useTranslation } from "react-i18next";
 
-import dummyImage from "../../assets/boarding/vector-tree-logo-template-1911680730.jpg";
 import ProgressBar from "./ProgressBar";
 
 interface Step5Props {

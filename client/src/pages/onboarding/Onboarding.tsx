@@ -21,13 +21,14 @@ const onboardingData = [
   {
     title: "ازرع سنبلة تُثمر",
     span: "خيراً وأجراً",
-    img: slide2Img,
+    img: slide3Img,
     description: "إغتنم الفرص لفعل الخير، فالحسنات تتضاعف مع كل عمل صالح",
   },
   {
     title: "تسابقوا إلى",
     span: "الخيرات، فإنها لا تدوم",
-    img: slide3Img,
+
+    img: slide2Img,
     description: "لا تفوّت الفرصة لفعل الخير، فالأجر يعمّ والحسنات تُكتب",
   },
 ];
@@ -41,6 +42,7 @@ const OnBoarding: React.FC = () => {
   function changeStepIncrement() {
     if (stepCount === 2) {
       history.push("/choosesignmethod"); // Navigate to choosesignmethod
+      localStorage.setItem("hasVisited", "true");
     } else {
       setStepCount(stepCount + 1);
     }
@@ -52,6 +54,7 @@ const OnBoarding: React.FC = () => {
   }
 
   function skipOnboarding() {
+    localStorage.setItem("hasVisited", "true");
     history.push("/choosesignmethod");
   }
 
@@ -126,7 +129,7 @@ const OnBoarding: React.FC = () => {
 
         {/* Button with Scale Animation */}
 
-        <div className="flex w-full items-center gap-2">
+        <div className="flex w-screen items-center gap-2 px-4">
           <div onClick={changeStepIncrement} className="w-full">
             {" "}
             <PrimaryButton style="fill" text={t("متابعة")} arrow={`left`} />

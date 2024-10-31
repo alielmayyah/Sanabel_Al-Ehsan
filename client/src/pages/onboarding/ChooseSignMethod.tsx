@@ -1,9 +1,10 @@
 import { useTheme } from "../../context/ThemeContext";
 import PrimaryButton from "../../components/PrimaryButton";
 import trophyImg from "../../assets/boarding/trophy_2.png";
-import parentImg from "../../assets/Signup (Parent or Teacher)/Parents/bussiness-man.png";
-import teacherImg from "../../assets/Signup (Parent or Teacher)/Teachers/teacher (1).png";
-import studentImg from "../../assets/signup/boy.png";
+
+import parentOrTeacherImg from "../../assets/parentorteacher/chooseparentorteacher.png"
+import studentImg from "../../assets/parentorteacher/choosestudent.png"
+
 import { IonRouterLink } from "@ionic/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -16,6 +17,13 @@ const ChooseSignMethod: React.FC = () => {
 
   const handleSignupClick = () => {
     setShowSignupOptions(true);
+  };
+
+  // Shared animation properties
+  const sharedImageAnimation = {
+    initial: { opacity: 0, y: -100 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6 },
   };
 
   return (
@@ -34,12 +42,7 @@ const ChooseSignMethod: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="w-full"
           >
-            <motion.div
-              initial={{ opacity: 0, y: -150 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="w-full"
-            >
+            <motion.div {...sharedImageAnimation} className="w-full">
               <img src={trophyImg} className="w-full pb-3" alt="Sign Method" />
             </motion.div>
 
@@ -68,16 +71,16 @@ const ChooseSignMethod: React.FC = () => {
         ) : (
           <motion.div
             key="signup-options"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -50 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.6 }}
             className="w-full h-full flex flex-col items-center justify-around py-10 gap-6"
           >
             <motion.div
-              initial={{ opacity: 0, y: -150 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              initial={{ y: -200, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
               className="w-2/3"
             >
               <img src={trophyImg} className="w-full" alt="Sign Method" />
@@ -87,18 +90,36 @@ const ChooseSignMethod: React.FC = () => {
               {t("اختر نوع التسجيل")}
             </h2>
 
-            <div className="flex  w-full justify-between gap-3">
-              <IonRouterLink routerLink="/signup" className="w-full  ">
-                <img src={studentImg} className="w-32"></img>
-                <PrimaryButton style="fill" text="طالب" arrow="none" />
+            <div className="flex w-full justify-between gap-3">
+              <IonRouterLink
+                routerLink="/signup"
+                className="w-full flex flex-col gap-10"
+              >
+                <motion.img
+                  src={studentImg}
+                  initial={{ x: -100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.8 }}
+                  className="w-full rounded-full border-2 bg-redprimary"
+                />
+                <h1 className="text-center text-bold text-xl text-gray-800">
+                  {t("طالب")}
+                </h1>
               </IonRouterLink>
-              <IonRouterLink routerLink="/signup/parent" className="w-full  ">
-                <img src={parentImg} className="w-32"></img>
-                <PrimaryButton style="fill" text="ولي أمر" arrow="none" />
-              </IonRouterLink>
-              <IonRouterLink routerLink="/signup/teacher" className="w-full  ">
-                <img src={teacherImg} className="w-32"></img>
-                <PrimaryButton style="fill" text="معلم" arrow="none" />
+              <IonRouterLink
+                routerLink="/signupparentorteacher"
+                className="w-full flex flex-col gap-10"
+              >
+                <motion.img
+                  src={parentOrTeacherImg}
+                  initial={{ x: 100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.8 }}
+                  className="w-full rounded-full border-2 bg-yellowprimary"
+                />
+                <h1 className="text-center text-bold text-xl text-gray-800">
+                  {t("ولي امر او  معلم")}
+                </h1>
               </IonRouterLink>
             </div>
           </motion.div>

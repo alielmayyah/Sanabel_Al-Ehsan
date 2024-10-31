@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { useTheme } from "../../context/ThemeContext";
-import PrimaryButton from "../../components/PrimaryButton";
+import { useTheme } from "../../../context/ThemeContext";
+import PrimaryButton from "../../../components/PrimaryButton";
 import { IonRouterLink } from "@ionic/react";
-import GenericInput from "../../components/GenericInput";
-import BackArrow from "../../icons/BackArrow";
-import GoBackButton from "../../components/GoBackButton";
+import GenericInput from "../../../components/GenericInput";
+import BackArrow from "../../../icons/BackArrow";
+import GoBackButton from "../../../components/GoBackButton";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-
+import parentOrTeacherImg from "../../../assets/parentorteacher/chooseparentorteacher.png"
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import i18n from "../../i18n";
+import i18n from "../../../i18n";
 
 const Toaster = () => (
   <ToastContainer
@@ -142,7 +142,7 @@ const EmailOTP: React.FC<OTPProps> = ({
         </div>
       </div>
 
-      <div className="w-full flex flex-col gap-7 ">
+      <div className="w-full flex flex-col gap-7  ">
         {isOtpSent ? (
           <div className="flex flex-col items-center gap-6">
             <h1 className="self-end text-[#121212] ">{t("الرمز")}</h1>
@@ -170,26 +170,42 @@ const EmailOTP: React.FC<OTPProps> = ({
             </div>
           </div>
         ) : (
-          <GenericInput
-            type="email"
-            placeholder={t("email_example")}
-            title={t("البريد الإلكتروني")}
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-          />
+          <div className="flex flex-col gap-3 ">
+            <div className="flex-center flex-col gap-4">
+              <img
+                src={parentOrTeacherImg}
+                className="rounded-full border-2 bg-yellowprimary w-1/3"
+              />
+              <h1 className="text-center text-bold text-xl text-gray-800">
+                {t("ولي امر او  معلم")}
+              </h1>
+            </div>
+            <GenericInput
+              type="email"
+              placeholder={t("email_example")}
+              title={t("البريد الإلكتروني")}
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+            />
+          </div>
         )}
 
-        <div onClick={isOtpSent ? handleConfirmOTP : handleSendOTP}>
+        <div
+          onClick={isOtpSent ? handleConfirmOTP : handleSendOTP}
+          className="pb-24"
+        >
           <PrimaryButton
             style="fill"
             text={`${isOtpSent ? "تأكيد الرمز" : "ارسل الرمز"}`}
             arrow="none"
           />
         </div>
-        <h1 className="text-[#B3B3B3] text-center" onClick={handleSendOTP}>
-          {t("لم تتلق رمز")} <span dir="ltr">OTP</span> {t("بعد؟")}{" "}
-          <span className="text-blueprimary ">{t("إعادة الإرسال")}</span>
-        </h1>
+        {isOtpSent && (
+          <h1 className="text-[#B3B3B3] text-center" onClick={handleSendOTP}>
+            {t("لم تتلق رمز")} <span dir="ltr">OTP</span> {t("بعد؟")}{" "}
+            <span className="text-blueprimary ">{t("إعادة الإرسال")}</span>
+          </h1>
+        )}
       </div>
 
       <IonRouterLink routerLink="/login" className="text-md">

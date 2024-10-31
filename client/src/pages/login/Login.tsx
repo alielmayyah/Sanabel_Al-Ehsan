@@ -45,8 +45,6 @@ const Login: React.FC = () => {
   console.log(password);
 
   const handleLogin = async () => {
-    // Simple validation
-    // Validation
     if (!email || !password) {
       toast.error(t("fill_all_fields"));
       return;
@@ -59,17 +57,20 @@ const Login: React.FC = () => {
       toast.error(t("short_password"));
       return;
     }
+
     try {
-      // API call to the backend for login
       const response = await axios.post("http://localhost:3000/users/login", {
-        email: email,
-        password: password,
+        email,
+        password,
       });
 
       if (response.status === 200) {
         toast.success(t("login_successful"));
-        history.push("/");
-        
+        // Store auth token
+        localStorage.setItem("email", email);
+        // Store keepLoggedIn preference
+        localStorage.setItem("keepLoggedIn", isKeepLogged.toString());
+        history.push("/home"); // Redirect to the home screen after login
       }
     } catch (error) {
       toast.error(t("login_failed"));
@@ -137,7 +138,7 @@ const Login: React.FC = () => {
         <PrimaryButton style="fill" text={t("تسجيل الدخول")} arrow="none" />
       </div>
 
-      <IonRouterLink routerLink="/signup" className="text-md">
+      <IonRouterLink routerLink="/choosesignmethod" className="text-md">
         <h1 className="text-[#8E99A4] font-semibold">
           {t("ليس لديك حساب؟")}{" "}
           <span className="text-blueprimary ">{t("إنشاء حساب")}</span>

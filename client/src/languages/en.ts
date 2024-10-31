@@ -150,8 +150,8 @@ const en = {
 "four_digit_year": "The year must be four digits long",
 
 
-
-  
+"ولي امر او  معلم" : "Teacher or Parent",
+  "طالب" : "Student"
 
 
   },

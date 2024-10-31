@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useTheme } from "../../context/ThemeContext";
-import PrimaryButton from "../../components/PrimaryButton";
+import { useTheme } from "../../../context/ThemeContext";
+import PrimaryButton from "../../../components/PrimaryButton";
 import { IonRouterLink } from "@ionic/react";
 
-import GenericInput from "../../components/GenericInput";
-import BackArrow from "../../icons/BackArrow";
-import GoBackButton from "../../components/GoBackButton";
+import GenericInput from "../../../components/GenericInput";
+import BackArrow from "../../../icons/BackArrow";
+import GoBackButton from "../../../components/GoBackButton";
 import { FaCheck } from "react-icons/fa";
 import classNames from "classnames";
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,7 +15,7 @@ import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import i18n from "../../i18n";
+import i18n from "../../../i18n";
 
 const Toaster = () => (
   <ToastContainer

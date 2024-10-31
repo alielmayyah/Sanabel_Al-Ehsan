@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { useTheme } from "../../context/ThemeContext";
-import PrimaryButton from "../../components/PrimaryButton";
+import { useTheme } from "../../../context/ThemeContext";
+import PrimaryButton from "../../../components/PrimaryButton";
 import { IonRouterLink } from "@ionic/react";
 
-import GenericInput from "../../components/GenericInput";
-import BackArrow from "../../icons/BackArrow";
-import GoBackButton from "../../components/GoBackButton";
+import GenericInput from "../../../components/GenericInput";
+import BackArrow from "../../../icons/BackArrow";
+import GoBackButton from "../../../components/GoBackButton";
 import { useTranslation } from "react-i18next";
 
-import cakeImage from "../../assets/signup/birthday.png";
+import cakeImage from "../../../assets/signup/birthday.png";
 import ProgressBar from "./ProgressBar";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import i18n from "../../i18n";
+import i18n from "../../../i18n";
 
 const Toaster = () => (
   <ToastContainer

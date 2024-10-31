@@ -1,31 +1,25 @@
 import React, { useState } from "react";
-import Step1 from "./Step1";
-import Step2 from "./Step2";
-import Step3 from "./Step3";
-import Step4 from "./Step4";
-import Step5 from "./Step5";
-import Step6 from "./Step6";
-import Email from "./Email";
-import OTP from "./OTP";
-import Password from "./Password";
-import EmailOTP from "./Email_OTP";
+
+import EmailOTP from "./EmailOTP";
+
 import axios from "axios";
 import { t } from "i18next";
 import { toast } from "react-toastify";
+import Step1 from "./Step1";
+import Password from "./Password";
+import { useHistory } from "react-router-dom";
 
 const Signup: React.FC = () => {
+  const history = useHistory();
   const [stepIndex, setStepIndex] = useState(0);
 
   // State for storing data from each step
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  const [avatar, setAvatar] = useState("");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState(["", "", "", ""]);
-  const [name, setName] = useState({ firstName: "", parentName: "" });
-  const [gender, setGender] = useState("");
-  const [birthdate, setBirthdate] = useState({ day: "", month: "", year: "" });
-  const [gradeYear, setGradeYear] = useState("");
-  const [parentCode, setParentCode] = useState("");
-  const [character, setCharacter] = useState("");
+  const [name, setName] = useState({ firstName: "", lastName: "" });
 
   const steps = [
     <EmailOTP
@@ -38,7 +32,6 @@ const Signup: React.FC = () => {
       otp={otp}
       setOtp={setOtp}
     />,
-
     <Password
       onContinue={() => setStepIndex(stepIndex + 1)}
       setPassword={setPassword}
@@ -49,37 +42,9 @@ const Signup: React.FC = () => {
       onBack={() => setStepIndex(stepIndex - 1)}
       name={name}
       setName={setName}
-    />,
-    <Step2
-      onContinue={() => setStepIndex(stepIndex + 1)}
-      onBack={() => setStepIndex(stepIndex - 1)}
-      gender={gender}
-      setGender={setGender}
-    />,
-    <Step3
-      onContinue={() => setStepIndex(stepIndex + 1)}
-      onBack={() => setStepIndex(stepIndex - 1)}
-      birthdate={birthdate}
-      setBirthdate={setBirthdate}
-    />,
-    <Step4
-      onContinue={() => setStepIndex(stepIndex + 1)}
-      onBack={() => setStepIndex(stepIndex - 1)}
-      gradeYear={gradeYear}
-      setGradeYear={setGradeYear}
-    />,
-    <Step5
-      onContinue={() => setStepIndex(stepIndex + 1)}
-      onBack={() => setStepIndex(stepIndex - 1)}
-      parentCode={parentCode}
-      setParentCode={setParentCode}
-    />,
-    <Step6
-      onComplete={() => handleSubmit()}
-      onBack={() => setStepIndex(stepIndex - 1)}
-      gender={gender}
-      character={character}
-      setCharacter={setCharacter}
+      role={role}
+      setRole={setRole}
+      setAvatar={setAvatar}
     />,
   ];
 
@@ -87,13 +52,8 @@ const Signup: React.FC = () => {
     // Format name and date of birth
     const formattedName = {
       firstName: name.firstName,
-      lastName: name.parentName,
+      lastName: name.lastName,
     };
-
-    const formattedBirthdate = `${birthdate.year}-${birthdate.month.padStart(
-      2,
-      "0"
-    )}-${birthdate.day.padStart(2, "0")}`;
 
     // Final data structure
     const formData = {
@@ -101,10 +61,7 @@ const Signup: React.FC = () => {
       lastName: formattedName.lastName,
       email,
       password,
-      genre: gender,
-      dateOfBirth: formattedBirthdate,
-      grade: gradeYear,
-      profileImg: character,
+      role: role,
     };
 
     console.log("Submitting form data:", formData);
@@ -116,7 +73,7 @@ const Signup: React.FC = () => {
         formData
       );
       if (response.status === 200) {
-        toast.success(t("otpSentSuccess"));
+        history.push("/home");
       }
     } catch (error) {
       console.error("Error", error);
