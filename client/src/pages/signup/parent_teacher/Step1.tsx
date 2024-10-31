@@ -30,7 +30,7 @@ const Toaster = () => (
 );
 
 interface Step1Props {
-  onContinue: () => void;
+  onComplete: () => void;
   onBack: () => void;
   name: { firstName: string; lastName: string };
   setName: (name: { firstName: string; lastName: string }) => void;
@@ -40,7 +40,7 @@ interface Step1Props {
 }
 
 const Step1: React.FC<Step1Props> = ({
-  onContinue,
+  onComplete,
   onBack,
   name,
   setName,
@@ -68,7 +68,7 @@ const Step1: React.FC<Step1Props> = ({
     } else if (!showAvatarSelection) {
       toast.error(t("pleaseSelectAvatar"));
     } else {
-      onContinue();
+      onComplete();
     }
   };
 

@@ -38,7 +38,7 @@ const Signup: React.FC = () => {
       password={password}
     />,
     <Step1
-      onContinue={() => setStepIndex(stepIndex + 1)}
+      onComplete={() => handleSubmit()}
       onBack={() => setStepIndex(stepIndex - 1)}
       name={name}
       setName={setName}
