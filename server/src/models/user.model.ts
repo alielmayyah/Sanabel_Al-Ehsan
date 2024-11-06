@@ -68,7 +68,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
         },
         role: {
           type: DataTypes.ENUM(...Object.values(UserRole)),
-          allowNull: false,
+          allowNull: true,
         },
         token: {
           type: DataTypes.STRING,

@@ -21,7 +21,10 @@ const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
     if (err) {
       return res.status(403).json({ status: 403, message: "Token is invalid" });
     }
-    req.user = user as JwtPayload; // Attach the user payload to the request
+
+    // Use a type assertion to extend req locally with a `user` property
+    (req as Request & { user?: JwtPayload }).user = user as JwtPayload;
+
     next();
   });
 };
