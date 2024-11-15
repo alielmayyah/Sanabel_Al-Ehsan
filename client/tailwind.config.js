@@ -8,6 +8,11 @@ module.exports = {
         blueprimary: "#4AAAD6", // Custom blue
         redprimary: "#E14E54", // Custom red
         yellowprimary: "#FAB700", // Custom yellow
+        greenprimary: "#153D39", // Custom green
+      },
+      animation: {
+        bounce200: "bounce 1s infinite 200ms",
+        bounce400: "bounce 1s infinite 400ms",
       },
     },
   },

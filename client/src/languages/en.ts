@@ -151,11 +151,42 @@ const en = {
 
 
 "ولي امر او  معلم" : "Teacher or Parent",
-  "طالب" : "Student"
+  "طالب" : "Student",
 
+//signup parent or teacher
+  "اختر نوع التسجيل": "Select registration type",
+
+  "ERROR": "ERROR",
+  "pleaseSelectRole": "Please select a role",
+  "pleaseSelectAvatar": "Please select an avatar",
+  "Parent": "Parent",
+  "Teacher": "Teacher",
+  "Male": "Male",
+  "Female": "Female",
+  "اسمك الاخير": "Last name",
+
+   // Profile page
+   "تغيير الي الانجليزية": "Switch to English",
+   "تغيير الي العربية": "Switch to Arabic",
+   "تغيير كلمة المرور": "Change Password",
+   "سياسة الخصوصية": "Privacy Policy",
+   "مركز المساعدة": "Help Center",
+   "تفعيل الوضع الداكن": "Enable Dark Mode",
+   "تسجيل الخروج": "Log Out",
+   "حسنة": "Points",
+   "تعديل الملف الشخصي": "Edit Profile",
+   "حذف الحساب": "Delete Account",
+   "هل تريد حذف الحساب؟": "Do you want to delete the account ?",
+   "تأكد من عدم إمكانية التراجع عن هذا الإجراء": "Make sure this action is irreversible",
+   "إلغاء": "Cancel",
+   "حذف": "Delete",
+
+   
 
   },
   
 };
 
 export default en;
+
+
