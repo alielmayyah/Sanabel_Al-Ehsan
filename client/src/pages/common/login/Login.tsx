@@ -12,6 +12,7 @@ import PrimaryButton from "../../../components/PrimaryButton";
 
 import loginImg from "../../../assets/login/logo.png";
 import sanabelVideo from "../../../assets/login/loginVideo.mp4";
+import { FaHome } from "react-icons/fa";
 const Toaster = () => (
   <ToastContainer
     position="top-center"
@@ -73,10 +74,23 @@ const Login: React.FC = () => {
       if (response.status === 200) {
         toast.success(t("login_successful"));
         // Store auth token
-        localStorage.setItem("email", email);
+        localStorage.setItem("token", ` ${response.data.data.token}`);
+        // console.log("email", response.data.user.email);
+
+        // Store Role preference
+        localStorage.setItem("role", response.data.data.user.role.toString());
         // Store keepLoggedIn preference
         localStorage.setItem("keepLoggedIn", isKeepLogged.toString());
-        history.push("/home"); // Redirect to the home screen after login
+
+        if (response.data.data.user.role === "Student") {
+          history.push("/student/home");
+        } else if (response.data.data.user.role === "Teacher") {
+          history.push("/teacher/home");
+        } else if (response.data.data.user.role === "Parent") {
+          history.push("/parent/home");
+        }
+
+        // Redirect to the home screen after login
       }
     } catch (error) {
       toast.error(t("login_failed"));

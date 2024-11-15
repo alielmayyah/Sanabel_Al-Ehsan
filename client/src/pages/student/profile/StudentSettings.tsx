@@ -1,4 +1,4 @@
-import TeacherNavbar from "../../../components/navbar/TeacherNavbar";
+import StudentNavbar from "../../../components/navbar/StudentNavbar";
 import ThemeSwitcher from "../../../components/ThemeSwitcher";
 import LanguageSwitcher from "../../../components/LanguageSwitcher";
 import { useHistory } from "react-router-dom";
@@ -23,6 +23,7 @@ import { IonRouterLink } from "@ionic/react";
 import { useTheme } from "../../../context/ThemeContext";
 import DeleteAccountPopup from "./StudentDeleteAccountPopup";
 import PointsIndicator from "../../../components/PointsIndicator";
+import GoBackButton from "../../../components/GoBackButton";
 
 const Profile: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
@@ -105,23 +106,25 @@ const Profile: React.FC = () => {
   ];
 
   return (
-    <div
-      className="flex flex-col h-full w-full items-center justify-between p-4"
-      id="page-height"
-    >
-      <div className="flex w-full justify-end items-center">
-        <Greeting name="علي" text="!هيا بنا نصنع الخير معًا" hello="yes" />
+    <div className="flex flex-col h-full w-full items-center justify-between p-4">
+      <div className="flex  justify-between items-center w-full gap-3">
+        <div className="opacity-0 w-[45px]" />
+
+        <h1 className="text-black font-bold text-2xl text-end " dir="ltr">
+          {t("الاعدادات")}
+        </h1>
+        <GoBackButton />
       </div>
 
-      <IonRouterLink
-        className="flex-center text-[#999999] w-full border-2 rounded-lg py-3"
-        routerLink="/editprofile"
-      >
-        <h1> {t("تعديل الملف الشخصي")}</h1>
-      </IonRouterLink>
+      <div className="flex w-full justify-between items-center">
+        <div className="w-20 h-20 rounded-full text-white bg-blueprimary flex-center">
+          school logo
+        </div>
+        <Greeting name="علي المياح " text="طالب" hello="no" />
+      </div>
 
       {profileButtons.map((item, index) => (
-        <div className="flex flex-col gap-3 w-full" key={index}>
+        <div className="flex flex-col -mt-10 w-full" key={index}>
           <div
             className="flex w-full p-2 justify-between items-center"
             onClick={() =>
@@ -175,20 +178,15 @@ const Profile: React.FC = () => {
           <div className="h-0.5 bg-gray-200 rounded-lg dark-gray-100" />
         </div>
       ))}
-      <div className="flex flex-col w-full items-center gap-2">
+
+      <div className="flex flex-col w-full items-center gap-2 pb-8">
         <h1
           className="text-redprimary"
           onClick={() => setDeleteAccountPopup(true)}
         >
           {t("حذف الحساب")}
         </h1>
-        <div className="h-0.5 bg-gray-200 text-xl rounded-lg dark-gray-100 w-full">
-          {" "}
-        </div>
       </div>
-
-      <TeacherNavbar />
-
       {deleteAccountPopup && (
         <DeleteAccountPopup
           deleteAccountPopup={deleteAccountPopup}

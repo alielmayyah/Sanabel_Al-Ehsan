@@ -23,8 +23,7 @@ const login = async (req: Request, res: Response) => {
       // Generate token with a secret and a defined expiration
       const token = jwt.sign(
         { id: account.id, email: account.email, role: account.role },
-        process.env.JWT_SECRET, // Use a fallback secret during development
-        { expiresIn: "1h" }
+        process.env.JWT_SECRET
       );
       await User.update(
         { token: token },
@@ -106,6 +105,7 @@ const registration = async (req: Request, res: Response) => {
     await checkValidation.update({
       firstName,
       lastName,
+      role,
       genre,
       role,
       dateOfBirth,
@@ -287,4 +287,5 @@ const resetPassword = async (req: Request, res: Response) => {
     });
   }
 };
+
 export { login, registration, sendOTP, verifyOTP, resetPassword };

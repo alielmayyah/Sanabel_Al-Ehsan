@@ -16,13 +16,25 @@ import SignupStudent from "./pages/common/signup/student/SignupStudent";
 
 // Login
 import Login from "./pages/common/login/Login";
-3;
+
+// Notifications
+
+import Notifications from "./pages/common/Notifications";
 
 // Student
 import StudentNavbar from "./components/navbar/StudentNavbar";
 import StudentProfile from "./pages/student/profile/StudentProfile";
 import StudentProfileEdit from "./pages/student/profile/StudentProfileEdit";
 import StudentSettings from "./pages/student/profile/StudentSettings";
+import StudentLeaderboards from "./pages/student/StudentLeaderboards";
+import StudentChallenges from "./pages/student/StudentChallenges";
+import StudentProgress from "./pages/student/StudentProgress";
+
+import StudentMissions from "./pages/student/missionsandsanabel/missions/StudentMissions";
+import StudentSanabel from "./pages/student/missionsandsanabel/sanabel/StudentSanabel";
+import StudentMissionsPage from "./pages/student/missionsandsanabel/missions/StudentMissionsPage";
+import StudentSanabelPage from "./pages/student/missionsandsanabel/sanabel/StudentSanabelPage";
+import StudentSanabelPrayer from "./pages/student/missionsandsanabel/sanabel/StudentSanabelPrayer";
 
 // Teacher
 import TeacherNavbar from "./components/navbar/TeacherNavbar";
@@ -65,7 +77,7 @@ const App: React.FC = () => {
         <IonRouterOutlet>
           <div className="bg-white dark:bg-[#121212]   w-screen h-screen">
             <Switch>
-              {/* <Route
+              <Route
                 exact
                 path="/"
                 render={() => {
@@ -74,9 +86,18 @@ const App: React.FC = () => {
                   const keepLoggedIn =
                     localStorage.getItem("keepLoggedIn") === "true";
 
+                  const role = localStorage.getItem("role");
                   if (keepLoggedIn) {
                     // User is logged in, redirect to home
-                    return <Redirect to="/home" />;
+                    if (role === "Student") {
+                      return <Redirect to="/student/home" />;
+                    }
+                    if (role === "Teacher") {
+                      return <Redirect to="/teacher/home" />;
+                    }
+                    if (role === "Parent") {
+                      return <Redirect to="/parent/home" />;
+                    }
                   } else if (!hasVisited) {
                     // First time user, show SplashScreen
                     return <SplashScreen />;
@@ -85,7 +106,7 @@ const App: React.FC = () => {
                     return <Redirect to="/choosesignmethod" />;
                   }
                 }}
-              /> */}
+              />
               {/* Splash Screen */}
               <Route exact path="/" component={SplashScreen} />
               {/* Onboarding */}
@@ -103,6 +124,9 @@ const App: React.FC = () => {
               <Route exact path="/forgotpassword" component={ForgotPassword} />
               <Route exact path="/changepassword" component={ChangePassword} />
 
+              {/* Notifications */}
+              <Route exact path="/notifications" component={Notifications} />
+
               {/* Student */}
               <Route exact path="/student/home" component={StudentNavbar} />
               <Route exact path="/student/profile" component={StudentProfile} />
@@ -115,6 +139,40 @@ const App: React.FC = () => {
                 exact
                 path="/student/settings"
                 component={StudentSettings}
+              />
+              <Route
+                exact
+                path="/student/challenges"
+                component={StudentChallenges}
+              />
+              <Route
+                exact
+                path="/student/progress"
+                component={StudentProgress}
+              />
+              <Route
+                exact
+                path="/student/leaderboards"
+                component={StudentLeaderboards}
+              />
+              <Route
+                exact
+                path="/student/missions"
+                component={StudentMissions}
+              />
+              <Route
+                path="/student/missions/:type/:index"
+                component={StudentMissionsPage}
+              />
+              <Route exact path="/student/sanabel" component={StudentSanabel} />
+
+              <Route
+                path="/student/sanabel/:index"
+                component={StudentSanabelPage}
+              />
+              <Route
+                path="/student/sanabel/0"
+                component={StudentSanabelPrayer}
               />
 
               {/* Teacher */}

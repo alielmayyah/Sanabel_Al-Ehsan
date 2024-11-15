@@ -1,4 +1,4 @@
-import TeacherNavbar from "../../../components/navbar/TeacherNavbar";
+import StudentNavbar from "../../../components/navbar/StudentNavbar";
 
 import { useHistory } from "react-router-dom";
 
@@ -14,7 +14,7 @@ import { IoMdSettings } from "react-icons/io";
 
 // overview icons
 import MissionIcon from "../../../icons/navbar/LeaderboardsIcon";
-import LeaderboardIcon from "../../../icons/navbar/LeaderboardsIcon";
+import LeaderboardIcon from "../../../icons/navbar/LeaderboardsIcon"; 
 import PointsIcon from "../../../assets/profile/coin.png";
 import BadgeIcon from "../../../icons/navbar/LeaderboardsIcon";
 import { FiTarget } from "react-icons/fi";
@@ -178,7 +178,7 @@ const Profile: React.FC = () => {
         </div>
       </div>
 
-      <TeacherNavbar />
+      <StudentNavbar />
     </div>
   );
 };

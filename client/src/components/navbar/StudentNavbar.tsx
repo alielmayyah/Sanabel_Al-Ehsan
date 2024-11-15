@@ -28,22 +28,22 @@ const navList = [
   {
     title: "التحديات",
     icon: <ChallengesIcon size={30} />,
-    to: "/challenges",
+    to: "/student/challenges",
   },
   {
     title: "المتصدرين",
     icon: <LeaderboardsIcon size={30} />,
-    to: "/leaderboards",
+    to: "/student/leaderboards",
   },
   {
     title: "التقدم",
     icon: <ProgressIcon size={30} />,
-    to: "/progress",
+    to: "/student/progress",
   },
   {
     title: "البروفايل",
     icon: <ProfileIcon size={30} />,
-    to: "/profile",
+    to: "/student/profile",
   },
 ];
 
