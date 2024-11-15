@@ -39,8 +39,12 @@ const login = async (req: Request, res: Response) => {
         status: 200,
         message: "Login successful",
         data: {
-          user: { id: account.id, email: account.email, role: account.role },
-          token,
+          user: {
+            id: account.id,
+            email: account.email,
+            role: account.role,
+            token: account.token,
+          },
         },
       });
     } else {
