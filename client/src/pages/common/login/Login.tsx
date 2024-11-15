@@ -74,9 +74,12 @@ const Login: React.FC = () => {
       if (response.status === 200) {
         toast.success(t("login_successful"));
         // Store auth token
-        localStorage.setItem("token", ` ${response.data.data.token}`);
+        localStorage.setItem(
+          "token",
+          `${response.data.data.user.token.toString()}`
+        );
         // console.log("email", response.data.user.email);
-
+        console.log(response.data.data.token.toString());
         // Store Role preference
         localStorage.setItem("role", response.data.data.user.role.toString());
         // Store keepLoggedIn preference

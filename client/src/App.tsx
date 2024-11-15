@@ -45,12 +45,15 @@ import TeacherProfile from "./pages/teacherorparent/profile/Profile";
 import ParentNavbar from "./components/navbar/ParentNavbar";
 
 import { useTheme } from "./context/ThemeContext";
+import { UserProvider } from "./context/UserProvider";
+
 import { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import "./i18n";
 import ForgotPassword from "./pages/common/login/ForgotPassword";
 import ChangePassword from "./pages/common/login/ChangePassword";
+
 
 setupIonicReact();
 
@@ -72,130 +75,152 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <ThemeProvider>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <div className="bg-white dark:bg-[#121212]   w-screen h-screen">
-            <Switch>
-              <Route
-                exact
-                path="/"
-                render={() => {
-                  const hasVisited =
-                    localStorage.getItem("hasVisited") === "true";
-                  const keepLoggedIn =
-                    localStorage.getItem("keepLoggedIn") === "true";
+    <UserProvider>
+      <ThemeProvider>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <div className="bg-white dark:bg-[#121212]   w-screen h-screen">
+              <Switch>
+                <Route
+                  exact
+                  path="/"
+                  render={() => {
+                    const hasVisited =
+                      localStorage.getItem("hasVisited") === "true";
+                    const keepLoggedIn =
+                      localStorage.getItem("keepLoggedIn") === "true";
 
-                  const role = localStorage.getItem("role");
-                  if (keepLoggedIn) {
-                    // User is logged in, redirect to home
-                    if (role === "Student") {
-                      return <Redirect to="/student/home" />;
+                    const role = localStorage.getItem("role");
+                    if (keepLoggedIn) {
+                      // User is logged in, redirect to home
+                      if (role === "Student") {
+                        return <Redirect to="/student/home" />;
+                      }
+                      if (role === "Teacher") {
+                        return <Redirect to="/teacher/home" />;
+                      }
+                      if (role === "Parent") {
+                        return <Redirect to="/parent/home" />;
+                      }
+                    } else if (!hasVisited) {
+                      // First time user, show SplashScreen
+                      return <SplashScreen />;
+                    } else {
+                      // If the user has visited before, go to ChooseSignMethod
+                      return <Redirect to="/choosesignmethod" />;
                     }
-                    if (role === "Teacher") {
-                      return <Redirect to="/teacher/home" />;
-                    }
-                    if (role === "Parent") {
-                      return <Redirect to="/parent/home" />;
-                    }
-                  } else if (!hasVisited) {
-                    // First time user, show SplashScreen
-                    return <SplashScreen />;
-                  } else {
-                    // If the user has visited before, go to ChooseSignMethod
-                    return <Redirect to="/choosesignmethod" />;
-                  }
-                }}
-              />
-              {/* Splash Screen */}
-              <Route exact path="/" component={SplashScreen} />
-              {/* Onboarding */}
-              <Route exact path="/onboarding" component={OnBoarding} />
-              <Route
-                exact
-                path="/choosesignmethod"
-                component={ChooseSignMethod}
-              />
-              {/* Signup */}
-              <Route exact path="/signupstudent" component={SignupStudent} />
+                  }}
+                />
+                {/* Splash Screen */}
+                <Route exact path="/" component={SplashScreen} />
+                {/* Onboarding */}
+                <Route exact path="/onboarding" component={OnBoarding} />
+                <Route
+                  exact
+                  path="/choosesignmethod"
+                  component={ChooseSignMethod}
+                />
+                {/* Signup */}
+                <Route exact path="/signupstudent" component={SignupStudent} />
 
-              {/* Login */}
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/forgotpassword" component={ForgotPassword} />
-              <Route exact path="/changepassword" component={ChangePassword} />
+                {/* Login */}
+                <Route exact path="/login" component={Login} />
+                <Route
+                  exact
+                  path="/forgotpassword"
+                  component={ForgotPassword}
+                />
+                <Route
+                  exact
+                  path="/changepassword"
+                  component={ChangePassword}
+                />
 
-              {/* Notifications */}
-              <Route exact path="/notifications" component={Notifications} />
+                {/* Notifications */}
+                <Route exact path="/notifications" component={Notifications} />
 
-              {/* Student */}
-              <Route exact path="/student/home" component={StudentNavbar} />
-              <Route exact path="/student/profile" component={StudentProfile} />
-              <Route
-                exact
-                path="/student/profile/edit"
-                component={StudentProfileEdit}
-              />
-              <Route
-                exact
-                path="/student/settings"
-                component={StudentSettings}
-              />
-              <Route
-                exact
-                path="/student/challenges"
-                component={StudentChallenges}
-              />
-              <Route
-                exact
-                path="/student/progress"
-                component={StudentProgress}
-              />
-              <Route
-                exact
-                path="/student/leaderboards"
-                component={StudentLeaderboards}
-              />
-              <Route
-                exact
-                path="/student/missions"
-                component={StudentMissions}
-              />
-              <Route
-                path="/student/missions/:type/:index"
-                component={StudentMissionsPage}
-              />
-              <Route exact path="/student/sanabel" component={StudentSanabel} />
+                {/* Student */}
+                <Route exact path="/student/home" component={StudentNavbar} />
+                <Route
+                  exact
+                  path="/student/profile"
+                  component={StudentProfile}
+                />
+                <Route
+                  exact
+                  path="/student/profile/edit"
+                  component={StudentProfileEdit}
+                />
+                <Route
+                  exact
+                  path="/student/settings"
+                  component={StudentSettings}
+                />
+                <Route
+                  exact
+                  path="/student/challenges"
+                  component={StudentChallenges}
+                />
+                <Route
+                  exact
+                  path="/student/progress"
+                  component={StudentProgress}
+                />
+                <Route
+                  exact
+                  path="/student/leaderboards"
+                  component={StudentLeaderboards}
+                />
+                <Route
+                  exact
+                  path="/student/missions"
+                  component={StudentMissions}
+                />
+                <Route
+                  path="/student/missions/:type/:index"
+                  component={StudentMissionsPage}
+                />
+                <Route
+                  exact
+                  path="/student/sanabel"
+                  component={StudentSanabel}
+                />
 
-              <Route
-                path="/student/sanabel/:index"
-                component={StudentSanabelPage}
-              />
-              <Route
-                path="/student/sanabel/0"
-                component={StudentSanabelPrayer}
-              />
+                <Route
+                  path="/student/sanabel/:index"
+                  component={StudentSanabelPage}
+                />
+                <Route
+                  path="/student/sanabel/0"
+                  component={StudentSanabelPrayer}
+                />
 
-              {/* Teacher */}
-              <Route exact path="/teacher/home" component={TeacherHome} />
-              <Route exact path="/teacher/profile" component={TeacherProfile} />
+                {/* Teacher */}
+                <Route exact path="/teacher/home" component={TeacherHome} />
+                <Route
+                  exact
+                  path="/teacher/profile"
+                  component={TeacherProfile}
+                />
 
-              {/* Parent */}
-              <Route exact path="/parent/home" component={ParentNavbar} />
+                {/* Parent */}
+                <Route exact path="/parent/home" component={ParentNavbar} />
 
-              {/* Profile Pages */}
+                {/* Profile Pages */}
 
-              {/* Sanabel Pages */}
+                {/* Sanabel Pages */}
 
-              {/* Student */}
+                {/* Student */}
 
-              {/* Teacher */}
+                {/* Teacher */}
 
-              {/* Teacher */}
-            </Switch>
-          </div>
-        </IonRouterOutlet>
-      </IonReactRouter>
-    </ThemeProvider>
+                {/* Teacher */}
+              </Switch>
+            </div>
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </ThemeProvider>
+    </UserProvider>
   );
 };
 export default App;

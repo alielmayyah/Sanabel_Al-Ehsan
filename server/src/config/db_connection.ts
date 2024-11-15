@@ -218,11 +218,7 @@ const rundb = async () => {
   });
 
   try {
-<<<<<<< HEAD
-    await sequelize.sync({ force: false });
-=======
     await sequelize.sync({ alter: true });
->>>>>>> a70e409c93303da20f12528b05c64355db701f7c
     console.log("Database & models table created/updated!");
   } catch (error) {
     console.error("Unable to connect to the database:", error);

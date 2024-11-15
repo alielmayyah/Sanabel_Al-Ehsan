@@ -107,7 +107,6 @@ const registration = async (req: Request, res: Response) => {
       lastName,
       role,
       genre,
-      role,
       dateOfBirth,
       password: hashedPassword,
     });
