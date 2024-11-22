@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const studentController_1 = require("../controllers/studentController");
+const auth_1 = require("../middleware/auth");
+const checkrole_1 = require("../middleware/checkrole");
+const router = require("express").Router();
+router.get("/data", auth_1.authenticateToken, checkrole_1.checkstudent, studentController_1.studentData);
+router.put("/update", auth_1.authenticateToken, checkrole_1.checkstudent, studentController_1.updateData);
+router.put("/update-password", auth_1.authenticateToken, checkrole_1.checkstudent, studentController_1.updatePassword);
+router.delete("/delete", auth_1.authenticateToken, checkrole_1.checkstudent, studentController_1.deleteData);
+module.exports = router;

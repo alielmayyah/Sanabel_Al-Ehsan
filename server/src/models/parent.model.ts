@@ -17,10 +17,6 @@ class Parent extends Model {
           primaryKey: true,
           autoIncrement: true,
         },
-        contactInfo: {
-          type: DataTypes.STRING,
-          allowNull: true,
-        },
       },
       {
         sequelize,

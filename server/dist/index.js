@@ -1,11 +1,4 @@
 "use strict";
-<<<<<<< HEAD
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
-=======
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -18,29 +11,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
->>>>>>> b993c392d3af055d07ec3aeaf037d32289d98384
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const db_connection_1 = require("./db/db_connection");
+const cors_1 = __importDefault(require("cors"));
+require("dotenv").config();
+const db_connection_1 = require("./config/db_connection");
+const corsOptions = {
+    origin: (origin, callback) => {
+        callback(null, true);
+    },
+};
 const user_route = require("../src/routes/user_routes");
+const student_route = require("../src/routes/student_routes");
+const organization_routes = require("../src/routes/organization_routes");
+const class_routes = require("../src/routes/class_routes");
 const app = (0, express_1.default)();
-<<<<<<< HEAD
-const PORT = process.env.PORT || 4000;
-=======
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.SERVER_PORT;
+app.use((0, cors_1.default)(corsOptions));
 app.use(express_1.default.json());
-app.use(user_route);
->>>>>>> b993c392d3af055d07ec3aeaf037d32289d98384
+app.use("/users", user_route);
+app.use("/students", student_route);
+app.use("/organization", organization_routes);
+app.use("/class", class_routes);
 app.get("/", (req, res) => {
-  res.send("Hello, TypeScript with Nodemon!");
+    res.send("welcome snable");
 });
-<<<<<<< HEAD
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
-=======
 app.listen(PORT, () => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`Server is running on http://localhost:${PORT}`);
     yield (0, db_connection_1.connectToDb)();
 }));
->>>>>>> b993c392d3af055d07ec3aeaf037d32289d98384

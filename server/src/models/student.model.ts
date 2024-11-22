@@ -36,8 +36,12 @@ class Student extends Model {
           type: DataTypes.INTEGER,
           defaultValue: 0,
         },
-        profileImg: {
-          type: DataTypes.STRING,
+        connectOtp: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+        },
+        otpExpiry: {
+          type: DataTypes.DATE,
           allowNull: true,
         },
       },

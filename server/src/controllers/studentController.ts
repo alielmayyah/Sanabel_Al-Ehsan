@@ -3,6 +3,10 @@ import { JwtPayload } from "jsonwebtoken";
 import Student from "../models/student.model";
 import User from "../models/user.model";
 import bcrypt from "bcryptjs";
+import StudentTask from "../models/student-task.model";
+import Task from "../models/task.model";
+import StudentChallenge from "../models/student-challenge.model";
+import Challenge from "../models/challenge.model";
 
 const studentData = async (req: Request, res: Response) => {
   const user = (req as Request & { user: JwtPayload | undefined }).user;
@@ -99,5 +103,87 @@ const deleteData = async (req: Request, res: Response) => {
     .status(200)
     .json({ message: "User and Student data deleted successfully" });
 };
+const appearTaskes = async (req: Request, res: Response) => {
+  try {
+    const user = (req as Request & { user: JwtPayload | undefined }).user;
+    if (!user) {
+      return res
+        .status(401)
+        .json({ message: "User data not found in request" });
+    }
+    const student = await Student.findOne({ where: { userId: user.id } });
+    if (!student) {
+      return res
+        .status(401)
+        .json({ message: "Student data not found in request" });
+    }
+    const takses = await StudentTask.findAll({
+      where: {
+        studentId: student.id,
+      },
+      include: [
+        {
+          model: Task,
+          as: "task",
+          attributes: ["title", "description", "category", "points", "type"],
+        },
+      ],
+    });
+    if (!takses) {
+      return res
+        .status(401)
+        .json({ message: "taskes data not found in request" });
+    } else {
+      return res.status(200).json({ data: takses });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
 
-export { studentData, updateData, updatePassword, deleteData };
+const appearChallanges = async (req: Request, res: Response) => {
+  try {
+    const user = (req as Request & { user: JwtPayload | undefined }).user;
+    if (!user) {
+      return res
+        .status(401)
+        .json({ message: "User data not found in request" });
+    }
+    const student = await Student.findOne({ where: { userId: user.id } });
+    if (!student) {
+      return res
+        .status(401)
+        .json({ message: "Student data not found in request" });
+    }
+    const Challenges = await StudentChallenge.findAll({
+      where: {
+        studentId: student.id,
+      },
+      include: [
+        {
+          model: Challenge,
+          as: "challenge",
+          attributes: ["title", "description", "category", "points"],
+        },
+      ],
+    });
+    if (!Challenges) {
+      return res
+        .status(401)
+        .json({ message: "taskes data not found in request" });
+    } else {
+      return res.status(200).json({ data: Challenges });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
+export {
+  studentData,
+  updateData,
+  updatePassword,
+  deleteData,
+  appearTaskes,
+  appearChallanges,
+};

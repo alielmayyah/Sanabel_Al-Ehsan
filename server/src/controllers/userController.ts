@@ -9,6 +9,9 @@ import Organization from "../models/oraganization.model";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 import generateOTP from "../helpers/generateOtp";
+import StudentTask from "../models/student-task.model"; // Import the StudentTask model
+import Task from "../models/task.model"; // Import the Task model
+
 const jwt = require("jsonwebtoken");
 
 const login = async (req: Request, res: Response) => {
@@ -118,25 +121,22 @@ const registration = async (req: Request, res: Response) => {
     switch (checkValidation.role) {
       case "Student":
         await Student.create({ grade, userId: checkValidation.id, profileImg });
+        const tasks = await Task.findAll();
+
+        // Assign all tasks to the student in the StudentTask table
+        for (const task of tasks) {
+          await StudentTask.create({
+            studentId: checkValidation.id, // The ID of the student
+            taskId: task.id, // The ID of the task
+            completionStatus: "NotCompleted", // Set default status
+          });
+        }
         break;
       case "Teacher":
         await Teacher.create({ subject, userId: checkValidation.id });
         break;
       case "Parent":
         await Parent.create({ contactInfo, userId: checkValidation.id });
-        break;
-      case "Organization":
-        await Organization.create({
-          address,
-          type,
-          user_id: checkValidation.id,
-        });
-        break;
-      case "Representative":
-        await Representative.create({ userId: checkValidation.id });
-        break;
-      case "Class":
-        await Class.create({ classId: checkValidation.id });
         break;
       default:
         break;

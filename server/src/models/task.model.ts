@@ -4,6 +4,7 @@ import { Sequelize, DataTypes, Model, CreationOptional } from "@sequelize/core";
 export enum TaskCategory {
   Daily = "Daily",
   Weekly = "Weekly",
+  Monthly = "Monthly",
 }
 
 class Task extends Model {
@@ -38,6 +39,10 @@ class Task extends Model {
         points: {
           type: DataTypes.INTEGER,
           allowNull: false,
+        },
+        type: {
+          type: DataTypes.STRING,
+          allowNull: true,
         },
       },
       {

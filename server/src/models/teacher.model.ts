@@ -17,10 +17,6 @@ class Teacher extends Model {
           primaryKey: true,
           autoIncrement: true,
         },
-        subject: {
-          type: DataTypes.STRING,
-          allowNull: true,
-        },
       },
       {
         sequelize,

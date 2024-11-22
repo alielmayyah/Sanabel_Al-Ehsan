@@ -12,13 +12,16 @@ const corsOptions = {
 };
 const user_route = require("../src/routes/user_routes");
 const student_route = require("../src/routes/student_routes");
+const organization_routes = require("../src/routes/organization_routes");
+const class_routes = require("../src/routes/class_routes");
 const app = express();
 const PORT = process.env.SERVER_PORT;
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/users", user_route);
 app.use("/students", student_route);
-
+app.use("/organization", organization_routes);
+app.use("/class", class_routes);
 app.get("/", (req, res) => {
   res.send("welcome snable");
 });

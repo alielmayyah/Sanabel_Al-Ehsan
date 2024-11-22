@@ -25,14 +25,19 @@ class Organization extends Model {
           primaryKey: true,
           autoIncrement: true,
         },
-
-        address: {
+        name: {
           type: DataTypes.STRING,
           allowNull: false,
+          unique: true,
         },
         type: {
-          type: DataTypes.ENUM(...Object.values(OrganizationType)),
+          type: DataTypes.STRING,
           allowNull: false,
+          defaultValue: "School",
+        },
+        img: {
+          type: DataTypes.STRING,
+          allowNull: true,
         },
       },
       {

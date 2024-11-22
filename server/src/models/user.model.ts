@@ -12,9 +12,6 @@ export enum UserRole {
   Parent = "Parent",
   Teacher = "Teacher",
   Student = "Student",
-  Organization = "Organization",
-  Representative = "Representative",
-  Class = "Class",
 }
 
 export enum UserGenre {
@@ -99,6 +96,10 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
           type: DataTypes.BOOLEAN,
           allowNull: false,
           defaultValue: false,
+        },
+        profileImg: {
+          type: DataTypes.STRING,
+          allowNull: true,
         },
       },
       {
