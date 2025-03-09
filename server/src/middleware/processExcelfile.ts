@@ -20,7 +20,6 @@ const schoolAndClassProcessMiddleware = (
       return res.status(400).send("No file uploaded.");
     }
 
-    // Read the uploaded Excel file
     const filePath = req.file.path;
     const workbook = XLSX.readFile(filePath);
 
@@ -78,5 +77,61 @@ const schoolAndClassProcessMiddleware = (
     res.status(500).send("Error processing file.");
   }
 };
+const processStudentMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    // Ensure a file has been uploaded
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
 
-export { schoolAndClassProcessMiddleware };
+    // Read the uploaded Excel file
+    const filePath = req.file.path;
+    const workbook = XLSX.readFile(filePath);
+
+    // Store processed data for all sheets
+    const allSheetData: Record<string, any[]> = {};
+
+    // Process each sheet in the workbook
+    workbook.SheetNames.forEach((sheetName) => {
+      const sheet = workbook.Sheets[sheetName];
+
+      // Convert sheet data to JSON format
+      const sheetData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+      if (sheetData.length > 1) {
+        // Use the first row as column headers
+        const headers = sheetData[0] as string[];
+
+        // Process rows as objects
+        const rows = sheetData.slice(1).map((row: any) => {
+          const rowObject: Record<string, any> = {};
+          headers.forEach((header, index) => {
+            if (header) {
+              rowObject[header] = row[index] || null;
+            }
+          });
+          return rowObject;
+        });
+
+        allSheetData[sheetName] = rows;
+      } else {
+        allSheetData[sheetName] = [];
+      }
+    });
+
+    // Attach processed data to the request object
+    req.processedData = allSheetData;
+
+    // Call the next middleware
+    next();
+  } catch (error) {
+    console.error("Error processing Excel file:", error);
+    res.status(500).json({ error: "Failed to process Excel file" });
+  }
+};
+
+export { schoolAndClassProcessMiddleware, processStudentMiddleware };

@@ -15,6 +15,8 @@ import StudentTeacher from "../models/studentTeacher.model";
 import StudentTask from "../models/student-task.model"; // Import the new model
 import StudentChallenge from "../models/student-challenge.model";
 import Groupe from "../models/groupe.model";
+import Tree from "../models/tree.model";
+
 import { tasks } from "googleapis/build/src/apis/tasks";
 const demoTaskSeeder = require("../seeders/20241118230008-demo-task");
 const demoTasktypeSeeder = require("../seeders/tasktype-seeder");
@@ -49,6 +51,7 @@ const connectToDb = async () => {
 const rundb = async () => {
   // Initialize models
   User.initModel(sequelize);
+  Tree.initModel(sequelize);
   Organization.initModel(sequelize);
   Parent.initModel(sequelize);
   Class.initModel(sequelize);
@@ -57,12 +60,14 @@ const rundb = async () => {
   Teacher.initModel(sequelize);
   Representative.initModel(sequelize);
   Donation.initModel(sequelize);
+  Task.initModel(sequelize);
   Challenge.initModel(sequelize);
   Reward.initModel(sequelize);
-  Task.initModel(sequelize);
   StudentTeacher.initModel(sequelize);
   StudentTask.initModel(sequelize);
   StudentChallenge.initModel(sequelize);
+  Challenge.associate();
+
   User.hasMany(Student, {
     foreignKey: "userId",
     sourceKey: "id",
@@ -178,6 +183,16 @@ const rundb = async () => {
     sourceKey: "id",
     as: "Teachers",
   });
+  Class.belongsTo(Teacher, {
+    foreignKey: "teacherId",
+    targetKey: "id",
+    as: "Teachers",
+  });
+  Teacher.hasMany(Class, {
+    foreignKey: "teacherId",
+    sourceKey: "id",
+    as: "Classes",
+  });
   // Class and Organization Relationships
   Class.belongsTo(Organization, {
     foreignKey: "organizationId",
@@ -214,12 +229,12 @@ const rundb = async () => {
 
   // Reward and Student Relationships
   Reward.belongsTo(Student, {
-    foreignKey: "id",
+    foreignKey: "studentId",
     targetKey: "id",
     as: "Student",
   });
   Student.hasMany(Reward, {
-    foreignKey: "id",
+    foreignKey: "studentId",
     sourceKey: "id",
     as: "Rewards",
   });
@@ -245,6 +260,18 @@ const rundb = async () => {
     sourceKey: "id", // The source key in the Class model
     as: "Students", // Alias for the reverse association
   });
+  Student.belongsTo(Tree, {
+    foreignKey: "treeProgress", // Matches the foreign key in the Student model
+    targetKey: "id", // Points to the primary key in the Tree model
+    as: "Tree", // Singular alias for this association
+  });
+
+  // In the Class model
+  Tree.hasMany(Student, {
+    foreignKey: "treeProgress", // Matches the foreign key in the Student model
+    sourceKey: "id", // Points to the primary key in the Tree model
+    as: "Students", // Plural alias for the reverse association
+  });
 
   // Ensure the same pattern for the Groupe -> Student relationship
   Groupe.hasMany(Student, {
@@ -261,7 +288,7 @@ const rundb = async () => {
   });
 
   try {
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
     console.log("Database & models table created/updated!");
   } catch (error) {
     console.error("Unable to connect to the database:", error);

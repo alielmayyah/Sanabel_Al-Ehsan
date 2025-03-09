@@ -21,6 +21,7 @@ class StudentChallenge extends Model {
           allowNull: false,
           defaultValue: "NotCompleted",
         },
+
         comment: {
           type: DataTypes.STRING,
           allowNull: true,
@@ -29,11 +30,19 @@ class StudentChallenge extends Model {
           type: DataTypes.DATE,
           allowNull: true,
         },
+        pointOfSutdent: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          defaultValue: 0,
+          validate: {
+            min: 0,
+          },
+        },
       },
       {
         sequelize,
         modelName: "StudentChallenge",
-        timestamps: false, // Not necessary for junction tables
+        timestamps: true, // Not necessary for junction tables
       }
     );
   }

@@ -3,57 +3,47 @@ const { TaskCategory } = require("../models/task.model");
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert("Tasks", [
-      // Daily Tasks
       {
         title: "الصلاة في الوقت",
         description: "أداء جميع الصلوات في أوقاتها.",
         category: TaskCategory.Daily,
-        points: 10,
         createdAt: new Date(),
         updatedAt: new Date(),
-        type: "فجر",
       },
       {
         title: "الصلاة في الوقت",
         description: "أداء جميع الصلوات في أوقاتها.",
         category: TaskCategory.Daily,
-        points: 10,
         createdAt: new Date(),
         updatedAt: new Date(),
-        type: "الظهر",
       },
       {
         title: "الصلاة في الوقت",
         description: "أداء جميع الصلوات في أوقاتها.",
         category: TaskCategory.Daily,
-        points: 10,
         createdAt: new Date(),
         updatedAt: new Date(),
-        type: "العصر",
       },
       {
         title: "الصلاة في الوقت",
         description: "أداء جميع الصلوات في أوقاتها.",
         category: TaskCategory.Daily,
-        points: 10,
         createdAt: new Date(),
         updatedAt: new Date(),
-        type: "المغرب",
       },
       {
         title: "الصلاة في الوقت",
         description: "أداء جميع الصلوات في أوقاتها.",
         category: TaskCategory.Daily,
-        points: 10,
+
         createdAt: new Date(),
         updatedAt: new Date(),
-        type: "العشاء",
       },
       {
         title: "ابتسم لشخص ما",
         description: "نشر اللطف بابتسامة صادقة.",
         category: TaskCategory.Daily,
-        points: 5,
+
         createdAt: new Date(),
         updatedAt: new Date(),
 
@@ -62,7 +52,6 @@ module.exports = {
         title: "المساعدة في الأعمال المنزلية",
         description: "المساعدة في مهمة منزلية مثل غسل الصحون أو ترتيب المكان.",
         category: TaskCategory.Daily,
-        points: 15,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -71,7 +60,6 @@ module.exports = {
         title: "زرع شجرة",
         description: "المساهمة في البيئة بزرع شجرة أو رعاية نبات.",
         category: TaskCategory.Weekly,
-        points: 50,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -79,7 +67,6 @@ module.exports = {
         title: "زيارة جيران",
         description: "قضاء وقت مع الجيران أو مساعدتهم في مهمة أو حاجة.",
         category: TaskCategory.Weekly,
-        points: 30,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -87,7 +74,6 @@ module.exports = {
         title: "التبرع للجمعيات الخيرية",
         description: "التبرع لقضية خيرية (مال، ملابس، أو وقت).",
         category: TaskCategory.Weekly,
-        points: 40,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -95,7 +81,6 @@ module.exports = {
         title: "التطوع في ملجأ",
         description: "قضاء ساعة في مساعدة في مأوى مجتمعي.",
         category: TaskCategory.Weekly,
-        points: 50,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -103,7 +88,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    // This will delete all the data inserted by the seed
     await queryInterface.bulkDelete("Tasks", null, {});
   },
 };

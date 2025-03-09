@@ -76,7 +76,7 @@ const registration = async (req: Request, res: Response) => {
     address,
     type,
     dateOfBirth,
-    genre,
+    gender,
     grade,
     profileImg,
   } = req.body;
@@ -113,7 +113,7 @@ const registration = async (req: Request, res: Response) => {
       firstName,
       lastName,
       role,
-      genre,
+      gender,
       dateOfBirth,
       password: hashedPassword,
     });
@@ -133,10 +133,10 @@ const registration = async (req: Request, res: Response) => {
         }
         break;
       case "Teacher":
-        await Teacher.create({ subject, userId: checkValidation.id });
+        await Teacher.create({ userId: checkValidation.id });
         break;
       case "Parent":
-        await Parent.create({ contactInfo, userId: checkValidation.id });
+        await Parent.create({ userId: checkValidation.id });
         break;
       default:
         break;

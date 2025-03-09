@@ -4,7 +4,7 @@ import User from "./user.model";
 import Organization from "./oraganization.model";
 class Representative extends Model {
   declare organizationId: number;
-  declare representativeId: CreationOptional<number>;
+  declare id: CreationOptional<number>;
   declare user: User | undefined;
   static initModel(sequelize: Sequelize) {
     Representative.init(

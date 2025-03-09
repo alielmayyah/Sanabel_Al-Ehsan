@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import Organization from "../models/oraganization.model";
 import Class from "../models/class.model";
-
 const createClassByExcel = async (req: Request, res: Response) => {
   try {
     const processedData = req.processedData; // Assuming processed data is available in req
@@ -11,24 +10,32 @@ const createClassByExcel = async (req: Request, res: Response) => {
       if (processedData.hasOwnProperty(schoolName)) {
         const schoolData = processedData[schoolName];
 
-        // Check if the organization (school) exists or create it
-        let organization = await Organization.findOne({
-          where: { name: schoolName },
+        // Preprocess schoolData to trim all headers
+        const trimmedSchoolData = schoolData.map((row: any) => {
+          const trimmedRow: Record<string, any> = {};
+          for (const key in row) {
+            if (row.hasOwnProperty(key)) {
+              trimmedRow[key.trim()] = row[key]; // Trim each key
+            }
+          }
+          return trimmedRow;
         });
 
-        // If organization doesn't exist, create it
+        // Check if the organization (school) exists or create it
+        let organization = await Organization.findOne({
+          where: { name: schoolName.trim() },
+        });
+
         if (!organization) {
           organization = await Organization.create({
-            name: schoolName,
+            name: schoolName.trim(),
           });
         }
 
-        // Now, for each category of the school, we need to create classes
-        for (const categoryData of schoolData) {
-          const category = categoryData["Category "];
-          const classNames = categoryData["Names of classes"];
+        for (const categoryData of trimmedSchoolData) {
+          const category = categoryData["Category"]; 
+          const classNames = categoryData["Names of classes"]; 
 
-          // Check if classNames is an array before proceeding
           if (Array.isArray(classNames)) {
             for (const className of classNames) {
               // Validate that className is not null or empty
@@ -42,8 +49,8 @@ const createClassByExcel = async (req: Request, res: Response) => {
               // Check if a class with the same name, category, and organization already exists
               const existingClass = await Class.findOne({
                 where: {
-                  classname: className,
-                  category,
+                  classname: className.trim(),
+                  category: category.trim(),
                   organizationId: organization.id,
                 },
               });
@@ -57,9 +64,9 @@ const createClassByExcel = async (req: Request, res: Response) => {
 
               try {
                 await Class.create({
-                  classname: className, // Ensures className is passed properly
+                  classname: className.trim(), // Ensures className is passed properly
                   classdescrption: "Description not provided",
-                  category,
+                  category: category.trim(),
                   organizationId: organization.id,
                 });
               } catch (err) {

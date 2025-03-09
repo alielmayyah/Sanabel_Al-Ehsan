@@ -12,6 +12,7 @@ class StudentTask extends Model {
   declare taskId: number;
   declare completionStatus: CompletionStatus; // Add completion status field
   declare comment: CreationOptional<String>;
+
   static initModel(sequelize: Sequelize) {
     StudentTask.init(
       {
@@ -32,7 +33,7 @@ class StudentTask extends Model {
       {
         sequelize,
         modelName: "StudentTask",
-        timestamps: false, // Not necessary for junction tables
+        timestamps: true, // Not necessary for junction tables
       }
     );
   }
