@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "../../../context/ThemeContext";
-import { useUserContext } from "../../../context/UserProvider";
+import { useUserContext } from "../../../context/StudentUserProvider";
 import { treeStages } from "../../../data/Tree";
 
 const Profile: React.FC = () => {

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { IonRouterLink } from "@ionic/react";
 import { IoMdSettings } from "react-icons/io";
-import { useUserContext } from "../../context/UserProvider";
+import { useUserContext } from "../../context/StudentUserProvider";
 
 import Greeting from "../../components/Greeting";
 import Notification from "../../components/Notification";
@@ -26,21 +26,90 @@ import { treeStages } from "../../data/Tree";
 
 import SanabelTree from "../../components/tree/SanabelTree";
 import Inventory from "../../components/tree/Inventory";
+import { motion } from "framer-motion";
+
+const medalsData = [
+  { title: "مبتدئ", img: medalsImgs[0], level: "1" },
+  { title: "مستجد", img: medalsImgs[1], level: "5" },
+  { title: "موهوب", img: medalsImgs[2], level: "10" },
+  { title: "ماهر", img: medalsImgs[3], level: "25" },
+  { title: "بارع", img: medalsImgs[4], level: "50" },
+  { title: "متمرس", img: medalsImgs[5], level: "75" },
+  { title: "متقدم", img: medalsImgs[6], level: "100" },
+  { title: "متقن", img: medalsImgs[7], level: "150" },
+  { title: "خبير", img: medalsImgs[8], level: "200" },
+];
+
+const calculateLevel = (totalXp: number) => {
+  const baseXp = 10;
+  const increment = 5;
+  let level = 1;
+  let xpForNextLevel = baseXp;
+
+  while (totalXp >= xpForNextLevel) {
+    totalXp -= xpForNextLevel;
+    level++;
+    xpForNextLevel = baseXp + increment * (level - 1);
+  }
+  return { level, remainingXp: totalXp, xpForNextLevel };
+};
+
+const calculateXpForLevel = (targetLevel: any) => {
+  const baseXp = 10;
+  const increment = 5;
+
+  let totalXp = 0;
+
+  for (let level = 1; level < targetLevel; level++) {
+    totalXp += baseXp + increment * (level - 1);
+  }
+
+  return totalXp;
+};
 
 const StudentHome: React.FC = () => {
   const history = useHistory();
   const { t } = useTranslation();
   const { user } = useUserContext();
-  const currentXp = 2900;
-  const neededXp = 3000;
+
+  const xp = Number(user?.xp);
+
+  const { level, remainingXp, xpForNextLevel } = calculateLevel(xp);
+
+  const currentXp = remainingXp; // XP within the current level
+  const neededXp = xpForNextLevel; // XP required to reach the next level
 
   const inventory = [
-    { name: "سنبلة", img: blueImg, count: 70 },
-    { name: "سنبلة", img: yellowImg, count: 25 },
-    { name: "سنبلة", img: redImg, count: 82 },
-    { name: "سماد", img: fertilizerImg, count: 2 },
-    { name: "ماء", img: waterImg, count: 3 },
+    { name: "سنبلة", img: blueImg },
+    { name: "سنبلة", img: yellowImg },
+    { name: "سنبلة", img: redImg },
+    { name: "سماد", img: fertilizerImg },
+    { name: "ماء", img: waterImg },
   ];
+
+  // Update level and medal
+  const [medalImgTracker, setMedalImgTracker] = useState(0);
+  useEffect(() => {
+    if (level < 5) {
+      setMedalImgTracker(0);
+    } else if (level >= 5 && level < 10) {
+      setMedalImgTracker(1);
+    } else if (level >= 10 && level < 25) {
+      setMedalImgTracker(2);
+    } else if (level >= 25 && level < 50) {
+      setMedalImgTracker(3);
+    } else if (level >= 50 && level < 75) {
+      setMedalImgTracker(4);
+    } else if (level >= 75 && level < 100) {
+      setMedalImgTracker(5);
+    } else if (level >= 100 && level < 150) {
+      setMedalImgTracker(6);
+    } else if (level >= 150 && level < 200) {
+      setMedalImgTracker(7);
+    } else {
+      setMedalImgTracker(8);
+    }
+  }, [xp]);
 
   return (
     <div
@@ -60,28 +129,42 @@ const StudentHome: React.FC = () => {
         <div className="flex-center gap-3 w-full">
           <div className="flex flex-col items-end w-full ">
             <div className="flex-center font-bold text-black text-lg">
-              <h1> 15</h1>
-              <h1> {t("المستوى")}</h1>
+              <p className="text-lg font-bold text-black">
+                {t("المستوى")} {level}
+              </p>
             </div>
             <div className="flex-center font-bold text-[#B3B3B3] text-xs ">
               <h1> {t("نقطة خبرة للوصول إلى المستوى التالي")} </h1>
+              &nbsp;
               <h1> {neededXp - currentXp} </h1>
             </div>
           </div>
-          <img className="h-16 w-auto " src={medalsImgs[5]}></img>
+          <img
+            className="h-16 w-auto "
+            src={medalsData[medalImgTracker].img}
+          ></img>
         </div>
         <div className="w-full bg-[#fab70050] rounded-3xl h-8 flex justify-end items-center relative overflow-hidden">
           {/* Text displaying current and needed XP */}
-          <div className="text-[#997000] px-3 relative z-10">
+          <div
+            className={`text-[#997000] px-3 relative z-10 ${
+              i18n.language === "ar" ? "" : "flex"
+            } `}
+          >
+            <span className="text-black">{neededXp}/</span>
             {currentXp}
-            <span className="text-black">/{neededXp}</span>
           </div>
 
           {/* Progress bar */}
-          <div
-            className="bg-[#F3B14E] rounded-3xl h-8 absolute top-0 right-0"
+          <motion.div
+            className={`bg-[#F3B14E] rounded-3xl h-8 absolute top-0  ${
+              i18n.language === "ar" ? "right-0" : "left-0"
+            }`}
             style={{ width: `${(currentXp / neededXp) * 100}%` }}
-          ></div>
+            initial={{ width: 0 }}
+            animate={{ width: `${(currentXp / neededXp) * 100}%` }}
+            transition={{ duration: 0.5 }}
+          ></motion.div>
         </div>
 
         <div className="w-full  flex justify-between items-center text-sm">
@@ -93,11 +176,11 @@ const StudentHome: React.FC = () => {
       </div>
 
       <Inventory
-        waterCount={5}
-        fertilizerCount={3}
-        blueCount={26}
-        redCount={40}
-        yellowCount={25}
+        waterCount={Number(user?.water)}
+        fertilizerCount={Number(user?.seeders)}
+        blueCount={Number(user?.snabelBlue)}
+        redCount={Number(user?.snabelRed)}
+        yellowCount={Number(user?.snabelYellow)}
       />
 
       <div className="w-full bg-[#4AAAD6] flex justify-between items-center p-1 px-2 rounded-xl ">

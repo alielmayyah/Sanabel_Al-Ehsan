@@ -72,7 +72,7 @@ import ClassRegistrationDetails from "./pages/teacherorparent/pointsregistration
 import ParentNavbar from "./components/navbar/ParentNavbar";
 
 import { useTheme } from "./context/ThemeContext";
-import { UserProvider } from "./context/UserProvider";
+import { UserProvider } from "./context/StudentUserProvider";
 
 import { useEffect, useState } from "react";
 

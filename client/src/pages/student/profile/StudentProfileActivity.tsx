@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "../../../context/ThemeContext";
-import { useUserContext } from "../../../context/UserProvider";
+import { useUserContext } from "../../../context/StudentUserProvider";
 import { treeStages } from "../../../data/Tree";
 import sanabelType from "../../../data/SanabelTypeData";
 import { useState } from "react";

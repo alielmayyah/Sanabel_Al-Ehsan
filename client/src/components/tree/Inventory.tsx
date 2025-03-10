@@ -1,7 +1,7 @@
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import { useUserContext } from "../../context/UserProvider";
+import { useUserContext } from "../../context/StudentUserProvider";
 
 // Inventory Assets
 
@@ -26,6 +26,7 @@ const Inventory: React.FC<Props> = ({
   yellowCount,
 }) => {
   const { t } = useTranslation();
+  const { user } = useUserContext();
 
   const inventory = [
     { name: "سنبلة", img: blueImg, count: blueCount },
