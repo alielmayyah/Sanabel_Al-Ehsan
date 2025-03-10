@@ -23,23 +23,50 @@ import Notifications from "./pages/common/Notifications";
 
 // Student
 import StudentNavbar from "./components/navbar/StudentNavbar";
-import StudentProfile from "./pages/student/profile/StudentProfile";
+import StudentHome from "./pages/student/StudentHome";
+import StudentProfile from "./pages/student/StudentProfile";
 import StudentProfileEdit from "./pages/student/profile/StudentProfileEdit";
 import StudentSettings from "./pages/student/profile/StudentSettings";
 import StudentLeaderboards from "./pages/student/StudentLeaderboards";
-import StudentChallenges from "./pages/student/StudentChallenges";
-import StudentProgress from "./pages/student/StudentProgress";
 
-import StudentMissions from "./pages/student/missionsandsanabel/missions/StudentMissions";
-import StudentSanabel from "./pages/student/missionsandsanabel/sanabel/StudentSanabel";
-import StudentMissionsPage from "./pages/student/missionsandsanabel/missions/StudentMissionsPage";
-import StudentSanabelPage from "./pages/student/missionsandsanabel/sanabel/StudentSanabelPage";
-import StudentSanabelPrayer from "./pages/student/missionsandsanabel/sanabel/StudentSanabelPrayer";
+import StudentChallenges from "./pages/student/StudentChallenges";
+import ChooseSanabelType from "./pages/student/challenges/ChooseSanabelType";
+import ChooseSanabel from "./pages/student/challenges/ChooseSanabel";
+import SanabelMissionsPage from "./pages/student/challenges/SanabelMissionsPage";
+
+import SanabelReminder from "./pages/student/challenges/SanabelReminder";
+
+import StudentProgress from "./pages/student/StudentProgress";
 
 // Teacher
 import TeacherNavbar from "./components/navbar/TeacherNavbar";
 import TeacherHome from "./pages/teacherorparent/teacher/TeacherHome";
 import TeacherProfile from "./pages/teacherorparent/profile/Profile";
+import TeacherChallenges from "./pages/teacherorparent/TeacherChallenges";
+import TeacherView from "./pages/teacherorparent/TeacherView";
+
+// Teacher View Details
+import TeamsDetails from "./pages/teacherorparent/teacherviewdetails/TeamsDetails";
+import StudentDetails from "./pages/teacherorparent/teacherviewdetails/StudentDetails";
+import ClassDetails from "./pages/teacherorparent/teacherviewdetails/ClassDetails";
+
+// Registration
+// Teacher Lists
+import StudentsList from "./pages/teacherorparent/pointsregistration/StudentsList";
+import TeamsList from "./pages/teacherorparent/pointsregistration/TeamsList";
+import ClassList from "./pages/teacherorparent/pointsregistration/ClassList";
+
+import RegistrationProcess from "./pages/teacherorparent/pointsregistration/registrationprocess/RegistrationProcess";
+
+import ClassRegistrationDetails from "./pages/teacherorparent/pointsregistration/pointsregistrationdetails/ClassRegistrationDetails";
+
+// Teacher Sanabel and Missions
+
+// import TeacherMissions from "./pages/teacherorparent/missionsandsanabel/missions/TeacherMissions";
+// import TeacherMissionsPage from "./pages/teacherorparent/missionsandsanabel/missions/TeacherMissionsPage";
+// import TeacherSanabel from "./pages/teacherorparent/missionsandsanabel/sanabel/TeacherSanabel";
+// import TeacherSanabelPage from "./pages/teacherorparent/missionsandsanabel/sanabel/TeacherSanabelPage";
+// import TeacherSanabelPrayer from "./pages/teacherorparent/missionsandsanabel/sanabel/TeacherSanabelPrayer";
 
 // Parent
 import ParentNavbar from "./components/navbar/ParentNavbar";
@@ -53,7 +80,7 @@ import { useTranslation } from "react-i18next";
 import "./i18n";
 import ForgotPassword from "./pages/common/login/ForgotPassword";
 import ChangePassword from "./pages/common/login/ChangePassword";
-
+import Leaderboards from "./pages/student/StudentLeaderboards";
 
 setupIonicReact();
 
@@ -79,9 +106,10 @@ const App: React.FC = () => {
       <ThemeProvider>
         <IonReactRouter>
           <IonRouterOutlet>
-            <div className="bg-white dark:bg-[#121212]   w-screen h-screen">
+            <div className="bg-white dark:bg-[#121212]  w-screen h-screen">
+              {/*  UNCOMMENT*/}
               <Switch>
-                <Route
+                {/* <Route
                   exact
                   path="/"
                   render={() => {
@@ -111,8 +139,13 @@ const App: React.FC = () => {
                     }
                   }}
                 />
-                {/* Splash Screen */}
-                <Route exact path="/" component={SplashScreen} />
+            //  Splash Screen 
+                <Route exact path="/" component={SplashScreen} /> */}
+
+                <Route exact path="/" component={Leaderboards} />
+
+                {/*  UNCOMMENT*/}
+
                 {/* Onboarding */}
                 <Route exact path="/onboarding" component={OnBoarding} />
                 <Route
@@ -140,7 +173,7 @@ const App: React.FC = () => {
                 <Route exact path="/notifications" component={Notifications} />
 
                 {/* Student */}
-                <Route exact path="/student/home" component={StudentNavbar} />
+                <Route exact path="/student/home" component={StudentHome} />
                 <Route
                   exact
                   path="/student/profile"
@@ -156,11 +189,13 @@ const App: React.FC = () => {
                   path="/student/settings"
                   component={StudentSettings}
                 />
+
                 <Route
                   exact
                   path="/student/challenges"
-                  component={StudentChallenges}
+                  component={ChooseSanabelType}
                 />
+
                 <Route
                   exact
                   path="/student/progress"
@@ -171,29 +206,20 @@ const App: React.FC = () => {
                   path="/student/leaderboards"
                   component={StudentLeaderboards}
                 />
-                <Route
-                  exact
-                  path="/student/missions"
-                  component={StudentMissions}
-                />
-                <Route
-                  path="/student/missions/:type/:index"
-                  component={StudentMissionsPage}
-                />
-                <Route
-                  exact
-                  path="/student/sanabel"
-                  component={StudentSanabel}
-                />
 
                 <Route
-                  path="/student/sanabel/:index"
-                  component={StudentSanabelPage}
+                  path="/student/sanabel/:index/:subIndex"
+                  component={SanabelMissionsPage}
                 />
                 <Route
+                  path="/student/sanabel/:index"
+                  component={ChooseSanabel}
+                />
+
+                {/* <Route
                   path="/student/sanabel/0"
                   component={StudentSanabelPrayer}
-                />
+                /> */}
 
                 {/* Teacher */}
                 <Route exact path="/teacher/home" component={TeacherHome} />
@@ -202,6 +228,61 @@ const App: React.FC = () => {
                   path="/teacher/profile"
                   component={TeacherProfile}
                 />
+                <Route
+                  exact
+                  path="/teacher/challenges"
+                  component={TeacherChallenges}
+                />
+                <Route exact path="/teacher/view" component={TeacherView} />
+                <Route
+                  exact
+                  path="/teacher/classdetails"
+                  component={ClassDetails}
+                />
+                <Route
+                  exact
+                  path="/teacher/teamsdetails"
+                  component={TeamsDetails}
+                />
+                <Route
+                  exact
+                  path="/teacher/studentdetails"
+                  component={StudentDetails}
+                />
+                {/* Registration */}
+                <Route
+                  exact
+                  path="/teacher/studentslist"
+                  component={StudentsList}
+                />
+                <Route exact path="/teacher/classlist" component={ClassList} />
+                <Route exact path="/teacher/teamslist" component={TeamsList} />
+
+                <Route
+                  exact
+                  path="/teacher/classregistrationdetails"
+                  component={ClassRegistrationDetails}
+                />
+
+                {/* Registration */}
+
+                {/* Teacher Sanabel */}
+
+                {/* <Route
+                  exact
+                  path="/Teacher/sanabel"
+                  component={TeacherSanabel}
+                />
+
+                <Route
+                  path="/Teacher/sanabel/:index"
+                  component={TeacherSanabelPage}
+                /> */}
+
+                {/* <Route
+                  path="/Teacher/sanabel/0"
+                  component={TeacherSanabelPrayer}
+                /> */}
 
                 {/* Parent */}
                 <Route exact path="/parent/home" component={ParentNavbar} />

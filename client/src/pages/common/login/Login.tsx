@@ -72,14 +72,13 @@ const Login: React.FC = () => {
       });
 
       if (response.status === 200) {
-        toast.success(t("login_successful"));
         // Store auth token
         localStorage.setItem(
           "token",
           `${response.data.data.user.token.toString()}`
         );
         // console.log("email", response.data.user.email);
-        console.log(response.data.data.token.toString());
+        // console.log(response.data.data.token.toString());
         // Store Role preference
         localStorage.setItem("role", response.data.data.user.role.toString());
         // Store keepLoggedIn preference
@@ -92,7 +91,7 @@ const Login: React.FC = () => {
         } else if (response.data.data.user.role === "Parent") {
           history.push("/parent/home");
         }
-
+        toast.success(t("login_successful"));
         // Redirect to the home screen after login
       }
     } catch (error) {

@@ -1,16 +1,5 @@
 import React from "react";
-import {
-  IonTabs,
-  IonTab,
-  IonToolbar,
-  IonTabBar,
-  IonTabButton,
-  IonHeader,
-  IonTitle,
-  IonContent,
-  IonIcon,
-  IonRouterLink,
-} from "@ionic/react";
+import { IonRouterLink } from "@ionic/react";
 
 import HomeIcon from "../../icons/navbar/HomeIcon";
 import ChallengesIcon from "../../icons/navbar/ChallengesIcon";
@@ -24,7 +13,7 @@ import i18n from "i18next";
 import { useLocation } from "react-router-dom";
 
 const navList = [
-  { title: "الرئيسية", icon: <HomeIcon size={30} />, to: "/home" },
+  { title: "الرئيسية", icon: <HomeIcon size={30} />, to: "/student/home" },
   {
     title: "التحديات",
     icon: <ChallengesIcon size={30} />,
@@ -54,13 +43,11 @@ function Navbar() {
 
   return (
     <div
-      className={`flex h-20 bg-white dark:bg-[#121212] absolute bottom-0 ${
-        currentLanguage === "ar" ? "flex-row-reverse" : "flex-row"
-      } justify-around w-full p-3`}
+      className={`flex h-20 bg-white dark:bg-[#121212] absolute bottom-0 ${"flex-row-reverse"} justify-around w-full p-3`}
     >
       {navList.map((item, key) => (
         <IonRouterLink routerLink={item.to}>
-          <div className="flex flex-col gap-1 items-center ">
+          <div className="flex flex-col gap-0 items-center ">
             <div
               className={` flex items-center justify-end ${
                 location.pathname === item.to
@@ -87,3 +74,24 @@ function Navbar() {
   );
 }
 export default Navbar;
+
+// ICONS ONLY
+// return (
+//   <div
+//     className={`flex h-20 bg-white dark:bg-[#121212] absolute items-center bottom-0 ${"flex-row-reverse"} justify-around w-full p-3`}
+//   >
+//     {navList.map((item, key) => (
+//       <IonRouterLink routerLink={item.to}>
+//         <div
+//           className={` flex items-center justify-end ${
+//             location.pathname === item.to
+//               ? "text-blueprimary"
+//               : "text-[#666] dark:text-[#cccccc]"
+//           }`}
+//         >
+//           {item.icon}
+//         </div>
+//       </IonRouterLink>
+//     ))}
+//   </div>
+// );

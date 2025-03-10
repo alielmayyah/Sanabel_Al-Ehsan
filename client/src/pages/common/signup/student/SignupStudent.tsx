@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 
 const Signup: React.FC = () => {
-  const [stepIndex, setStepIndex] = useState(0);
+  const [stepIndex, setStepIndex] = useState(5);
   const history = useHistory();
   // State for storing data from each step
   const [email, setEmail] = useState("");
@@ -63,12 +63,12 @@ const Signup: React.FC = () => {
       birthdate={birthdate}
       setBirthdate={setBirthdate}
     />,
-    <Step4
-      onContinue={() => setStepIndex(stepIndex + 1)}
-      onBack={() => setStepIndex(stepIndex - 1)}
-      gradeYear={gradeYear}
-      setGradeYear={setGradeYear}
-    />,
+    // <Step4
+    //   onContinue={() => setStepIndex(stepIndex + 1)}
+    //   onBack={() => setStepIndex(stepIndex - 1)}
+    //   gradeYear={gradeYear}
+    //   setGradeYear={setGradeYear}
+    // />,
     // <Step5
     //   onContinue={() => setStepIndex(stepIndex + 1)}
     //   onBack={() => setStepIndex(stepIndex - 1)}

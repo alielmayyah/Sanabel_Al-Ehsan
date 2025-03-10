@@ -35,21 +35,21 @@ const TeacherHome: React.FC = () => {
       description: "سجل إنجازات الحسنات التي جمعها الطلاب في فصولهم الدراسية.",
       bgColor: "bg-[#4AAAD6]",
       icon: <ApplyClass />,
-      onclick: () => history.push("/studentslist"), // Fixed to correctly invoke the function
+      onclick: () => history.push("/teacher/classlist"), // Fixed to correctly invoke the function
     },
     {
       title: "تسجيل حسنات الفرق",
       description: "سجل الحسنات التي جمعها الطلاب عند العمل كفرق.",
       bgColor: "bg-[#E14E54]",
       icon: <ApplyTeam className="text-[#E14E54]" />,
-      onclick: () => history.push("/studentslist"), // Fixed to correctly invoke the function
+      onclick: () => history.push("/teacher/teamslist"), // Fixed to correctly invoke the function
     },
     {
       title: "تسجيل حسنات للطلاب",
       description: "سجل الحسنات الفردية المكتسبة من قبل كل طالب.",
       bgColor: "bg-[#FAB700]",
       icon: <ApplyStudents />,
-      onclick: () => history.push("/studentslist"), // Fixed to correctly invoke the function
+      onclick: () => history.push("/teacher/studentslist"), // Fixed to correctly invoke the function
     },
   ];
 

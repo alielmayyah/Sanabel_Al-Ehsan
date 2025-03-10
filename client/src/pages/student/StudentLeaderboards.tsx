@@ -13,7 +13,6 @@ import { useState } from "react";
 
 import LeaderboardsStar from "../../icons/Leaderboards/LeaderboardsStar";
 import FirstPlaceColumn from "../../icons/Leaderboards/FirstPlaceColumn";
-import PointsIndicator from "../../components/PointsIndicator";
 import SecondPlaceColumn from "../../icons/Leaderboards/SecondPlaceColumn";
 import ThirdPlaceColumn from "../../icons/Leaderboards/ThirdPlaceColumn";
 
@@ -24,6 +23,7 @@ import { avatars } from "../../data/Avatars";
 import FilterIcon from "../../icons/Leaderboards/FilterIcon";
 import PrimaryButton from "../../components/PrimaryButton";
 import { delay, motion } from "framer-motion";
+import MedalAndLevel from "../../components/MedalAndLevel";
 
 const Leaderboards: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
@@ -38,7 +38,7 @@ const Leaderboards: React.FC = () => {
 
   type LeaderboardEntry = {
     name: string;
-    points: number;
+    level: number;
     color: string;
     avatar: string;
     stage: string;
@@ -56,7 +56,7 @@ const Leaderboards: React.FC = () => {
     day: [
       {
         name: "محمد منجي",
-        points: 1200,
+        level: 31,
         color: "bg-blueprimary",
         avatar: avatars.boys.boy2,
         stage: "preparatory",
@@ -65,7 +65,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "علي يوسف",
-        points: 1100,
+        level: 5,
         color: "bg-redprimary",
         avatar: avatars.boys.boy3,
         stage: "primary",
@@ -74,7 +74,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "سارة حسن",
-        points: 1000,
+        level: 88,
         color: "bg-yellowprimary",
         avatar: avatars.girls.girl2,
         stage: "secondary",
@@ -83,7 +83,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "فاطمة الكيلاني",
-        points: 900,
+        level: 15,
         color: "bg-gray-300",
         avatar: avatars.girls.girl1,
         stage: "primary",
@@ -92,7 +92,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "أحمد جمال",
-        points: 850,
+        level: 18,
         color: "bg-greenprimary",
         avatar: avatars.boys.boy6,
         stage: "preparatory",
@@ -101,7 +101,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "رانيا عمر",
-        points: 800,
+        level: 26,
         color: "bg-purpleprimary",
         avatar: avatars.girls.girl5,
         stage: "secondary",
@@ -110,7 +110,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "عمر شريف",
-        points: 750,
+        level: 125,
         color: "bg-orangeprimary",
         avatar: avatars.boys.boy2,
         stage: "primary",
@@ -119,7 +119,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "لين كمال",
-        points: 700,
+        level: 3,
         color: "bg-tealprimary",
         avatar: avatars.girls.girl4,
         stage: "preparatory",
@@ -128,7 +128,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "سعيد موسى",
-        points: 650,
+        level: 206,
         color: "bg-pinkprimary",
         avatar: avatars.boys.boy5,
         stage: "primary",
@@ -137,7 +137,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "هدى خالد",
-        points: 600,
+        level: 52,
         color: "bg-cyanprimary",
         avatar: avatars.girls.girl2,
         stage: "secondary",
@@ -148,7 +148,7 @@ const Leaderboards: React.FC = () => {
     week: [
       {
         name: "محمد منجي",
-        points: 5000,
+        level: 700,
         color: "bg-blueprimary",
         avatar: avatars.boys.boy1,
         stage: "secondary",
@@ -157,7 +157,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "علي يوسف",
-        points: 7800,
+        level: 700,
         color: "bg-redprimary",
         avatar: avatars.boys.boy3,
         stage: "preparatory",
@@ -166,7 +166,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "سارة حسن",
-        points: 5402,
+        level: 702,
         color: "bg-yellowprimary",
         avatar: avatars.girls.girl2,
         stage: "primary",
@@ -175,7 +175,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "فاطمة الكيلاني",
-        points: 8700,
+        level: 700,
         color: "bg-gray-300",
         avatar: avatars.girls.girl1,
         stage: "preparatory",
@@ -184,7 +184,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "أحمد جمال",
-        points: 9200,
+        level: 700,
         color: "bg-greenprimary",
         avatar: avatars.boys.boy6,
         stage: "secondary",
@@ -193,7 +193,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "رانيا عمر",
-        points: 4790,
+        level: 700,
         color: "bg-purpleprimary",
         avatar: avatars.girls.girl5,
         stage: "primary",
@@ -202,7 +202,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "عمر شريف",
-        points: 4780,
+        level: 700,
         color: "bg-orangeprimary",
         avatar: avatars.boys.boy2,
         stage: "preparatory",
@@ -211,7 +211,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "لين كمال",
-        points: 7840,
+        level: 700,
         color: "bg-tealprimary",
         avatar: avatars.girls.girl4,
         stage: "secondary",
@@ -220,7 +220,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "سعيد موسى",
-        points: 650,
+        level: 70,
         color: "bg-pinkprimary",
         avatar: avatars.boys.boy5,
         stage: "primary",
@@ -229,7 +229,7 @@ const Leaderboards: React.FC = () => {
       },
       {
         name: "هدى خالد",
-        points: 600,
+        level: 70,
         color: "bg-cyanprimary",
         avatar: avatars.girls.girl2,
         stage: "preparatory",
@@ -254,7 +254,7 @@ const Leaderboards: React.FC = () => {
 
   // Sort leaderboard data by points in descending order based on `showWeekOrDay`
   const sortedData = leaderboardData[showWeekOrDay].sort(
-    (a: LeaderboardEntry, b: LeaderboardEntry) => b.points - a.points
+    (a: LeaderboardEntry, b: LeaderboardEntry) => b.level - a.level
   );
 
   const [openFilter, setOpenFilter] = useState(false);
@@ -324,7 +324,7 @@ const Leaderboards: React.FC = () => {
             variants={listVariants}
           >
             <motion.div
-              className="flex flex-col items-center gap-3 w-1/3"
+              className="flex flex-col items-center  w-1/3"
               variants={columnVariants}
             >
               <div className="w-20 h-20 rounded-full relative border-2 border-blueprimary">
@@ -338,15 +338,17 @@ const Leaderboards: React.FC = () => {
               </div>
               <h1 className="text-black">{sortedData[0].name}</h1>
               <div className="scale-90">
-                <PointsIndicator
-                  points={sortedData[0].points}
-                  color={"bg-blueprimary"}
+                <MedalAndLevel
+                  level={sortedData[0].level}
+                  color="text-blueprimary"
+                  dir={""}
                 />
               </div>
+
               <FirstPlaceColumn className="w-full" />
             </motion.div>
             <motion.div
-              className="flex flex-col items-center gap-3 w-1/3 -order-1"
+              className="flex flex-col items-center  w-1/3 -order-1"
               variants={columnVariants}
             >
               <img
@@ -355,16 +357,16 @@ const Leaderboards: React.FC = () => {
               />
               <h1 className="text-black">{sortedData[1].name}</h1>
               <div className="scale-90">
-                {" "}
-                <PointsIndicator
-                  points={sortedData[1].points}
-                  color={"bg-redprimary"}
+                <MedalAndLevel
+                  level={sortedData[1].level}
+                  color={"text-redprimary"}
+                  dir={""}
                 />
               </div>
               <SecondPlaceColumn className="w-full" />
             </motion.div>
             <motion.div
-              className="flex flex-col items-center gap-3 w-1/3"
+              className="flex flex-col items-center  w-1/3"
               variants={columnVariants}
             >
               <img
@@ -373,9 +375,10 @@ const Leaderboards: React.FC = () => {
               />
               <h1 className="text-black">{sortedData[2].name}</h1>
               <div className="scale-90">
-                <PointsIndicator
-                  points={sortedData[2].points}
-                  color={"bg-yellowprimary"}
+                <MedalAndLevel
+                  level={sortedData[2].level}
+                  color={"text-yellowprimary"}
+                  dir={""}
                 />
               </div>
               <ThirdPlaceColumn className="w-full " />
@@ -393,16 +396,17 @@ const Leaderboards: React.FC = () => {
               .map((item: LeaderboardEntry, index: number) => (
                 <motion.div
                   key={index + 3}
-                  className="border-2 w-full flex justify-between items-center p-2 rounded-2xl"
+                  className="border-2 w-full flex justify-between items-center p-1 rounded-2xl"
                   variants={listItemVariants}
                 >
                   <div className="scale-90">
-                    <PointsIndicator
-                      points={item.points}
-                      color="bg-greenprimary text-white"
+                    <MedalAndLevel
+                      level={item.level}
+                      color={"text-black"}
+                      dir="horizontal"
                     />
                   </div>
-                  <div className="flex-center gap-3">
+                  <div className="flex-center gap-2">
                     <div className="flex flex-col text-end">
                       <h1 className="text-black">{item.name}</h1>
                       <p className="text-gray-500 font-medium">

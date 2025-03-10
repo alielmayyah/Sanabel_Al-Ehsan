@@ -28,15 +28,15 @@ const navList = [
   {
     title: "التحديات",
     icon: <ChallengesIcon size={30} />,
-    to: "/challenges",
+    to: "/teacher/challenges",
   },
   {
     title: "المتصدرين",
     icon: <LeaderboardsIcon size={30} />,
-    to: "/leaderboards",
+    to: "/teacher/leaderboards",
   },
   {
-    title: "التقدم",
+    title: "استعراض",
     icon: <ViewIcon size={30} />,
     to: "/teacher/view",
   },

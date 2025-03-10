@@ -11,6 +11,7 @@ import React, {
 interface User {
   firstName: string;
   lastName: string;
+  email: string;
   role: string;
 }
 
@@ -27,8 +28,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null); // Context user state
-  const [firstName, setFirstName] = useState(""); // Local state for firstName
-  const [lastName, setLastName] = useState(""); // Local state for lastName
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -45,15 +44,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         );
 
         if (response.status === 200) {
-          setFirstName(response.data.data.user.firstName);
-          setLastName(response.data.data.user.lastName);
           setUser({
             firstName: response.data.data.user.firstName,
             lastName: response.data.data.user.lastName,
+            email: response.data.data.user.email,
             role: localStorage.getItem("role") || "",
           });
-          console.log(firstName);
-          console.log(lastName);
         }
       } catch (error) {
         console.error("Error fetching data:", error);

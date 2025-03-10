@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { IonRouterLink } from "@ionic/react";
-import PrimaryButton from "../../components/PrimaryButton";
-import GenericInput from "../../components/GenericInput";
-import GoBackButton from "../../components/GoBackButton";
+import PrimaryButton from "../../../components/PrimaryButton";
+import GenericInput from "../../../components/GenericInput";
+import GoBackButton from "../../../components/GoBackButton";
 import { FaCheck } from "react-icons/fa";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
