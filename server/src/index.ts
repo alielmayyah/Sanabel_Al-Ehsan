@@ -75,3 +75,4 @@ app.listen(PORT, async () => {
   console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
   await connectToDb();
 });
+

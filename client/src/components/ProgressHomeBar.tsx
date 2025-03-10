@@ -1,19 +1,3 @@
-import React from "react";
-import {
-  IonTabs,
-  IonTab,
-  IonToolbar,
-  IonTabBar,
-  IonTabButton,
-  IonHeader,
-  IonTitle,
-  IonContent,
-  IonIcon,
-  IonRouterLink,
-} from "@ionic/react";
-
-import NotificationIcon from "../icons/NotificationIcon";
-
 import { useTranslation } from "react-i18next";
 
 function ProgressHomeBar() {

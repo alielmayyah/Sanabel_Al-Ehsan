@@ -38,7 +38,7 @@ function GenericInput({
         className={`bg-white text-[#121212] focus:text-[#121212] font-medium ${
           i18n.language === "ar" ? "text-right" : "text-left"
         } border-2 border-[#EAECF0] rounded-xl w-full p-3 placeholder:text-[#ccc] `}
-        // value={value}
+        value={value}
         onChange={onChange}
       />
       <div

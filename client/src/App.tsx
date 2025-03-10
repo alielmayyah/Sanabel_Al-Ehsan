@@ -1,4 +1,5 @@
 import { Redirect, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -6,85 +7,301 @@ import "./index.css";
 
 // PAGES
 
-import Home from "./pages/Home";
-import Challenges from "./pages/Challenges";
-import Leaderboards from "./pages/Leaderboards";
-import Profile from "./pages/Profile";
-import Progress from "./pages/Progress";
+import SplashScreen from "./pages/common/onboarding/SplashScreen";
+import OnBoarding from "./pages/common/onboarding/Onboarding";
+import ChooseSignMethod from "./pages/common/onboarding/ChooseSignMethod";
 
-import Signup from "./pages/signup/Signup";
-import Login from "./pages/login/Login";
+// Student Signup
+import SignupStudent from "./pages/common/signup/student/SignupStudent";
 
-// signup steps
-import Step1 from "./pages/signup/Step1";
-import Step2 from "./pages/signup/Step2";
-import Step3 from "./pages/signup/Step3";
-import Step4 from "./pages/signup/Step4";
-import Step5 from "./pages/signup/Step5";
-import Step6 from "./pages/signup/Step6";
+// Login
+import Login from "./pages/common/login/Login";
 
-import Email from "./pages/signup/Email";
-import OTP from "./pages/signup/OTP";
+// Notifications
 
-import ForgotPassword from "./pages/login/ForgotPassword";
-import ChangePassword from "./pages/login/ChangePassword";
-// SUB Pages
+import Notifications from "./pages/common/Notifications";
 
-import ChooseSignMethod from "./pages/onboarding/ChooseSignMethod";
-import OnBoarding from "./pages/onboarding/Onboarding";
+// Student
+import StudentNavbar from "./components/navbar/StudentNavbar";
+import StudentHome from "./pages/student/StudentHome";
+import StudentProfile from "./pages/student/StudentProfile";
+import StudentProfileEdit from "./pages/student/profile/StudentProfileEdit";
+import StudentSettings from "./pages/student/profile/StudentSettings";
+import StudentLeaderboards from "./pages/student/StudentLeaderboards";
+
+import StudentChallenges from "./pages/student/StudentChallenges";
+import ChooseSanabelType from "./pages/student/challenges/ChooseSanabelType";
+import ChooseSanabel from "./pages/student/challenges/ChooseSanabel";
+import SanabelMissionsPage from "./pages/student/challenges/SanabelMissionsPage";
+
+import SanabelReminder from "./pages/student/challenges/SanabelReminder";
+
+import StudentProgress from "./pages/student/StudentProgress";
+
+// Teacher
+import TeacherNavbar from "./components/navbar/TeacherNavbar";
+import TeacherHome from "./pages/teacherorparent/teacher/TeacherHome";
+import TeacherProfile from "./pages/teacherorparent/profile/Profile";
+import TeacherChallenges from "./pages/teacherorparent/TeacherChallenges";
+import TeacherView from "./pages/teacherorparent/TeacherView";
+
+// Teacher View Details
+import TeamsDetails from "./pages/teacherorparent/teacherviewdetails/TeamsDetails";
+import StudentDetails from "./pages/teacherorparent/teacherviewdetails/StudentDetails";
+import ClassDetails from "./pages/teacherorparent/teacherviewdetails/ClassDetails";
+
+// Registration
+// Teacher Lists
+import StudentsList from "./pages/teacherorparent/pointsregistration/StudentsList";
+import TeamsList from "./pages/teacherorparent/pointsregistration/TeamsList";
+import ClassList from "./pages/teacherorparent/pointsregistration/ClassList";
+
+import RegistrationProcess from "./pages/teacherorparent/pointsregistration/registrationprocess/RegistrationProcess";
+
+import ClassRegistrationDetails from "./pages/teacherorparent/pointsregistration/pointsregistrationdetails/ClassRegistrationDetails";
+
+// Teacher Sanabel and Missions
+
+// import TeacherMissions from "./pages/teacherorparent/missionsandsanabel/missions/TeacherMissions";
+// import TeacherMissionsPage from "./pages/teacherorparent/missionsandsanabel/missions/TeacherMissionsPage";
+// import TeacherSanabel from "./pages/teacherorparent/missionsandsanabel/sanabel/TeacherSanabel";
+// import TeacherSanabelPage from "./pages/teacherorparent/missionsandsanabel/sanabel/TeacherSanabelPage";
+// import TeacherSanabelPrayer from "./pages/teacherorparent/missionsandsanabel/sanabel/TeacherSanabelPrayer";
+
+// Parent
+import ParentNavbar from "./components/navbar/ParentNavbar";
 
 import { useTheme } from "./context/ThemeContext";
+import { UserProvider } from "./context/UserProvider";
+
 import { useEffect, useState } from "react";
-setupIonicReact();
 
 import { useTranslation } from "react-i18next";
 import "./i18n";
-import Navbar from "./components/Navbar";
+import ForgotPassword from "./pages/common/login/ForgotPassword";
+import ChangePassword from "./pages/common/login/ChangePassword";
+import Leaderboards from "./pages/student/StudentLeaderboards";
+
+setupIonicReact();
 
 const App: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
+
+  const [firstTime, setFirstTime] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check for login token and "keep me logged in" status
+
+    const keepLoggedIn = localStorage.getItem("keepLoggedIn") === "true";
+
+    if (keepLoggedIn) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   return (
-    <ThemeProvider>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <div className="bg-white dark:bg-[#121212]   w-screen h-screen">
-            <Switch>
-              <Route exact path="/" component={OnBoarding} />
-              {/* <Route exact path="/" component={ChangePassword} /> */}
-              <Route
-                exact
-                path="/choosesignmethod"
-                component={ChooseSignMethod}
-              />
-              {/* //SIGNUP PAGES */}
-              <Route exact path="/signup" component={Signup} />
-              <Route exact path="/email" component={Email} />
-              <Route exact path="/otp" component={OTP} />
+    <UserProvider>
+      <ThemeProvider>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <div className="bg-white dark:bg-[#121212]  w-screen h-screen">
+              {/*  UNCOMMENT*/}
+              <Switch>
+                {/* <Route
+                  exact
+                  path="/"
+                  render={() => {
+                    const hasVisited =
+                      localStorage.getItem("hasVisited") === "true";
+                    const keepLoggedIn =
+                      localStorage.getItem("keepLoggedIn") === "true";
 
-              {/* //SIGNUP STEPS */}
-              <Route exact path="/step1" component={Step1} />
-              <Route exact path="/step2" component={Step2} />
-              <Route exact path="/step3" component={Step3} />
-              <Route exact path="/step4" component={Step4} />
-              <Route exact path="/step5" component={Step5} />
-              <Route exact path="/step6" component={Step6} />
+                    const role = localStorage.getItem("role");
+                    if (keepLoggedIn) {
+                      // User is logged in, redirect to home
+                      if (role === "Student") {
+                        return <Redirect to="/student/home" />;
+                      }
+                      if (role === "Teacher") {
+                        return <Redirect to="/teacher/home" />;
+                      }
+                      if (role === "Parent") {
+                        return <Redirect to="/parent/home" />;
+                      }
+                    } else if (!hasVisited) {
+                      // First time user, show SplashScreen
+                      return <SplashScreen />;
+                    } else {
+                      // If the user has visited before, go to ChooseSignMethod
+                      return <Redirect to="/choosesignmethod" />;
+                    }
+                  }}
+                />
+            //  Splash Screen 
+                <Route exact path="/" component={SplashScreen} /> */}
 
-              <Route exact path="/login" component={Login} />
+                <Route exact path="/" component={Leaderboards} />
 
-              <Route exact path="/forgotpassword" component={ForgotPassword} />
-              <Route exact path="/changepassword" component={ChangePassword} />
+                {/*  UNCOMMENT*/}
 
-              <Route exact path="/home" component={Home} />
-              <Route exact path="/progress" component={Progress} />
-              <Route exact path="/challenges" component={Challenges} />
-              <Route exact path="/leaderboards" component={Leaderboards} />
-              <Route exact path="/profile" component={Profile} />
-            </Switch>
-          </div>
-        </IonRouterOutlet>
-      </IonReactRouter>
-    </ThemeProvider>
+                {/* Onboarding */}
+                <Route exact path="/onboarding" component={OnBoarding} />
+                <Route
+                  exact
+                  path="/choosesignmethod"
+                  component={ChooseSignMethod}
+                />
+                {/* Signup */}
+                <Route exact path="/signupstudent" component={SignupStudent} />
+
+                {/* Login */}
+                <Route exact path="/login" component={Login} />
+                <Route
+                  exact
+                  path="/forgotpassword"
+                  component={ForgotPassword}
+                />
+                <Route
+                  exact
+                  path="/changepassword"
+                  component={ChangePassword}
+                />
+
+                {/* Notifications */}
+                <Route exact path="/notifications" component={Notifications} />
+
+                {/* Student */}
+                <Route exact path="/student/home" component={StudentHome} />
+                <Route
+                  exact
+                  path="/student/profile"
+                  component={StudentProfile}
+                />
+                <Route
+                  exact
+                  path="/student/profile/edit"
+                  component={StudentProfileEdit}
+                />
+                <Route
+                  exact
+                  path="/student/settings"
+                  component={StudentSettings}
+                />
+
+                <Route
+                  exact
+                  path="/student/challenges"
+                  component={ChooseSanabelType}
+                />
+
+                <Route
+                  exact
+                  path="/student/progress"
+                  component={StudentProgress}
+                />
+                <Route
+                  exact
+                  path="/student/leaderboards"
+                  component={StudentLeaderboards}
+                />
+
+                <Route
+                  path="/student/sanabel/:index/:subIndex"
+                  component={SanabelMissionsPage}
+                />
+                <Route
+                  path="/student/sanabel/:index"
+                  component={ChooseSanabel}
+                />
+
+                {/* <Route
+                  path="/student/sanabel/0"
+                  component={StudentSanabelPrayer}
+                /> */}
+
+                {/* Teacher */}
+                <Route exact path="/teacher/home" component={TeacherHome} />
+                <Route
+                  exact
+                  path="/teacher/profile"
+                  component={TeacherProfile}
+                />
+                <Route
+                  exact
+                  path="/teacher/challenges"
+                  component={TeacherChallenges}
+                />
+                <Route exact path="/teacher/view" component={TeacherView} />
+                <Route
+                  exact
+                  path="/teacher/classdetails"
+                  component={ClassDetails}
+                />
+                <Route
+                  exact
+                  path="/teacher/teamsdetails"
+                  component={TeamsDetails}
+                />
+                <Route
+                  exact
+                  path="/teacher/studentdetails"
+                  component={StudentDetails}
+                />
+                {/* Registration */}
+                <Route
+                  exact
+                  path="/teacher/studentslist"
+                  component={StudentsList}
+                />
+                <Route exact path="/teacher/classlist" component={ClassList} />
+                <Route exact path="/teacher/teamslist" component={TeamsList} />
+
+                <Route
+                  exact
+                  path="/teacher/classregistrationdetails"
+                  component={ClassRegistrationDetails}
+                />
+
+                {/* Registration */}
+
+                {/* Teacher Sanabel */}
+
+                {/* <Route
+                  exact
+                  path="/Teacher/sanabel"
+                  component={TeacherSanabel}
+                />
+
+                <Route
+                  path="/Teacher/sanabel/:index"
+                  component={TeacherSanabelPage}
+                /> */}
+
+                {/* <Route
+                  path="/Teacher/sanabel/0"
+                  component={TeacherSanabelPrayer}
+                /> */}
+
+                {/* Parent */}
+                <Route exact path="/parent/home" component={ParentNavbar} />
+
+                {/* Profile Pages */}
+
+                {/* Sanabel Pages */}
+
+                {/* Student */}
+
+                {/* Teacher */}
+
+                {/* Teacher */}
+              </Switch>
+            </div>
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </ThemeProvider>
+    </UserProvider>
   );
 };
 export default App;

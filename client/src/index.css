@@ -30,6 +30,10 @@
   font-family: "DGAgnadeen" !important;
 }
 
+.CustomFont {
+  font-family: "DGAgnadeen" !important;
+}
+
 #page-height {
   height: calc(100vh - 80px);
 }
@@ -37,6 +41,9 @@
 /* Tailwind CSS file or global styles */
 .shadow-bottom {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+.sanabel-shadow-bottom {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .dark .shadow-bottom {
@@ -50,3 +57,10 @@ input {
   outline: none !important;
 }
 
+.missions-gradient {
+  background: linear-gradient(
+    180deg,
+    rgba(225, 78, 84, 1) 0%,
+    rgba(250, 183, 0, 1) 100%
+  );
+}

@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import ar from './languages/ar';
 import en from './languages/en';
 
-// Get the saved language and dir from localStorage or use 'ar' and 'rtl' as defaults
+// Get the saved language and dir from localStorage or use 'ar' and 'ltr' as defaults
 const savedLanguage = localStorage.getItem('language') || 'ar';
 const savedDir = localStorage.getItem('dir') || 'ltr';
 
