@@ -24,7 +24,7 @@ class Student extends Model {
   declare snabelRed: CreationOptional<number>;
   declare snabelBlue: CreationOptional<number>;
   declare snabelYellow: CreationOptional<number>;
-
+  
   declare treeProgress: CreationOptional<number>;
   static initModel(sequelize: Sequelize) {
     Student.init(

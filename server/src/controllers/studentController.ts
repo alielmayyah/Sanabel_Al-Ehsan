@@ -50,7 +50,7 @@ const studentData = async (req: Request, res: Response) => {
       });
       const responseData = {
         student,
-        treePoint: treePoint || null, // Include treeProgress details, or null if not found
+        treePoint: treePoint || null, 
       };
       res.status(200).json({ data: responseData });
     }

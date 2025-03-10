@@ -120,7 +120,7 @@ const registration = async (req: Request, res: Response) => {
 
     switch (checkValidation.role) {
       case "Student":
-        await Student.create({ grade, userId: checkValidation.id, profileImg });
+        await Student.create({ grade, userId: checkValidation.id, profileImg,treeProgress:1 });
         const tasks = await Task.findAll();
 
         // Assign all tasks to the student in the StudentTask table

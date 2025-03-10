@@ -16,7 +16,7 @@ import StudentTask from "../models/student-task.model"; // Import the new model
 import StudentChallenge from "../models/student-challenge.model";
 import Groupe from "../models/groupe.model";
 import Tree from "../models/tree.model";
-
+const demoTree = require("../seeders/demo-tree-seeders");
 import { tasks } from "googleapis/build/src/apis/tasks";
 const demoTaskSeeder = require("../seeders/20241118230008-demo-task");
 const demoTasktypeSeeder = require("../seeders/tasktype-seeder");
@@ -35,10 +35,18 @@ const connectToDb = async () => {
     await sequelize.authenticate();
     console.log("Successfully connected to our db");
     const taskCount = await Task.count();
+    const TreeCount = await Tree.count();
 
     if (taskCount === 0) {
       // Run the seeder only if there are no tasks already in the database
       await demoTaskSeeder.up(sequelize.queryInterface, Sequelize);
+      console.log("Seeder data inserted successfully!");
+    } else {
+      console.log("Tasks already seeded. Skipping seeding process.");
+    }
+    if (TreeCount === 0) {
+      // Run the seeder only if there are no tasks already in the database
+      await demoTree.up(sequelize.queryInterface, Sequelize);
       console.log("Seeder data inserted successfully!");
     } else {
       console.log("Tasks already seeded. Skipping seeding process.");
