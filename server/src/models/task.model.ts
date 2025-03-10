@@ -4,13 +4,14 @@ import { Sequelize, DataTypes, Model, CreationOptional } from "@sequelize/core";
 export enum TaskCategory {
   Daily = "Daily",
   Weekly = "Weekly",
+  Monthly = "Monthly",
 }
 
 class Task extends Model {
   declare id: CreationOptional<number>;
   declare title: string;
   declare description: string;
-  declare category: TaskCategory;
+  declare category: string;
   declare points: number;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -23,21 +24,63 @@ class Task extends Model {
           primaryKey: true,
           autoIncrement: true,
         },
+        type: {
+          type: DataTypes.STRING,
+          allowNull: true,
+        },
         title: {
           type: DataTypes.STRING,
           allowNull: false,
         },
         description: {
           type: DataTypes.STRING,
-          allowNull: false,
+          allowNull: true,
         },
+
         category: {
-          type: DataTypes.ENUM(...Object.values(TaskCategory)),
-          allowNull: false,
+          type: DataTypes.STRING,
+          allowNull: true,
         },
-        points: {
+        snabelRed: {
           type: DataTypes.INTEGER,
-          allowNull: false,
+          allowNull: true,
+          defaultValue: 0,
+          validate: {
+            min: 0,
+          },
+        },
+        snabelYellow: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          defaultValue: 0,
+          validate: {
+            min: 0,
+          },
+        },
+        snabelBlue: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          defaultValue: 0,
+          validate: {
+            min: 0,
+          },
+        },
+
+        xp: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          defaultValue: 0,
+          validate: {
+            min: 0,
+          },
+        },
+        kind: {
+          type: DataTypes.STRING,
+          allowNull: true,
+        },
+        timeToDo: {
+          type: DataTypes.TIME,
+          allowNull: true,
         },
       },
       {

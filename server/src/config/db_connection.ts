@@ -13,7 +13,13 @@ import Task from "../models/task.model";
 import Class from "../models/class.model";
 import StudentTeacher from "../models/studentTeacher.model";
 import StudentTask from "../models/student-task.model"; // Import the new model
+import StudentChallenge from "../models/student-challenge.model";
+import Groupe from "../models/groupe.model";
+import Tree from "../models/tree.model";
 
+import { tasks } from "googleapis/build/src/apis/tasks";
+const demoTaskSeeder = require("../seeders/20241118230008-demo-task");
+const demoTasktypeSeeder = require("../seeders/tasktype-seeder");
 const sequelize = new Sequelize({
   dialect: MySqlDialect,
   database: process.env.MYSQL_DB_NAME,
@@ -28,6 +34,15 @@ const connectToDb = async () => {
     await rundb(); // Call rundb before authenticate
     await sequelize.authenticate();
     console.log("Successfully connected to our db");
+    const taskCount = await Task.count();
+
+    if (taskCount === 0) {
+      // Run the seeder only if there are no tasks already in the database
+      await demoTaskSeeder.up(sequelize.queryInterface, Sequelize);
+      console.log("Seeder data inserted successfully!");
+    } else {
+      console.log("Tasks already seeded. Skipping seeding process.");
+    }
   } catch (error) {
     console.error("Database connection error:", error);
   }
@@ -36,20 +51,23 @@ const connectToDb = async () => {
 const rundb = async () => {
   // Initialize models
   User.initModel(sequelize);
+  Tree.initModel(sequelize);
   Organization.initModel(sequelize);
   Parent.initModel(sequelize);
   Class.initModel(sequelize);
   Student.initModel(sequelize);
+  Groupe.initModel(sequelize);
   Teacher.initModel(sequelize);
   Representative.initModel(sequelize);
   Donation.initModel(sequelize);
+  Task.initModel(sequelize);
   Challenge.initModel(sequelize);
   Reward.initModel(sequelize);
-  Task.initModel(sequelize);
   StudentTeacher.initModel(sequelize);
   StudentTask.initModel(sequelize);
+  StudentChallenge.initModel(sequelize);
+  Challenge.associate();
 
-  // Define Associations
   User.hasMany(Student, {
     foreignKey: "userId",
     sourceKey: "id",
@@ -57,17 +75,6 @@ const rundb = async () => {
   });
   Student.belongsTo(User, {
     foreignKey: "userId",
-    targetKey: "id",
-    as: "User",
-  });
-
-  User.hasMany(Organization, {
-    foreignKey: "userId", // Fixed foreignKey name
-    sourceKey: "id",
-    as: "Organizations",
-  });
-  Organization.belongsTo(User, {
-    foreignKey: "userId", // Fixed foreignKey name
     targetKey: "id",
     as: "User",
   });
@@ -116,13 +123,6 @@ const rundb = async () => {
     as: "Students",
   });
 
-  User.hasMany(Class, {
-    foreignKey: "classId", // Fixed foreignKey name
-    sourceKey: "id",
-    as: "Classes",
-  });
-  Class.belongsTo(User, { foreignKey: "classId", targetKey: "id", as: "User" });
-
   // Student and Teacher Relationships (Many-to-Many through StudentTeacher)
   Student.belongsToMany(Teacher, {
     through: StudentTeacher,
@@ -147,7 +147,19 @@ const rundb = async () => {
     foreignKey: "taskId",
     as: "Students",
   });
+  Student.belongsToMany(Challenge, {
+    through: StudentChallenge,
+    foreignKey: "studentId", // Correct foreign key
+    otherKey: "challengeId", // Specify the other key
+    as: "Challenges",
+  });
 
+  Challenge.belongsToMany(Student, {
+    through: StudentChallenge,
+    foreignKey: "challengeId", // Correct foreign key
+    otherKey: "studentId", // Specify the other key
+    as: "Students",
+  });
   // Student and Organization Relationships
   Student.belongsTo(Organization, {
     foreignKey: "organizationId",
@@ -170,6 +182,16 @@ const rundb = async () => {
     foreignKey: "organizationId",
     sourceKey: "id",
     as: "Teachers",
+  });
+  Class.belongsTo(Teacher, {
+    foreignKey: "teacherId",
+    targetKey: "id",
+    as: "Teachers",
+  });
+  Teacher.hasMany(Class, {
+    foreignKey: "teacherId",
+    sourceKey: "id",
+    as: "Classes",
   });
   // Class and Organization Relationships
   Class.belongsTo(Organization, {
@@ -207,14 +229,62 @@ const rundb = async () => {
 
   // Reward and Student Relationships
   Reward.belongsTo(Student, {
-    foreignKey: "id",
+    foreignKey: "studentId",
     targetKey: "id",
     as: "Student",
   });
   Student.hasMany(Reward, {
-    foreignKey: "id",
+    foreignKey: "studentId",
     sourceKey: "id",
     as: "Rewards",
+  });
+  Groupe.belongsTo(Organization, {
+    foreignKey: "organizationId",
+    targetKey: "id",
+    as: "Organization",
+  });
+  Organization.hasMany(Groupe, {
+    foreignKey: "organizationId",
+    sourceKey: "id",
+    as: "Groupes",
+  });
+  Student.belongsTo(Class, {
+    foreignKey: "classId", // Ensure it points to the correct foreign key in Student model
+    targetKey: "id", // The target key in the Class model
+    as: "Class", // Alias for this association
+  });
+
+  // In the Class model
+  Class.hasMany(Student, {
+    foreignKey: "classId", // Ensure it matches the foreign key defined in Student model
+    sourceKey: "id", // The source key in the Class model
+    as: "Students", // Alias for the reverse association
+  });
+  Student.belongsTo(Tree, {
+    foreignKey: "treeProgress", // Matches the foreign key in the Student model
+    targetKey: "id", // Points to the primary key in the Tree model
+    as: "Tree", // Singular alias for this association
+  });
+
+  // In the Class model
+  Tree.hasMany(Student, {
+    foreignKey: "treeProgress", // Matches the foreign key in the Student model
+    sourceKey: "id", // Points to the primary key in the Tree model
+    as: "Students", // Plural alias for the reverse association
+  });
+
+  // Ensure the same pattern for the Groupe -> Student relationship
+  Groupe.hasMany(Student, {
+    foreignKey: "groupeId",
+    sourceKey: "id",
+    as: "Students", // Alias for the reverse association
+  });
+
+  // Student belongs to Groupe with the foreignKey: 'groupeId'
+  Student.belongsTo(Groupe, {
+    foreignKey: "groupeId",
+    targetKey: "id",
+    as: "Groupe", // Alias for the Groupe association
   });
 
   try {

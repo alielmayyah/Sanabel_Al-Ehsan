@@ -12,9 +12,6 @@ export enum UserRole {
   Parent = "Parent",
   Teacher = "Teacher",
   Student = "Student",
-  Organization = "Organization",
-  Representative = "Representative",
-  Class = "Class",
 }
 
 export enum UserGenre {
@@ -28,14 +25,14 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare lastName: CreationOptional<string>;
   declare email: CreationOptional<string>;
   declare password: CreationOptional<string>;
-  declare role: CreationOptional<UserRole>;
+  declare role: CreationOptional<string>;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare token: CreationOptional<string>;
   declare resetOTP: CreationOptional<string> | null;
   declare otpExpiry: CreationOptional<Date> | null;
   declare otpVerified: CreationOptional<boolean>;
-  declare genre: CreationOptional<String>;
+  declare gender: CreationOptional<String>;
   declare dateOfBirth: CreationOptional<Date>;
   declare isAccess: CreationOptional<Boolean>;
   static initModel(sequelize: Sequelize) {
@@ -69,6 +66,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
         role: {
           type: DataTypes.ENUM(...Object.values(UserRole)),
           allowNull: true,
+          defaultValue: "Student",
         },
         token: {
           type: DataTypes.STRING,
@@ -87,7 +85,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
           allowNull: true,
           defaultValue: false,
         },
-        genre: {
+        gender: {
           type: DataTypes.STRING,
           allowNull: true,
         },
@@ -99,6 +97,10 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
           type: DataTypes.BOOLEAN,
           allowNull: false,
           defaultValue: false,
+        },
+        profileImg: {
+          type: DataTypes.STRING,
+          allowNull: true,
         },
       },
       {

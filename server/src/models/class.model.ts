@@ -5,10 +5,10 @@ import Organization from "./oraganization.model";
 
 class Class extends Model {
   declare id: CreationOptional<number>;
-  declare classId: CreationOptional<number>; // Unique ID for Class, separate from User ID
-  declare className: string; // Name of the class
-  declare organizationId: number; // Reference to the Organization
-  declare user: User | null;
+  declare className: CreationOptional<String>; // Name of the class
+  declare organizationId: CreationOptional<number>; // Reference to the Organization
+  declare classdescrption: CreationOptional<String>; // Description of the class
+  declare category: CreationOptional<String>; // Category of the class
 
   static initModel(sequelize: Sequelize) {
     Class.init(
@@ -18,6 +18,18 @@ class Class extends Model {
           allowNull: false,
           primaryKey: true,
           autoIncrement: true,
+        },
+        classname: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        classdescrption: {
+          type: DataTypes.STRING,
+          allowNull: true,
+        },
+        category: {
+          type: DataTypes.STRING,
+          allowNull: false,
         },
       },
       {
