@@ -88,19 +88,6 @@ const App: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
 
-  const [firstTime, setFirstTime] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    // Check for login token and "keep me logged in" status
-
-    const keepLoggedIn = localStorage.getItem("keepLoggedIn") === "true";
-
-    if (keepLoggedIn) {
-      setIsLoggedIn(true);
-    }
-  }, []);
-
   return (
     <UserProvider>
       <ThemeProvider>
@@ -109,43 +96,10 @@ const App: React.FC = () => {
             <div className="bg-white dark:bg-[#121212]  w-screen h-screen">
               {/*  UNCOMMENT*/}
               <Switch>
-                {/* <Route
-                  exact
-                  path="/"
-                  render={() => {
-                    const hasVisited =
-                      localStorage.getItem("hasVisited") === "true";
-                    const keepLoggedIn =
-                      localStorage.getItem("keepLoggedIn") === "true";
-
-                    const role = localStorage.getItem("role");
-                    if (keepLoggedIn) {
-                      // User is logged in, redirect to home
-                      if (role === "Student") {
-                        return <Redirect to="/student/home" />;
-                      }
-                      if (role === "Teacher") {
-                        return <Redirect to="/teacher/home" />;
-                      }
-                      if (role === "Parent") {
-                        return <Redirect to="/parent/home" />;
-                      }
-                    } else if (!hasVisited) {
-                      // First time user, show SplashScreen
-                      return <SplashScreen />;
-                    } else {
-                      // If the user has visited before, go to ChooseSignMethod
-                      return <Redirect to="/choosesignmethod" />;
-                    }
-                  }}
-                />
-            //  Splash Screen 
-                <Route exact path="/" component={SplashScreen} /> */}
-
-                <Route exact path="/" component={Leaderboards} />
+                {/* // Splash Screen */}
+                <Route exact path="/" component={SplashScreen} />
 
                 {/*  UNCOMMENT*/}
-
                 {/* Onboarding */}
                 <Route exact path="/onboarding" component={OnBoarding} />
                 <Route
@@ -155,7 +109,6 @@ const App: React.FC = () => {
                 />
                 {/* Signup */}
                 <Route exact path="/signupstudent" component={SignupStudent} />
-
                 {/* Login */}
                 <Route exact path="/login" component={Login} />
                 <Route
@@ -168,10 +121,8 @@ const App: React.FC = () => {
                   path="/changepassword"
                   component={ChangePassword}
                 />
-
                 {/* Notifications */}
                 <Route exact path="/notifications" component={Notifications} />
-
                 {/* Student */}
                 <Route exact path="/student/home" component={StudentHome} />
                 <Route
@@ -189,13 +140,11 @@ const App: React.FC = () => {
                   path="/student/settings"
                   component={StudentSettings}
                 />
-
                 <Route
                   exact
                   path="/student/challenges"
                   component={ChooseSanabelType}
                 />
-
                 <Route
                   exact
                   path="/student/progress"
@@ -206,7 +155,6 @@ const App: React.FC = () => {
                   path="/student/leaderboards"
                   component={StudentLeaderboards}
                 />
-
                 <Route
                   path="/student/sanabel/:index/:subIndex"
                   component={SanabelMissionsPage}
@@ -215,12 +163,10 @@ const App: React.FC = () => {
                   path="/student/sanabel/:index"
                   component={ChooseSanabel}
                 />
-
                 {/* <Route
                   path="/student/sanabel/0"
                   component={StudentSanabelPrayer}
                 /> */}
-
                 {/* Teacher */}
                 <Route exact path="/teacher/home" component={TeacherHome} />
                 <Route
@@ -257,17 +203,13 @@ const App: React.FC = () => {
                 />
                 <Route exact path="/teacher/classlist" component={ClassList} />
                 <Route exact path="/teacher/teamslist" component={TeamsList} />
-
                 <Route
                   exact
                   path="/teacher/classregistrationdetails"
                   component={ClassRegistrationDetails}
                 />
-
                 {/* Registration */}
-
                 {/* Teacher Sanabel */}
-
                 {/* <Route
                   exact
                   path="/Teacher/sanabel"
@@ -278,23 +220,16 @@ const App: React.FC = () => {
                   path="/Teacher/sanabel/:index"
                   component={TeacherSanabelPage}
                 /> */}
-
                 {/* <Route
                   path="/Teacher/sanabel/0"
                   component={TeacherSanabelPrayer}
                 /> */}
-
                 {/* Parent */}
                 <Route exact path="/parent/home" component={ParentNavbar} />
-
                 {/* Profile Pages */}
-
                 {/* Sanabel Pages */}
-
                 {/* Student */}
-
                 {/* Teacher */}
-
                 {/* Teacher */}
               </Switch>
             </div>

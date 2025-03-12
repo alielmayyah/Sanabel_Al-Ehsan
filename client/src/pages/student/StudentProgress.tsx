@@ -27,14 +27,14 @@ const navbar = [
 const Progress: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
-  const [selectProgressType, setSelectProgressType] = useState("0");
+  const [selectProgressType, setSelectProgressType] = useState(3);
 
   return (
     <div
-      className="flex flex-col h-full w-full items-center justify-between p-4 gap-3"
+      className="flex flex-col h-full w-full items-center justify-between p-4 gap-0"
       id="page-height"
     >
-      <div className="flex flex-col gap-2 justify-center items-end w-full">
+      <div className="flex flex-col gap-0 justify-center items-end w-full">
         <h1 className="text-black font-bold text-2xl text-end ">
           {t("تقدمك نحو الخير")}
         </h1>
@@ -44,15 +44,15 @@ const Progress: React.FC = () => {
         </p>
       </div>
 
-      <div className="flex flex-row-reverse w-full bg-[#E6E6E6] rounded-3xl p-1 gap-4 justify-between items-center">
-        {navbar.map((item, index: any) => (
+      <div className="flex w-full bg-[#E6E6E6] rounded-3xl p-1 gap-2 justify-between items-center">
+        {navbar.map((item, index) => (
           <div
             key={index}
-            className={`w-1/4 text-center rounded-2xl py-2 flex flex-col items-center justify-center gap-0 transition-all cursor-pointer ${
+            className={`flex transition-all cursor-pointer ${
               selectProgressType === index
-                ? "bg-blueprimary text-white shadow-lg"
-                : "bg-gray-100 text-gray-700 hover:bg-blue-100"
-            }`}
+                ? "flex-[2] bg-blueprimary text-white shadow-lg"
+                : "flex-[1] bg-gray-100 text-gray-700 hover:bg-blue-100"
+            } rounded-2xl py-2 items-center justify-center gap-2`}
             onClick={() => setSelectProgressType(index)}
           >
             <img
@@ -71,10 +71,10 @@ const Progress: React.FC = () => {
         ))}
       </div>
 
-      {selectProgressType == "0" && <ProgressMissions />}
-      {selectProgressType == "1" && <ProgressTrophies />}
-      {selectProgressType == "2" && <ProgressMedals />}
-      {selectProgressType == "3" && <ProgressTree />}
+      {selectProgressType == 0 && <ProgressMissions />}
+      {selectProgressType == 1 && <ProgressTrophies />}
+      {selectProgressType == 2 && <ProgressMedals />}
+      {selectProgressType == 3 && <ProgressTree />}
 
       <StudentNavbar />
     </div>

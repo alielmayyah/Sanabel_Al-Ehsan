@@ -14,6 +14,12 @@ import { treeStages } from "../../data/Tree";
 const waterCost = 20;
 const fertilzerCost = 20;
 
+// treestage;
+// water;
+// fertilzer;
+// waterNeeded;
+// fertilzerNeeded;
+
 const treeGrowth = [
   { frame: 1, water: 0, fertilizer: 0 },
   { frame: 2, water: 1, fertilizer: 1 },
@@ -77,25 +83,24 @@ const SanabelTree: React.FC<SanabelTreeProps> = ({ treeStage }) => {
   const { t } = useTranslation();
   const { user } = useUserContext();
 
-  const currentWater = 4;
+  const currentWater = 5;
   const currentFertilizer = 2;
 
   return (
-    <div
-      className="flex flex-col h-full w-full items-center justify-between  "
-      id="page-height"
-    >
+    <div className="flex flex-col h-full w-full items-center justify-between  ">
       {/* Tree */}
-      <div className="w-full flex flex-col gap-2 ">
+      <div className="w-full flex flex-col gap-1 ">
         <h1 className="text-black text-end text-lg">
           {t("شجرة سنابل الحسنات")}
         </h1>
         <div className="flex w-full h-full  justify-between">
           {/* Water Indicator */}
-          <div className="flex flex-col items-center w-[8%] gap-2">
-            <img src={waterImg} alt="Water Icon" className="w-full" />
+          <div className="flex items-center flex-col w-max gap-1">
+            <img src={waterImg} alt="Water Icon" className="w-8" />
+            <h1 className="text-black text-sm">
+              {currentWater} / {treeGrowth[treeStage].water}{" "}
+            </h1>
             <div className="relative w-full h-full rounded-2xl bg-[#D1E2EA] overflow-hidden">
-              {/* Dynamic Water Fill */}
               <div
                 className="absolute bottom-0 w-full rounded-2xl bg-gradient-to-t from-[#4AAAD6] to-[#8ED6F8] transition-all duration-300"
                 style={{
@@ -104,19 +109,6 @@ const SanabelTree: React.FC<SanabelTreeProps> = ({ treeStage }) => {
                   }%`,
                 }}
               ></div>
-
-              {/* Labels */}
-              <div className="absolute top-1/4 left-0 right-0 text-center">
-                <h1 className="text-sm font-bold text-gray-800">
-                  {treeGrowth[treeStage].water}
-                </h1>
-              </div>
-
-              <div className="absolute bottom-4 left-0 right-0 text-center">
-                <h1 className="text-sm font-bold text-gray-800">
-                  {currentWater}
-                </h1>
-              </div>
             </div>
           </div>
 
@@ -126,14 +118,21 @@ const SanabelTree: React.FC<SanabelTreeProps> = ({ treeStage }) => {
           </div>
 
           {/* Fertilizer */}
-          <div className="flex flex-col w-[8%] gap-1">
-            <img src={fertilizerImg} alt="water" className="w-full" />
+          <div className="flex items-center flex-col w-max gap-1">
+            <img src={fertilizerImg} alt="fertilizerImg" className="w-8" />
+            <h1 className="text-black text-sm">
+              {" "}
+              {currentFertilizer} / {treeGrowth[treeStage].fertilizer}{" "}
+            </h1>
             <div className="w-full flex justify-center items-end h-full rounded-2xl bg-[#D1E2EA] text-black relative">
               <div
                 className="w-full rounded-2xl bg-[#7F4333] flex-center"
-                style={{ height: `${(2 / 4) * 100}%` }}
+                style={{
+                  height: `${
+                    (currentFertilizer / treeGrowth[treeStage].fertilizer) * 100
+                  }%`,
+                }}
               ></div>
-              <h1 className="absolute top-1/3">2/4</h1>
             </div>
           </div>
         </div>

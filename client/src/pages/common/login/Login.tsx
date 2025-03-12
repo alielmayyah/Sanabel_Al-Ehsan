@@ -42,10 +42,6 @@ const Login: React.FC = () => {
   const [isKeepLogged, setIsKeepLogged] = useState(false);
   const history = useHistory();
 
-  function handleKeepLogged() {
-    setIsKeepLogged(!isKeepLogged);
-  }
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   console.log(email);
@@ -77,12 +73,13 @@ const Login: React.FC = () => {
           "token",
           `${response.data.data.user.token.toString()}`
         );
-        // console.log("email", response.data.user.email);
-        // console.log(response.data.data.token.toString());
+
         // Store Role preference
+
         localStorage.setItem("role", response.data.data.user.role.toString());
         // Store keepLoggedIn preference
-        localStorage.setItem("keepLoggedIn", isKeepLogged.toString());
+        () => setIsKeepLogged(true);
+        localStorage.setItem("keepLoggedIn", "true");
 
         if (response.data.data.user.role === "Student") {
           history.push("/student/home");
@@ -92,6 +89,7 @@ const Login: React.FC = () => {
           history.push("/parent/home");
         }
         toast.success(t("login_successful"));
+
         // Redirect to the home screen after login
       }
     } catch (error) {
@@ -143,19 +141,6 @@ const Login: React.FC = () => {
             <IonRouterLink routerLink="/forgotpassword">
               <h1 className="text-blueprimary">{t("هل نسيت كلمة السر؟")}</h1>
             </IonRouterLink>
-
-            <div className="flex gap-3 items-center" onClick={handleKeepLogged}>
-              <h1 className="text-[#ccc]">{t("حفظ الحساب")}</h1>
-              <div
-                className={
-                  "w-8 h-8  border-2 border-[#EAECF0] rounded-lg relative"
-                }
-              >
-                {isKeepLogged && (
-                  <div className="rounded-md bg-blueprimary w-7 h-7 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 " />
-                )}
-              </div>
-            </div>
           </div>
         </div>
       </div>

@@ -22,7 +22,7 @@ import i18n from "../../../i18n";
 import { IonRouterLink } from "@ionic/react";
 import { useTheme } from "../../../context/ThemeContext";
 import DeleteAccountPopup from "./StudentDeleteAccountPopup";
-import PointsIndicator from "../../../components/PointsIndicator";
+
 import GoBackButton from "../../../components/GoBackButton";
 
 const Profile: React.FC = () => {
@@ -116,32 +116,26 @@ const Profile: React.FC = () => {
         <GoBackButton />
       </div>
 
-      <div className="flex w-full justify-between items-center">
-        <div className="w-20 h-20 rounded-full text-white bg-blueprimary flex-center">
-          school logo
-        </div>
-        <Greeting name="علي المياح " text="طالب" hello="no" />
-      </div>
-
-      {profileButtons.map((item, index) => (
-        <div className="flex flex-col -mt-10 w-full" key={index}>
-          <div
-            className="flex w-full p-2 justify-between items-center"
-            onClick={() =>
-              item.function ? item.function() : redirectPage(item.to)
-            }
-          >
-            {index === 4 ? (
-              <label className="inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={darkMode}
-                  onChange={toggleDarkMode}
-                  onClick={toggleDarkMode}
-                  className="sr-only peer"
-                />
-                <div
-                  className="relative w-14 h-7
+      <div className="flex flex-col justify-around h-3/5 items-center w-full">
+        {profileButtons.map((item, index) => (
+          <div className="flex flex-col -mt-10 w-full" key={index}>
+            <div
+              className="flex w-full p-2 justify-between items-center"
+              onClick={() =>
+                item.function ? item.function() : redirectPage(item.to)
+              }
+            >
+              {index === 4 ? (
+                <label className="inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={darkMode}
+                    onChange={toggleDarkMode}
+                    onClick={toggleDarkMode}
+                    className="sr-only peer"
+                  />
+                  <div
+                    className="relative w-14 h-7
                  bg-blueprimary peer-focus:outline-none peer-focus:ring-4
                   peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800
                    rounded-full peer dark:bg-gray-700 
@@ -151,33 +145,34 @@ const Profile: React.FC = () => {
                      after:bg-white -300 after:border
                       after:rounded-full after:h-6 after:w-6 after:transition-all
                        dark:border-gray-600 peer-checked:bg-blueprimary"
-                ></div>
-              </label>
-            ) : (
-              <ProfileArrow size={25} />
-            )}
+                  ></div>
+                </label>
+              ) : (
+                <ProfileArrow size={25} />
+              )}
 
-            <div className="flex-center gap-3">
-              <h1
-                className={`${
-                  index == 5 ? "text-[#E14E54]" : "text-black dark:text-white"
-                }  `}
-              >
-                {t(item.title)}
-              </h1>
-              <div
-                className={`${
-                  index == 5 ? "bg-[#e14e5349]" : "bg-[#D5EBF6]"
-                }  p-2 rounded-full `}
-              >
-                {item.icon}
+              <div className="flex-center gap-3">
+                <h1
+                  className={`${
+                    index == 5 ? "text-[#E14E54]" : "text-black dark:text-white"
+                  }  `}
+                >
+                  {t(item.title)}
+                </h1>
+                <div
+                  className={`${
+                    index == 5 ? "bg-[#e14e5349]" : "bg-[#D5EBF6]"
+                  }  p-2 rounded-full `}
+                >
+                  {item.icon}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="h-0.5 bg-gray-200 rounded-lg dark-gray-100" />
-        </div>
-      ))}
+            <div className="h-0.5 bg-gray-200 rounded-lg dark-gray-100" />
+          </div>
+        ))}
+      </div>
 
       <div className="flex flex-col w-full items-center gap-2 pb-8">
         <h1
