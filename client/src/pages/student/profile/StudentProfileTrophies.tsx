@@ -3,7 +3,7 @@ import StudentNavbar from "../../../components/navbar/StudentNavbar";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "../../../context/ThemeContext";
-import { useUserContext } from "../../../context/UserProvider";
+import { useUserContext } from "../../../context/StudentUserProvider";
 import trophies from "../../../data/TrophiesData";
 
 const Profile: React.FC = () => {

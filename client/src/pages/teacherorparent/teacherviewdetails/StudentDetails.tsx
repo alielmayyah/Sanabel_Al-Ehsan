@@ -20,7 +20,7 @@ import { FiTarget } from "react-icons/fi";
 
 import { medalsImgs } from "../../../data/Medals";
 
-import { useUserContext } from "../../../context/UserProvider";
+import { useUserContext } from "../../../context/StudentUserProvider";
 import GoBackButton from "../../../components/GoBackButton";
 
 const Profile: React.FC = () => {

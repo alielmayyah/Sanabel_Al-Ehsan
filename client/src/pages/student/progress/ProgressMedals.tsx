@@ -8,6 +8,8 @@ import lock from "../../../icons/lock.svg";
 // Medals
 
 import { medalsImgs } from "../../../data/Medals";
+import { useUserContext } from "../../../context/StudentUserProvider";
+import i18n from "../../../i18n";
 
 const medalsData = [
   { title: "مبتدئ", img: medalsImgs[0], level: "1" },
@@ -49,8 +51,8 @@ const calculateXpForLevel = (targetLevel: any) => {
 
 const Progress: React.FC = () => {
   const { t } = useTranslation();
-
-  const [xp, setXp] = useState(1745);
+  const { user } = useUserContext();
+  const xp = Number(user?.xp);
 
   const { level, remainingXp, xpForNextLevel } = calculateLevel(xp);
 
@@ -114,14 +116,20 @@ const Progress: React.FC = () => {
 
         <div className="w-full bg-[#fab70050] rounded-3xl h-8 flex justify-end items-center relative overflow-hidden">
           {/* Text displaying current and needed XP */}
-          <h1 className="text-[#997000] px-3 relative z-10">
+          <div
+            className={`text-[#997000] px-3 relative z-10 ${
+              i18n.language === "ar" ? "" : "flex"
+            } `}
+          >
+            <span className="text-black">{neededXp}/</span>
             {currentXp}
-            <span className="text-black">/{neededXp}</span>
-          </h1>
+          </div>
 
           {/* Progress bar */}
           <motion.div
-            className="bg-[#F3B14E] rounded-3xl h-8 absolute top-0 right-0"
+            className={`bg-[#F3B14E] rounded-3xl h-8 absolute top-0  ${
+              i18n.language === "ar" ? "right-0" : "left-0"
+            }`}
             initial={{ width: 0 }}
             animate={{ width: `${(currentXp / neededXp) * 100}%` }}
             transition={{ duration: 0.5 }}

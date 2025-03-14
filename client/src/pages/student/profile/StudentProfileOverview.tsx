@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "../../../context/ThemeContext";
 
 // overview icons
-import { useUserContext } from "../../../context/UserProvider";
+import { useUserContext } from "../../../context/StudentUserProvider";
 import { motion } from "framer-motion";
 import missionsDoneImg from "../../../assets/target.png";
 import { medalsImgs } from "../../../data/Medals";

@@ -1,20 +1,16 @@
 import { useState } from "react";
-
+import { motion } from "framer-motion";
 import PrimaryButton from "../../../components/PrimaryButton";
 import { IonRouterLink } from "@ionic/react";
-
 import GenericInput from "../../../components/GenericInput";
-
 import GoBackButton from "../../../components/GoBackButton";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Import AVATARS
 // Boys Avatars
-
 import boy1 from "../../../assets/avatars/Boys/boy1.png";
 import boy2 from "../../../assets/avatars/Boys/boy2.png";
 import boy3 from "../../../assets/avatars/Boys/boy3.png";
@@ -32,109 +28,71 @@ import girl5 from "../../../assets/avatars/Girls/girl5.png";
 import girl6 from "../../../assets/avatars/Girls/girl6.png";
 import girl7 from "../../../assets/avatars/Girls/girl7.png";
 import girl8 from "../../../assets/avatars/Girls/girl8.png";
-import girl9 from "../../../assets/avatars/Girls/girl9.png";
 
 import i18n from "../../../i18n";
 import axios from "axios";
 
 // Grouped arrays for easier access
 const boysAvatars = [boy1, boy2, boy3, boy4, boy5, boy6, boy7];
-const girlsAvatars = [
-  girl1,
-  girl2,
-  girl3,
-  girl4,
-  girl5,
-  girl6,
-  girl7,
-  girl8,
-  girl9,
-];
+const girlsAvatars = [girl1, girl2, girl3, girl4, girl5, girl6, girl7, girl8];
+
+import "react-toastify/dist/ReactToastify.css";
+import { FaCamera, FaRegSave } from "react-icons/fa";
+import { GiMale, GiFemale } from "react-icons/gi";
 
 const Toaster = () => (
   <ToastContainer
-    position="top-right"
-    autoClose={5000}
-    hideProgressBar={false}
-    newestOnTop={false}
+    position="top-center"
+    autoClose={3000}
+    hideProgressBar
+    newestOnTop
     closeOnClick
-    rtl={false}
-    pauseOnFocusLoss
-    draggable
-    pauseOnHover
-    theme="light"
+    theme="colored"
+    toastStyle={{ backgroundColor: "#F9A826", fontSize: "1.2rem" }}
   />
 );
 
 const Step1: React.FC = () => {
   const { t } = useTranslation();
-  const history = useHistory();
-
-  // State for storing data from each step
-  const [email, setEmail] = useState("alielmayyah@gmail.com");
-  const [character, setCharacter] = useState(
-    "/src/assets/signup/Avatar/Boys/boy2.png"
-  );
-  const [name, setName] = useState({
-    firstName: "Ali",
-    parentName: "Elmayyah",
-  });
-  const [gradeYear, setGradeYear] = useState("Grade 1");
   const [gender, setGender] = useState("boy");
-
-  // Temp Variables
-  const [tempEmail, setTempEmail] = useState(email);
+  const [character, setCharacter] = useState(boy1);
   const [tempCharacter, setTempCharacter] = useState(character);
-  const [tempName, setTempName] = useState({
-    firstName: name.firstName,
-    parentName: name.parentName,
-  });
-  const [tempGradeYear, setTempGradeYear] = useState(gradeYear);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
-  const handleNameChange = (key: string, value: string) => {
-    setTempName({ ...tempName, [key]: value });
+  // New animation variants
+  const avatarVariants = {
+    hidden: { scale: 0 },
+    visible: { scale: 1 },
+    selected: { scale: 1.2, rotate: [0, 10, -10, 0] },
   };
 
-  // Validation helper to check if a string contains only letters
-  const isAlphabetic = (str: string) => /^[A-Za-z\u0621-\u064A ]+$/.test(str);
-
-  const handleSubmit = async () => {
-    // Format name and date of birth
-    const formattedName = {
-      firstName: name.firstName,
-      lastName: name.parentName,
-    };
-    // Final data structure
-    const formData = {
-      firstName: formattedName.firstName,
-      lastName: formattedName.lastName,
-      email,
-      genre: gender,
-      grade: gradeYear,
-      profileImg: character,
-    };
-
-    console.log("Submitting form data:", formData);
-
-    // Handle API submission here
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/users/registration",
-        formData
-      );
-      if (response.status === 200) {
-        history.push("/home");
-      }
-    } catch (error) {
-      console.error("Error", error);
-      toast.error(t("Error"));
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setUploadedImage(reader.result as string);
+        toast.success(t("Photo uploaded! 🎉"));
+      };
+      reader.readAsDataURL(file);
     }
   };
+
+  const handleSave = () => {
+    const finalImage = uploadedImage || tempCharacter;
+    setCharacter(finalImage);
+    // Here you would typically send to backend
+    localStorage.setItem("profileImage", finalImage);
+    toast.success(t("All set! 🚀"));
+  };
+
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+    <div className="flex flex-col h-full w-full items-center justify-between p-4  ">
       <div className="absolute">
         <Toaster />
       </div>
+
+      {/* Header */}
       <div className="flex flex-row-reverse items-center w-full gap-3">
         <GoBackButton />
 
@@ -143,95 +101,118 @@ const Step1: React.FC = () => {
         </h1>
       </div>
 
-      {/* Avatar */}
-      <div className="flex flex-col items-center gap-5">
-        <img
-          src={tempCharacter}
-          alt={`Avatar`}
-          className={`w-32 h-32 bg-redprimary rounded-full `}
+      {/* Main Content */}
+
+      {/* Gender Selector */}
+      <motion.div
+        className="flex justify-center gap-4 "
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+      >
+        <div
+          className={`p-2 px-3 rounded-2xl flex items-center gap-2 text-xl ${
+            gender === "girl"
+              ? "bg-pink-500 text-white"
+              : "bg-white text-gray-600"
+          }`}
+          onClick={() => setGender("girl")}
+        >
+          <GiFemale className="text-2xl" />
+          {t("بنت")}
+        </div>
+        <div
+          className={`p-2 px-3 rounded-2xl flex items-center gap-2 text-xl ${
+            gender === "boy"
+              ? "bg-blue-500 text-white"
+              : "bg-white text-gray-600"
+          }`}
+          onClick={() => setGender("boy")}
+        >
+          <GiMale className="text-2xl" />
+          {t("ولد")}
+        </div>
+      </motion.div>
+
+      {/* Avatar Preview */}
+      <motion.div
+        className="relative w-48 h-48 mx-auto "
+        whileHover={{ rotate: [0, 5, -5, 0] }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-pink-500 rounded-full transform -rotate-6 scale-105" />
+        <motion.img
+          src={uploadedImage || tempCharacter}
+          alt="Avatar"
+          className="relative z-10 w-full h-full rounded-full object-cover border-8 border-white shadow-xl"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 100 }}
         />
-        <div className="flex flex-wrap gap-1 items-center justify-center">
-          {(gender === "boy" ? boysAvatars : girlsAvatars).map(
-            (avatar, index) => (
+      </motion.div>
+
+      {/* Avatar Grid */}
+      <motion.div
+        className="grid grid-cols-4 gap-4 "
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        {(gender === "boy" ? boysAvatars : girlsAvatars).map(
+          (avatar, index) => (
+            <motion.div
+              key={index}
+              variants={avatarVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover="selected"
+              className="relative cursor-pointer"
+              onClick={() => {
+                setTempCharacter(avatar);
+                setUploadedImage(null);
+              }}
+            >
               <img
-                key={index}
                 src={avatar}
                 alt={`Avatar ${index + 1}`}
-                className={`w-10 h-10 bg-redprimary rounded-full  ${
+                className={`w-full h-auto rounded-xl transition-all ${
                   tempCharacter === avatar
-                    ? "scale-125 opacity-100"
-                    : "opacity-70"
+                    ? "ring-4 ring-yellow-400 shadow-xl"
+                    : " ring-blue-200"
                 }`}
-                onClick={() => setTempCharacter(avatar)}
               />
-            )
-          )}
-        </div>
-      </div>
+            </motion.div>
+          )
+        )}
+      </motion.div>
 
-      {/* First and last name */}
-      <div className="w-full flex flex-col gap-7">
-        <div className="flex flex-col">
-          <div className="flex gap-3">
-            <GenericInput
-              type="text"
-              placeholder={t("اسم والدك")}
-              title={t("اسم والدك")}
-              onChange={(e) => handleNameChange("parentName", e.target.value)}
-              value={tempName.parentName}
-            />
-            <GenericInput
-              type="text"
-              placeholder={t("اسمك")}
-              title={t("اسمك الأول")}
-              onChange={(e) => handleNameChange("firstName", e.target.value)}
-              value={tempName.firstName}
-            />
+      {/* Upload Section */}
+      <motion.div className="text-center border-t-2 w-full pt-1 ">
+        <label className="inline-block cursor-pointer">
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleImageUpload}
+          />
+          <div className="bg-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+            <div className="flex items-center justify-center gap-2 text-blue-600">
+              <FaCamera className="text-3xl" />
+              <span className="text-xl font-bold">{t("Upload My Photo!")}</span>
+            </div>
           </div>
-        </div>
-      </div>
-      {/* First and last name */}
+        </label>
+      </motion.div>
 
-      {/* Email */}
-      <div className="flex flex-col gap-3 w-full ">
-        <GenericInput
-          type="email"
-          placeholder={t("email_example")}
-          title={t("البريد الإلكتروني")}
-          onChange={(e) => setTempEmail(e.target.value)}
-          value={tempEmail}
-        />
-      </div>
-      {/* Email */}
-
-      {/* Class */}
-      <div className="flex flex-col w-full gap-1">
-        <h1 className="self-end text-[#121212] ">{t("اختار صفك")}</h1>
-        <select
-          id="grades"
-          className={`w-full ${
-            i18n.language === "ar" ? "text-right" : "text-left"
-          } bg-white border py-4 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 CustomFont`}
-          dir={`${i18n.language === "ar" ? "rtl" : "ltr"}`}
-        >
-          <option selected>{t("اختار صفك")}</option>
-          {Array.from({ length: 12 }, (_, i) => (
-            <option
-              key={i + 1}
-              value={`الصف ${i + 1}`}
-              className="CustomFont py-3"
-            >
-              {t(`الصف ${i + 1}`)}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Class */}
-
-      <div className=" w-full" onClick={handleSubmit}>
-        <PrimaryButton style="fill" text={t("حفظ")} arrow="none" />
-      </div>
+      {/* Save Button */}
+      <motion.button
+        onClick={handleSave}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="w-full py-2 bg-green-500 text-white rounded-xl 
+        text-xl font-bold shadow-lg
+         flex items-center justify-center gap-2"
+      >
+        <FaRegSave />
+        {t("حفظ")}
+      </motion.button>
     </div>
   );
 };

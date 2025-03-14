@@ -13,6 +13,18 @@ interface User {
   lastName: string;
   email: string;
   role: string;
+
+  grade: number;
+
+  // Sanabel
+  snabelRed: number;
+  snabelBlue: number;
+  snabelYellow: number;
+
+  xp: number;
+
+  water: number;
+  seeders: number;
 }
 
 interface UserContextProps {
@@ -45,10 +57,21 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
         if (response.status === 200) {
           setUser({
-            firstName: response.data.data.user.firstName,
-            lastName: response.data.data.user.lastName,
-            email: response.data.data.user.email,
+            firstName: response.data.data.student.user.firstName,
+            lastName: response.data.data.student.user.lastName,
+            email: response.data.data.student.user.email,
             role: localStorage.getItem("role") || "",
+
+            grade: response.data.data.student.grade,
+
+            snabelRed: response.data.data.student.snabelRed,
+            snabelBlue: response.data.data.student.snabelBlue,
+            snabelYellow: response.data.data.student.snabelYellow,
+
+            xp: response.data.data.student.xp,
+
+            water: response.data.data.student.water,
+            seeders: response.data.data.student.seeders,
           });
         }
       } catch (error) {

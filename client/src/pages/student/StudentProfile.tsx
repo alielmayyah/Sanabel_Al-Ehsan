@@ -11,7 +11,7 @@ import edit from "../../icons/edit.svg";
 
 import LeaderboardIcon from "../../icons/navbar/LeaderboardsIcon";
 import activityDoneImg from "../../../assets/profile/Medallions.png";
-import { useUserContext } from "../../context/UserProvider";
+import { useUserContext } from "../../context/StudentUserProvider";
 
 // Navbar
 import StudentProfileOverview from "./profile/StudentProfileOverview";
