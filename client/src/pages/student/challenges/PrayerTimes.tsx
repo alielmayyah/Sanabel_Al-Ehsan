@@ -15,12 +15,21 @@ import Tickcircle from "../../../icons/Sanabel/Tickcircle";
 import Loading from "../../../components/Loading";
 
 // Fetch prayer times using a sample API
-const fetchPrayerTimes = async () => {
-  const response = await fetch(
-    `https://api.aladhan.com/v1/timingsByCity?city=Cairo&country=Egypt`
-  );
-  const data = await response.json();
-  return data.data.timings;
+const fetchPrayerTimes = async (city: string) => {
+  try {
+    const response = await fetch(
+      `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Egypt`
+    );
+    if (!response.ok) {
+      throw new Error(`Failed to fetch prayer times: ${response.status}`);
+    }
+    const data = await response.json();
+    return data.data.timings;
+  } catch (error) {
+    console.error("Error fetching prayer times:", error);
+    // Return empty object or default times in case of error
+    return {};
+  }
 };
 
 // Format time to AM/PM format
@@ -53,7 +62,20 @@ const isCurrentPrayer = (
   return currentTime >= start && currentTime < end;
 };
 
-const SanabelPrayer: React.FC = () => {
+interface PrayerTimesProps {
+  location: string;
+}
+
+// Update city names to be compatible with the API
+const cityMapping: Record<string, string> = {
+  القاهرة: "Cairo",
+  الإسكندرية: "Alexandria",
+  طنطا: "Tanta",
+  أسيوط: "Asyut",
+  المنصورة: "Mansoura",
+};
+
+const SanabelPrayer: React.FC<PrayerTimesProps> = ({ location }) => {
   const { index } = useParams<{ index: string }>();
   const { t } = useTranslation();
 
@@ -62,12 +84,15 @@ const SanabelPrayer: React.FC = () => {
 
   useEffect(() => {
     const getPrayerTimes = async () => {
-      const timings = await fetchPrayerTimes();
+      setLoading(true);
+      // Map the Arabic city name to English for the API
+      const cityForApi = cityMapping[location] || "Cairo"; // Default to Cairo if not found
+      const timings = await fetchPrayerTimes(cityForApi);
       setPrayerTimes(timings);
       setLoading(false);
     };
     getPrayerTimes();
-  }, []);
+  }, [location]);
 
   const currentTime = new Date();
 

@@ -1,18 +1,3 @@
-import React from "react";
-import {
-  IonTabs,
-  IonTab,
-  IonToolbar,
-  IonTabBar,
-  IonTabButton,
-  IonHeader,
-  IonTitle,
-  IonContent,
-  IonIcon,
-  IonRouterLink,
-} from "@ionic/react";
-
-import NotificationIcon from "../icons/NotificationIcon";
 
 import { useTranslation } from "react-i18next";
 import BackArrow from "../icons/BackArrow";
@@ -33,7 +18,7 @@ function PrimaryButton({ style, text, arrow, onClick }: ButtonProps) {
       className={`flex-center p-3 gap-3 w-full rounded-xl font-bold text-lg ${
         style == "stroke"
           ? "text-blueprimary border-2 border-blueprimary "
-          : " bg-blueprimary text-white"
+          : "bg-gradient-to-r from-[#2293c7] from-5% to-45% to-blueprimary text-white"
       }`}
       onClick={onClick}
     >

@@ -58,6 +58,7 @@ const SanabelType: React.FC = () => {
         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
       >
         <motion.img
+          loading="lazy"
           src={sanabel.img}
           alt=""
           className="h-20"
@@ -96,7 +97,7 @@ const SanabelType: React.FC = () => {
             custom={idx}
             onClick={() => history.push(`/student/sanabel/${index}/${idx}`)}
           >
-            <img src={item.img} alt="" className="w-2/5" />
+            <img src={item.img} alt="" className="w-2/5" loading="lazy" />
             <h1 className="text-black font-bold text-sm text-center">
               {item.name}
             </h1>

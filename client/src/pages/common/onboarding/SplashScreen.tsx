@@ -52,7 +52,7 @@ const SplashScreen: React.FC = () => {
         preload="auto"
       />
       <motion.h1
-        className="text-3xl text-[#5e5e5e] font-bold"
+        className="text-2xl text-[#5e5e5e] font-bold"
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1, duration: 0.5 }}

@@ -10,6 +10,7 @@ const SanabelType: React.FC = () => {
   const history = useHistory();
 
   localStorage.setItem("sanabelReminder", "true");
+
   const [reminderPopup, setReminderPopup] = useState(
     localStorage.getItem("sanabelReminder") === "true"
   );

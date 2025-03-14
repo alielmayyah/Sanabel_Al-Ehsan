@@ -30,6 +30,10 @@
   font-family: "DGAgnadeen" !important;
 }
 
+option {
+  font-family: "DGAgnadeen" !important;
+  border: 2px white solid;
+}
 .CustomFont {
   font-family: "DGAgnadeen" !important;
 }
