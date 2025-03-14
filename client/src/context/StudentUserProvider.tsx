@@ -28,6 +28,8 @@ interface User {
 
   waterNeeded: number;
   fertilizerNeeded: number;
+  treeStage: number;
+  treeProgress: number;
 }
 
 interface UserContextProps {
@@ -73,6 +75,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
           waterNeeded: response.data.data.treePoint.water,
           fertilizerNeeded: response.data.data.treePoint.seeders,
+          treeStage: response.data.data.treePoint.stage,
+          treeProgress: response.data.data.treePoint.treeProgress,
         });
       }
     } catch (error) {

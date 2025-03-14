@@ -78,7 +78,7 @@ interface SanabelTreeProps {
   treeStage: number; // Prop for the tree stage
 }
 
-const SanabelTree: React.FC<SanabelTreeProps> = ({ treeStage }) => {
+const SanabelTree: React.FC<SanabelTreeProps> = () => {
   const history = useHistory();
   const { t } = useTranslation();
   const { user } = useUserContext();
@@ -88,6 +88,12 @@ const SanabelTree: React.FC<SanabelTreeProps> = ({ treeStage }) => {
   const waterNeeded = Number(user?.waterNeeded);
   const fertilizerNeeded = Number(user?.fertilizerNeeded);
 
+  //  المرحلة
+  const treeStage = Number(user?.treeStage);
+
+  const treeProgress = Number(user?.treeProgress);
+
+  console.log(treeStage);
   return (
     <div className="flex flex-col h-full w-full items-center justify-between  ">
       {/* Tree */}
@@ -114,7 +120,11 @@ const SanabelTree: React.FC<SanabelTreeProps> = ({ treeStage }) => {
 
           {/* Tree */}
           <div className="flex-center flex-col w-7/12  h-auto">
-            <img src={treeStages[treeStage]} className="h-full w-full" alt="" />
+            <img
+              src={treeStages[treeProgress + 3]}
+              className="h-full w-full"
+              alt=""
+            />
           </div>
 
           {/* Fertilizer */}
