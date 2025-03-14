@@ -48,7 +48,7 @@ const studentData = async (req: Request, res: Response) => {
     } else {
       const treePoint = await Tree.findOne({
         where: { id: student.treeProgress },
-        attributes: ["id", "seeders", "water","stage"],
+        attributes: ["id", "seeders", "water","stage","treeProgress"],
       });
       const responseData = {
         student,
