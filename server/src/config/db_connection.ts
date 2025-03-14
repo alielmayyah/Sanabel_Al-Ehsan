@@ -297,26 +297,31 @@ const connectToDb = async (): Promise<void> => {
     const seedTasks: any[] = demoTaskSeeder.data || [];
 
     // Identify tasks to insert or update
-    const tasksToUpsert = seedTasks.filter(seedTask => {
-      const existingTask = existingTasks.find(task => task.id === seedTask.id);
+    const tasksToUpsert = seedTasks.filter((seedTask) => {
+      const existingTask = existingTasks.find(
+        (task) => task.id === seedTask.id
+      );
       if (!existingTask) return true; // New task, needs insertion
 
       // Compare all attributes (excluding metadata like createdAt, updatedAt)
-      const existingFiltered = _.omit(existingTask.toJSON(), ["createdAt", "updatedAt"]);
+      const existingFiltered = _.omit(existingTask.toJSON(), [
+        "createdAt",
+        "updatedAt",
+      ]);
       const seedFiltered = _.omit(seedTask, ["createdAt", "updatedAt"]);
 
       return !_.isEqual(existingFiltered, seedFiltered);
     });
 
     // Identify tasks to delete (exist in DB but not in seed data)
-    const tasksToDelete = existingTasks.filter(existingTask => {
-      return !seedTasks.some(seedTask => seedTask.id === existingTask.id);
+    const tasksToDelete = existingTasks.filter((existingTask) => {
+      return !seedTasks.some((seedTask) => seedTask.id === existingTask.id);
     });
 
     // Perform upserts and deletions
     if (tasksToUpsert.length > 0) {
       console.log("🔍 Upserting Tasks:", tasksToUpsert.length);
-      await Promise.all(tasksToUpsert.map(task => Task.upsert(task)));
+      await Promise.all(tasksToUpsert.map((task) => Task.upsert(task)));
       console.log("✅ Task data upserted successfully!");
     } else {
       console.log("✔️ Task data is already up to date.");
@@ -324,7 +329,7 @@ const connectToDb = async (): Promise<void> => {
 
     if (tasksToDelete.length > 0) {
       console.log("🔍 Deleting Tasks:", tasksToDelete.length);
-      await Promise.all(tasksToDelete.map(task => task.destroy()));
+      await Promise.all(tasksToDelete.map((task) => task.destroy()));
       console.log("✅ Task data deleted successfully!");
     } else {
       console.log("✔️ No tasks to delete.");
@@ -337,26 +342,31 @@ const connectToDb = async (): Promise<void> => {
     const seedTrees: any[] = demoTree.data || [];
 
     // Identify trees to insert or update
-    const treesToUpsert = seedTrees.filter(seedTree => {
-      const existingTree = existingTrees.find(tree => tree.id === seedTree.id);
+    const treesToUpsert = seedTrees.filter((seedTree) => {
+      const existingTree = existingTrees.find(
+        (tree) => tree.id === seedTree.id
+      );
       if (!existingTree) return true; // New tree, needs insertion
 
       // Compare all attributes (excluding metadata like createdAt, updatedAt)
-      const existingFiltered = _.omit(existingTree.toJSON(), ["createdAt", "updatedAt"]);
+      const existingFiltered = _.omit(existingTree.toJSON(), [
+        "createdAt",
+        "updatedAt",
+      ]);
       const seedFiltered = _.omit(seedTree, ["createdAt", "updatedAt"]);
 
       return !_.isEqual(existingFiltered, seedFiltered);
     });
 
     // Identify trees to delete (exist in DB but not in seed data)
-    const treesToDelete = existingTrees.filter(existingTree => {
-      return !seedTrees.some(seedTree => seedTree.id === existingTree.id);
+    const treesToDelete = existingTrees.filter((existingTree) => {
+      return !seedTrees.some((seedTree) => seedTree.id === existingTree.id);
     });
 
     // Perform upserts and deletions
     if (treesToUpsert.length > 0) {
       console.log("🔍 Upserting Trees:", treesToUpsert.length);
-      await Promise.all(treesToUpsert.map(tree => Tree.upsert(tree)));
+      await Promise.all(treesToUpsert.map((tree) => Tree.upsert(tree)));
       console.log("✅ Tree data upserted successfully!");
     } else {
       console.log("✔️ Tree data is already up to date.");
@@ -364,7 +374,7 @@ const connectToDb = async (): Promise<void> => {
 
     if (treesToDelete.length > 0) {
       console.log("🔍 Deleting Trees:", treesToDelete.length);
-      await Promise.all(treesToDelete.map(tree => tree.destroy()));
+      await Promise.all(treesToDelete.map((tree) => tree.destroy()));
       console.log("✅ Tree data deleted successfully!");
     } else {
       console.log("✔️ No trees to delete.");
@@ -375,26 +385,35 @@ const connectToDb = async (): Promise<void> => {
     const existingChallanges = await Challenge.findAll();
     const seedChallanges: any[] = demoChallengeSeeder.data || [];
     // Identify trees to insert or update
-    const ChallangeToUpsert = seedChallanges.filter(seedChallange => {
-      const existingChallange = existingChallanges.find(challange => challange.id === seedChallange.id);
+    const ChallangeToUpsert = seedChallanges.filter((seedChallange) => {
+      const existingChallange = existingChallanges.find(
+        (challange) => challange.id === seedChallange.id
+      );
       if (!existingChallange) return true; // New tree, needs insertion
 
       // Compare all attributes (excluding metadata like createdAt, updatedAt)
-      const existingFiltered = _.omit(existingChallange.toJSON(), ["createdAt", "updatedAt"]);
+      const existingFiltered = _.omit(existingChallange.toJSON(), [
+        "createdAt",
+        "updatedAt",
+      ]);
       const seedFiltered = _.omit(seedChallange, ["createdAt", "updatedAt"]);
 
       return !_.isEqual(existingFiltered, seedFiltered);
     });
 
     // Identify trees to delete (exist in DB but not in seed data)
-    const ChallangeToDelete = existingChallanges.filter(existingChallange => {
-      return !seedChallanges.some(seedChallange => seedChallange.id === existingChallange.id);
+    const ChallangeToDelete = existingChallanges.filter((existingChallange) => {
+      return !seedChallanges.some(
+        (seedChallange) => seedChallange.id === existingChallange.id
+      );
     });
 
     // Perform upserts and deletions
     if (ChallangeToUpsert.length > 0) {
       console.log("🔍 Upserting Challenges:", ChallangeToUpsert.length);
-      await Promise.all(ChallangeToUpsert.map(challange => Challenge.upsert(challange)));
+      await Promise.all(
+        ChallangeToUpsert.map((challange) => Challenge.upsert(challange))
+      );
       console.log("✅ Challenge data upserted successfully!");
     } else {
       console.log("✔️ Challenge data is already up to date.");
@@ -402,16 +421,16 @@ const connectToDb = async (): Promise<void> => {
 
     if (ChallangeToDelete.length > 0) {
       console.log("🔍 Deleting Challenges:", ChallangeToDelete.length);
-      await Promise.all(ChallangeToDelete.map(challange => challange.destroy()));
+      await Promise.all(
+        ChallangeToDelete.map((challange) => challange.destroy())
+      );
       console.log("✅ Challenge data deleted successfully!");
     } else {
       console.log("✔️ No Challenges to delete.");
     }
-
   } catch (error) {
     console.error("❌ Database connection error:", error);
   }
-  
 };
 
 export { sequelize, connectToDb, rundb };

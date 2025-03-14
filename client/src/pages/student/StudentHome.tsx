@@ -27,6 +27,7 @@ import { treeStages } from "../../data/Tree";
 import SanabelTree from "../../components/tree/SanabelTree";
 import Inventory from "../../components/tree/Inventory";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 const medalsData = [
   { title: "مبتدئ", img: medalsImgs[0], level: "1" },
@@ -66,6 +67,34 @@ const calculateXpForLevel = (targetLevel: any) => {
 
   return totalXp;
 };
+
+const [missionsDoneToday, setMissionsDoneToday] = useState(0);
+// Function to fetch user data
+const fetchUserData = async (token?: string) => {
+  const authToken = token || localStorage.getItem("token");
+  if (!authToken) return;
+
+  try {
+    const response = await axios.get(
+      "http://localhost:3000/students/task-count-sucess",
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      setMissionsDoneToday(response);
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
+useEffect(() => {
+  fetchUserData();
+}, []);
 
 const StudentHome: React.FC = () => {
   const history = useHistory();

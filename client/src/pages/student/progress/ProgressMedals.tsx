@@ -138,7 +138,9 @@ const Progress: React.FC = () => {
 
         <div className="w-full flex justify-between items-center text-sm">
           <h1 className="text-[#999999]">{t("المستوي التالي")}</h1>
-          <h1 className="text-[#999999]">{t(`تم إنجاز ${currentXp} نقطة`)}</h1>
+          <h1 className="text-[#999999]">
+            {t("نقطة")} {t(`${currentXp}`)} {t("تم إنجاز ")}
+          </h1>
         </div>
       </motion.div>
 

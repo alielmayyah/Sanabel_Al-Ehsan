@@ -46,7 +46,6 @@ const Step3: React.FC<Step3Props> = ({
   birthdate,
   setBirthdate,
 }) => {
-
   const { t } = useTranslation();
 
   const handleInputChange = (field: string, value: string) => {
