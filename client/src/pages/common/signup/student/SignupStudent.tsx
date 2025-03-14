@@ -102,10 +102,11 @@ const Signup: React.FC = () => {
       lastName: formattedName.lastName,
       email,
       password,
-      genre: gender,
+      gender: gender,
       dateOfBirth: formattedBirthdate,
       grade: gradeYear,
-      profileImg: character,
+      role: "Student",
+      profileImg: "",
     };
 
     console.log("Submitting form data:", formData);
@@ -116,8 +117,11 @@ const Signup: React.FC = () => {
         "http://localhost:3000/users/registration",
         formData
       );
-      if (response.status === 200) {
-        history.push("/home");
+
+      http: if (response.status === 201) {
+        history.push(`/login`);
+        // PUSH TO LOGIN
+        toast.success("Sign up");
       }
     } catch (error) {
       console.error("Error", error);
