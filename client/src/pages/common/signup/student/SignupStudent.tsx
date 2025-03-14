@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 
 const Signup: React.FC = () => {
-  const [stepIndex, setStepIndex] = useState(5);
+  const [stepIndex, setStepIndex] = useState(0);
   const history = useHistory();
   // State for storing data from each step
   const [email, setEmail] = useState("");

@@ -180,9 +180,10 @@ const Shop: React.FC = () => {
           </div>
         )}
       </div>
-      <div className="border-2 bg-blueprimary text-white rounded-xl">
+
+      {/* <div className="border-2 bg-blueprimary text-white rounded-xl">
         <h1 className="text-md text-black">{t("كبر الشجرة")}</h1>
-      </div>
+      </div> */}
     </div>
   );
 };

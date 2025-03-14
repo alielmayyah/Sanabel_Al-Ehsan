@@ -36,60 +36,63 @@ interface UserContextProps {
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 // Provide the context
+// In UserProvider.jsx
 export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(null); // Context user state
+  const [user, setUser] = useState<User | null>(null);
+
+  // Function to fetch user data
+  const fetchUserData = async (token?: string) => {
+    const authToken = token || localStorage.getItem("token");
+    if (!authToken) return;
+
+    try {
+      const response = await axios.get("http://localhost:3000/students/data", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      if (response.status === 200) {
+        setUser({
+          firstName: response.data.data.student.user.firstName,
+          lastName: response.data.data.student.user.lastName,
+          email: response.data.data.student.user.email,
+          role: localStorage.getItem("role") || "",
+          grade: response.data.data.student.grade,
+          snabelRed: response.data.data.student.snabelRed,
+          snabelBlue: response.data.data.student.snabelBlue,
+          snabelYellow: response.data.data.student.snabelYellow,
+          xp: response.data.data.student.xp,
+          water: response.data.data.student.water,
+          seeders: response.data.data.student.seeders,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    const handleFetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:3000/students/data",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Properly formatted template literal
-            },
-          }
-        );
-
-        if (response.status === 200) {
-          setUser({
-            firstName: response.data.data.student.user.firstName,
-            lastName: response.data.data.student.user.lastName,
-            email: response.data.data.student.user.email,
-            role: localStorage.getItem("role") || "",
-
-            grade: response.data.data.student.grade,
-
-            snabelRed: response.data.data.student.snabelRed,
-            snabelBlue: response.data.data.student.snabelBlue,
-            snabelYellow: response.data.data.student.snabelYellow,
-
-            xp: response.data.data.student.xp,
-
-            water: response.data.data.student.water,
-            seeders: response.data.data.student.seeders,
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    if (token) {
-      handleFetchData();
-    }
+    fetchUserData();
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider
+      value={{ user, setUser, refreshUserData: fetchUserData }}
+    >
       {children}
     </UserContext.Provider>
   );
 };
+
+// Update the context type
+interface UserContextProps {
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  refreshUserData: (token?: string) => Promise<void>;
+}
 
 // Custom hook to use the UserContext
 export const useUserContext = (): UserContextProps => {

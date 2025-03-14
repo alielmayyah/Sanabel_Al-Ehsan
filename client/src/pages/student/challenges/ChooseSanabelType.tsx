@@ -17,8 +17,13 @@ const SanabelType: React.FC = () => {
   const history = useHistory();
 
   const [reminderPopup, setReminderPopup] = useState(
-    localStorage.getItem("sanabelReminder") === "true"
+    localStorage.getItem("sanabelReminder") === null
   );
+
+  const handleStartClick = () => {
+    setReminderPopup(false);
+    localStorage.setItem("sanabelReminder", "false");
+  };
 
   const reminderData = [
     "️اختر عددًا من التحديات اليومية والأسبوعية بحسب وقتك وظروفك.",
@@ -26,11 +31,6 @@ const SanabelType: React.FC = () => {
     "️الحرص على التوازن بين العلاقات وعدم إهمال أي جانب.",
     "️التدرج في الأهداف وتجنب إرهاق النفس في بداية التحدي.",
   ];
-
-  const handleStartClick = () => {
-    setReminderPopup(false);
-    localStorage.setItem("sanabelReminder", "false");
-  };
 
   const popupVariants = {
     hidden: { y: "100%", opacity: 0 },
@@ -76,6 +76,7 @@ const SanabelType: React.FC = () => {
           {/* Image */}
           <motion.img
             src={reminderImg}
+            loading="lazy"
             alt="Reminder"
             style={{ width: "170px" }}
             initial={{ scale: 0 }}
@@ -217,12 +218,22 @@ const SanabelType: React.FC = () => {
                 <div className="flex gap-2">
                   {items.rewards?.map((item) => (
                     <div className="flex-col flex-center">
-                      <img src={item.icon} alt="icon" className="w-auto h-6" />
+                      <img
+                        src={item.icon}
+                        alt="icon"
+                        className="w-auto h-6"
+                        loading="lazy"
+                      />
                       <h1 className="text-black text-sm"> {item.value}</h1>
                     </div>
                   ))}
                 </div>
-                <img src={items.img} alt="" className="h-auto w-1/4" />
+                <img
+                  src={items.img}
+                  alt=""
+                  className="h-auto w-1/4"
+                  loading="lazy"
+                />
               </div>
               <div className="w-full flex flex-col items-end">
                 <div className="flex-center gap-2">

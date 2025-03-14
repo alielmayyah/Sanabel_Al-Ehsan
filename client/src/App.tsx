@@ -97,6 +97,7 @@ const App: React.FC = () => {
               {/*  UNCOMMENT*/}
               <Switch>
                 {/* // Splash Screen */}
+                {/* <Route exact path="/" component={StudentHome} /> */}
                 <Route exact path="/" component={SplashScreen} />
 
                 {/*  UNCOMMENT*/}

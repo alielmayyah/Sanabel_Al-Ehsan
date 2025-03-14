@@ -13,6 +13,7 @@ import PrimaryButton from "../../../components/PrimaryButton";
 import loginImg from "../../../assets/login/logo.png";
 import sanabelVideo from "../../../assets/login/loginVideo.mp4";
 import { FaHome } from "react-icons/fa";
+import { useUserContext } from "../../../context/StudentUserProvider";
 const Toaster = () => (
   <ToastContainer
     position="top-center"
@@ -47,19 +48,11 @@ const Login: React.FC = () => {
   console.log(email);
   console.log(password);
 
+  const { refreshUserData } = useUserContext();
+
+  // In Login.jsx, modify your handleLogin function:
   const handleLogin = async () => {
-    if (!email || !password) {
-      toast.error(t("fill_all_fields"));
-      return;
-    }
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      toast.error(t("invalid_email"));
-      return;
-    }
-    if (password.length < 8) {
-      toast.error(t("short_password"));
-      return;
-    }
+    // Your existing validation code...
 
     try {
       const response = await axios.post("http://localhost:3000/users/login", {
@@ -75,12 +68,54 @@ const Login: React.FC = () => {
         );
 
         // Store Role preference
-
         localStorage.setItem("role", response.data.data.user.role.toString());
+
         // Store keepLoggedIn preference
-        () => setIsKeepLogged(true);
         localStorage.setItem("keepLoggedIn", "true");
 
+        // Fetch user data immediately after login
+        try {
+          const userDataResponse = await axios.get(
+            "http://localhost:3000/students/data",
+            {
+              headers: {
+                Authorization: `Bearer ${response.data.data.user.token}`,
+              },
+            }
+          );
+
+          // Now set the user data directly before redirecting
+          if (userDataResponse.status === 200) {
+            // Get the data
+            const userData = userDataResponse.data.data.student;
+
+            // Set user in context
+            // You'll need to import useUserContext at the top
+            const { setUser } = useUserContext();
+            setUser({
+              firstName: userData.user.firstName,
+              lastName: userData.user.lastName,
+              email: userData.user.email,
+              role: response.data.data.user.role,
+              grade: userData.grade,
+              snabelRed: userData.snabelRed,
+              snabelBlue: userData.snabelBlue,
+              snabelYellow: userData.snabelYellow,
+              xp: userData.xp,
+              water: userData.water,
+              seeders: userData.seeders,
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+
+        await refreshUserData(response.data.data.user.token);
+
+        // Show success message
+        toast.success(t("login_successful"));
+
+        // Redirect based on role
         if (response.data.data.user.role === "Student") {
           history.push("/student/home");
         } else if (response.data.data.user.role === "Teacher") {
@@ -88,9 +123,6 @@ const Login: React.FC = () => {
         } else if (response.data.data.user.role === "Parent") {
           history.push("/parent/home");
         }
-        toast.success(t("login_successful"));
-
-        // Redirect to the home screen after login
       }
     } catch (error) {
       toast.error(t("login_failed"));

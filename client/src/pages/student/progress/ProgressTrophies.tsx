@@ -41,12 +41,12 @@ const Progress: React.FC = () => {
   const currentXp = 13;
   const neededXp = 25;
 
-  const trophyCount = [1, 5, 10, 25, 50, 75, 100];
+  const trophyCount = [1, 5, 10, 25, 50, 75, 100, 1000, 2500];
   return (
     <div className="flex flex-col gap-3 w-full h-3/4 overflow-y-auto ">
       <div className="flex w-full rounded-2xl bg-[#e6e6e6]">
         <h1
-          className={`text-[#999] p-2 rounded-2xl w-1/2 flex-center ${
+          className={`text-[#999] text-sm p-2 rounded-2xl w-1/2 flex-center ${
             trophyType === 1 && "bg-yellowprimary text-white"
           }`}
           onClick={() => setTrophyType(1)}
@@ -54,7 +54,7 @@ const Progress: React.FC = () => {
           {t("جوائز أخري")}
         </h1>
         <h1
-          className={`text-[#999] p-2 rounded-2xl w-1/2 flex-center ${
+          className={`text-[#999] text-sm p-2 rounded-2xl w-1/2 flex-center ${
             trophyType === 0 && "bg-yellowprimary text-white"
           }`}
           onClick={() => setTrophyType(0)}
@@ -64,7 +64,7 @@ const Progress: React.FC = () => {
       </div>
 
       <motion.div
-        className="w-full bg-[#E14E54] flex-center justify-between items-center p-2 gap-3 rounded-2xl text-lg"
+        className="w-full bg-[#E14E54] flex-center justify-between items-center p-1 gap-3 rounded-2xl text-md"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -99,7 +99,7 @@ const Progress: React.FC = () => {
         />
       </motion.div>
 
-      <div className="w-full flex flex-col justify-between items-center shadow-sm p-3 rounded-xl border-[1px] gap-1">
+      <div className="w-full flex flex-col justify-between items-center shadow-sm p-3 rounded-xl border-[1px] gap-2">
         <div className="w-full flex  justify-between items-center">
           <div className="flex gap-2">
             {rewards?.map((item) => (
@@ -139,8 +139,12 @@ const Progress: React.FC = () => {
 
         <div className="w-full flex justify-around">
           {trophyCount.map((item) => (
-            <div className="flex-center bg-yellowprimary w-6 h-6  rounded-full p-1">
-              {" "}
+            <div
+              className="flex-center
+             bg-[#FFF8E5]1  
+             bg-[#FAB700] 
+             w-auto px-2 h-6  rounded-full"
+            >
               <h1 className="text-xs text-black font-bold">{item}</h1>
             </div>
           ))}
