@@ -8,6 +8,8 @@ enum CompletionStatus {
   NotCompleted = "NotCompleted",
 }
 class StudentTask extends Model {
+  declare id: number; 
+
   declare studentId: number;
   declare taskId: number;
   declare completionStatus: CompletionStatus; // Add completion status field
@@ -16,6 +18,7 @@ class StudentTask extends Model {
   static initModel(sequelize: Sequelize) {
     StudentTask.init(
       {
+       
         completionStatus: {
           type: DataTypes.STRING,
           allowNull: false,

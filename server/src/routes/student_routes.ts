@@ -370,7 +370,7 @@ router.get(
 
 /**
  * @swagger
- * /students/task-category:
+ * /students/tasks-category:
  *   get:
  *     summary: Fetch task categories
  *     description: Retrieve all task categories.
@@ -397,7 +397,7 @@ router.get(
  *         description: Internal Server Error
  */
 router.get(
-  "/task-category",
+  "/tasks-category",
   authenticateToken,
   checkstudent,
   appearTaskesCategory

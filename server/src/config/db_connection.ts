@@ -15,11 +15,12 @@ import StudentTeacher from "../models/studentTeacher.model";
 import StudentTask from "../models/student-task.model"; // Import the new model
 import StudentChallenge from "../models/student-challenge.model";
 import Groupe from "../models/groupe.model";
+import _ from "lodash";
+
 import Tree from "../models/tree.model";
 const demoTree = require("../seeders/demo-tree-seeders");
-import { tasks } from "googleapis/build/src/apis/tasks";
 const demoTaskSeeder = require("../seeders/20241118230008-demo-task");
-const demoTasktypeSeeder = require("../seeders/tasktype-seeder");
+const demoChallengeSeeder = require("../seeders/challange-seeder");
 const sequelize = new Sequelize({
   dialect: MySqlDialect,
   database: process.env.MYSQL_DB_NAME,
@@ -28,33 +29,6 @@ const sequelize = new Sequelize({
   host: process.env.MYSQL_DB_HOST,
   port: Number(process.env.MYSQL_DB_PORT),
 });
-
-const connectToDb = async () => {
-  try {
-    await rundb(); // Call rundb before authenticate
-    await sequelize.authenticate();
-    console.log("Successfully connected to our db");
-    const taskCount = await Task.count();
-    const TreeCount = await Tree.count();
-
-    if (taskCount === 0) {
-      // Run the seeder only if there are no tasks already in the database
-      await demoTaskSeeder.up(sequelize.queryInterface, Sequelize);
-      console.log("Seeder data inserted successfully!");
-    } else {
-      console.log("Tasks already seeded. Skipping seeding process.");
-    }
-    if (TreeCount === 0) {
-      // Run the seeder only if there are no tasks already in the database
-      await demoTree.up(sequelize.queryInterface, Sequelize);
-      console.log("Seeder data inserted successfully!");
-    } else {
-      console.log("Tasks already seeded. Skipping seeding process.");
-    }
-  } catch (error) {
-    console.error("Database connection error:", error);
-  }
-};
 
 const rundb = async () => {
   // Initialize models
@@ -76,6 +50,7 @@ const rundb = async () => {
   StudentChallenge.initModel(sequelize);
   Challenge.associate();
 
+  // Define associations
   User.hasMany(Student, {
     foreignKey: "userId",
     sourceKey: "id",
@@ -110,12 +85,12 @@ const rundb = async () => {
   });
 
   User.hasMany(Parent, {
-    foreignKey: "userId", // Fixed foreignKey name
+    foreignKey: "userId",
     sourceKey: "id",
     as: "Parents",
   });
   Parent.belongsTo(User, {
-    foreignKey: "userId", // Fixed foreignKey name
+    foreignKey: "userId",
     targetKey: "id",
     as: "User",
   });
@@ -127,20 +102,20 @@ const rundb = async () => {
   });
   Parent.hasMany(Student, {
     foreignKey: "ParentId",
-    sourceKey: "id", // Changed to match the Student model
+    sourceKey: "id",
     as: "Students",
   });
 
   // Student and Teacher Relationships (Many-to-Many through StudentTeacher)
   Student.belongsToMany(Teacher, {
     through: StudentTeacher,
-    foreignKey: "studentId", // use correct foreign key name
+    foreignKey: "studentId",
     as: "Teachers",
   });
 
   Teacher.belongsToMany(Student, {
     through: StudentTeacher,
-    foreignKey: "teacherId", // use correct foreign key name
+    foreignKey: "teacherId",
     as: "Students",
   });
 
@@ -155,28 +130,30 @@ const rundb = async () => {
     foreignKey: "taskId",
     as: "Students",
   });
+
   Student.belongsToMany(Challenge, {
     through: StudentChallenge,
-    foreignKey: "studentId", // Correct foreign key
-    otherKey: "challengeId", // Specify the other key
+    foreignKey: "studentId",
+    otherKey: "challengeId",
     as: "Challenges",
   });
 
   Challenge.belongsToMany(Student, {
     through: StudentChallenge,
-    foreignKey: "challengeId", // Correct foreign key
-    otherKey: "studentId", // Specify the other key
+    foreignKey: "challengeId",
+    otherKey: "studentId",
     as: "Students",
   });
+
   // Student and Organization Relationships
   Student.belongsTo(Organization, {
     foreignKey: "organizationId",
-    targetKey: "id", // Changed to 'id' to match the Organization model
+    targetKey: "id",
     as: "Organization",
   });
   Organization.hasMany(Student, {
     foreignKey: "organizationId",
-    sourceKey: "id", // Changed to 'id' to match the Organization model
+    sourceKey: "id",
     as: "Students",
   });
 
@@ -191,6 +168,7 @@ const rundb = async () => {
     sourceKey: "id",
     as: "Teachers",
   });
+
   Class.belongsTo(Teacher, {
     foreignKey: "teacherId",
     targetKey: "id",
@@ -201,6 +179,7 @@ const rundb = async () => {
     sourceKey: "id",
     as: "Classes",
   });
+
   // Class and Organization Relationships
   Class.belongsTo(Organization, {
     foreignKey: "organizationId",
@@ -212,6 +191,7 @@ const rundb = async () => {
     sourceKey: "id",
     as: "Classes",
   });
+
   Representative.belongsTo(Organization, {
     foreignKey: "organizationId",
     targetKey: "id",
@@ -246,6 +226,7 @@ const rundb = async () => {
     sourceKey: "id",
     as: "Rewards",
   });
+
   Groupe.belongsTo(Organization, {
     foreignKey: "organizationId",
     targetKey: "id",
@@ -256,43 +237,41 @@ const rundb = async () => {
     sourceKey: "id",
     as: "Groupes",
   });
+
   Student.belongsTo(Class, {
-    foreignKey: "classId", // Ensure it points to the correct foreign key in Student model
-    targetKey: "id", // The target key in the Class model
-    as: "Class", // Alias for this association
+    foreignKey: "classId",
+    targetKey: "id",
+    as: "Class",
   });
 
-  // In the Class model
   Class.hasMany(Student, {
-    foreignKey: "classId", // Ensure it matches the foreign key defined in Student model
-    sourceKey: "id", // The source key in the Class model
-    as: "Students", // Alias for the reverse association
+    foreignKey: "classId",
+    sourceKey: "id",
+    as: "Students",
   });
+
   Student.belongsTo(Tree, {
-    foreignKey: "treeProgress", // Matches the foreign key in the Student model
-    targetKey: "id", // Points to the primary key in the Tree model
-    as: "Tree", // Singular alias for this association
+    foreignKey: "treeProgress",
+    targetKey: "id",
+    as: "Tree",
   });
 
-  // In the Class model
   Tree.hasMany(Student, {
-    foreignKey: "treeProgress", // Matches the foreign key in the Student model
-    sourceKey: "id", // Points to the primary key in the Tree model
-    as: "Students", // Plural alias for the reverse association
+    foreignKey: "treeProgress",
+    sourceKey: "id",
+    as: "Students",
   });
 
-  // Ensure the same pattern for the Groupe -> Student relationship
   Groupe.hasMany(Student, {
     foreignKey: "groupeId",
     sourceKey: "id",
-    as: "Students", // Alias for the reverse association
+    as: "Students",
   });
 
-  // Student belongs to Groupe with the foreignKey: 'groupeId'
   Student.belongsTo(Groupe, {
     foreignKey: "groupeId",
     targetKey: "id",
-    as: "Groupe", // Alias for the Groupe association
+    as: "Groupe",
   });
 
   try {
@@ -301,6 +280,138 @@ const rundb = async () => {
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
+};
+
+const connectToDb = async (): Promise<void> => {
+  try {
+    await sequelize.authenticate();
+    console.log("✅ Successfully connected to our DB");
+
+    // Initialize models and associations
+    await rundb();
+
+    // -----------------------------
+    // Handle Tasks seeding/updating
+    // -----------------------------
+    const existingTasks = await Task.findAll();
+    const seedTasks: any[] = demoTaskSeeder.data || [];
+
+    // Identify tasks to insert or update
+    const tasksToUpsert = seedTasks.filter(seedTask => {
+      const existingTask = existingTasks.find(task => task.id === seedTask.id);
+      if (!existingTask) return true; // New task, needs insertion
+
+      // Compare all attributes (excluding metadata like createdAt, updatedAt)
+      const existingFiltered = _.omit(existingTask.toJSON(), ["createdAt", "updatedAt"]);
+      const seedFiltered = _.omit(seedTask, ["createdAt", "updatedAt"]);
+
+      return !_.isEqual(existingFiltered, seedFiltered);
+    });
+
+    // Identify tasks to delete (exist in DB but not in seed data)
+    const tasksToDelete = existingTasks.filter(existingTask => {
+      return !seedTasks.some(seedTask => seedTask.id === existingTask.id);
+    });
+
+    // Perform upserts and deletions
+    if (tasksToUpsert.length > 0) {
+      console.log("🔍 Upserting Tasks:", tasksToUpsert.length);
+      await Promise.all(tasksToUpsert.map(task => Task.upsert(task)));
+      console.log("✅ Task data upserted successfully!");
+    } else {
+      console.log("✔️ Task data is already up to date.");
+    }
+
+    if (tasksToDelete.length > 0) {
+      console.log("🔍 Deleting Tasks:", tasksToDelete.length);
+      await Promise.all(tasksToDelete.map(task => task.destroy()));
+      console.log("✅ Task data deleted successfully!");
+    } else {
+      console.log("✔️ No tasks to delete.");
+    }
+
+    // -----------------------------
+    // Handle Trees seeding/updating
+    // -----------------------------
+    const existingTrees = await Tree.findAll();
+    const seedTrees: any[] = demoTree.data || [];
+
+    // Identify trees to insert or update
+    const treesToUpsert = seedTrees.filter(seedTree => {
+      const existingTree = existingTrees.find(tree => tree.id === seedTree.id);
+      if (!existingTree) return true; // New tree, needs insertion
+
+      // Compare all attributes (excluding metadata like createdAt, updatedAt)
+      const existingFiltered = _.omit(existingTree.toJSON(), ["createdAt", "updatedAt"]);
+      const seedFiltered = _.omit(seedTree, ["createdAt", "updatedAt"]);
+
+      return !_.isEqual(existingFiltered, seedFiltered);
+    });
+
+    // Identify trees to delete (exist in DB but not in seed data)
+    const treesToDelete = existingTrees.filter(existingTree => {
+      return !seedTrees.some(seedTree => seedTree.id === existingTree.id);
+    });
+
+    // Perform upserts and deletions
+    if (treesToUpsert.length > 0) {
+      console.log("🔍 Upserting Trees:", treesToUpsert.length);
+      await Promise.all(treesToUpsert.map(tree => Tree.upsert(tree)));
+      console.log("✅ Tree data upserted successfully!");
+    } else {
+      console.log("✔️ Tree data is already up to date.");
+    }
+
+    if (treesToDelete.length > 0) {
+      console.log("🔍 Deleting Trees:", treesToDelete.length);
+      await Promise.all(treesToDelete.map(tree => tree.destroy()));
+      console.log("✅ Tree data deleted successfully!");
+    } else {
+      console.log("✔️ No trees to delete.");
+    }
+    // -----------------------------
+    // Handle Challange seeding/updating
+    // -----------------------------
+    const existingChallanges = await Challenge.findAll();
+    const seedChallanges: any[] = demoChallengeSeeder.data || [];
+    // Identify trees to insert or update
+    const ChallangeToUpsert = seedChallanges.filter(seedChallange => {
+      const existingChallange = existingChallanges.find(challange => challange.id === seedChallange.id);
+      if (!existingChallange) return true; // New tree, needs insertion
+
+      // Compare all attributes (excluding metadata like createdAt, updatedAt)
+      const existingFiltered = _.omit(existingChallange.toJSON(), ["createdAt", "updatedAt"]);
+      const seedFiltered = _.omit(seedChallange, ["createdAt", "updatedAt"]);
+
+      return !_.isEqual(existingFiltered, seedFiltered);
+    });
+
+    // Identify trees to delete (exist in DB but not in seed data)
+    const ChallangeToDelete = existingChallanges.filter(existingChallange => {
+      return !seedChallanges.some(seedChallange => seedChallange.id === existingChallange.id);
+    });
+
+    // Perform upserts and deletions
+    if (ChallangeToUpsert.length > 0) {
+      console.log("🔍 Upserting Challenges:", ChallangeToUpsert.length);
+      await Promise.all(ChallangeToUpsert.map(challange => Challenge.upsert(challange)));
+      console.log("✅ Challenge data upserted successfully!");
+    } else {
+      console.log("✔️ Challenge data is already up to date.");
+    }
+
+    if (ChallangeToDelete.length > 0) {
+      console.log("🔍 Deleting Challenges:", ChallangeToDelete.length);
+      await Promise.all(ChallangeToDelete.map(challange => challange.destroy()));
+      console.log("✅ Challenge data deleted successfully!");
+    } else {
+      console.log("✔️ No Challenges to delete.");
+    }
+
+  } catch (error) {
+    console.error("❌ Database connection error:", error);
+  }
+  
 };
 
 export { sequelize, connectToDb, rundb };

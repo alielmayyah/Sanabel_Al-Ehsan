@@ -15,6 +15,8 @@ import ExcelJS from "exceljs";
 import path from "path";
 import fs from "fs";
 import Tree from "../models/tree.model";
+import { Sequelize, QueryTypes } from "sequelize";
+import { Op, fn, col, literal } from "sequelize";
 
 declare global {
   namespace Express {
@@ -156,7 +158,7 @@ const appearTaskes = async (req: Request, res: Response) => {
             "description",
             "category",
             "snabelRed",
-            "snabelBleu",
+            "snabelBlue",
             "snabelYellow",
             "xp",
             "kind",
@@ -181,113 +183,145 @@ const appearTaskesType = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "User data not found in request" });
+      return res.status(404).json({ message: "User data not found in request" });
     }
+
     const student = await Student.findOne({ where: { userId: user.id } });
     if (!student) {
-      return res
-        .status(404)
-        .json({ message: "Student data not found in request" });
+      return res.status(404).json({ message: "Student data not found in request" });
     }
+
+    // Retrieve category from URL parameters
     const { category } = req.params;
-    const task = await Task.findAll({ where: { category: category } });
-    if (!task) {
-      return res
-        .status(404)
-        .json({ message: "Task data not found in request" });
-    } else {
-      return res.status(200).json({ data: task });
+
+    if (!category || typeof category !== "string") {
+      return res.status(400).json({ message: "Invalid category parameter" });
     }
+
+    console.log("Category:", category);
+    const task = await Task.findAll({ where: { category } });
+
+    if (!task || task.length === 0) {
+      return res.status(404).json({ message: "No tasks found for this category" });
+    }
+
+    return res.status(200).json({ data: task });
+
   } catch (error) {
-    return res.status(500).json({ error: error });
+    console.error("Error fetching tasks:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 const appearTaskesTypeandCategory = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "User data not found in request" });
+      return res.status(404).json({ message: "User data not found in request" });
     }
 
     const student = await Student.findOne({ where: { userId: user.id } });
     if (!student) {
-      return res
-        .status(404)
-        .json({ message: "Student data not found in request" });
+      return res.status(404).json({ message: "Student data not found in request" });
     }
 
     const { category, type } = req.params;
 
-    // Fetch tasks by category and type
-    const task = await Task.findAll({
-      where: { category, type },
-      include: [
-        {
-          model: Task,
-          as: "task",
-          attributes: [
-            "title",
-            "description",
-            "category",
-            "snabelRed",
-            "snabelBleu",
-            "snabelYellow",
-            "xp",
-            "kind",
-            "timeToDo",
-            "type",
-          ],
-        },
-      ],
-    });
-
-    // Check if tasks exist
-    if (task.length === 0) {
-      return res.status(404).json({ message: "Task data not found" });
+    if (!category || typeof category !== "string" || !type || typeof type !== "string") {
+      return res.status(400).json({ message: "Invalid category or type parameter" });
     }
 
-    // Find tasks assigned to the student
-    const studentTask = await StudentTask.findAll({
-      where: {
-        studentId: student.id,
-        taskId: task.map((t) => t.id),
-      },
+    const tasks = await Task.findAll({
+      where: { category, type },
+      attributes: [
+        "id",
+        "title",
+        "description",
+        "category",
+        "snabelRed",
+        "snabelBlue",
+        "snabelYellow",
+        "xp",
+        "kind",
+        "timeToDo",
+        "type",
+      ],
+      raw: true, 
     });
 
-    return res.status(200).json({ data: studentTask });
+    if (tasks.length === 0) {
+      return res.status(404).json({ message: "No tasks found for the given category and type" });
+    }
+
+    const taskIds = tasks.map((task) => task.id);
+
+    const studentTasks = await StudentTask.findAll({
+      where: {
+        studentId: student.id,
+        taskId: { [Op.in]: taskIds }, 
+      },
+      attributes: ["taskId", "completionStatus"],
+      raw: true,
+    });
+
+    const mergedTasks = tasks.map((task) => {
+      const studentTask = studentTasks.find((st) => st.taskId === task.id);
+      return {
+        ...task,
+        studentTask: studentTask || { completionStatus: "Not Assigned" }, 
+      };
+    });
+
+    return res.status(200).json({ tasks: mergedTasks });
   } catch (error) {
-    return res.status(500).json({ error: error || "Internal Server Error" });
+    console.error("Error in appearTaskesTypeandCategory:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 const appearTaskesCategory = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "User data not found in request" });
+      return res.status(404).json({ message: "User data not found in request" });
     }
+
     const student = await Student.findOne({ where: { userId: user.id } });
     if (!student) {
-      return res
-        .status(404)
-        .json({ message: "Student data not found in request" });
+      return res.status(404).json({ message: "Student data not found in request" });
     }
-    const taskes = await Task.findAll({ attributes: ["category"] });
-    if (!taskes) {
-      return res
-        .status(404)
-        .json({ message: "taskes Category data not found in request" });
-    } else {
-      return res.status(200).json({ data: taskes });
+
+    const tasks = await Task.findAll({ attributes: ["category"], raw: true });
+
+    if (!tasks || tasks.length === 0) {
+      return res.status(404).json({ message: "Task categories not found" });
     }
+
+    const uniqueCategories = [...new Set(tasks.map((task) => task.category))];
+
+    const categoryDetails = await Promise.all(
+      uniqueCategories.map(async (category) => {
+        try {
+
+        const task = await Task.findOne({
+          attributes: ["category", "snabelRed", "snabelBlue", "snabelYellow", "xp"],
+          where: { category },
+          raw: true,
+        });
+        if (!task) {
+          console.warn(`No task found for category: ${category}`);
+          return { category, snabelRed: 0, snabelBlue: 0, snabelYellow: 0, xp: 0 };
+        }
+        return task;
+      } catch (err) {
+        console.error(`Error fetching task for category: ${category}`, err);
+        return { category, snabelRed: 0, snabelBlue: 0, snabelYellow: 0, xp: 0 };
+      }
+      })
+    );
+    return res.status(200).json({ data: categoryDetails });
   } catch (error) {
-    return res.status(500).json({ error: error });
+    console.error("❌ Error in appearTaskesCategory:", error);
+    return res.status(500).json({ error: "Internal Server Error", details: error });
   }
 };
 const appearChallanges = async (req: Request, res: Response) => {
@@ -323,6 +357,7 @@ const appearChallanges = async (req: Request, res: Response) => {
             "snabelBlue",
             "snabelRed",
             "snabelYellow",
+            "taskCategory"
           ],
         },
       ],
@@ -358,17 +393,16 @@ const appearTaskCompletedcountToday = async (req: Request, res: Response) => {
         .json({ message: "Student data not found for the user" });
     }
 
-    // Fetch tasks for the student completed today
     const tasks = await StudentTask.findAll({
       where: {
         studentId: student.id,
         completionStatus: "Completed",
-        date: new Date().toDateString(), // Filter for today's date
+        date: new Date().toDateString(), 
       },
       include: [
         {
           model: Task,
-          as: "Tasks", // Ensure alias matches the association
+          as: "task", 
           attributes: [
             "title",
             "description",
@@ -382,18 +416,15 @@ const appearTaskCompletedcountToday = async (req: Request, res: Response) => {
       ],
     });
 
-    // If no tasks are found
     if (!tasks || tasks.length === 0) {
       return res
         .status(404)
         .json({ message: "No completed tasks found for the student today" });
     }
 
-    // Transform tasks and count the completed ones
 
     const completedTasksCount = tasks.length;
 
-    // Send the response
     return res.status(200).json({
       message: "Completed tasks retrieved successfully",
       completedTasksCount,
@@ -414,7 +445,6 @@ const appearTaskCompleted = async (req: Request, res: Response) => {
         .json({ message: "User data not found in request" });
     }
 
-    // Fetch the student associated with the user
     const student = await Student.findOne({ where: { userId: user.id } });
 
     if (!student) {
@@ -423,7 +453,6 @@ const appearTaskCompleted = async (req: Request, res: Response) => {
         .json({ message: "Student data not found for the user" });
     }
 
-    // Fetch tasks for the student completed today
     const tasks = await StudentTask.findAll({
       where: {
         studentId: student.id,
@@ -432,7 +461,7 @@ const appearTaskCompleted = async (req: Request, res: Response) => {
       include: [
         {
           model: Task,
-          as: "Tasks", // Ensure alias matches the association
+          as: "task", 
           attributes: [
             "title",
             "description",
@@ -446,92 +475,89 @@ const appearTaskCompleted = async (req: Request, res: Response) => {
       ],
     });
 
-    // If no tasks are found
     if (!tasks || tasks.length === 0) {
       return res
         .status(404)
         .json({ message: "No completed tasks found for the student today" });
     }
 
-    // Transform tasks and count the completed ones
 
     const completedTasksCount = tasks.length;
-
-    // Send the response
+    const completedTasks = tasks
     return res.status(200).json({
       message: "Completed tasks retrieved successfully",
       completedTasksCount,
+      completedTasks
     });
   } catch (error) {
     console.error("Error fetching completed tasks:", error);
     return res.status(500).json({ error: "An unexpected error occurred" });
   }
 };
-const calculateCompletedTasksByCategory = async (
-  req: Request,
-  res: Response
-) => {
+const calculateCompletedTasksByCategory = async (req: Request, res: Response) => {
   try {
-    // Get user data from the request
     const user = (req as Request & { user?: JwtPayload }).user;
-
     if (!user) {
-      return res
-        .status(401)
-        .json({ message: "Unauthorized: User data not found in request." });
+      return res.status(401).json({ message: "Unauthorized: User not found." });
     }
 
-    // Fetch the student associated with the user
     const student = await Student.findOne({ where: { userId: user.id } });
-
     if (!student) {
-      return res
-        .status(404)
-        .json({ message: "Not Found: Student data not found for the user." });
+      return res.status(404).json({ message: "Student not found." });
     }
 
-    // Fetch completed tasks for the student
-    const results = await StudentTask.findAll({
-      where: {
-        studentId: student.id,
-        completionStatus: "Completed",
-      },
-      include: [
-        {
-          model: Task,
-          attributes: ["category"], // Include only the category field from Task
-        },
-      ],
-    });
+    // Fetch all unique task categories
+    const allTasks = await Task.findAll({ attributes: ["category"], raw: true });
+    const uniqueCategories = [...new Set(allTasks.map((task) => task.category))];
 
-    // Calculate task counts by category
-    const categoryCounts: Record<string, number> = {};
-    let totalCompletedTasks = 0;
-
-    results.forEach((studentTask) => {
-      const task = studentTask.get("Task") as Task; // Cast to Task type for type safety
-      if (task?.category) {
-        categoryCounts[task.category] =
-          (categoryCounts[task.category] || 0) + 1;
+    // Fetch completed task counts grouped by category
+    const completedTasks = await Student.sequelize.query(
+      `
+      SELECT COUNT(studenttasks.taskId) AS count, tasks.category
+      FROM studenttasks
+      INNER JOIN tasks ON studenttasks.taskId = tasks.id
+      WHERE studenttasks.studentId =1
+      AND studenttasks.completionStatus = 'Completed'
+      GROUP BY tasks.category
+      
+      `,
+      {
+        replacements: { studentId: student.id },
+        type: QueryTypes.SELECT,
       }
-      totalCompletedTasks++; // Count total completed tasks
-    });
+    );
+    
+    
+    // Convert the query result into a category count object
+    const categoryCounts = completedTasks.reduce((acc: Record<string, number>, row: any) => {
+      acc[row["category"]] = Number(row["count"]) || 0;
+      return acc;
+    }, {} as Record<string, number>);
 
-    // Return the result
+    // Ensure all unique categories appear in the final response (even if count is 0)
+    const finalCategoryCounts = uniqueCategories.reduce((acc, category) => {
+      acc[category] = categoryCounts[category] || 0;
+      return acc;
+    }, {} as Record<string, number>);
+
+    // Calculate total completed tasks
+    const totalCompletedTasks = Object.values(finalCategoryCounts).reduce<number>(
+      (sum, count) => sum + (count as number), // ✅ Cast count to number
+      0
+    );
+
     return res.status(200).json({
       totalCompletedTasks,
-      data: categoryCounts,
+      categoryCounts: finalCategoryCounts,
     });
-  } catch (error) {
-    // Handle errors and log for debugging
+  } catch (error: any) {
     console.error("Error calculating completed tasks by category:", error);
     return res.status(500).json({
-      error: "Internal Server Error: Could not calculate task categories.",
-      details: error,
+      error: "Internal Server Error",
+      details: error.message || "Unknown error",
     });
   }
 };
-
 const appearChallangesCompleted = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
@@ -565,6 +591,7 @@ const appearChallangesCompleted = async (req: Request, res: Response) => {
             "snabelBlue",
             "snabelRed",
             "snabelYellow",
+            "taskCategory"
           ],
         },
       ],
@@ -704,7 +731,6 @@ const growTheTree = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 const addStudent = async (req: Request, res: Response) => {
   const processedData: any = req.processedData;
   const successfulEntries: any[] = [];
@@ -719,19 +745,16 @@ const addStudent = async (req: Request, res: Response) => {
       const all_data = processedData[sheet];
       for (const data of all_data) {
         try {
-          // Validate and find the organization
+          // ✅ Find Organization
           const organization = await Organization.findOne({
             where: { name: data.OrganizationName },
           });
           if (!organization) {
-            failedEntries.push({
-              row: data,
-              error: "School not found in request",
-            });
-            continue; // Skip this row
+            failedEntries.push({ row: data, error: "School not found in request" });
+            continue;
           }
 
-          // Check if the workbook and worksheet for the organization exists; if not, create them
+          // ✅ Manage Excel Files for Organizations
           if (!organizationFiles[organization.name]) {
             const workbook = new ExcelJS.Workbook();
             const worksheet = workbook.addWorksheet("Users");
@@ -744,7 +767,7 @@ const addStudent = async (req: Request, res: Response) => {
 
           const { worksheet } = organizationFiles[organization.name];
 
-          // Validate and find the class
+          // ✅ Find Class
           const class_data = await Class.findOne({
             where: {
               organizationId: organization.id,
@@ -753,23 +776,18 @@ const addStudent = async (req: Request, res: Response) => {
             },
           });
           if (!class_data) {
-            failedEntries.push({
-              row: data,
-              error: "Class not found in request",
-            });
-            continue; // Skip this row
+            failedEntries.push({ row: data, error: "Class not found in request" });
+            continue;
           }
 
+          // ✅ Check if Email Already Exists
           const email = data.Email;
           if (await User.findOne({ where: { email: email } })) {
-            failedEntries.push({
-              row: data,
-              error: "Email is already in use",
-            });
-            continue; // Skip this row
+            failedEntries.push({ row: data, error: "Email is already in use" });
+            continue;
           }
 
-          // Extract data for user and student creation
+          // ✅ Create User & Student
           const password = generatePassword();
           const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -784,15 +802,14 @@ const addStudent = async (req: Request, res: Response) => {
             isAccess: true,
           });
 
-          // Create the student record
-          await Student.create({
+          const new_student = await Student.create({
             grade: data.Grade,
             userId: new_user.id,
             organizationId: organization.id,
             classId: class_data.id,
           });
 
-          // Send email with credentials
+          // ✅ Send Email with Credentials
           const transporter = nodemailer.createTransport({
             host: process.env.MAIL_HOST,
             port: Number(process.env.MAIL_PORT) || 587,
@@ -812,25 +829,37 @@ const addStudent = async (req: Request, res: Response) => {
 
           await transporter.sendMail(mailOptions);
 
-          successfulEntries.push({
-            row: data,
-            message: "Student added successfully",
-          });
+          // ✅ Assign Tasks & Challenges After Email
+          const allChallenges = await Challenge.findAll();
+          const allTasks = await Task.findAll();
 
-          // Add user to the organization's worksheet
-          worksheet.addRow({
-            email,
-            password,
-          });
+          const studentChallenges = allChallenges.map((challenge) => ({
+            studentId: new_student.id,
+            challengeId: challenge.id,
+            completionStatus: "NotCompleted",
+          }));
+
+          const studentTasks = allTasks.map((task) => ({
+            studentId: new_student.id,
+            taskId: task.id,
+            completionStatus: "NotCompleted",
+          }));
+
+          await StudentChallenge.bulkCreate(studentChallenges);
+          await StudentTask.bulkCreate(studentTasks);
+
+          // ✅ Update Success Entries & Excel File
+          successfulEntries.push({ row: data, message: "Student added successfully" });
+          worksheet.addRow({ email, password });
+
         } catch (error) {
-          // Log row-specific errors and skip this row
           failedEntries.push({ row: data, error: error });
         }
       }
     }
 
-    // Save or update the organization's file outside the controller folder
-    const outputDir = path.resolve(__dirname, "../../output"); // Adjust path to `output` in the project root
+    // ✅ Save the organization's Excel File
+    const outputDir = path.resolve(__dirname, "../../output"); // Adjust path
     if (!fs.existsSync(outputDir)) {
       fs.mkdirSync(outputDir, { recursive: true });
     }
@@ -838,18 +867,14 @@ const addStudent = async (req: Request, res: Response) => {
     const savedFiles: string[] = [];
     for (const orgName in organizationFiles) {
       const { workbook } = organizationFiles[orgName];
-      const sanitizedOrgName = orgName.replace(/[\/\\?%*:|"<>]/g, "_"); // Sanitize for valid file names
-      const filePath = path.resolve(
-        outputDir,
-        `${sanitizedOrgName}_Users.xlsx`
-      );
+      const sanitizedOrgName = orgName.replace(/[\/\\?%*:|"<>]/g, "_"); // Sanitize filename
+      const filePath = path.resolve(outputDir, `${sanitizedOrgName}_Users.xlsx`);
 
-      // If the file exists, overwrite it, otherwise create a new one
       await workbook.xlsx.writeFile(filePath);
       savedFiles.push(filePath);
     }
 
-    // Respond with a summary of successes, failures, and file paths
+    // ✅ Response with Summary
     res.json({
       message: "Excel file processing completed",
       successCount: successfulEntries.length,
@@ -858,11 +883,13 @@ const addStudent = async (req: Request, res: Response) => {
       failedEntries,
       files: savedFiles,
     });
+
   } catch (error) {
     console.error("Error processing Excel file:", error);
     res.status(500).json({ message: "Internal server error", error: error });
   }
 };
+
 
 export {
   addStudent,

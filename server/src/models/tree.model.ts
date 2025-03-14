@@ -35,6 +35,11 @@ class Tree extends Model<InferAttributes<Tree>, InferCreationAttributes<Tree>> {
           type: DataTypes.INTEGER,
           defaultValue: 1,
         },
+        stage: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+
+        },
       },
       {
         sequelize,

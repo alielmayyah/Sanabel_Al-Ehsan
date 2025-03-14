@@ -1,11 +1,7 @@
 // models/task.model.ts
 import { Sequelize, DataTypes, Model, CreationOptional } from "@sequelize/core";
 
-export enum TaskCategory {
-  Daily = "Daily",
-  Weekly = "Weekly",
-  Monthly = "Monthly",
-}
+
 
 class Task extends Model {
   declare id: CreationOptional<number>;
@@ -13,8 +9,7 @@ class Task extends Model {
   declare description: string;
   declare category: string;
   declare points: number;
-  declare createdAt: CreationOptional<Date>;
-  declare updatedAt: CreationOptional<Date>;
+
 
   static initModel(sequelize: Sequelize) {
     Task.init(
@@ -24,7 +19,7 @@ class Task extends Model {
           primaryKey: true,
           autoIncrement: true,
         },
-        type: {
+        type: { 
           type: DataTypes.STRING,
           allowNull: true,
         },
@@ -86,7 +81,7 @@ class Task extends Model {
       {
         sequelize,
         modelName: "Task",
-        timestamps: true,
+        timestamps:false,
       }
     );
   }

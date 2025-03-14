@@ -11,6 +11,8 @@ import nodemailer from "nodemailer";
 import generateOTP from "../helpers/generateOtp";
 import StudentTask from "../models/student-task.model"; // Import the StudentTask model
 import Task from "../models/task.model"; // Import the Task model
+import Challenge from "../models/challenge.model";
+import StudentChallenge from "../models/student-challenge.model";
 
 const jwt = require("jsonwebtoken");
 
@@ -124,13 +126,23 @@ const registration = async (req: Request, res: Response) => {
         const tasks = await Task.findAll();
 
         // Assign all tasks to the student in the StudentTask table
-        for (const task of tasks) {
-          await StudentTask.create({
-            studentId: checkValidation.id, // The ID of the student
-            taskId: task.id, // The ID of the task
-            completionStatus: "NotCompleted", // Set default status
-          });
-        }
+        const allChallenges = await Challenge.findAll();
+          const allTasks = await Task.findAll();
+
+          const studentChallenges = allChallenges.map((challenge) => ({
+            studentId: checkValidation.id,
+            challengeId: challenge.id,
+            completionStatus: "NotCompleted",
+          }));
+
+          const studentTasks = allTasks.map((task) => ({
+            studentId: checkValidation.id,
+            taskId: task.id,
+            completionStatus: "NotCompleted",
+          }));
+
+          await StudentChallenge.bulkCreate(studentChallenges);
+          await StudentTask.bulkCreate(studentTasks);
         break;
       case "Teacher":
         await Teacher.create({ userId: checkValidation.id });

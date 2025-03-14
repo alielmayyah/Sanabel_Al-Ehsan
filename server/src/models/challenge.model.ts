@@ -1,6 +1,19 @@
 import { Sequelize, DataTypes, Model, CreationOptional } from "@sequelize/core";
 import Task from "./task.model"; // Import Task model
-
+export enum TaskCategory {
+  snabelBlue = "snabelBlue",
+  snabelRed = "snabelRed",
+  snabelYellow = "snabelYellow",
+  snabelMixed =  "snabelMixed",
+  water = "water",
+  seeder = "seeder",
+  xp = "xp",
+  task = "task",
+  alltask="alltask",
+  treelevel = "treelevel",
+  treestage = "treestage",
+  
+}
 class Challenge extends Model {
   declare id: CreationOptional<number>;
   declare title: string;
@@ -9,11 +22,9 @@ class Challenge extends Model {
   declare snabelBlue: number;
   declare snabelYellow: number;
   declare snabelRed: number;
-  declare createdAt: CreationOptional<Date>;
-  declare updatedAt: CreationOptional<Date>;
   declare level: CreationOptional<number>;
-  declare taskId: number | null; // Foreign key to Task (optional)
-
+  declare taskCategory: CreationOptional<String> | null; // Foreign key to Task (optional)
+  declare category: TaskCategory;
   static initModel(sequelize: Sequelize) {
     Challenge.init(
       {
@@ -67,6 +78,22 @@ class Challenge extends Model {
             min: 0,
           },
         },
+        water: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          defaultValue: 0,
+          validate: {
+            min: 0,
+          },
+        },
+        seeder: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          defaultValue: 0,
+          validate: {
+            min: 0,
+          },
+        },
         point: {
           type: DataTypes.INTEGER,
           allowNull: true,
@@ -74,15 +101,13 @@ class Challenge extends Model {
             min: 0,
           },
         },
-        taskId: {
-          type: DataTypes.INTEGER,
-          allowNull: true, // Optional relationship
-          references: {
-            model: Task, // References Task model
-            key: "id",
-          },
-          onDelete: "SET NULL", // Task deletion sets taskId to null
-          onUpdate: "CASCADE", // Task updates propagate to this foreign key
+        category: {
+          type: DataTypes.ENUM(...Object.values(TaskCategory)), 
+          allowNull: false,
+        },
+        taskCategory: {
+          type: DataTypes.STRING,
+          allowNull: true, 
         },
       },
       {
