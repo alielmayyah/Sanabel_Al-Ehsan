@@ -24,7 +24,10 @@ interface User {
   xp: number;
 
   water: number;
-  seeders: number;
+  fertilizer: number;
+
+  waterNeeded: number;
+  fertilizerNeeded: number;
 }
 
 interface UserContextProps {
@@ -66,7 +69,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           snabelYellow: response.data.data.student.snabelYellow,
           xp: response.data.data.student.xp,
           water: response.data.data.student.water,
-          seeders: response.data.data.student.seeders,
+          fertilizer: response.data.data.student.seeders,
+
+          waterNeeded: response.data.data.treePoint.water,
+          fertilizerNeeded: response.data.data.treePoint.seeders,
         });
       }
     } catch (error) {

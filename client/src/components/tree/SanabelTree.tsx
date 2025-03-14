@@ -12,7 +12,7 @@ import fertilizerImg from "../../assets/resources/سماد.png";
 import { treeStages } from "../../data/Tree";
 
 const waterCost = 20;
-const fertilzerCost = 20;
+const fertilzerCost = 30;
 
 // treestage;
 // water;
@@ -83,8 +83,10 @@ const SanabelTree: React.FC<SanabelTreeProps> = ({ treeStage }) => {
   const { t } = useTranslation();
   const { user } = useUserContext();
 
-  const currentWater = 5;
-  const currentFertilizer = 2;
+  const currentWater = Number(user?.water);
+  const currentFertilizer = Number(user?.fertilizer);
+  const waterNeeded = Number(user?.waterNeeded);
+  const fertilizerNeeded = Number(user?.fertilizerNeeded);
 
   return (
     <div className="flex flex-col h-full w-full items-center justify-between  ">
@@ -98,15 +100,13 @@ const SanabelTree: React.FC<SanabelTreeProps> = ({ treeStage }) => {
           <div className="flex items-center flex-col w-max gap-1">
             <img src={waterImg} alt="Water Icon" className="w-8" />
             <h1 className="text-black text-sm">
-              {currentWater} / {treeGrowth[treeStage].water}{" "}
+              {currentWater} / {waterNeeded}{" "}
             </h1>
             <div className="relative w-full h-full rounded-2xl bg-[#D1E2EA] overflow-hidden">
               <div
                 className="absolute bottom-0 w-full rounded-2xl bg-gradient-to-t from-[#4AAAD6] to-[#8ED6F8] transition-all duration-300"
                 style={{
-                  height: `${
-                    (currentWater / treeGrowth[treeStage].water) * 100
-                  }%`,
+                  height: `${(currentWater / waterNeeded) * 100}%`,
                 }}
               ></div>
             </div>
@@ -122,15 +122,13 @@ const SanabelTree: React.FC<SanabelTreeProps> = ({ treeStage }) => {
             <img src={fertilizerImg} alt="fertilizerImg" className="w-8" />
             <h1 className="text-black text-sm">
               {" "}
-              {currentFertilizer} / {treeGrowth[treeStage].fertilizer}{" "}
+              {currentFertilizer} / {fertilizerNeeded}{" "}
             </h1>
             <div className="w-full flex justify-center items-end h-full rounded-2xl bg-[#D1E2EA] text-black relative">
               <div
                 className="w-full rounded-2xl bg-[#7F4333] flex-center"
                 style={{
-                  height: `${
-                    (currentFertilizer / treeGrowth[treeStage].fertilizer) * 100
-                  }%`,
+                  height: `${(currentFertilizer / fertilizerNeeded) * 100}%`,
                 }}
               ></div>
             </div>

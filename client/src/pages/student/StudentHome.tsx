@@ -68,40 +68,40 @@ const calculateXpForLevel = (targetLevel: any) => {
   return totalXp;
 };
 
-const [missionsDoneToday, setMissionsDoneToday] = useState(0);
-// Function to fetch user data
-const fetchUserData = async (token?: string) => {
-  const authToken = token || localStorage.getItem("token");
-  if (!authToken) return;
-
-  try {
-    const response = await axios.get(
-      "http://localhost:3000/students/task-count-sucess",
-      {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      }
-    );
-
-    if (response.status === 200) {
-      setMissionsDoneToday(response);
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-};
-
-useEffect(() => {
-  fetchUserData();
-}, []);
-
 const StudentHome: React.FC = () => {
   const history = useHistory();
   const { t } = useTranslation();
   const { user } = useUserContext();
-
   const xp = Number(user?.xp);
+
+  const [missionsDoneToday, setMissionsDoneToday] = useState("0");
+  // Function to fetch user data
+
+  const fetchUserData = async (token?: string) => {
+    const authToken = token || localStorage.getItem("token");
+    if (!authToken) return;
+
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/students/task-count-sucess",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setMissionsDoneToday(response.data.completedTasksCount);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   const { level, remainingXp, xpForNextLevel } = calculateLevel(xp);
 
@@ -206,7 +206,7 @@ const StudentHome: React.FC = () => {
 
       <Inventory
         waterCount={Number(user?.water)}
-        fertilizerCount={Number(user?.seeders)}
+        fertilizerCount={Number(user?.fertilizer)}
         blueCount={Number(user?.snabelBlue)}
         redCount={Number(user?.snabelRed)}
         yellowCount={Number(user?.snabelYellow)}
@@ -214,7 +214,7 @@ const StudentHome: React.FC = () => {
 
       <div className="w-full bg-[#4AAAD6] flex justify-between items-center p-1 px-2 rounded-xl ">
         <h1 className="text-white font-bold text-lg text-end " dir="ltr">
-          20
+          {missionsDoneToday}
         </h1>
         <div className="flex-center gap-3">
           <h1 className="text-white font-bold text-end text-sm" dir="ltr">
