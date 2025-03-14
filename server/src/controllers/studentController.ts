@@ -379,30 +379,35 @@ const appearTaskCompletedcountToday = async (req: Request, res: Response) => {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
 
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "User data not found in request" });
+      return res.status(404).json({ message: "User data not found in request" });
     }
 
-    // Fetch the student associated with the user
     const student = await Student.findOne({ where: { userId: user.id } });
 
     if (!student) {
-      return res
-        .status(404)
-        .json({ message: "Student data not found for the user" });
+      return res.status(404).json({ message: "Student data not found for the user" });
     }
+
+    // Get the current date (without time)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Get the end of today (to cover full day range)
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
 
     const tasks = await StudentTask.findAll({
       where: {
         studentId: student.id,
         completionStatus: "Completed",
-        date: new Date().toDateString(), 
+        updatedAt: {
+          [Op.between]: [today, endOfToday], // Ensures same-day match
+        },
       },
       include: [
         {
           model: Task,
-          as: "task", 
+          as: "task",
           attributes: [
             "title",
             "description",
@@ -417,24 +422,18 @@ const appearTaskCompletedcountToday = async (req: Request, res: Response) => {
     });
 
     if (!tasks || tasks.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No completed tasks found for the student today" });
+      return res.status(404).json({ message: "No completed tasks found for the student today" });
     }
-
-
-    const completedTasksCount = tasks.length;
 
     return res.status(200).json({
       message: "Completed tasks retrieved successfully",
-      completedTasksCount,
+      completedTasksCount: tasks.length,
     });
   } catch (error) {
     console.error("Error fetching completed tasks:", error);
     return res.status(500).json({ error: "An unexpected error occurred" });
   }
 };
-
 const appearTaskCompleted = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
