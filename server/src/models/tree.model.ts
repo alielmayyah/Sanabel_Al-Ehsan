@@ -13,6 +13,7 @@ class Tree extends Model<InferAttributes<Tree>, InferCreationAttributes<Tree>> {
   declare level: CreationOptional<number>;
   declare water: CreationOptional<number>;
   declare seeders: CreationOptional<number>;
+  declare stage: CreationOptional<number>;
 
   static initModel(sequelize: Sequelize) {
     Tree.init(
