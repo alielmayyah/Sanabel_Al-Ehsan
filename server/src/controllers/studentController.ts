@@ -17,6 +17,7 @@ import fs from "fs";
 import Tree from "../models/tree.model";
 import { Sequelize, QueryTypes } from "sequelize";
 import { Op, fn, col, literal } from "sequelize";
+import TaskCategory from "../models/task-category.model";
 
 declare global {
   namespace Express {
@@ -145,29 +146,7 @@ const appearTaskes = async (req: Request, res: Response) => {
         .status(404)
         .json({ message: "Student data not found in request" });
     }
-    const taskes = await StudentTask.findAll({
-      where: {
-        studentId: student.id,
-      },
-      include: [
-        {
-          model: Task,
-          as: "task",
-          attributes: [
-            "title",
-            "description",
-            "category",
-            "snabelRed",
-            "snabelBlue",
-            "snabelYellow",
-            "xp",
-            "kind",
-            "timeToDo",
-            "type",
-          ],
-        },
-      ],
-    });
+    const taskes = await Task.findAll();
     if (!taskes) {
       return res
         .status(404)
@@ -191,15 +170,14 @@ const appearTaskesType = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Student data not found in request" });
     }
 
-    // Retrieve category from URL parameters
-    const { category } = req.params;
+    const categoryId = Number(req.params.categoryId);
 
-    if (!category || typeof category !== "string") {
+    if (!categoryId || typeof categoryId !== "number") {
       return res.status(400).json({ message: "Invalid category parameter" });
     }
 
-    console.log("Category:", category);
-    const task = await Task.findAll({ where: { category } });
+    console.log("Category:", categoryId);
+    const task = await Task.findAll({ where: { categoryId } });
 
     if (!task || task.length === 0) {
       return res.status(404).json({ message: "No tasks found for this category" });
@@ -212,7 +190,6 @@ const appearTaskesType = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 const appearTaskesTypeandCategory = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
@@ -225,19 +202,29 @@ const appearTaskesTypeandCategory = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Student data not found in request" });
     }
 
-    const { category, type } = req.params;
+    const type = req.params.type;
+    const categoryId = Number(req.params.categoryId);
 
-    if (!category || typeof category !== "string" || !type || typeof type !== "string") {
+    // Validate categoryId and type
+    if (isNaN(categoryId) || !type || typeof type !== "string") {
       return res.status(400).json({ message: "Invalid category or type parameter" });
     }
 
+    // Get the start and end of today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+
+    // Fetch all tasks matching the given categoryId and type
     const tasks = await Task.findAll({
-      where: { category, type },
+      where: { categoryId, type },
       attributes: [
         "id",
         "title",
         "description",
-        "category",
+        "categoryId",
         "snabelRed",
         "snabelBlue",
         "snabelYellow",
@@ -246,31 +233,36 @@ const appearTaskesTypeandCategory = async (req: Request, res: Response) => {
         "timeToDo",
         "type",
       ],
-      raw: true, 
-    });
-
-    if (tasks.length === 0) {
-      return res.status(404).json({ message: "No tasks found for the given category and type" });
-    }
-
-    const taskIds = tasks.map((task) => task.id);
-
-    const studentTasks = await StudentTask.findAll({
-      where: {
-        studentId: student.id,
-        taskId: { [Op.in]: taskIds }, 
-      },
-      attributes: ["taskId", "completionStatus"],
       raw: true,
     });
 
-    const mergedTasks = tasks.map((task) => {
-      const studentTask = studentTasks.find((st) => st.taskId === task.id);
-      return {
-        ...task,
-        studentTask: studentTask || { completionStatus: "Not Assigned" }, 
-      };
+    if (tasks.length === 0) {
+      return res.status(404).json({ message: "No tasks found for today in the given category and type" });
+    }
+
+    // Extract task IDs
+    const taskIds = tasks.map((task) => task.id);
+
+    // Fetch completed tasks today
+    const completedTasks = await StudentTask.findAll({
+      where: {
+        studentId: student.id,
+        taskId: { [Op.in]: taskIds },
+        completionStatus: "Completed",
+        updatedAt: { [Op.between]: [today, endOfToday] }, // Filter only today's completed tasks
+      },
+      attributes: ["taskId"],
+      raw: true,
     });
+
+    // Extract completed task IDs
+    const completedTaskIds = new Set(completedTasks.map((st) => st.taskId));
+
+    // Merge task data with completion status
+    const mergedTasks = tasks.map((task) => ({
+      ...task,
+      completionStatus: completedTaskIds.has(task.id) ? "Completed" : "Not Completed",
+    }));
 
     return res.status(200).json({ tasks: mergedTasks });
   } catch (error) {
@@ -278,6 +270,7 @@ const appearTaskesTypeandCategory = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 const appearTaskesCategory = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
@@ -289,36 +282,12 @@ const appearTaskesCategory = async (req: Request, res: Response) => {
     if (!student) {
       return res.status(404).json({ message: "Student data not found in request" });
     }
-
-    const tasks = await Task.findAll({ attributes: ["category"], raw: true });
-
-    if (!tasks || tasks.length === 0) {
-      return res.status(404).json({ message: "Task categories not found" });
-    }
-
-    const uniqueCategories = [...new Set(tasks.map((task) => task.category))];
-
-    const categoryDetails = await Promise.all(
-      uniqueCategories.map(async (category) => {
-        try {
-
-        const task = await Task.findOne({
-          attributes: ["category", "snabelRed", "snabelBlue", "snabelYellow", "xp"],
-          where: { category },
-          raw: true,
-        });
-        if (!task) {
-          console.warn(`No task found for category: ${category}`);
-          return { category, snabelRed: 0, snabelBlue: 0, snabelYellow: 0, xp: 0 };
-        }
-        return task;
-      } catch (err) {
-        console.error(`Error fetching task for category: ${category}`, err);
-        return { category, snabelRed: 0, snabelBlue: 0, snabelYellow: 0, xp: 0 };
-      }
-      })
-    );
-    return res.status(200).json({ data: categoryDetails });
+    const cateogrydata = await TaskCategory.findAll()
+    if (!cateogrydata) {
+      return res.status(404).json({ message: "Category data not found in request" });
+    }  
+       
+    return res.status(200).json({ data: cateogrydata });
   } catch (error) {
     console.error("❌ Error in appearTaskesCategory:", error);
     return res.status(500).json({ error: "Internal Server Error", details: error });
@@ -411,7 +380,7 @@ const appearTaskCompletedcountToday = async (req: Request, res: Response) => {
           attributes: [
             "title",
             "description",
-            "category",
+            "categoryId",
             "snabelRed",
             "snabelYellow",
             "snabelBlue",
@@ -460,15 +429,22 @@ const appearTaskCompleted = async (req: Request, res: Response) => {
       include: [
         {
           model: Task,
-          as: "task", 
+          as: "task",
           attributes: [
             "title",
             "description",
-            "category",
+            "categoryId",
             "snabelRed",
             "snabelYellow",
             "snabelBlue",
             "xp",
+          ],
+          include: [
+            {
+              model: TaskCategory, // Include TaskCategory table
+              as: "category", // Make sure this alias matches your Sequelize association
+              attributes: ["title"], // Fetch the category title
+            },
           ],
         },
       ],
@@ -480,19 +456,29 @@ const appearTaskCompleted = async (req: Request, res: Response) => {
         .json({ message: "No completed tasks found for the student today" });
     }
 
+    // Format the response to include category title
+    const completedTasks = tasks.map((task: any) => ({
+      title: task.task.title,
+      description: task.task.description,
+      categoryId: task.task.categoryId,
+      category: task.task.category ? task.task.category.title : "Unknown", // Category title
+      snabelRed: task.task.snabelRed,
+      snabelYellow: task.task.snabelYellow,
+      snabelBlue: task.task.snabelBlue,
+      xp: task.task.xp,
+    }));
 
-    const completedTasksCount = tasks.length;
-    const completedTasks = tasks
     return res.status(200).json({
       message: "Completed tasks retrieved successfully",
-      completedTasksCount,
-      completedTasks
+      completedTasksCount: completedTasks.length,
+      completedTasks,
     });
   } catch (error) {
     console.error("Error fetching completed tasks:", error);
     return res.status(500).json({ error: "An unexpected error occurred" });
   }
 };
+
 const calculateCompletedTasksByCategory = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user?: JwtPayload }).user;
@@ -505,46 +491,46 @@ const calculateCompletedTasksByCategory = async (req: Request, res: Response) =>
       return res.status(404).json({ message: "Student not found." });
     }
 
-    // Fetch all unique task categories
-    const allTasks = await Task.findAll({ attributes: ["category"], raw: true });
-    const uniqueCategories = [...new Set(allTasks.map((task) => task.category))];
+    // Fetch all unique categories from TaskCategory (to get titles)
+    const allCategories = await TaskCategory.findAll({
+      attributes: ["id", "title"], // ✅ Get categoryId and title
+      raw: true,
+    });
 
-    // Fetch completed task counts grouped by category
+    // Fetch completed task counts grouped by categoryId
     const completedTasks = await Student.sequelize.query(
       `
-      SELECT COUNT(studenttasks.taskId) AS count, tasks.category
+      SELECT COUNT(studenttasks.taskId) AS count, tasks.categoryId, taskcategories.title
       FROM studenttasks
       INNER JOIN tasks ON studenttasks.taskId = tasks.id
-      WHERE studenttasks.studentId =1
+      INNER JOIN taskcategories ON tasks.categoryId = taskcategories.id
+      WHERE studenttasks.studentId = :studentId
       AND studenttasks.completionStatus = 'Completed'
-      GROUP BY tasks.category
-      
+      GROUP BY tasks.categoryId, taskcategories.title
       `,
       {
         replacements: { studentId: student.id },
         type: QueryTypes.SELECT,
       }
     );
-    
-    
-    // Convert the query result into a category count object
+
+    // Convert the query result into an object mapping category titles to counts
     const categoryCounts = completedTasks.reduce((acc: Record<string, number>, row: any) => {
-      acc[row["category"]] = Number(row["count"]) || 0;
+      acc[row["title"]] = Number(row["count"]) || 0;
       return acc;
     }, {} as Record<string, number>);
 
     // Ensure all unique categories appear in the final response (even if count is 0)
-    const finalCategoryCounts = uniqueCategories.reduce((acc, category) => {
-      acc[category] = categoryCounts[category] || 0;
+    const finalCategoryCounts = allCategories.reduce((acc, category) => {
+      acc[category.title] = categoryCounts[category.title] || 0;
       return acc;
     }, {} as Record<string, number>);
 
     // Calculate total completed tasks
-    const totalCompletedTasks = Object.values(finalCategoryCounts).reduce<number>(
-      (sum, count) => sum + (count as number), // ✅ Cast count to number
+    const totalCompletedTasks = (Object.values(finalCategoryCounts) as number[]).reduce(
+      (sum: number, count: number) => sum + count,
       0
     );
-
     return res.status(200).json({
       totalCompletedTasks,
       categoryCounts: finalCategoryCounts,
@@ -557,6 +543,7 @@ const calculateCompletedTasksByCategory = async (req: Request, res: Response) =>
     });
   }
 };
+
 const appearChallangesCompleted = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
@@ -830,7 +817,6 @@ const addStudent = async (req: Request, res: Response) => {
 
           // ✅ Assign Tasks & Challenges After Email
           const allChallenges = await Challenge.findAll();
-          const allTasks = await Task.findAll();
 
           const studentChallenges = allChallenges.map((challenge) => ({
             studentId: new_student.id,
@@ -838,14 +824,9 @@ const addStudent = async (req: Request, res: Response) => {
             completionStatus: "NotCompleted",
           }));
 
-          const studentTasks = allTasks.map((task) => ({
-            studentId: new_student.id,
-            taskId: task.id,
-            completionStatus: "NotCompleted",
-          }));
+        
 
           await StudentChallenge.bulkCreate(studentChallenges);
-          await StudentTask.bulkCreate(studentTasks);
 
           // ✅ Update Success Entries & Excel File
           successfulEntries.push({ row: data, message: "Student added successfully" });

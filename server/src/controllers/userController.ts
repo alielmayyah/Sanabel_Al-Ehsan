@@ -126,7 +126,6 @@ const registration = async (req: Request, res: Response) => {
 
         // Assign all tasks to the student in the StudentTask table
         const allChallenges = await Challenge.findAll();
-          const allTasks = await Task.findAll();
 
           const studentChallenges = allChallenges.map((challenge) => ({
             studentId: checkValidation.id,
@@ -134,14 +133,9 @@ const registration = async (req: Request, res: Response) => {
             completionStatus: "NotCompleted",
           }));
 
-          const studentTasks = allTasks.map((task) => ({
-            studentId: checkValidation.id,
-            taskId: task.id,
-            completionStatus: "NotCompleted",
-          }));
+       
 
           await StudentChallenge.bulkCreate(studentChallenges);
-          await StudentTask.bulkCreate(studentTasks);
         break;
       case "Teacher":
         await Teacher.create({ userId: checkValidation.id });

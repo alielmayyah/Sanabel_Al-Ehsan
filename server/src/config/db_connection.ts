@@ -15,12 +15,16 @@ import StudentTeacher from "../models/studentTeacher.model";
 import StudentTask from "../models/student-task.model"; // Import the new model
 import StudentChallenge from "../models/student-challenge.model";
 import Groupe from "../models/groupe.model";
+import TaskCategory from "../models/task-category.model";
+import task_category from "../seeders/task-category"; // Import your seed data
+
 import _ from "lodash";
 
 import Tree from "../models/tree.model";
 const demoTree = require("../seeders/demo-tree-seeders");
 const demoTaskSeeder = require("../seeders/20241118230008-demo-task");
 const demoChallengeSeeder = require("../seeders/challange-seeder");
+
 const sequelize = new Sequelize({
   dialect: MySqlDialect,
   database: process.env.MYSQL_DB_NAME,
@@ -42,6 +46,7 @@ const rundb = async () => {
   Teacher.initModel(sequelize);
   Representative.initModel(sequelize);
   Donation.initModel(sequelize);
+  TaskCategory.initModel(sequelize);
   Task.initModel(sequelize);
   Challenge.initModel(sequelize);
   Reward.initModel(sequelize);
@@ -117,25 +122,6 @@ const rundb = async () => {
     through: StudentTeacher,
     foreignKey: "teacherId",
     as: "Students",
-  });
-
-  // Student and Task Relationships (Many-to-Many through StudentTask)
-  Student.belongsToMany(Task, {
-    through: StudentTask,
-    foreignKey: "studentId",
-    as: "Tasks",
-  });
-  Task.belongsToMany(Student, {
-    through: StudentTask,
-    foreignKey: "taskId",
-    as: "Students",
-  });
-
-  Student.belongsToMany(Challenge, {
-    through: StudentChallenge,
-    foreignKey: "studentId",
-    otherKey: "challengeId",
-    as: "Challenges",
   });
 
   Challenge.belongsToMany(Student, {
@@ -274,6 +260,12 @@ const rundb = async () => {
     as: "Groupe",
   });
 
+StudentTask.belongsTo(Student, { foreignKey: "studentId", as: "student" }); // ✅ alias: "Student"
+StudentTask.belongsTo(Task, { foreignKey: "taskId", as: "task" }); // ✅ alias: "Task"
+
+
+TaskCategory.associate();
+Task.associate();
   try {
     await sequelize.sync({ alter: true });
     console.log("Database & models table created/updated!");
@@ -289,6 +281,56 @@ const connectToDb = async (): Promise<void> => {
 
     // Initialize models and associations
     await rundb();
+    
+    // -----------------------------
+    // Handle TasksCategory seeding/updating
+    // -----------------------------
+    console.log("🔍 Fetching existing Task Categories...");
+    const existingCategories = await TaskCategory.findAll();
+    const seedCategories: any[] = task_category.data || [];
+
+    // Identify categories to insert or update
+    const taskCategoryToUpsert = seedCategories.filter((seedCategory) => {
+      const existingTaskCategory = existingCategories.find(
+        (TaskCategory) => TaskCategory.id === seedCategory.id
+      );
+      if (!existingTaskCategory) return true; // New task, needs insertion
+    
+    
+      // Compare attributes
+      const existingFiltered = _.omit(existingTaskCategory.toJSON(), ["createdAt", "updatedAt"]);
+      const seedFiltered = _.omit(seedCategory, ["createdAt", "updatedAt"]);
+      return !_.isEqual(existingFiltered, seedFiltered);
+    });
+    
+    // Identify categories to delete
+    const categoriesToDelete = existingCategories.filter((existingCategory) => {
+      return !seedCategories.some(
+        (seedCategory) =>
+          seedCategory.title === existingCategory.title
+      );
+    });
+    
+
+    // Perform upserts and deletions
+    if (taskCategoryToUpsert.length > 0) {
+      console.log("🔍 Upserting Task Categories:", taskCategoryToUpsert.length);
+      await Promise.all(taskCategoryToUpsert.map((category) => 
+        TaskCategory.upsert(category)
+      ));
+            console.log("✅ Task Category data upserted successfully!");
+    } else {
+      console.log("✔️ Task Category data is already up to date.");
+    }
+
+    if (categoriesToDelete.length > 0) {
+      console.log("🔍 Deleting Task Categories:", categoriesToDelete.length);
+      await Promise.all(categoriesToDelete.map((category) => category.destroy()));
+      console.log("✅ Task Category data deleted successfully!");
+    } else {
+      console.log("✔️ No Task Categories to delete.");
+    }
+
 
     // -----------------------------
     // Handle Tasks seeding/updating
