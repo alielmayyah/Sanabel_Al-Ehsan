@@ -1,10 +1,13 @@
+// Sequelize core & dialect
 import { Sequelize } from "@sequelize/core";
 import { MySqlDialect } from "@sequelize/mysql";
+
+// Sequelize models
 import User from "../models/user.model";
 import Student from "../models/student.model";
 import Parent from "../models/parent.model";
 import Teacher from "../models/teacher.model";
-import Organization from "../models/oraganization.model"; // Fixed typo in import
+import Organization from "../models/oraganization.model"; // If typo is fixed in filename, change path too
 import Representative from "../models/representative.model";
 import Donation from "../models/donation.model";
 import Challenge from "../models/challenge.model";
@@ -12,18 +15,20 @@ import Reward from "../models/reward.model";
 import Task from "../models/task.model";
 import Class from "../models/class.model";
 import StudentTeacher from "../models/studentTeacher.model";
-import StudentTask from "../models/student-task.model"; // Import the new model
+import StudentTask from "../models/student-task.model";
 import StudentChallenge from "../models/student-challenge.model";
 import Groupe from "../models/groupe.model";
 import TaskCategory from "../models/task-category.model";
-import task_category from "../seeders/task-category"; // Import your seed data
-
-import _ from "lodash";
-
 import Tree from "../models/tree.model";
+
+// Seeder data
+import taskCategorySeed from "../seeders/task-category";
 const demoTree = require("../seeders/demo-tree-seeders");
 const demoTaskSeeder = require("../seeders/20241118230008-demo-task");
 const demoChallengeSeeder = require("../seeders/challange-seeder");
+
+// Utils & libraries
+import _ from "lodash";
 
 const sequelize = new Sequelize({
   dialect: MySqlDialect,
@@ -287,7 +292,7 @@ const connectToDb = async (): Promise<void> => {
     // -----------------------------
     console.log("🔍 Fetching existing Task Categories...");
     const existingCategories = await TaskCategory.findAll();
-    const seedCategories: any[] = task_category.data || [];
+    const seedCategories: any[] = taskCategorySeed.data || [];
 
     // Identify categories to insert or update
     const taskCategoryToUpsert = seedCategories.filter((seedCategory) => {

@@ -25,6 +25,9 @@ class Challenge extends Model {
   declare level: CreationOptional<number>;
   declare taskCategory: CreationOptional<String> | null; // Foreign key to Task (optional)
   declare category: TaskCategory;
+  declare water: number;
+  declare seeder: number;
+  declare point: number ;
   static initModel(sequelize: Sequelize) {
     Challenge.init(
       {

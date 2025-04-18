@@ -9,8 +9,11 @@ class Task extends Model {
   declare title: string;
   declare description: string;
   declare categoryId: number;
-  declare points: number;
-
+  declare taskCategory: TaskCategory ; 
+  declare xp: number;
+  declare snabelRed: CreationOptional<number>;
+  declare snabelBlue: CreationOptional<number>;
+  declare snabelYellow: CreationOptional<number>;
 
   static initModel(sequelize: Sequelize) {
     Task.init(

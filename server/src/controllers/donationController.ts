@@ -1,7 +1,7 @@
 // src/controllers/donationController.ts
 import { Request, Response } from "express";
 import Donation from "../models/donation.model";
-import drive from "../config/googleDriveConfig";
+import drive from "../config/cloudaryconfig";
 import fs from "fs";
 import multer from "multer";
 

@@ -28,12 +28,12 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare role: CreationOptional<string>;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
-  declare token: CreationOptional<string>;
   declare resetOTP: CreationOptional<string> | null;
   declare otpExpiry: CreationOptional<Date> | null;
   declare otpVerified: CreationOptional<boolean>;
   declare gender: CreationOptional<String>;
   declare dateOfBirth: CreationOptional<Date>;
+  declare profileImg: string | null;
   declare isAccess: CreationOptional<Boolean>;
   static initModel(sequelize: Sequelize) {
     User.init(
@@ -68,10 +68,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
           allowNull: true,
           defaultValue: "Student",
         },
-        token: {
-          type: DataTypes.STRING,
-          allowNull: true,
-        },
+        
         resetOTP: {
           type: DataTypes.STRING,
           allowNull: true,

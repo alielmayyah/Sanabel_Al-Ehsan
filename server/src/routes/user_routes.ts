@@ -1,3 +1,7 @@
+import { updatePassword } from "../controllers/userController";
+import { authenticateToken } from "../middleware/auth";
+import upload from "../config/cloudaryconfig" // Import multer config
+
 const express = require("express");
 const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
@@ -6,7 +10,7 @@ const router = express.Router();
 /**
  * @swagger
  * /users/login:
- *   post:
+ *   get:
  *     summary: Login a user
  *     tags: [User]
  *     requestBody:
@@ -59,13 +63,13 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.post("/login", userController.login);
-
+router.get("/login", userController.login);
 /**
  * @swagger
  * /users/registration:
- *   post:
+ *   patch:
  *     summary: Register a new user
+ *     description: "⚠️ User must verify OTP before registration. Use `/users/send-auth` then put your email and otp `/users/verfication-auth`  and complete OTP verification first."
  *     tags: [User]
  *     requestBody:
  *       required: true
@@ -132,12 +136,13 @@ router.post("/login", userController.login);
  *       500:
  *         description: Internal server error
  */
-router.post("/registration", userController.registration);
+
+router.patch("/registration",  upload.single("profileImg"),userController.registration);
 
 /**
  * @swagger
  * /users/send-otp:
- *   post:
+ *   patch:
  *     summary: Send OTP to user's email
  *     tags: [User]
  *     requestBody:
@@ -158,12 +163,12 @@ router.post("/registration", userController.registration);
  *       500:
  *         description: Internal server error
  */
-router.post("/send-otp", userController.sendOTP);
+router.patch("/send-otp", userController.sendOTP);
 
 /**
  * @swagger
  * /users/verify-otp:
- *   post:
+ *   patch:
  *     summary: Verify OTP for the user
  *     tags: [User]
  *     requestBody:
@@ -189,12 +194,12 @@ router.post("/send-otp", userController.sendOTP);
  *       500:
  *         description: Internal server error
  */
-router.post("/verify-otp", userController.verifyOTP);
+router.patch("/verify-otp", userController.verifyOTP);
 
 /**
  * @swagger
  * /users/reset-password:
- *   post:
+ *   patch:
  *     summary: Reset the user's password
  *     tags: [User]
  *     requestBody:
@@ -218,14 +223,15 @@ router.post("/verify-otp", userController.verifyOTP);
  *       500:
  *         description: Internal server error
  */
-router.post("/reset-password", userController.resetPassword);
+router.patch("/reset-password", userController.resetPassword);
 
 /**
  * @swagger
  * /users/send-auth:
  *   post:
  *     summary: Send OTP for authentication
- *     tags: [Auth]
+ *     description: "⚠️ User must verify OTP before registration. Use `/users/send-otp` then put your email and otp `/users//verify-otp`  and complete OTP verification first."
+ *     tags: [User]
  *     requestBody:
  *       required: true
  *       content:
@@ -249,9 +255,9 @@ router.post("/send-auth", authController.sendOtp);
 /**
  * @swagger
  * /users/verfication-auth:
- *   post:
+ *   patch:
  *     summary: Verify OTP for authentication
- *     tags: [Auth]
+ *     tags: [User]
  *     requestBody:
  *       required: true
  *       content:
@@ -275,6 +281,40 @@ router.post("/send-auth", authController.sendOtp);
  *       500:
  *         description: Internal server error
  */
-router.post("/verfication-auth", authController.verifyOTP);
-
+router.patch("/verfication-auth", authController.verifyOTP);
+/**
+ * @swagger
+ * /users/update-passowrd:
+ *   patch:
+ *     summary: Update the user's password
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []  # Requires authentication token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - old_password
+ *               - new_password
+ *             properties:
+ *               old_password:
+ *                 type: string
+ *                 example: "OldPassword123!"
+ *               new_password:
+ *                 type: string
+ *                 example: "NewSecurePassword456!"
+ *     responses:
+ *       200:
+ *         description: Password updated successfully
+ *       400:
+ *         description: Bad request (e.g. missing fields)
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Incorrect current password or internal server error
+ */
+router.patch("/update-passowrd",authenticateToken,updatePassword)
 module.exports = router;

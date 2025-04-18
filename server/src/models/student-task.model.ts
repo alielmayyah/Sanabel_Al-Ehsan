@@ -1,7 +1,9 @@
-// models/student-task.model.ts
-import { Sequelize, DataTypes, Model, CreationOptional, Op, col, fn } from "@sequelize/core";
+import { Sequelize, DataTypes, Model, CreationOptional, ValidationError } from "@sequelize/core";
 import Student from "./student.model";
 import Task from "./task.model";
+import Parent from "./parent.model";
+import Teacher from "./teacher.model";
+import User from "./user.model";
 
 enum CompletionStatus {
   Completed = "Completed",
@@ -12,11 +14,13 @@ class StudentTask extends Model {
   declare id: number;
   declare studentId: number;
   declare taskId: number;
-  declare completionStatus: CompletionStatus;
+  declare completionStatus: string;
   declare comment: CreationOptional<string>;
   declare createdAt: Date;
   declare updatedAt: Date;
-  declare date: string; // ✅ New column for storing date without time
+  declare date: string;
+  declare parentId: number | null;
+  declare teacherId: number | null;
 
   static initModel(sequelize: Sequelize) {
     StudentTask.init(
@@ -33,13 +37,23 @@ class StudentTask extends Model {
         },
         taskId: {
           type: DataTypes.INTEGER,
-          allowNull: false,
+          allowNull: true,
           references: { model: Task, key: "id" },
+        },
+        parentId: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          references: { model: Parent, key: "id" },
+        },
+        teacherId: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          references: { model: Teacher, key: "id" },
         },
         completionStatus: {
           type: DataTypes.STRING,
           allowNull: false,
-          defaultValue: "NotCompleted",
+          defaultValue: CompletionStatus.NotCompleted,
         },
         comment: {
           type: DataTypes.STRING,
@@ -56,9 +70,9 @@ class StudentTask extends Model {
           defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         },
         date: {
-          type: DataTypes.DATEONLY, // ✅ Stores only the date (without time)
+          type: DataTypes.DATEONLY,
           allowNull: false,
-          defaultValue: Sequelize.literal("CURRENT_DATE"), // ✅ Auto-filled with today's date
+          defaultValue: Sequelize.literal("CURRENT_DATE"),
         },
       },
       {
@@ -68,23 +82,36 @@ class StudentTask extends Model {
         indexes: [
           {
             unique: true,
-            fields: ["studentId", "taskId", "date"], // ✅ Ensures uniqueness per day
+            name: "stu_task_date_p_t_unique", // Shortened index name
+            fields: ["studentId", "taskId", "date", "parentId", "teacherId"],
           },
         ],
+        
+        hooks: {
+          beforeValidate: (task: StudentTask) => {
+            if (!(task.parentId || task.teacherId)) {
+              throw new ValidationError("Either parentId or teacherId must be provided.");
+            }
+            if (task.parentId && task.teacherId) {
+              throw new ValidationError("Only one of parentId or teacherId should be set.");
+            }
+          },
+        },
       }
     );
   }
 
-  // ✅ Ensure a student cannot be assigned the same task on the same day
   static async canAssignTask(studentId: number, taskId: number, date: string) {
-    const existingTask = await StudentTask.findOne({
+    // Check if the task already exists for the given student and date
+    const existingTask = (await StudentTask.findOne({
       where: {
         studentId,
         taskId,
-        date, // ✅ Checks against the new date column
+        date,
       },
-    });
-    return !existingTask;
+    })) as StudentTask | null;
+
+    return !existingTask; // True if the task can be assigned, false otherwise
   }
 }
 

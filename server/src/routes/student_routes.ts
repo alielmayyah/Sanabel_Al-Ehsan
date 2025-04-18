@@ -2,7 +2,6 @@ import { Response, Request } from "express";
 import {
   studentData,
   updateData,
-  updatePassword,
   deleteData,
   appearTaskes,
   appearChallanges,
@@ -793,42 +792,7 @@ router.post(
  */
 router.patch("/update", authenticateToken, checkstudent, updateData);
 
-/**
- * @swagger
- * /students/update-password:
- *   put:
- *     summary: Update student password
- *     description: Update the student's password after verifying the old password.
- *     tags: [Students]
- *     security:
- *       - BearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               old_password:
- *                 type: string
- *               new_password:
- *                 type: string
- *     responses:
- *       200:
- *         description: Password updated successfully
- *       401:
- *         description: Unauthorized - Incorrect current password or user data not found
- *       404:
- *         description: Not Found - User data not found
- *       500:
- *         description: Internal Server Error
- */
-router.patch(
-  "/update-password",
-  authenticateToken,
-  checkstudent,
-  updatePassword
-);
+
 
 /**
  * @swagger
