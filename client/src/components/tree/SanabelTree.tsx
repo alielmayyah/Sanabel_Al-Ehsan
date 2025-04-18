@@ -85,6 +85,7 @@ const SanabelTree: React.FC<SanabelTreeProps> = () => {
 
   const currentWater = Number(user?.water);
   const currentFertilizer = Number(user?.fertilizer);
+
   const waterNeeded = Number(user?.waterNeeded);
   const fertilizerNeeded = Number(user?.fertilizerNeeded);
 
@@ -93,7 +94,6 @@ const SanabelTree: React.FC<SanabelTreeProps> = () => {
 
   const treeProgress = Number(user?.treeProgress);
 
-  console.log(treeStage);
   return (
     <div className="flex flex-col h-full w-full items-center justify-between  ">
       {/* Tree */}
@@ -136,7 +136,7 @@ const SanabelTree: React.FC<SanabelTreeProps> = () => {
             </h1>
             <div className="w-full flex justify-center items-end h-full rounded-2xl bg-[#D1E2EA] text-black relative">
               <div
-                className="w-full rounded-2xl bg-[#7F4333] flex-center"
+                className="w-full rounded-2xl bg-gradient-to-t from-[#7F4333] to-[#b46a56] flex-center"
                 style={{
                   height: `${(currentFertilizer / fertilizerNeeded) * 100}%`,
                 }}

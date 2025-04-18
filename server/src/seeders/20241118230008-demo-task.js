@@ -15,8 +15,7 @@ const taskdata = [
   {
     type: "الصلاة",
     title: "احرص على أداء صلاة الظهر في وقتها",
-    description:
-      "توقف عن انشغالك وأدِّ صلاة الظهر فور دخول وقتها دون تأخير",
+    description: "توقف عن انشغالك وأدِّ صلاة الظهر فور دخول وقتها دون تأخير",
     category: "سنابل الإحسان في العلاقة مع الله",
     xp: 5,
     kind: "الظهر",
@@ -59,7 +58,6 @@ const taskdata = [
     snabelBlue: 2,
   },
 
- 
   {
     type: "الصلاة",
     title: "احرص على الذهاب إلى المسجد للصلاة",
@@ -155,8 +153,7 @@ const taskdata = [
   {
     type: "الصدقة",
     title: "ساهم في شراء طعام أو ملابس لشخص محتاج",
-    description:
-      "ادخل السرور على قلب محتاج بتوفير ما يحتاجه من طعام أو لباس.",
+    description: "ادخل السرور على قلب محتاج بتوفير ما يحتاجه من طعام أو لباس.",
     category: "سنابل الإحسان في العلاقة مع الله",
     xp: 5,
 
@@ -302,8 +299,7 @@ const taskdata = [
   },
   {
     type: "الشكر",
-    title:
-      "توقف للحظات يوميًا لتفكر في نعمة واحدة لا تدرك أهميتها في حياتك",
+    title: "توقف للحظات يوميًا لتفكر في نعمة واحدة لا تدرك أهميتها في حياتك",
     description: "تأمل في النعم المخفية التي تستفيد منها دون أن تشعر.",
     category: "سنابل الإحسان في العلاقة مع الله",
     xp: 5,
@@ -475,24 +471,26 @@ const taskdata = [
   {
     type: "الإحسان للجسد",
     title: "مارس الرياضة يومياً لمدة 15 دقيقة",
-    description: "خصص 15 دقيقة يومياً لممارسة التمارين الرياضية للحفاظ على نشاط جسمك وصحتك.",
+    description:
+      "خصص 15 دقيقة يومياً لممارسة التمارين الرياضية للحفاظ على نشاط جسمك وصحتك.",
     category: "سنابل الإحسان في العلاقة مع النفس",
     xp: 5,
 
     snabelRed: 1,
     snabelYellow: 1,
-    snabelBlue: 2
+    snabelBlue: 2,
   },
   {
     type: "الإحسان للجسد",
     title: "تناول وجبة متوازنة تشمل الخضروات والفواكه",
-    description: "احرص على أن تحتوي وجبتك اليومية على عناصر غذائية متكاملة تشمل الخضروات والفواكه.",
+    description:
+      "احرص على أن تحتوي وجبتك اليومية على عناصر غذائية متكاملة تشمل الخضروات والفواكه.",
     category: "سنابل الإحسان في العلاقة مع النفس",
     xp: 5,
 
     snabelRed: 1,
     snabelYellow: 1,
-    snabelBlue: 2
+    snabelBlue: 2,
   },
   {
     type: "الإحسان للجسد",
@@ -503,7 +501,7 @@ const taskdata = [
 
     snabelRed: 1,
     snabelYellow: 1,
-    snabelBlue: 2
+    snabelBlue: 2,
   },
   {
     type: "الإحسان للجسد",
@@ -514,7 +512,7 @@ const taskdata = [
 
     snabelRed: 1,
     snabelYellow: 1,
-    snabelBlue: 2
+    snabelBlue: 2,
   },
   {
     type: "الإحسان للجسد",
@@ -525,18 +523,19 @@ const taskdata = [
 
     snabelRed: 1,
     snabelYellow: 1,
-    snabelBlue: 2
+    snabelBlue: 2,
   },
   {
     type: "الإحسان للعقل",
     title: "اقرأ قصة أو كتاب يزيد من معرفتك",
-    description: "خصص وقتًا يوميًا لقراءة قصة أو كتاب لتنمية معرفتك وزيادة ثقافتك.",
+    description:
+      "خصص وقتًا يوميًا لقراءة قصة أو كتاب لتنمية معرفتك وزيادة ثقافتك.",
     category: "سنابل الإحسان في العلاقة مع النفس",
     xp: 5,
 
     snabelRed: 1,
     snabelYellow: 1,
-    snabelBlue: 2
+    snabelBlue: 2,
   },
   {
     type: "الإحسان للعقل",
@@ -547,7 +546,7 @@ const taskdata = [
 
     snabelRed: 1,
     snabelYellow: 1,
-    snabelBlue: 2
+    snabelBlue: 2,
   },
   {
     type: "الإحسان للعقل",
@@ -558,310 +557,335 @@ const taskdata = [
 
     snabelRed: 1,
     snabelYellow: 1,
-    snabelBlue: 2
+    snabelBlue: 2,
   },
   {
     type: "الإحسان للعقل",
     title: "خصص 20 دقيقة يومياً لمراجعة دروس المدرسة",
-    description: "احرص على تخصيص 20 دقيقة يوميًا لمراجعة دروسك لتعزيز تحصيلك الدراسي.",
+    description:
+      "احرص على تخصيص 20 دقيقة يوميًا لمراجعة دروسك لتعزيز تحصيلك الدراسي.",
     category: "سنابل الإحسان في العلاقة مع النفس",
     xp: 5,
 
     snabelRed: 1,
     snabelYellow: 1,
-    snabelBlue: 2
+    snabelBlue: 2,
   },
   {
     type: "الإحسان للعقل",
     title: "اكتب ثلاث جمل تعبر عن فكرة جديدة تعلمتها",
-    description: "دون يوميًا ثلاث جمل تعبر عن فكرة جديدة اكتسبتها لتعزيز التعلم الذاتي.",
+    description:
+      "دون يوميًا ثلاث جمل تعبر عن فكرة جديدة اكتسبتها لتعزيز التعلم الذاتي.",
     category: "سنابل الإحسان في العلاقة مع النفس",
     xp: 5,
 
     snabelRed: 1,
     snabelYellow: 1,
-    snabelBlue: 2
+    snabelBlue: 2,
   },
-{
-  type: "الإحسان للروح",
-  title: "اقرأ أذكار الصباح والمساء كل يوم",
-  description: "اجعل قراءة أذكار الصباح والمساء عادة يومية لزيادة الطمأنينة والراحة النفسية.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للروح",
-  title: "اقرأ بتدبر صفحة من القرآن مع فهم معانيها",
-  description: "خصص وقتًا يوميًا لقراءة صفحة من القرآن مع التدبر في معانيها لتقوية روحك وإيمانك.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للروح",
-  title: "تأمل في السماء لمدة خمس دقائق",
-  description: "خذ لحظات يومية لتأمل السماء وشعورك بجمال الكون واتساعه.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للروح",
-  title: "تأمل في أحد المخلوقات أو النباتات لمدة خمس دقائق",
-  description: "انظر إلى أحد المخلوقات أو النباتات بعين متأملة في عظمة الخلق وإبداع الله.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للروح",
-  title: "قم بالدعاء لوالديك",
-  description: "خصص وقتًا يوميًا للدعاء لوالديك، سواء كانوا أحياء أو متوفين، تعبيرًا عن حبك وبرّك لهما.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للروح",
-  title: "اقض وقتًا في ذكر الله",
-  description: "اجعل لك وردًا يوميًا من الأذكار والتسبيح لتطمئن روحك وتقوي علاقتك بالله.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للروح",
-  title: "حافظ على الصلاة في وقتها",
-  description: "التزم بأداء الصلوات الخمس في أوقاتها دون تأخير لتعزيز علاقتك بالله.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للروح",
-  title: "قم بالدعاء لنفسك",
-  description: "اجعل الدعاء عادة يومية، واطلب من الله العون والرحمة والتوفيق في حياتك.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للروح",
-  title: "اشكر الله على نعمة تشعر بها اليوم",
-  description: "كل يوم، فكر في نعمة جديدة أنعم الله بها عليك واشكره عليها.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للروح",
-  title: "ادعُ بالخير لأناس لا تعرفهم",
-  description: "خصص وقتًا يوميًا للدعاء لأشخاص لا تعرفهم، فهذا يزرع الخير في قلبك.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للروح",
-  title: "امشِ في الطبيعة ولو لمسافة قصيرة",
-  description: "اقضِ وقتًا يوميًا في المشي في الطبيعة لتصفية ذهنك والتأمل في جمال الخلق.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "ابدأ صباحك بتعديد نوايا إيجابية",
-  description: "خصص لحظات في بداية يومك لتحديد نوايا إيجابية تعزز يومك بالطاقة الجيدة.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "سامح من أخطأ في حقك دون انتظار اعتذار",
-  description: "تحلَّى بالتسامح وحرر قلبك من الضغائن حتى بدون تلقي اعتذار.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "اكتب ٧ أشياء أنت ممتن لها",
-  description: "خصص وقتًا يوميًا لكتابة سبع نعم تشعر بالامتنان لوجودها في حياتك.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "اكتب 3 صفات جميلة في أحد أصدقائك أو أفراد عائلتك",
-  description: "اكتب ثلاث صفات إيجابية في شخص تعرفه لتعزيز نظرتك الإيجابية للآخرين.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "إذا شعرت بالغضب، قم بعدّ حتى الرقم 10 ثم تنفس بعمق",
-  description: "عند الغضب، استخدم تقنية العد والتنفس العميق للسيطرة على انفعالاتك.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "مارس هواية تحبها",
-  description: "خصص وقتًا لممارسة هواية تستمتع بها لتجديد طاقتك وتحسين مزاجك.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "ساعد في عمل خير، مثل مساعدة زميل في الدراسة أو عمل تطوعي",
-  description: "خصص وقتًا يوميًا لفعل الخير، سواء بمساعدة زميل أو المشاركة في عمل تطوعي.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "اذكر مميزات شخص تعرفه بدلاً من التركيز على عيوبه",
-  description: "درّب نفسك على رؤية الإيجابيات في الآخرين بدلاً من التركيز على العيوب.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "اكتب أو ارسم ما تشعر به",
-  description: "استخدم الكتابة أو الرسم للتعبير عن مشاعرك والتخفيف من التوتر.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "اشكر نفسك على السعي للإحسان",
-  description: "خصص لحظة لشكر نفسك على جهودك المستمرة للتحسين والتطور.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "احفظ حديث النبي ﷺ: “ليس الشديد بالصرعة، إنما الشديد الذي يملك نفسه عند الغضب”",
-  description: "تعلم هذا الحديث النبوي وردده عند الغضب لضبط نفسك وتعزيز أخلاقك.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "قم بعمل بسيط دون إخبار أحد مثل تنظيف مكان عام أو مساعدة محتاج",
-  description: "مارس الإحسان الخفي عبر فعل الخير دون انتظار مقابل أو شهرة.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "خصص وقتًا لكتابة 3 نعم جديدة تشكر الله عليها في دفتر النعم",
-  description: "دوّن يوميًا ثلاث نعم جديدة لتزيد من إحساسك بالامتنان والسعادة.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "قدم هدية بسيطة لشخص حقق نجاحًا",
-  description: "ادعم من حولك بالهدايا البسيطة لتعزيز مشاعر الفرح والتقدير بدلاً من الحسد.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "لا تقارن نفسك بالآخرين وركز على تحسين ذاتك بدلًا من الالتفات لما لديهم",
-  description: "اجعل تركيزك على تطوير نفسك بدلًا من مقارنة حياتك بحياة الآخرين.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "ابتسم دائمًا في وجه من يقابلك",
-  description: "ابتسم للناس، فالابتسامة تفتح القلوب وتنشر حسن الظن.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
-{
-  type: "الإحسان للقلب",
-  title: "اكتب قائمة بأكثر ما يثير غضبك ثم خطط لكيفية التعامل مع كل موقف",
-  description: "حدد مسببات الغضب لديك، ثم ضع خطة للتحكم بها بطرق إيجابية.",
-  category: "سنابل الإحسان في العلاقة مع النفس",
-  xp: 5,
-  snabelRed: 1,
-  snabelYellow: 1,
-  snabelBlue: 2
-},
+  {
+    type: "الإحسان للروح",
+    title: "اقرأ أذكار الصباح والمساء كل يوم",
+    description:
+      "اجعل قراءة أذكار الصباح والمساء عادة يومية لزيادة الطمأنينة والراحة النفسية.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للروح",
+    title: "اقرأ بتدبر صفحة من القرآن مع فهم معانيها",
+    description:
+      "خصص وقتًا يوميًا لقراءة صفحة من القرآن مع التدبر في معانيها لتقوية روحك وإيمانك.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للروح",
+    title: "تأمل في السماء لمدة خمس دقائق",
+    description: "خذ لحظات يومية لتأمل السماء وشعورك بجمال الكون واتساعه.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للروح",
+    title: "تأمل في أحد المخلوقات أو النباتات لمدة خمس دقائق",
+    description:
+      "انظر إلى أحد المخلوقات أو النباتات بعين متأملة في عظمة الخلق وإبداع الله.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للروح",
+    title: "قم بالدعاء لوالديك",
+    description:
+      "خصص وقتًا يوميًا للدعاء لوالديك، سواء كانوا أحياء أو متوفين، تعبيرًا عن حبك وبرّك لهما.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للروح",
+    title: "اقض وقتًا في ذكر الله",
+    description:
+      "اجعل لك وردًا يوميًا من الأذكار والتسبيح لتطمئن روحك وتقوي علاقتك بالله.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للروح",
+    title: "حافظ على الصلاة في وقتها",
+    description:
+      "التزم بأداء الصلوات الخمس في أوقاتها دون تأخير لتعزيز علاقتك بالله.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للروح",
+    title: "قم بالدعاء لنفسك",
+    description:
+      "اجعل الدعاء عادة يومية، واطلب من الله العون والرحمة والتوفيق في حياتك.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للروح",
+    title: "اشكر الله على نعمة تشعر بها اليوم",
+    description: "كل يوم، فكر في نعمة جديدة أنعم الله بها عليك واشكره عليها.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للروح",
+    title: "ادعُ بالخير لأناس لا تعرفهم",
+    description:
+      "خصص وقتًا يوميًا للدعاء لأشخاص لا تعرفهم، فهذا يزرع الخير في قلبك.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للروح",
+    title: "امشِ في الطبيعة ولو لمسافة قصيرة",
+    description:
+      "اقضِ وقتًا يوميًا في المشي في الطبيعة لتصفية ذهنك والتأمل في جمال الخلق.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "ابدأ صباحك بتعديد نوايا إيجابية",
+    description:
+      "خصص لحظات في بداية يومك لتحديد نوايا إيجابية تعزز يومك بالطاقة الجيدة.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "سامح من أخطأ في حقك دون انتظار اعتذار",
+    description: "تحلَّى بالتسامح وحرر قلبك من الضغائن حتى بدون تلقي اعتذار.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "اكتب ٧ أشياء أنت ممتن لها",
+    description:
+      "خصص وقتًا يوميًا لكتابة سبع نعم تشعر بالامتنان لوجودها في حياتك.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "اكتب 3 صفات جميلة في أحد أصدقائك أو أفراد عائلتك",
+    description:
+      "اكتب ثلاث صفات إيجابية في شخص تعرفه لتعزيز نظرتك الإيجابية للآخرين.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "إذا شعرت بالغضب، قم بعدّ حتى الرقم 10 ثم تنفس بعمق",
+    description:
+      "عند الغضب، استخدم تقنية العد والتنفس العميق للسيطرة على انفعالاتك.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "مارس هواية تحبها",
+    description:
+      "خصص وقتًا لممارسة هواية تستمتع بها لتجديد طاقتك وتحسين مزاجك.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "ساعد في عمل خير، مثل مساعدة زميل في الدراسة أو عمل تطوعي",
+    description:
+      "خصص وقتًا يوميًا لفعل الخير، سواء بمساعدة زميل أو المشاركة في عمل تطوعي.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "اذكر مميزات شخص تعرفه بدلاً من التركيز على عيوبه",
+    description:
+      "درّب نفسك على رؤية الإيجابيات في الآخرين بدلاً من التركيز على العيوب.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "اكتب أو ارسم ما تشعر به",
+    description:
+      "استخدم الكتابة أو الرسم للتعبير عن مشاعرك والتخفيف من التوتر.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "اشكر نفسك على السعي للإحسان",
+    description: "خصص لحظة لشكر نفسك على جهودك المستمرة للتحسين والتطور.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title:
+      "احفظ حديث النبي ﷺ: “ليس الشديد بالصرعة، إنما الشديد الذي يملك نفسه عند الغضب”",
+    description:
+      "تعلم هذا الحديث النبوي وردده عند الغضب لضبط نفسك وتعزيز أخلاقك.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "قم بعمل بسيط دون إخبار أحد مثل تنظيف مكان عام أو مساعدة محتاج",
+    description: "مارس الإحسان الخفي عبر فعل الخير دون انتظار مقابل أو شهرة.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "خصص وقتًا لكتابة 3 نعم جديدة تشكر الله عليها في دفتر النعم",
+    description:
+      "دوّن يوميًا ثلاث نعم جديدة لتزيد من إحساسك بالامتنان والسعادة.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "قدم هدية بسيطة لشخص حقق نجاحًا",
+    description:
+      "ادعم من حولك بالهدايا البسيطة لتعزيز مشاعر الفرح والتقدير بدلاً من الحسد.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title:
+      "لا تقارن نفسك بالآخرين وركز على تحسين ذاتك بدلًا من الالتفات لما لديهم",
+    description:
+      "اجعل تركيزك على تطوير نفسك بدلًا من مقارنة حياتك بحياة الآخرين.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "ابتسم دائمًا في وجه من يقابلك",
+    description: "ابتسم للناس، فالابتسامة تفتح القلوب وتنشر حسن الظن.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
+  {
+    type: "الإحسان للقلب",
+    title: "اكتب قائمة بأكثر ما يثير غضبك ثم خطط لكيفية التعامل مع كل موقف",
+    description: "حدد مسببات الغضب لديك، ثم ضع خطة للتحكم بها بطرق إيجابية.",
+    category: "سنابل الإحسان في العلاقة مع النفس",
+    xp: 5,
+    snabelRed: 1,
+    snabelYellow: 1,
+    snabelBlue: 2,
+  },
 
   {
     type: "بر الوالدين",
@@ -871,7 +895,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "بر الوالدين",
@@ -881,7 +905,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "بر الوالدين",
@@ -891,7 +915,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "بر الوالدين",
@@ -901,7 +925,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "صلة الرحم",
@@ -911,7 +935,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "صلة الرحم",
@@ -921,7 +945,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "صلة الرحم",
@@ -931,17 +955,18 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "صلة الرحم",
     title: "ساعد قريبًا أصغر منك في دراسته أو هواياته",
-    description: "قدّم الدعم لأحد أقاربك الأصغر منك في التعلم أو ممارسة هوايته.",
+    description:
+      "قدّم الدعم لأحد أقاربك الأصغر منك في التعلم أو ممارسة هوايته.",
     category: "سنابل الإحسان في العلاقة مع الأسرة والمجتمع",
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الصدق والأمانة",
@@ -951,7 +976,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الصدق والأمانة",
@@ -961,7 +986,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الصدق والأمانة",
@@ -971,7 +996,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الصدق والأمانة",
@@ -981,7 +1006,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "إكرام الضيف",
@@ -991,7 +1016,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "إكرام الضيف",
@@ -1001,7 +1026,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "إكرام الضيف",
@@ -1011,7 +1036,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الإحسان للجار",
@@ -1021,7 +1046,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الإحسان للجار",
@@ -1031,7 +1056,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الإحسان للجار",
@@ -1041,7 +1066,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "توقير الكبير ورحمة الصغير",
@@ -1051,7 +1076,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "توقير الكبير ورحمة الصغير",
@@ -1061,7 +1086,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "توقير الكبير ورحمة الصغير",
@@ -1071,7 +1096,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "التهادي",
@@ -1081,7 +1106,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "التهادي",
@@ -1091,7 +1116,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "التهادي",
@@ -1101,7 +1126,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الإطعام",
@@ -1111,7 +1136,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الإطعام",
@@ -1121,7 +1146,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الإطعام",
@@ -1131,7 +1156,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الرحمة والرفق",
@@ -1141,7 +1166,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الرحمة والرفق",
@@ -1151,7 +1176,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الرحمة والرفق",
@@ -1161,7 +1186,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الوفاء والامتنان",
@@ -1171,7 +1196,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الوفاء والامتنان",
@@ -1181,7 +1206,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الوفاء والامتنان",
@@ -1191,7 +1216,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "إدخال السرور",
@@ -1201,7 +1226,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "إدخال السرور",
@@ -1211,7 +1236,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "إدخال السرور",
@@ -1221,7 +1246,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "إيناس الوحشان وترك التناجي",
@@ -1231,7 +1256,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "إيناس الوحشان وترك التناجي",
@@ -1241,7 +1266,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "إيناس الوحشان وترك التناجي",
@@ -1251,7 +1276,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الإصلاح بين متخاصمين",
@@ -1261,7 +1286,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الإصلاح بين متخاصمين",
@@ -1271,7 +1296,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "التبسم وإفشاء السلام",
@@ -1281,7 +1306,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "التبسم وإفشاء السلام",
@@ -1291,7 +1316,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "التبسم وإفشاء السلام",
@@ -1301,7 +1326,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "إماطة الأذى عن الطريق",
@@ -1311,7 +1336,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "إماطة الأذى عن الطريق",
@@ -1321,7 +1346,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "إماطة الأذى عن الطريق",
@@ -1331,9 +1356,8 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
-  }
-,
+    snabelBlue: 1,
+  },
   {
     type: "التعاون",
     title: "اعمل مع الآخرين بروح التعاون، فيد الله مع الجماعة",
@@ -1342,7 +1366,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "التعاون",
@@ -1352,7 +1376,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "التعاون",
@@ -1362,7 +1386,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الكلمة الطيبة والإحسان في القول",
@@ -1372,7 +1396,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الكلمة الطيبة والإحسان في القول",
@@ -1382,7 +1406,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "الكلمة الطيبة والإحسان في القول",
@@ -1392,7 +1416,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "المشاركة والإيثار",
@@ -1402,7 +1426,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "المشاركة والإيثار",
@@ -1412,7 +1436,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "المشاركة والإيثار",
@@ -1422,7 +1446,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "قضاء الحوائج ومساعدة الآخرين",
@@ -1432,7 +1456,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "قضاء الحوائج ومساعدة الآخرين",
@@ -1442,7 +1466,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "قضاء الحوائج ومساعدة الآخرين",
@@ -1452,7 +1476,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "قضاء الحوائج ومساعدة الآخرين",
@@ -1462,7 +1486,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "قضاء الحوائج ومساعدة الآخرين",
@@ -1472,17 +1496,18 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "قضاء الحوائج ومساعدة الآخرين",
     title: "قم بزيارة للأطفال في المستشفيات لقراءة القصص أو تقديم الهدايا",
-    description: "قدّم الدعم للأطفال في المستشفيات عبر القراءة أو تقديم الهدايا.",
+    description:
+      "قدّم الدعم للأطفال في المستشفيات عبر القراءة أو تقديم الهدايا.",
     category: "سنابل الإحسان في العلاقة مع الأسرة والمجتمع",
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "قضاء الحوائج ومساعدة الآخرين",
@@ -1492,7 +1517,7 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
   {
     type: "قضاء الحوائج ومساعدة الآخرين",
@@ -1502,150 +1527,151 @@ const taskdata = [
     xp: 5,
     snabelRed: 1,
     snabelYellow: 2,
-    snabelBlue: 1
+    snabelBlue: 1,
   },
-  
-    {
-      type: "عدم الإسراف",
-      title: "ابدأ حملة توعية في المدرسة أو بين أسرتك لترشيد استهلاك المياه",
-      description: "قم بتوعية الآخرين بأهمية ترشيد استهلاك المياه.",
-      category: "سنابل الإحسان في العلاقة مع الأرض والكون",
-      xp: 5,
-      snabelRed: 2,
-      snabelYellow: 1,
-      snabelBlue: 1
-    },
-    {
-      type: "عدم الإسراف",
-      title: "استخدم بدائل لمنتجات البلاستيك",
-      description: "استبدل المنتجات البلاستيكية ببدائل صديقة للبيئة.",
-      category: "سنابل الإحسان في العلاقة مع الأرض والكون",
-      xp: 5,
-      snabelRed: 2,
-      snabelYellow: 1,
-      snabelBlue: 1
-    },
-    {
-      type: "عدم الإسراف",
-      title: "قم بإعادة تدوير أحد الأشياء التي لا تستخدمها",
-      description: "أعد تدوير شيء قديم لتحويله إلى شيء مفيد.",
-      category: "سنابل الإحسان في العلاقة مع الأرض والكون",
-      xp: 5,
-      snabelRed: 2,
-      snabelYellow: 1,
-      snabelBlue: 1
-    },
-    {
-      type: "عدم الإسراف",
-      title: "حافظ على البيئة من خلال عدم إهدار الموارد (ماء، كهرباء، طعام)",
-      description: "قلل من هدر الموارد الطبيعية في حياتك اليومية.",
-      category: "سنابل الإحسان في العلاقة مع الأرض والكون",
-      xp: 5,
-      snabelRed: 2,
-      snabelYellow: 1,
-      snabelBlue: 1
-    },
-    {
-      type: "الاحسان للمخلوقات (الطيور والحيوانات)",
-      title: "ضع وعاء ماء أو بعض الطعام للحيوانات أو الطيور خارج منزلك",
-      description: "ساعد الحيوانات والطيور بتوفير الطعام والماء لهم.",
-      category: "سنابل الإحسان في العلاقة مع الأرض والكون",
-      xp: 5,
-      snabelRed: 2,
-      snabelYellow: 1,
-      snabelBlue: 1
-    },
-    {
-      type: "الغرس",
-      title: "ازرع نباتًا صغيرًا أو قم بتنظيف مساحة صغيرة في المدرسة أو المنطقة المحيطة بك",
-      description: "ساهم في تحسين البيئة بزراعة النباتات أو تنظيف الأماكن العامة.",
-      category: "سنابل الإحسان في العلاقة مع الأرض والكون",
-      xp: 5,
-      snabelRed: 2,
-      snabelYellow: 1,
-      snabelBlue: 1
-    },
-    {
-      type: "الغرس",
-      title: "قم بالاعتناء بنبات موجود في المنزل",
-      description: "اهتم بنباتات منزلك لتنمو بشكل صحي.",
-      category: "سنابل الإحسان في العلاقة مع الأرض والكون",
-      xp: 5,
-      snabelRed: 2,
-      snabelYellow: 1,
-      snabelBlue: 1
-    },
-    {
-      type: "الغرس",
-      title: "اغرس شجرة أو زهور في مكان مناسب",
-      description: "ساهم في تحسين البيئة بزراعة الأشجار أو الزهور.",
-      category: "سنابل الإحسان في العلاقة مع الأرض والكون",
-      xp: 5,
-      snabelRed: 2,
-      snabelYellow: 1,
-      snabelBlue: 1
-    },
-    {
-      type: "الإحسان للأرض والنبات",
-      title: "اقضِ 10 دقائق على الأقل في الطبيعة (حديقة، شرفة، نافذة تطل على الخارج)",
-      description: "استمتع بجمال الطبيعة وتأمل في خلق الله.",
-      category: "سنابل الإحسان في العلاقة مع الأرض والكون",
-      xp: 5,
-      snabelRed: 2,
-      snabelYellow: 1,
-      snabelBlue: 1
-    },
-    {
-      type: "الإحسان للأرض والنبات",
-      title: "تفكر في جمال المخلوقات والنظام الكوني الذي خلقه الله",
-      description: "تأمل في إبداع الله في خلق الكون والمخلوقات.",
-      category: "سنابل الإحسان في العلاقة مع الأرض والكون",
-      xp: 5,
-      snabelRed: 2,
-      snabelYellow: 1,
-      snabelBlue: 1
-    },
-    {
-      type: "الإحسان للأرض والنبات",
-      title: "شارك في تنظيف شاطئ أو حديقة عامة",
-      description: "ساهم في تحسين البيئة بتنظيف الأماكن العامة.",
-      category: "سنابل الإحسان في العلاقة مع الأرض والكون",
-      xp: 5,
-      snabelRed: 2,
-      snabelYellow: 1,
-      snabelBlue: 1
-    },
-    {
-      type: "الإحسان للأرض والنبات",
-      title: "التقط القمامة من على الأرض",
-      description: "حافظ على نظافة البيئة بإزالة القمامة من الأماكن العامة.",
-      category: "سنابل الإحسان في العلاقة مع الأرض والكون",
-      xp: 5,
-      snabelRed: 2,
-      snabelYellow: 1,
-      snabelBlue: 1
-    },
-    {
-      type: "الإحسان للأرض والنبات",
-      title: "نظم نشاط لتنظيف أو تحسين البيئة (تجميع مخلفات، ترتيب مكان)",
-      description: "قم بتنظيم نشاط لتحسين البيئة المحيطة بك.",
-      category: "سنابل الإحسان في العلاقة مع الأرض والكون",
-      xp: 5,
-      snabelRed: 2,
-      snabelYellow: 1,
-      snabelBlue: 1
-    },
-    
-  ].map((task, index) => ({
-    id: index + 1, // Incrementing ID starting from 1
-    ...task, // Spread the existing task properties
-  }));
+
+  {
+    type: "عدم الإسراف",
+    title: "ابدأ حملة توعية في المدرسة أو بين أسرتك لترشيد استهلاك المياه",
+    description: "قم بتوعية الآخرين بأهمية ترشيد استهلاك المياه.",
+    category: "سنابل الإحسان في العلاقة مع الأرض والكون",
+    xp: 5,
+    snabelRed: 2,
+    snabelYellow: 1,
+    snabelBlue: 1,
+  },
+  {
+    type: "عدم الإسراف",
+    title: "استخدم بدائل لمنتجات البلاستيك",
+    description: "استبدل المنتجات البلاستيكية ببدائل صديقة للبيئة.",
+    category: "سنابل الإحسان في العلاقة مع الأرض والكون",
+    xp: 5,
+    snabelRed: 2,
+    snabelYellow: 1,
+    snabelBlue: 1,
+  },
+  {
+    type: "عدم الإسراف",
+    title: "قم بإعادة تدوير أحد الأشياء التي لا تستخدمها",
+    description: "أعد تدوير شيء قديم لتحويله إلى شيء مفيد.",
+    category: "سنابل الإحسان في العلاقة مع الأرض والكون",
+    xp: 5,
+    snabelRed: 2,
+    snabelYellow: 1,
+    snabelBlue: 1,
+  },
+  {
+    type: "عدم الإسراف",
+    title: "حافظ على البيئة من خلال عدم إهدار الموارد (ماء، كهرباء، طعام)",
+    description: "قلل من هدر الموارد الطبيعية في حياتك اليومية.",
+    category: "سنابل الإحسان في العلاقة مع الأرض والكون",
+    xp: 5,
+    snabelRed: 2,
+    snabelYellow: 1,
+    snabelBlue: 1,
+  },
+  {
+    type: "الاحسان للمخلوقات (الطيور والحيوانات)",
+    title: "ضع وعاء ماء أو بعض الطعام للحيوانات أو الطيور خارج منزلك",
+    description: "ساعد الحيوانات والطيور بتوفير الطعام والماء لهم.",
+    category: "سنابل الإحسان في العلاقة مع الأرض والكون",
+    xp: 5,
+    snabelRed: 2,
+    snabelYellow: 1,
+    snabelBlue: 1,
+  },
+  {
+    type: "الغرس",
+    title:
+      "ازرع نباتًا صغيرًا أو قم بتنظيف مساحة صغيرة في المدرسة أو المنطقة المحيطة بك",
+    description:
+      "ساهم في تحسين البيئة بزراعة النباتات أو تنظيف الأماكن العامة.",
+    category: "سنابل الإحسان في العلاقة مع الأرض والكون",
+    xp: 5,
+    snabelRed: 2,
+    snabelYellow: 1,
+    snabelBlue: 1,
+  },
+  {
+    type: "الغرس",
+    title: "قم بالاعتناء بنبات موجود في المنزل",
+    description: "اهتم بنباتات منزلك لتنمو بشكل صحي.",
+    category: "سنابل الإحسان في العلاقة مع الأرض والكون",
+    xp: 5,
+    snabelRed: 2,
+    snabelYellow: 1,
+    snabelBlue: 1,
+  },
+  {
+    type: "الغرس",
+    title: "اغرس شجرة أو زهور في مكان مناسب",
+    description: "ساهم في تحسين البيئة بزراعة الأشجار أو الزهور.",
+    category: "سنابل الإحسان في العلاقة مع الأرض والكون",
+    xp: 5,
+    snabelRed: 2,
+    snabelYellow: 1,
+    snabelBlue: 1,
+  },
+  {
+    type: "الإحسان للأرض والنبات",
+    title:
+      "اقضِ 10 دقائق على الأقل في الطبيعة (حديقة، شرفة، نافذة تطل على الخارج)",
+    description: "استمتع بجمال الطبيعة وتأمل في خلق الله.",
+    category: "سنابل الإحسان في العلاقة مع الأرض والكون",
+    xp: 5,
+    snabelRed: 2,
+    snabelYellow: 1,
+    snabelBlue: 1,
+  },
+  {
+    type: "الإحسان للأرض والنبات",
+    title: "تفكر في جمال المخلوقات والنظام الكوني الذي خلقه الله",
+    description: "تأمل في إبداع الله في خلق الكون والمخلوقات.",
+    category: "سنابل الإحسان في العلاقة مع الأرض والكون",
+    xp: 5,
+    snabelRed: 2,
+    snabelYellow: 1,
+    snabelBlue: 1,
+  },
+  {
+    type: "الإحسان للأرض والنبات",
+    title: "شارك في تنظيف شاطئ أو حديقة عامة",
+    description: "ساهم في تحسين البيئة بتنظيف الأماكن العامة.",
+    category: "سنابل الإحسان في العلاقة مع الأرض والكون",
+    xp: 5,
+    snabelRed: 2,
+    snabelYellow: 1,
+    snabelBlue: 1,
+  },
+  {
+    type: "الإحسان للأرض والنبات",
+    title: "التقط القمامة من على الأرض",
+    description: "حافظ على نظافة البيئة بإزالة القمامة من الأماكن العامة.",
+    category: "سنابل الإحسان في العلاقة مع الأرض والكون",
+    xp: 5,
+    snabelRed: 2,
+    snabelYellow: 1,
+    snabelBlue: 1,
+  },
+  {
+    type: "الإحسان للأرض والنبات",
+    title: "نظم نشاط لتنظيف أو تحسين البيئة (تجميع مخلفات، ترتيب مكان)",
+    description: "قم بتنظيم نشاط لتحسين البيئة المحيطة بك.",
+    category: "سنابل الإحسان في العلاقة مع الأرض والكون",
+    xp: 5,
+    snabelRed: 2,
+    snabelYellow: 1,
+    snabelBlue: 1,
+  },
+].map((task, index) => ({
+  id: index + 1, // Incrementing ID starting from 1
+  ...task, // Spread the existing task properties
+}));
 
 module.exports = {
   data: taskdata, // ✅ Explicitly export the data
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert("Tasks", );
-    
+    await queryInterface.bulkInsert("Tasks");
   },
 
   down: async (queryInterface, Sequelize) => {

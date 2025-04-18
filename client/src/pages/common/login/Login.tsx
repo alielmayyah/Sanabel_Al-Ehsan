@@ -66,7 +66,7 @@ const Login: React.FC = () => {
           "token",
           `${response.data.data.user.token.toString()}`
         );
-
+        localStorage.setItem("firstTimer", "true");
         // Store Role preference
         localStorage.setItem("role", response.data.data.user.role.toString());
 
@@ -103,7 +103,12 @@ const Login: React.FC = () => {
               snabelYellow: userData.snabelYellow,
               xp: userData.xp,
               water: userData.water,
-              seeders: userData.seeders,
+              fertilizer: userData.seeders,
+
+              waterNeeded: userData.waterNeeded,
+              fertilizerNeeded: response.data.data.treePoint.seeders,
+              treeStage: response.data.data.treePoint.stage,
+              treeProgress: response.data.data.treePoint.treeProgress,
             });
           }
         } catch (error) {
@@ -115,14 +120,7 @@ const Login: React.FC = () => {
         // Show success message
         toast.success(t("login_successful"));
 
-        // Redirect based on role
-        if (response.data.data.user.role === "Student") {
-          history.push("/student/home");
-        } else if (response.data.data.user.role === "Teacher") {
-          history.push("/teacher/home");
-        } else if (response.data.data.user.role === "Parent") {
-          history.push("/parent/home");
-        }
+        history.push("/");
       }
     } catch (error) {
       toast.error(t("login_failed"));

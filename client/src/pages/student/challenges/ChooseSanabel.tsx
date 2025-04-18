@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { delay, motion } from "framer-motion";
 
@@ -7,6 +7,16 @@ import { useHistory, useParams } from "react-router-dom";
 
 import sanabelTypeData from "../../../data/SanabelTypeData";
 import GoBackButton from "../../../components/GoBackButton";
+
+import axios from "axios";
+
+// Sanabel Types
+import sanabelType1Img from "../../../assets/sanabeltype/سنابل-الإحسان-في-العلاقة-مع-الله.png";
+import sanabelType2Img from "../../../assets/sanabeltype/سنابل الإحسان في العلاقة مع النفس.png";
+import sanabelType3Img from "../../../assets/sanabeltype/سنابل الإحسان في العلاقة مع الأسرة والمجتمع.png";
+import sanabelType4Img from "../../../assets/sanabeltype/سنابل-الإحسان-في-العلاقة-مع-الأرض-والكون.png";
+
+import { sanabelImgs } from "../../../data/SanabelImgs";
 
 const SanabelType: React.FC = () => {
   const { t } = useTranslation();
@@ -43,6 +53,79 @@ const SanabelType: React.FC = () => {
     visible: { opacity: 1, y: 0 }, // Animate to visible and original position
   };
 
+  const [categoryName, setCategoryName] = useState("");
+
+  const sanabelTypeImg = [
+    sanabelType1Img,
+    sanabelType2Img,
+    sanabelType3Img,
+    sanabelType4Img,
+  ];
+
+  const fetchSanabelTypes = async (token?: string) => {
+    const authToken = token || localStorage.getItem("token");
+    if (!authToken) return;
+
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/students/tasks-category",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setCategoryName(response.data.data[index].category);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSanabelTypes();
+  }, []);
+
+  const [tasks, setTasks] = useState<string[]>([]);
+
+  const fetchSanabel = async (token?: string) => {
+    const authToken = token || localStorage.getItem("token");
+    if (!authToken) return;
+
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/students/appear-Taskes-Type/${categoryName}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const data = response.data.data;
+
+        // Extract unique 'type' values while maintaining the order
+        const uniqueTypes: string[] = [];
+        data.forEach((task: { type: string }) => {
+          if (!uniqueTypes.includes(task.type)) {
+            uniqueTypes.push(task.type);
+          }
+        });
+
+        setTasks(uniqueTypes); // Set the unique types
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSanabel();
+  }, [categoryName]);
+
   return (
     <motion.div
       className="flex flex-col h-screen w-full items-center p-3"
@@ -59,7 +142,7 @@ const SanabelType: React.FC = () => {
       >
         <motion.img
           loading="lazy"
-          src={sanabel.img}
+          src={sanabelTypeImg[index]}
           alt=""
           className="h-20"
           initial={{ rotate: -10, scale: 0.9 }}
@@ -78,7 +161,7 @@ const SanabelType: React.FC = () => {
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0, ease: "easeOut" }}
       >
-        {t(sanabel.name)}
+        {t(categoryName)}
       </motion.h1>
 
       {/* Grid with stagger animation */}
@@ -88,7 +171,7 @@ const SanabelType: React.FC = () => {
         initial="hidden"
         animate="visible"
       >
-        {sanabel.sanabel.map((item, idx) => (
+        {tasks.map((item, idx) => (
           <motion.div
             key={idx}
             className={`w-full ${colorBG} border-t-2 flex-center p-2 py-3 flex-col gap-3
@@ -97,10 +180,13 @@ const SanabelType: React.FC = () => {
             custom={idx}
             onClick={() => history.push(`/student/sanabel/${index}/${idx}`)}
           >
-            <img src={item.img} alt="" className="w-2/5" loading="lazy" />
-            <h1 className="text-black font-bold text-sm text-center">
-              {item.name}
-            </h1>
+            <img
+              src={sanabelImgs[index][idx]}
+              alt=""
+              className="w-2/5"
+              loading="lazy"
+            />
+            <h1 className="text-black font-bold text-sm text-center">{item}</h1>
           </motion.div>
         ))}
       </motion.div>

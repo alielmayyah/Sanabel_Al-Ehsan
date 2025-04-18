@@ -1,0 +1,230 @@
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
+import { useTheme } from "../../../context/ThemeContext";
+import StudentNavbar from "../../../components/navbar/StudentNavbar";
+
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
+
+import LeaderboardsStar from "../../../icons/Leaderboards/LeaderboardsStar";
+import FirstPlaceColumn from "../../../icons/Leaderboards/FirstPlaceColumn";
+import SecondPlaceColumn from "../../../icons/Leaderboards/SecondPlaceColumn";
+import ThirdPlaceColumn from "../../../icons/Leaderboards/ThirdPlaceColumn";
+
+import { IoCloseCircle } from "react-icons/io5";
+
+import { avatars } from "../../../data/Avatars";
+
+import FilterIcon from "../../../icons/Leaderboards/FilterIcon";
+import PrimaryButton from "../../../components/PrimaryButton";
+import { delay, motion } from "framer-motion";
+import MedalAndLevel from "../../../components/MedalAndLevel";
+
+const Leaderboards: React.FC = () => {
+  const { darkMode, toggleDarkMode } = useTheme();
+  const { t } = useTranslation();
+
+  const [showWeekOrDay, setShowWeekOrDay] = useState<"day" | "week">("day");
+
+  // day or week
+
+  const [showType, setShowType] = useState("users");
+  // user or classes or teams
+
+  type LeaderboardEntry = {
+    name: string;
+    level: number;
+    color: string;
+    avatar: string;
+    stage: string;
+    grade: string;
+    class: string;
+  };
+
+  type LeaderboardData = {
+    day: LeaderboardEntry[];
+    week: LeaderboardEntry[];
+  };
+
+  // Sample leaderboard data
+  const [leaderboardData, setLeaderboardData] = useState<LeaderboardData>({
+    day: [
+      {
+        name: "سارة حسن",
+        level: 88,
+        color: "bg-yellowprimary",
+        avatar: avatars.girls.girl2,
+        stage: "secondary",
+        grade: "10",
+        class: "1",
+      },
+
+      {
+        name: "عمر شريف",
+        level: 125,
+        color: "bg-orangeprimary",
+        avatar: avatars.boys.boy2,
+        stage: "primary",
+        grade: "2",
+        class: "1",
+      },
+
+      {
+        name: "احمد جمال",
+        level: 206,
+        color: "bg-pinkprimary",
+        avatar: avatars.boys.boy5,
+        stage: "primary",
+        grade: "4",
+        class: "2",
+      },
+    ],
+    week: [
+      {
+        name: "سارة حسن",
+        level: 702,
+        color: "bg-yellowprimary",
+        avatar: avatars.girls.girl2,
+        stage: "primary",
+        grade: "6",
+        class: "3",
+      },
+
+      {
+        name: "أحمد جمال",
+        level: 700,
+        color: "bg-greenprimary",
+        avatar: avatars.boys.boy6,
+        stage: "secondary",
+        grade: "11",
+        class: "3",
+      },
+
+      {
+        name: "عمر شريف",
+        level: 700,
+        color: "bg-orangeprimary",
+        avatar: avatars.boys.boy2,
+        stage: "preparatory",
+        grade: "9",
+        class: "2",
+      },
+    ],
+  });
+
+  // Sort leaderboard data by points in descending order based on `showWeekOrDay`
+  const sortedData = leaderboardData[showWeekOrDay].sort(
+    (a: LeaderboardEntry, b: LeaderboardEntry) => b.level - a.level
+  );
+
+  // Animation Variants
+  const columnVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 1 } },
+  };
+
+  const listVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.2 } },
+  };
+
+  return (
+    <div className="flex flex-col h-full w-full items-center justify-center gap-2">
+      <motion.h1
+        className="text-2xl font-bold text-center text-black"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+      >
+        {t("لوحة المتصدرين")}
+      </motion.h1>
+      <motion.h1
+        className="text-md font-bold text-center text-[#999] w-full"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut", delay: 1 }}
+      >
+        {t("نافس أصدقاءك واظهر اسمك في قائمة الأفضل")}
+      </motion.h1>
+      {/* leaderboards places */}
+      <div className="flex flex-col gap-2  w-full  py-5 px-1 ">
+        {/* Leaderboards for top 3 */}
+        <motion.div
+          className="flex justify-between items-end w-full"
+          initial="hidden"
+          animate="visible"
+          variants={listVariants}
+          transition={{ duration: 1, ease: "easeOut", delay: 2 }}
+        >
+          <motion.div
+            className="flex flex-col items-center  w-1/3"
+            variants={columnVariants}
+          >
+            <div className="w-20 h-20 rounded-full relative border-2 border-blueprimary">
+              <img
+                className="w-[75px] h-[75px] rounded-full absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                src={sortedData[0].avatar}
+              />
+              <div className="flex-center absolute p-4 text-center transform -translate-x-1/2 -translate-y-1/2 top-0 left-1/2">
+                <LeaderboardsStar size={40} className="text-blueprimary" />
+              </div>
+            </div>
+            <h1 className="text-black">{sortedData[0].name}</h1>
+            <div className="scale-90">
+              <MedalAndLevel
+                level={sortedData[0].level}
+                color="text-blueprimary"
+                dir={""}
+              />
+            </div>
+
+            <FirstPlaceColumn className="w-full" />
+          </motion.div>
+          <motion.div
+            className="flex flex-col items-center  w-1/3 -order-1"
+            variants={columnVariants}
+          >
+            <img
+              className="w-20 h-20 rounded-full"
+              src={sortedData[1].avatar}
+            />
+            <h1 className="text-black">{sortedData[1].name}</h1>
+            <div className="scale-90">
+              <MedalAndLevel
+                level={sortedData[1].level}
+                color={"text-redprimary"}
+                dir={""}
+              />
+            </div>
+            <SecondPlaceColumn className="w-full" />
+          </motion.div>
+          <motion.div
+            className="flex flex-col items-center  w-1/3"
+            variants={columnVariants}
+          >
+            <img
+              className="w-20 h-20 rounded-full"
+              src={sortedData[2].avatar}
+            />
+            <h1 className="text-black">{sortedData[2].name}</h1>
+            <div className="scale-90">
+              <MedalAndLevel
+                level={sortedData[2].level}
+                color={"text-yellowprimary"}
+                dir={""}
+              />
+            </div>
+            <ThirdPlaceColumn className="w-full " />
+          </motion.div>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+export default Leaderboards;

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { delay, motion } from "framer-motion";
 
@@ -11,8 +11,58 @@ import reminderImg from "../../../assets/توصيات عامة.svg";
 import { FaCircleQuestion } from "react-icons/fa6";
 
 import sanabelType from "../../../data/SanabelTypeData";
+import axios from "axios";
+
+// Sanabel Types
+import sanabelType1Img from "../../../assets/sanabeltype/سنابل-الإحسان-في-العلاقة-مع-الله.png";
+import sanabelType2Img from "../../../assets/sanabeltype/سنابل الإحسان في العلاقة مع النفس.png";
+import sanabelType3Img from "../../../assets/sanabeltype/سنابل الإحسان في العلاقة مع الأسرة والمجتمع.png";
+import sanabelType4Img from "../../../assets/sanabeltype/سنابل-الإحسان-في-العلاقة-مع-الأرض-والكون.png";
+
+// Sanabel
+import blueSanabel from "../../../assets/resources/سنبلة زرقاء.png";
+import redSanabel from "../../../assets/resources/سنبلة حمراء.png";
+import yellowSanabel from "../../../assets/resources/سنبلة صفراء.png";
+import xpIcon from "../../../assets/resources/اكس بي.png";
 
 const SanabelType: React.FC = () => {
+  const [categories, setCategories] = useState([]);
+
+  const sanabelTypeImg = [
+    sanabelType1Img,
+    sanabelType2Img,
+    sanabelType3Img,
+    sanabelType4Img,
+  ];
+
+  const resourcesImgs = [blueSanabel, redSanabel, yellowSanabel, xpIcon];
+
+  const fetchUserData = async (token?: string) => {
+    const authToken = token || localStorage.getItem("token");
+    if (!authToken) return;
+
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/students/tasks-category",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setCategories(response.data.data); // Store the data array in state
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -175,7 +225,7 @@ const SanabelType: React.FC = () => {
           },
         }}
       >
-        {sanabelType.map((items, index) => {
+        {categories.map((items: any, index) => {
           const colors = [
             "text-blueprimary",
             "text-redprimary",
@@ -205,6 +255,14 @@ const SanabelType: React.FC = () => {
               ? "bg-yellowprimary"
               : "bg-greenprimary";
 
+          // Map the resources
+          const resources = [
+            { icon: blueSanabel, value: items.snabelBlue },
+            { icon: redSanabel, value: items.snabelRed },
+            { icon: yellowSanabel, value: items.snabelYellow },
+            { icon: xpIcon, value: items.xp },
+          ];
+
           return (
             <motion.div
               key={index}
@@ -214,22 +272,25 @@ const SanabelType: React.FC = () => {
               transition={{ duration: 1 }}
               onClick={() => history.push(`/student/sanabel/${index}`)}
             >
-              <div className="flex w-full justify-between">
+              <div className="flex w-full justify-between items-center">
                 <div className="flex gap-2">
-                  {items.rewards?.map((item) => (
-                    <div className="flex-col flex-center">
+                  {resources.map((resource, resourceIndex) => (
+                    <div
+                      key={resourceIndex}
+                      className="flex flex-col items-center"
+                    >
                       <img
-                        src={item.icon}
+                        src={resource.icon}
                         alt="icon"
                         className="w-auto h-6"
                         loading="lazy"
                       />
-                      <h1 className="text-black text-sm"> {item.value}</h1>
+                      <h1 className="text-black text-sm">{resource.value}</h1>
                     </div>
                   ))}
                 </div>
                 <img
-                  src={items.img}
+                  src={sanabelTypeImg[index]}
                   alt=""
                   className="h-auto w-1/4"
                   loading="lazy"
@@ -239,7 +300,7 @@ const SanabelType: React.FC = () => {
                 <div className="flex-center gap-2">
                   <SanabelArrow className={`${colorClass}`} />
                   <h1 className={`${colorClass} text-end text-sm font-bold`}>
-                    {items.name}
+                    {t(items.category)}
                   </h1>
                 </div>
               </div>

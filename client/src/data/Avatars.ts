@@ -21,11 +21,8 @@ import girl7 from "../assets/avatars/Girls/girl7.png";
 import girl8 from "../assets/avatars/Girls/girl8.png";
 import girl9 from "../assets/avatars/Girls/girl9.png";
 
-
 // Grouped arrays for easier access
 export const avatars = {
-    boys: { boy1, boy2, boy3, boy4, boy5, boy6, boy7 },
-    girls: { girl1, girl2, girl3, girl4, girl5, girl6, girl7, girl8, girl9 },
-  };
-
-
+  boys: { boy1, boy2, boy3, boy4, boy5, boy6, boy7 },
+  girls: { girl1, girl2, girl3, girl4, girl5, girl6, girl7, girl8, girl9 },
+};

@@ -12,12 +12,17 @@ const SplashScreen: React.FC = () => {
     const hasVisited = localStorage.getItem("hasVisited") === "true";
     const keepLoggedIn = localStorage.getItem("keepLoggedIn") === "true";
     const role = localStorage.getItem("role");
+    const firstTimer = localStorage.getItem("firstTimer");
 
     const timer = setTimeout(() => {
       if (keepLoggedIn) {
         // Logged-in user redirects to home based on role
         if (role === "Student") {
-          history.replace("/student/home");
+          if (firstTimer === "true") {
+            history.replace("/student/tutorial");
+          } else {
+            history.replace("/student/home");
+          }
         } else if (role === "Teacher") {
           history.replace("/teacher/home");
         } else if (role === "Parent") {
@@ -35,6 +40,37 @@ const SplashScreen: React.FC = () => {
 
     return () => clearTimeout(timer);
   }, [history]);
+
+  // Testing
+
+  // localStorage.setItem("keepLoggedIn", "true");
+  // localStorage.setItem("role", "Student");
+  // localStorage.setItem("firstTimer", "true");
+
+  // useEffect(() => {
+  //   const hasVisited = localStorage.getItem("hasVisited") === "true";
+  //   const keepLoggedIn = localStorage.getItem("keepLoggedIn") === "true";
+  //   const role = localStorage.getItem("role");
+  //   const firstTimer = localStorage.getItem("firstTimer");
+
+  //   const timer = setTimeout(() => {
+  //     if (keepLoggedIn && role === "Student") {
+  //       if (firstTimer === "true") {
+  //         localStorage.setItem("firstTimer", "false"); // Mark tutorial as complete
+  //         history.replace("/student/tutorial");
+  //       } else {
+  //         history.replace("/student/home");
+  //       }
+  //     } else if (!hasVisited) {
+  //       localStorage.setItem("hasVisited", "true");
+  //       history.replace("/onboarding");
+  //     } else {
+  //       history.replace("/choosesignmethod");
+  //     }
+  //   }, 4000); // 4-second delay for splash screen
+
+  //   return () => clearTimeout(timer);
+  // }, [history]);
 
   return (
     <motion.div

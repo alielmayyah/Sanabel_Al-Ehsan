@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { avatars } from "../data/Avatars";
 
 // Define the type for the component props
 interface GreetingProps {
@@ -19,7 +20,10 @@ const Greeting: React.FC<GreetingProps> = ({ name, text, hello }) => {
         </h1>
         <h2 className="text-[#B3B3B3]">{t(text)}</h2>
       </div>
-      <div className="w-12 h-12 bg-red-300 rounded-full"></div>
+      <img
+        className="w-12 h-12 bg-red-300 rounded-full"
+        src={avatars.boys.boy1}
+      ></img>
     </div>
   );
 };

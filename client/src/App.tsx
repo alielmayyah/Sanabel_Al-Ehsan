@@ -28,6 +28,7 @@ import StudentProfile from "./pages/student/StudentProfile";
 import StudentProfileEdit from "./pages/student/profile/StudentProfileEdit";
 import StudentSettings from "./pages/student/profile/StudentSettings";
 import StudentLeaderboards from "./pages/student/StudentLeaderboards";
+import StudentTutorial from "./pages/student/tutorial/StudentTutorial";
 
 import StudentChallenges from "./pages/student/StudentChallenges";
 import ChooseSanabelType from "./pages/student/challenges/ChooseSanabelType";
@@ -107,6 +108,11 @@ const App: React.FC = () => {
                   exact
                   path="/choosesignmethod"
                   component={ChooseSignMethod}
+                />
+                <Route
+                  exact
+                  path="/student/tutorial"
+                  component={StudentTutorial}
                 />
                 {/* Signup */}
                 <Route exact path="/signupstudent" component={SignupStudent} />

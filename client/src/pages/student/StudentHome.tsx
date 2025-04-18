@@ -74,7 +74,7 @@ const StudentHome: React.FC = () => {
   const { user } = useUserContext();
   const xp = Number(user?.xp);
 
-  const [missionsDoneToday, setMissionsDoneToday] = useState("0");
+  const [missionsDoneToday, setMissionsDoneToday] = useState(0);
   // Function to fetch user data
 
   const fetchUserData = async (token?: string) => {

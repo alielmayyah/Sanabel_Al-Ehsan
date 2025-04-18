@@ -75,7 +75,7 @@ const Inventory: React.FC<Props> = ({
               variants={itemVariants}
               className="w-1/6 h-[80px] flex flex-col items-center rounded-lg bg-[#FFF8E5] p-1 text-sm"
             >
-              <h1 className="text-black">{items.name}</h1>
+              <h1 className="text-black">{t(items.name)}</h1>
               <img className="h-2/5" src={items.img} />
               <h1 className="text-[#E14E54] font-bold self-start">
                 x{items.count}

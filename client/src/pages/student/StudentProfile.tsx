@@ -19,6 +19,8 @@ import StudentProfileTree from "./profile/StudentProfileTree";
 import StudentProfileTrophies from "./profile/StudentProfileTrophies";
 import StudentProfileActivity from "./profile/StudentProfileActivity";
 
+import { avatars } from "../../data/Avatars";
+
 const Profile: React.FC = () => {
   const history = useHistory();
   const { t } = useTranslation();
@@ -55,7 +57,10 @@ const Profile: React.FC = () => {
       </div>
 
       <div className="flex flex-col items-center gap-1 justify-between">
-        <div className="w-32 h-32 bg-redprimary rounded-full -mt-6 border-8 border-white"></div>
+        <img
+          className="w-32 h-32 rounded-full -mt-6 border-8 border-white"
+          src={avatars.boys.boy1}
+        ></img>
         <h1 className="text-black">
           {user?.firstName} {user?.lastName}
         </h1>

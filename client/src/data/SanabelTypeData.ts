@@ -67,6 +67,7 @@ interface SanabelItem {
   }[];
 }
 
+const SanabelData = [["الصلاة"]];
 // Create data array
 const sanabelType: SanabelItem[] = [
   {

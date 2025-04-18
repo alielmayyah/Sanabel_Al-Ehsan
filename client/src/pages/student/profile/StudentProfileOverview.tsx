@@ -67,7 +67,7 @@ const Profile: React.FC = () => {
     >
       {/* <div className="bg-yellowprimary h-24 w-screen absolute t-0 z-0"></div> */}
 
-      <div className="h-20 scale-[115%]">
+      <div className="h-20">
         <MedalAndLevel level={53} color={"text-black text-sm"} dir={""} />
       </div>
       <div className="flex flex-col gap-1">
