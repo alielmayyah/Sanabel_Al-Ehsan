@@ -11,7 +11,13 @@ const Profile: React.FC = () => {
   const history = useHistory();
   const { t } = useTranslation();
   const { user } = useUserContext();
-  const currentStage = 50;
+
+  //  المرحلة
+  const treeStage = Number(user?.treeStage);
+
+  const treeProgress = Number(user?.treeProgress);
+
+  const currentStage = treeProgress + 3;
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
@@ -21,29 +27,29 @@ const Profile: React.FC = () => {
       } else {
         clearInterval(intervalId);
       }
-    }, 100); // Adjust the interval for smoother animation
+    }, 25); // Adjust the interval for smoother animation
 
     return () => clearInterval(intervalId);
   }, [stage, currentStage]);
 
   return (
-    <div className="flex flex-col justify-start items-center h-full w-full gap-2 overflow-y-auto">
+    <div className="flex flex-col justify-start items-center h-full w-full gap-1 ">
+      <motion.h1
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: currentStage * 0.05, duration: 0.5 }} // Delay the text animation until the tree animation finishes
+        className="text-[#495638] text-xl "
+      >
+        {treeStage} {t("المرحلة")}
+      </motion.h1>
       <motion.img
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.1 }}
         src={treeStages[stage]}
         alt="tree"
-        className="w-4/6"
+        className="w-2/3"
       />
-      <motion.h1
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: currentStage * 0.1 + 0.5, duration: 0.5 }} // Delay the text animation until the tree animation finishes
-        className="text-[#495638] text-2xl"
-      >
-        {1} {t("المرحلة")}
-      </motion.h1>
     </div>
   );
 };

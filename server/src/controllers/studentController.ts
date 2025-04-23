@@ -48,11 +48,11 @@ const studentData = async (req: Request, res: Response) => {
     } else {
       const treePoint = await Tree.findOne({
         where: { id: student.treeProgress },
-        attributes: ["id", "seeders", "water","stage","treeProgress"],
+        attributes: ["id", "seeders", "water", "stage", "treeProgress"],
       });
       const responseData = {
         student,
-        treePoint: treePoint || null, 
+        treePoint: treePoint || null,
       };
       res.status(200).json({ data: responseData });
     }
@@ -183,12 +183,16 @@ const appearTaskesType = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
     if (!user) {
-      return res.status(404).json({ message: "User data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "User data not found in request" });
     }
 
     const student = await Student.findOne({ where: { userId: user.id } });
     if (!student) {
-      return res.status(404).json({ message: "Student data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "Student data not found in request" });
     }
 
     // Retrieve category from URL parameters
@@ -202,11 +206,12 @@ const appearTaskesType = async (req: Request, res: Response) => {
     const task = await Task.findAll({ where: { category } });
 
     if (!task || task.length === 0) {
-      return res.status(404).json({ message: "No tasks found for this category" });
+      return res
+        .status(404)
+        .json({ message: "No tasks found for this category" });
     }
 
     return res.status(200).json({ data: task });
-
   } catch (error) {
     console.error("Error fetching tasks:", error);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -217,18 +222,29 @@ const appearTaskesTypeandCategory = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
     if (!user) {
-      return res.status(404).json({ message: "User data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "User data not found in request" });
     }
 
     const student = await Student.findOne({ where: { userId: user.id } });
     if (!student) {
-      return res.status(404).json({ message: "Student data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "Student data not found in request" });
     }
 
     const { category, type } = req.params;
 
-    if (!category || typeof category !== "string" || !type || typeof type !== "string") {
-      return res.status(400).json({ message: "Invalid category or type parameter" });
+    if (
+      !category ||
+      typeof category !== "string" ||
+      !type ||
+      typeof type !== "string"
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Invalid category or type parameter" });
     }
 
     const tasks = await Task.findAll({
@@ -246,11 +262,13 @@ const appearTaskesTypeandCategory = async (req: Request, res: Response) => {
         "timeToDo",
         "type",
       ],
-      raw: true, 
+      raw: true,
     });
 
     if (tasks.length === 0) {
-      return res.status(404).json({ message: "No tasks found for the given category and type" });
+      return res
+        .status(404)
+        .json({ message: "No tasks found for the given category and type" });
     }
 
     const taskIds = tasks.map((task) => task.id);
@@ -258,7 +276,7 @@ const appearTaskesTypeandCategory = async (req: Request, res: Response) => {
     const studentTasks = await StudentTask.findAll({
       where: {
         studentId: student.id,
-        taskId: { [Op.in]: taskIds }, 
+        taskId: { [Op.in]: taskIds },
       },
       attributes: ["taskId", "completionStatus"],
       raw: true,
@@ -268,7 +286,7 @@ const appearTaskesTypeandCategory = async (req: Request, res: Response) => {
       const studentTask = studentTasks.find((st) => st.taskId === task.id);
       return {
         ...task,
-        studentTask: studentTask || { completionStatus: "Not Assigned" }, 
+        studentTask: studentTask || { completionStatus: "Not Assigned" },
       };
     });
 
@@ -282,12 +300,16 @@ const appearTaskesCategory = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
     if (!user) {
-      return res.status(404).json({ message: "User data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "User data not found in request" });
     }
 
     const student = await Student.findOne({ where: { userId: user.id } });
     if (!student) {
-      return res.status(404).json({ message: "Student data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "Student data not found in request" });
     }
 
     const tasks = await Task.findAll({ attributes: ["category"], raw: true });
@@ -301,27 +323,46 @@ const appearTaskesCategory = async (req: Request, res: Response) => {
     const categoryDetails = await Promise.all(
       uniqueCategories.map(async (category) => {
         try {
-
-        const task = await Task.findOne({
-          attributes: ["category", "snabelRed", "snabelBlue", "snabelYellow", "xp"],
-          where: { category },
-          raw: true,
-        });
-        if (!task) {
-          console.warn(`No task found for category: ${category}`);
-          return { category, snabelRed: 0, snabelBlue: 0, snabelYellow: 0, xp: 0 };
+          const task = await Task.findOne({
+            attributes: [
+              "category",
+              "snabelRed",
+              "snabelBlue",
+              "snabelYellow",
+              "xp",
+            ],
+            where: { category },
+            raw: true,
+          });
+          if (!task) {
+            console.warn(`No task found for category: ${category}`);
+            return {
+              category,
+              snabelRed: 0,
+              snabelBlue: 0,
+              snabelYellow: 0,
+              xp: 0,
+            };
+          }
+          return task;
+        } catch (err) {
+          console.error(`Error fetching task for category: ${category}`, err);
+          return {
+            category,
+            snabelRed: 0,
+            snabelBlue: 0,
+            snabelYellow: 0,
+            xp: 0,
+          };
         }
-        return task;
-      } catch (err) {
-        console.error(`Error fetching task for category: ${category}`, err);
-        return { category, snabelRed: 0, snabelBlue: 0, snabelYellow: 0, xp: 0 };
-      }
       })
     );
     return res.status(200).json({ data: categoryDetails });
   } catch (error) {
     console.error("❌ Error in appearTaskesCategory:", error);
-    return res.status(500).json({ error: "Internal Server Error", details: error });
+    return res
+      .status(500)
+      .json({ error: "Internal Server Error", details: error });
   }
 };
 const appearChallanges = async (req: Request, res: Response) => {
@@ -357,7 +398,7 @@ const appearChallanges = async (req: Request, res: Response) => {
             "snabelBlue",
             "snabelRed",
             "snabelYellow",
-            "taskCategory"
+            "taskCategory",
           ],
         },
       ],
@@ -379,13 +420,17 @@ const appearTaskCompletedcountToday = async (req: Request, res: Response) => {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
 
     if (!user) {
-      return res.status(404).json({ message: "User data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "User data not found in request" });
     }
 
     const student = await Student.findOne({ where: { userId: user.id } });
 
     if (!student) {
-      return res.status(404).json({ message: "Student data not found for the user" });
+      return res
+        .status(404)
+        .json({ message: "Student data not found for the user" });
     }
 
     // Get the current date (without time)
@@ -422,7 +467,9 @@ const appearTaskCompletedcountToday = async (req: Request, res: Response) => {
     });
 
     if (!tasks || tasks.length === 0) {
-      return res.status(404).json({ message: "No completed tasks found for the student today" });
+      return res
+        .status(404)
+        .json({ message: "No completed tasks found for the student today" });
     }
 
     return res.status(200).json({
@@ -460,7 +507,7 @@ const appearTaskCompleted = async (req: Request, res: Response) => {
       include: [
         {
           model: Task,
-          as: "task", 
+          as: "task",
           attributes: [
             "title",
             "description",
@@ -480,20 +527,22 @@ const appearTaskCompleted = async (req: Request, res: Response) => {
         .json({ message: "No completed tasks found for the student today" });
     }
 
-
     const completedTasksCount = tasks.length;
-    const completedTasks = tasks
+    const completedTasks = tasks;
     return res.status(200).json({
       message: "Completed tasks retrieved successfully",
       completedTasksCount,
-      completedTasks
+      completedTasks,
     });
   } catch (error) {
     console.error("Error fetching completed tasks:", error);
     return res.status(500).json({ error: "An unexpected error occurred" });
   }
 };
-const calculateCompletedTasksByCategory = async (req: Request, res: Response) => {
+const calculateCompletedTasksByCategory = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const user = (req as Request & { user?: JwtPayload }).user;
     if (!user) {
@@ -506,8 +555,13 @@ const calculateCompletedTasksByCategory = async (req: Request, res: Response) =>
     }
 
     // Fetch all unique task categories
-    const allTasks = await Task.findAll({ attributes: ["category"], raw: true });
-    const uniqueCategories = [...new Set(allTasks.map((task) => task.category))];
+    const allTasks = await Task.findAll({
+      attributes: ["category"],
+      raw: true,
+    });
+    const uniqueCategories = [
+      ...new Set(allTasks.map((task) => task.category)),
+    ];
 
     // Fetch completed task counts grouped by category
     const completedTasks = await Student.sequelize.query(
@@ -525,13 +579,15 @@ const calculateCompletedTasksByCategory = async (req: Request, res: Response) =>
         type: QueryTypes.SELECT,
       }
     );
-    
-    
+
     // Convert the query result into a category count object
-    const categoryCounts = completedTasks.reduce((acc: Record<string, number>, row: any) => {
-      acc[row["category"]] = Number(row["count"]) || 0;
-      return acc;
-    }, {} as Record<string, number>);
+    const categoryCounts = completedTasks.reduce(
+      (acc: Record<string, number>, row: any) => {
+        acc[row["category"]] = Number(row["count"]) || 0;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     // Ensure all unique categories appear in the final response (even if count is 0)
     const finalCategoryCounts = uniqueCategories.reduce((acc, category) => {
@@ -540,7 +596,9 @@ const calculateCompletedTasksByCategory = async (req: Request, res: Response) =>
     }, {} as Record<string, number>);
 
     // Calculate total completed tasks
-    const totalCompletedTasks = Object.values(finalCategoryCounts).reduce<number>(
+    const totalCompletedTasks = Object.values(
+      finalCategoryCounts
+    ).reduce<number>(
       (sum, count) => sum + (count as number), // ✅ Cast count to number
       0
     );
@@ -590,7 +648,7 @@ const appearChallangesCompleted = async (req: Request, res: Response) => {
             "snabelBlue",
             "snabelRed",
             "snabelYellow",
-            "taskCategory"
+            "taskCategory",
           ],
         },
       ],
@@ -749,7 +807,10 @@ const addStudent = async (req: Request, res: Response) => {
             where: { name: data.OrganizationName },
           });
           if (!organization) {
-            failedEntries.push({ row: data, error: "School not found in request" });
+            failedEntries.push({
+              row: data,
+              error: "School not found in request",
+            });
             continue;
           }
 
@@ -775,7 +836,10 @@ const addStudent = async (req: Request, res: Response) => {
             },
           });
           if (!class_data) {
-            failedEntries.push({ row: data, error: "Class not found in request" });
+            failedEntries.push({
+              row: data,
+              error: "Class not found in request",
+            });
             continue;
           }
 
@@ -848,9 +912,11 @@ const addStudent = async (req: Request, res: Response) => {
           await StudentTask.bulkCreate(studentTasks);
 
           // ✅ Update Success Entries & Excel File
-          successfulEntries.push({ row: data, message: "Student added successfully" });
+          successfulEntries.push({
+            row: data,
+            message: "Student added successfully",
+          });
           worksheet.addRow({ email, password });
-
         } catch (error) {
           failedEntries.push({ row: data, error: error });
         }
@@ -867,7 +933,10 @@ const addStudent = async (req: Request, res: Response) => {
     for (const orgName in organizationFiles) {
       const { workbook } = organizationFiles[orgName];
       const sanitizedOrgName = orgName.replace(/[\/\\?%*:|"<>]/g, "_"); // Sanitize filename
-      const filePath = path.resolve(outputDir, `${sanitizedOrgName}_Users.xlsx`);
+      const filePath = path.resolve(
+        outputDir,
+        `${sanitizedOrgName}_Users.xlsx`
+      );
 
       await workbook.xlsx.writeFile(filePath);
       savedFiles.push(filePath);
@@ -882,13 +951,11 @@ const addStudent = async (req: Request, res: Response) => {
       failedEntries,
       files: savedFiles,
     });
-
   } catch (error) {
     console.error("Error processing Excel file:", error);
     res.status(500).json({ message: "Internal server error", error: error });
   }
 };
-
 
 export {
   addStudent,

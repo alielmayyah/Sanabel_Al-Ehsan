@@ -27,6 +27,8 @@ import StudentHome from "./pages/student/StudentHome";
 import StudentProfile from "./pages/student/StudentProfile";
 import StudentProfileEdit from "./pages/student/profile/StudentProfileEdit";
 import StudentSettings from "./pages/student/profile/StudentSettings";
+import StudentPrivacyPolicy from "./pages/student/profile/StudentPrivacyPolicy";
+import StudentHelpCenter from "./pages/student/profile/StudentHelpCenter";
 import StudentLeaderboards from "./pages/student/StudentLeaderboards";
 import StudentTutorial from "./pages/student/tutorial/StudentTutorial";
 
@@ -149,6 +151,16 @@ const App: React.FC = () => {
                 />
                 <Route
                   exact
+                  path="/student/settings/privacypolicy"
+                  component={StudentPrivacyPolicy}
+                />
+                <Route
+                  exact
+                  path="/student/settings/helpcenter"
+                  component={StudentHelpCenter}
+                />
+                <Route
+                  exact
                   path="/student/challenges"
                   component={ChooseSanabelType}
                 />
@@ -170,10 +182,7 @@ const App: React.FC = () => {
                   path="/student/sanabel/:index"
                   component={ChooseSanabel}
                 />
-                {/* <Route
-                  path="/student/sanabel/0"
-                  component={StudentSanabelPrayer}
-                /> */}
+
                 {/* Teacher */}
                 <Route exact path="/teacher/home" component={TeacherHome} />
                 <Route

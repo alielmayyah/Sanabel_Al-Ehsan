@@ -14,7 +14,10 @@ import { motion } from "framer-motion";
 import missionsDoneImg from "../../../assets/target.png";
 import { medalsImgs } from "../../../data/Medals";
 import MedalAndLevel from "../../../components/MedalAndLevel";
+import { medalsData } from "../../../data/MedalsData";
+import { calculateLevel } from "../../../utils/LevelCalculator";
 // Define the data structure for the chart
+
 interface sanabelType {
   name: string;
   value: number;
@@ -59,19 +62,18 @@ const Profile: React.FC = () => {
   const history = useHistory();
   const { t } = useTranslation();
   const { user } = useUserContext();
+  const xp = Number(user?.xp);
+
+  const { level, remainingXp, xpForNextLevel } = calculateLevel(xp);
 
   return (
     <div
-      className="flex flex-col h-full w-full items-center justify-between z-10 p-4 overflow-y-auto"
+      className="flex flex-col h-full w-full items-start justify-start z-10 p-4 overflow-y-auto "
       id="page-height"
     >
-      {/* <div className="bg-yellowprimary h-24 w-screen absolute t-0 z-0"></div> */}
+      <MedalAndLevel level={level} color={"text-black text-sm"} dir={""} />
 
-      <div className="h-20">
-        <MedalAndLevel level={53} color={"text-black text-sm"} dir={""} />
-      </div>
       <div className="flex flex-col gap-1">
-        {" "}
         <motion.div
           className="w-full bg-[#E14E54] flex-center justify-between items-center p-1 gap-3 rounded-xl text-md"
           variants={containerVariants}

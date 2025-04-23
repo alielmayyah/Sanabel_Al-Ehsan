@@ -25,6 +25,10 @@ import DeleteAccountPopup from "./StudentDeleteAccountPopup";
 
 import GoBackButton from "../../../components/GoBackButton";
 
+import DarkModeComingSoon from "./DarkModeComingSoon";
+
+
+
 const Profile: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const history = useHistory();
@@ -81,12 +85,12 @@ const Profile: React.FC = () => {
     {
       title: "سياسة الخصوصية",
       icon: <PrivacyPolicy size={25} />,
-      to: "privacypolicy",
+      to: "/student/settings/privacypolicy",
     },
     {
       title: "مركز المساعدة",
       icon: <HelpCenter size={25} />,
-      to: "helpcenter",
+      to: "/student/settings/helpcenter",
     },
     {
       title: "تفعيل الوضع الداكن",
@@ -104,6 +108,14 @@ const Profile: React.FC = () => {
       function: logout,
     },
   ];
+
+  const [showDarkModePopup, setShowDarkModePopup] = useState(false);
+  // Handle Dark Mode toggle by showing popup instead of actually toggling
+  const handleDarkModeClick = (e: any) => {
+    e.stopPropagation(); // Prevent event bubbling
+    setShowDarkModePopup(true);
+    // toggleDarkMode();
+  };
 
   return (
     <div className="flex flex-col h-full w-full items-center justify-between p-4">
@@ -130,8 +142,8 @@ const Profile: React.FC = () => {
                   <input
                     type="checkbox"
                     checked={darkMode}
-                    onChange={toggleDarkMode}
-                    onClick={toggleDarkMode}
+                    onChange={handleDarkModeClick}
+                    onClick={handleDarkModeClick}
                     className="sr-only peer"
                   />
                   <div
@@ -182,6 +194,12 @@ const Profile: React.FC = () => {
           {t("حذف الحساب")}
         </h1>
       </div>
+
+      <DarkModeComingSoon
+        isOpen={showDarkModePopup}
+        onClose={() => setShowDarkModePopup(false)}
+      />
+
       {deleteAccountPopup && (
         <DeleteAccountPopup
           deleteAccountPopup={deleteAccountPopup}

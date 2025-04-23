@@ -24,220 +24,113 @@ import FilterIcon from "../../icons/Leaderboards/FilterIcon";
 import PrimaryButton from "../../components/PrimaryButton";
 import { delay, motion } from "framer-motion";
 import MedalAndLevel from "../../components/MedalAndLevel";
+import { useEffect } from "react";
+import axios from "axios";
+import React from "react";
 
 const Leaderboards: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
 
-  const [showWeekOrDay, setShowWeekOrDay] = useState<"day" | "week">("day");
-
-  // day or week
-
-  const [showType, setShowType] = useState("users");
-  // user or classes or teams
-
-  type LeaderboardEntry = {
+  interface LeaderboardItem {
+    id: number;
     name: string;
-    level: number;
-    color: string;
     avatar: string;
-    stage: string;
-    grade: string;
-    class: string;
+    level: number;
+    // Add other relevant fields as necessary
+  }
+
+  const [leaderboardsData, setLeaderboardsData] = useState<LeaderboardItem[]>([
+    {
+      id: 0,
+      name: "محمد منجي",
+      level: 31,
+      avatar: avatars.boys.boy2,
+    },
+    {
+      id: 1,
+      name: "علي يوسف",
+      level: 5,
+      avatar: avatars.boys.boy3,
+    },
+    {
+      id: 2,
+      name: "سارة حسن",
+      level: 88,
+
+      avatar: avatars.girls.girl2,
+    },
+    {
+      id: 3,
+      name: "فاطمة الكيلاني",
+      level: 15,
+      avatar: avatars.girls.girl1,
+    },
+    {
+      id: 4,
+      name: "أحمد جمال",
+      level: 18,
+      avatar: avatars.boys.boy6,
+    },
+    {
+      id: 5,
+      name: "رانيا عمر",
+      level: 26,
+      avatar: avatars.girls.girl5,
+    },
+    {
+      id: 6,
+      name: "عمر شريف",
+      level: 125,
+      avatar: avatars.boys.boy2,
+    },
+    {
+      id: 7,
+      name: "لين كمال",
+      level: 3,
+      avatar: avatars.girls.girl4,
+    },
+    {
+      id: 8,
+      name: "سعيد موسى",
+      level: 206,
+      avatar: avatars.boys.boy5,
+    },
+    {
+      id: 9,
+      name: "هدى خالد",
+      level: 52,
+      avatar: avatars.girls.girl2,
+    },
+  ]);
+
+  const fetchUserData = async (token?: string) => {
+    const authToken = token || localStorage.getItem("token");
+    if (!authToken) return;
+
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/students/appear-Leaderboard",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setLeaderboardsData(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
-  type LeaderboardData = {
-    day: LeaderboardEntry[];
-    week: LeaderboardEntry[];
-  };
+  console.log(leaderboardsData);
 
-  // Sample leaderboard data
-  const [leaderboardData, setLeaderboardData] = useState<LeaderboardData>({
-    day: [
-      {
-        name: "محمد منجي",
-        level: 31,
-        color: "bg-blueprimary",
-        avatar: avatars.boys.boy2,
-        stage: "preparatory",
-        grade: "12",
-        class: "1",
-      },
-      {
-        name: "علي يوسف",
-        level: 5,
-        color: "bg-redprimary",
-        avatar: avatars.boys.boy3,
-        stage: "primary",
-        grade: "5",
-        class: "2",
-      },
-      {
-        name: "سارة حسن",
-        level: 88,
-        color: "bg-yellowprimary",
-        avatar: avatars.girls.girl2,
-        stage: "secondary",
-        grade: "10",
-        class: "1",
-      },
-      {
-        name: "فاطمة الكيلاني",
-        level: 15,
-        color: "bg-gray-300",
-        avatar: avatars.girls.girl1,
-        stage: "primary",
-        grade: "3",
-        class: "3",
-      },
-      {
-        name: "أحمد جمال",
-        level: 18,
-        color: "bg-greenprimary",
-        avatar: avatars.boys.boy6,
-        stage: "preparatory",
-        grade: "8",
-        class: "1",
-      },
-      {
-        name: "رانيا عمر",
-        level: 26,
-        color: "bg-purpleprimary",
-        avatar: avatars.girls.girl5,
-        stage: "secondary",
-        grade: "11",
-        class: "2",
-      },
-      {
-        name: "عمر شريف",
-        level: 125,
-        color: "bg-orangeprimary",
-        avatar: avatars.boys.boy2,
-        stage: "primary",
-        grade: "2",
-        class: "1",
-      },
-      {
-        name: "لين كمال",
-        level: 3,
-        color: "bg-tealprimary",
-        avatar: avatars.girls.girl4,
-        stage: "preparatory",
-        grade: "7",
-        class: "3",
-      },
-      {
-        name: "سعيد موسى",
-        level: 206,
-        color: "bg-pinkprimary",
-        avatar: avatars.boys.boy5,
-        stage: "primary",
-        grade: "4",
-        class: "2",
-      },
-      {
-        name: "هدى خالد",
-        level: 52,
-        color: "bg-cyanprimary",
-        avatar: avatars.girls.girl2,
-        stage: "secondary",
-        grade: "9",
-        class: "1",
-      },
-    ],
-    week: [
-      {
-        name: "محمد منجي",
-        level: 700,
-        color: "bg-blueprimary",
-        avatar: avatars.boys.boy1,
-        stage: "secondary",
-        grade: "12",
-        class: "2",
-      },
-      {
-        name: "علي يوسف",
-        level: 700,
-        color: "bg-redprimary",
-        avatar: avatars.boys.boy3,
-        stage: "preparatory",
-        grade: "7",
-        class: "1",
-      },
-      {
-        name: "سارة حسن",
-        level: 702,
-        color: "bg-yellowprimary",
-        avatar: avatars.girls.girl2,
-        stage: "primary",
-        grade: "6",
-        class: "3",
-      },
-      {
-        name: "فاطمة الكيلاني",
-        level: 700,
-        color: "bg-gray-300",
-        avatar: avatars.girls.girl1,
-        stage: "preparatory",
-        grade: "8",
-        class: "2",
-      },
-      {
-        name: "أحمد جمال",
-        level: 700,
-        color: "bg-greenprimary",
-        avatar: avatars.boys.boy6,
-        stage: "secondary",
-        grade: "11",
-        class: "3",
-      },
-      {
-        name: "رانيا عمر",
-        level: 700,
-        color: "bg-purpleprimary",
-        avatar: avatars.girls.girl5,
-        stage: "primary",
-        grade: "5",
-        class: "1",
-      },
-      {
-        name: "عمر شريف",
-        level: 700,
-        color: "bg-orangeprimary",
-        avatar: avatars.boys.boy2,
-        stage: "preparatory",
-        grade: "9",
-        class: "2",
-      },
-      {
-        name: "لين كمال",
-        level: 700,
-        color: "bg-tealprimary",
-        avatar: avatars.girls.girl4,
-        stage: "secondary",
-        grade: "10",
-        class: "1",
-      },
-      {
-        name: "سعيد موسى",
-        level: 70,
-        color: "bg-pinkprimary",
-        avatar: avatars.boys.boy5,
-        stage: "primary",
-        grade: "3",
-        class: "2",
-      },
-      {
-        name: "هدى خالد",
-        level: 70,
-        color: "bg-cyanprimary",
-        avatar: avatars.girls.girl2,
-        stage: "preparatory",
-        grade: "7",
-        class: "1",
-      },
-    ],
-  });
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   const [ordinalNumbers, setOrdinalNumbers] = useState([
     "الأول",
@@ -252,9 +145,9 @@ const Leaderboards: React.FC = () => {
     "العاشر",
   ]);
 
-  // Sort leaderboard data by points in descending order based on `showWeekOrDay`
-  const sortedData = leaderboardData[showWeekOrDay].sort(
-    (a: LeaderboardEntry, b: LeaderboardEntry) => b.level - a.level
+  const sortedData = React.useMemo(
+    () => leaderboardsData.slice().sort((a, b) => b.level - a.level),
+    [leaderboardsData]
   );
 
   const [openFilter, setOpenFilter] = useState(false);
@@ -393,7 +286,7 @@ const Leaderboards: React.FC = () => {
           >
             {sortedData
               .slice(3, 10)
-              .map((item: LeaderboardEntry, index: number) => (
+              .map((item: LeaderboardItem, index: number) => (
                 <motion.div
                   key={index + 3}
                   className="border-2 w-full flex justify-between items-center p-1 rounded-2xl"

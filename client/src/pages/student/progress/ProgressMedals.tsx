@@ -11,30 +11,9 @@ import { medalsImgs } from "../../../data/Medals";
 import { useUserContext } from "../../../context/StudentUserProvider";
 import i18n from "../../../i18n";
 
-const medalsData = [
-  { title: "مبتدئ", img: medalsImgs[0], level: "1" },
-  { title: "مستجد", img: medalsImgs[1], level: "5" },
-  { title: "موهوب", img: medalsImgs[2], level: "10" },
-  { title: "ماهر", img: medalsImgs[3], level: "25" },
-  { title: "بارع", img: medalsImgs[4], level: "50" },
-  { title: "متمرس", img: medalsImgs[5], level: "75" },
-  { title: "متقدم", img: medalsImgs[6], level: "100" },
-  { title: "متقن", img: medalsImgs[7], level: "150" },
-  { title: "خبير", img: medalsImgs[8], level: "200" },
-];
-const calculateLevel = (totalXp: number) => {
-  const baseXp = 10;
-  const increment = 5;
-  let level = 1;
-  let xpForNextLevel = baseXp;
+import { calculateLevel } from "../../../utils/LevelCalculator";
 
-  while (totalXp >= xpForNextLevel) {
-    totalXp -= xpForNextLevel;
-    level++;
-    xpForNextLevel = baseXp + increment * (level - 1);
-  }
-  return { level, remainingXp: totalXp, xpForNextLevel };
-};
+import { medalsData } from "../../../data/MedalsData";
 
 const calculateXpForLevel = (targetLevel: any) => {
   const baseXp = 10;
@@ -83,22 +62,26 @@ const Progress: React.FC = () => {
     }
   }, [xp]);
 
+  const achievedMedals = medalsData.filter(
+    (item) => xp >= calculateXpForLevel(item.level)
+  ).length;
+
   return (
     <motion.div
-      className="flex flex-col gap-1 w-full h-3/4 "
+      className="flex flex-col gap-2 w-full h-3/4 "
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <motion.div
-        className="flex flex-col gap-1 rounded-xl w-full p-2 relative"
+        className="flex flex-col gap-1 rounded-xl w-full  relative"
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.8, type: "spring" }}
       >
         {/* Medal and Level */}
         <motion.div
-          className="flex-center flex-col gap-3 w-full"
+          className="flex-center flex-col gap-1 w-full"
           key={level}
           initial={{ rotate: -15, scale: 0.5 }}
           animate={{ rotate: 0, scale: 1 }}
@@ -138,8 +121,10 @@ const Progress: React.FC = () => {
 
         <div className="w-full flex justify-between items-center text-sm">
           <h1 className="text-[#999999]">{t("المستوي التالي")}</h1>
-          <h1 className="text-[#999999]">
-            {t("نقطة")} {t(`${currentXp}`)} {t("تم إنجاز ")}
+          <h1 className="text-[#999999] ">
+            {t("تم إنجاز ")}{" "}
+            <span className="text-[#F3B14E]">{t(`${currentXp}`)}</span>{" "}
+            {t("نقطة")}
           </h1>
         </div>
       </motion.div>
@@ -165,7 +150,9 @@ const Progress: React.FC = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.3 }}
       >
-        <h1 className=" text-redprimary">(2 / 9) </h1>
+        <h1 className="text-redprimary">
+          ({achievedMedals} / {medalsData.length})
+        </h1>
         &ensp;
         <h1 className=" text-black">{t("الميداليات")}</h1>
       </motion.div>
@@ -183,7 +170,7 @@ const Progress: React.FC = () => {
           },
         }}
       >
-        {medalsData.map((item) => (
+        {medalsData.map((item: any) => (
           <motion.div
             className="flex flex-center flex-col p-3 shadow-md border-[1px] rounded-lg"
             key={item.level}

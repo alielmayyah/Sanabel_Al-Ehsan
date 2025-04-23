@@ -24,7 +24,7 @@ class Tree extends Model<InferAttributes<Tree>, InferCreationAttributes<Tree>> {
           primaryKey: true,
           autoIncrement: true,
         },
-       
+
         water: {
           type: DataTypes.INTEGER,
           allowNull: true,
@@ -40,7 +40,6 @@ class Tree extends Model<InferAttributes<Tree>, InferCreationAttributes<Tree>> {
         stage: {
           type: DataTypes.INTEGER,
           allowNull: true,
-
         },
       },
       {

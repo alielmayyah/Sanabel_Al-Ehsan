@@ -62,9 +62,6 @@ const TeacherHome: React.FC = () => {
         <Notification />
         <Greeting name={`مرحباً مريم`} text={"هيا بنا نصنع الخير معًا!"} />
       </div>
-      <h1 className="text-black text-2xl">
-        {t("ساعد الطلاب في جمع الحسنات ")}
-      </h1>
 
       <div className="w-full flex flex-col gap-3 h-2/3 p-4">
         {teacherHomeButtons.map((button, index) => (

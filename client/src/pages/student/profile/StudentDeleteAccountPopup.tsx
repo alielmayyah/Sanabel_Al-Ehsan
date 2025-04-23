@@ -37,13 +37,13 @@ const DeleteAccountPopup: React.FC<OTPProps> = ({
         {/* Action Buttons */}
         <div className="flex w-full justify-between px-3 gap-3 mt-5">
           <div
-            className="bg-[#E6E9FF] border-[#B3B3B3] border-[1px]   text-[#B3B3B3] px-4 py-2 rounded-lg w-2/3 "
+            className=" bg-redprimary text-white  px-4 py-2 rounded-lg w-2/3 "
             onClick={() => setDeleteAccountPopup(false)}
           >
             {t("إلغاء")}
           </div>
           <div
-            className="bg-redprimary text-white px-4 py-2 rounded-lg  w-1/3"
+            className="bg-[#E6E9FF] border-[#B3B3B3] border-[1px]  text-[#B3B3B3] px-4 py-2 rounded-lg  w-1/3"
             onClick={() => {
               // Implement delete action here
               setDeleteAccountPopup(false);

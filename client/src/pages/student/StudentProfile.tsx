@@ -18,7 +18,7 @@ import StudentProfileOverview from "./profile/StudentProfileOverview";
 import StudentProfileTree from "./profile/StudentProfileTree";
 import StudentProfileTrophies from "./profile/StudentProfileTrophies";
 import StudentProfileActivity from "./profile/StudentProfileActivity";
-
+import { MdContentCopy } from "react-icons/md";
 import { avatars } from "../../data/Avatars";
 
 const Profile: React.FC = () => {
@@ -29,14 +29,25 @@ const Profile: React.FC = () => {
 
   const profileNav = ["نظرة عامة", "الشجرة", "الجوائز", "النشاط"];
   const [show, setShow] = useState(profileNav[0]);
+
+  const [copySuccess, setCopySuccess] = useState(false);
+
+  const handleCopy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000); // Reset after 2 seconds
+    } catch (err) {
+      console.error("Failed to copy text:", err);
+    }
+  };
+  const parentCode = "#12212";
   return (
     <div
       className="flex flex-col h-full w-full items-center justify-between z-10"
       id="page-height"
     >
-      {/* <div className="bg-yellowprimary h-24 w-screen absolute t-0 z-0"></div> */}
-
-      <div className="flex items-center justify-between bg-yellowprimary py-10 w-full  p-4 rounded-b-[50px] ">
+      <div className="flex items-center justify-between bg-yellowprimary py-7 w-full  p-4 rounded-b-[50px] ">
         {/* Settings Button */}
         <div className="flex gap-2">
           <div
@@ -66,6 +77,20 @@ const Profile: React.FC = () => {
         </h1>
         <h1 className="text-[#B3B3B3]"> {t("طالب")}</h1>
         <h1 className="text-[#B3B3B3]"> المرحلة الاعدادية - فصل 4/8</h1>
+
+        <div className="flex-center w-full gap-1">
+          <MdContentCopy
+            className="text-[#B3B3B3] cursor-pointer"
+            onClick={() => handleCopy(parentCode)}
+          />
+          <h1 className="text-[#B3B3B3]">{parentCode}</h1>
+
+          {copySuccess && (
+            <span className="text-green-500 text-sm ml-2">
+              {t("تم النسخ بنجاح")}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Navbar */}

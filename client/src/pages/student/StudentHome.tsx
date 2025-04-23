@@ -3,8 +3,6 @@ import i18n from "../../i18n";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
-import { IonRouterLink } from "@ionic/react";
-import { IoMdSettings } from "react-icons/io";
 import { useUserContext } from "../../context/StudentUserProvider";
 
 import Greeting from "../../components/Greeting";
@@ -28,32 +26,9 @@ import SanabelTree from "../../components/tree/SanabelTree";
 import Inventory from "../../components/tree/Inventory";
 import { motion } from "framer-motion";
 import axios from "axios";
+import { calculateLevel } from "../../utils/LevelCalculator";
 
-const medalsData = [
-  { title: "مبتدئ", img: medalsImgs[0], level: "1" },
-  { title: "مستجد", img: medalsImgs[1], level: "5" },
-  { title: "موهوب", img: medalsImgs[2], level: "10" },
-  { title: "ماهر", img: medalsImgs[3], level: "25" },
-  { title: "بارع", img: medalsImgs[4], level: "50" },
-  { title: "متمرس", img: medalsImgs[5], level: "75" },
-  { title: "متقدم", img: medalsImgs[6], level: "100" },
-  { title: "متقن", img: medalsImgs[7], level: "150" },
-  { title: "خبير", img: medalsImgs[8], level: "200" },
-];
-
-const calculateLevel = (totalXp: number) => {
-  const baseXp = 10;
-  const increment = 5;
-  let level = 1;
-  let xpForNextLevel = baseXp;
-
-  while (totalXp >= xpForNextLevel) {
-    totalXp -= xpForNextLevel;
-    level++;
-    xpForNextLevel = baseXp + increment * (level - 1);
-  }
-  return { level, remainingXp: totalXp, xpForNextLevel };
-};
+import { medalsData } from "../../data/MedalsData";
 
 const calculateXpForLevel = (targetLevel: any) => {
   const baseXp = 10;
@@ -224,7 +199,7 @@ const StudentHome: React.FC = () => {
         </div>
       </div>
 
-      <SanabelTree treeStage={49} />
+      <SanabelTree treeStage={0} />
       <StudentNavbar />
     </div>
   );
