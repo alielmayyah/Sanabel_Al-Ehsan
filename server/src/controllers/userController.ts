@@ -13,6 +13,9 @@ import StudentTask from "../models/student-task.model"; // Import the StudentTas
 import Task from "../models/task.model"; // Import the Task model
 import Challenge from "../models/challenge.model";
 import StudentChallenge from "../models/student-challenge.model";
+import { JwtPayload } from "jsonwebtoken";
+import generateUniqueConnectCode from "../helpers/generateRandomconnectcode";
+import upload from "../config/cloudaryconfig"; // Import multer config
 
 const jwt = require("jsonwebtoken");
 
@@ -30,14 +33,7 @@ const login = async (req: Request, res: Response) => {
         { id: account.id, email: account.email, role: account.role },
         process.env.JWT_SECRET
       );
-      await User.update(
-        { token: token },
-        {
-          where: {
-            email: account.email,
-          },
-        }
-      );
+      
 
       // Return success response with token and user data
       return res.status(200).json({
@@ -66,82 +62,37 @@ const login = async (req: Request, res: Response) => {
 };
 
 // Registration function with role-based user creation
-const registration = async (req: Request, res: Response) => {
-  const {
-    firstName,
-    lastName,
-    email,
-    password,
-    role,
-    subject,
-    contactInfo,
-    address,
-    type,
-    dateOfBirth,
-    gender,
-    grade,
-    profileImg,
-  } = req.body;
 
+const registration = async (req: Request, res: Response) => {
   try {
-    const checkValidation = await User.findOne({ where: { email: email } });
+    const { firstName, lastName, email, password, role, dateOfBirth, gender, grade } = req.body;
+
+    const checkValidation = await User.findOne({ where: { email } });
+
     if (!checkValidation) {
-      return res.status(403).json({
-        status: 403,
-        message: "OTP record not found. Please verify OTP before registering.",
-      });
+      return res.status(403).json({ message: "OTP record not found. Verify OTP before registering." });
     }
 
     if (!checkValidation.isAccess) {
-      return res.status(403).json({
-        status: 403,
-        message:
-          "OTP not verified. Please verify OTP before resetting password.",
-      });
+      return res.status(403).json({ message: "OTP not verified. Verify OTP before resetting password." });
     }
-    const hashedPassword = bcrypt.hashSync(password, 10);
 
-    const token = jwt.sign(
-      {
-        id: checkValidation.id,
-        email: checkValidation.email,
-        role: checkValidation.role,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
-    // Create User
-    await checkValidation.update({
-      firstName,
-      lastName,
-      role,
-      gender,
-      dateOfBirth,
-      password: hashedPassword,
-    });
+    if (checkValidation.password) {
+      return res.status(403).json({ message: "Email is already registered. Login or use another email." });
+    }
+
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    const token = jwt.sign({ id: checkValidation.id, email: checkValidation.email, role: checkValidation.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+
+    // Handle Image Upload (get URL from Cloudinary)
+    const profileImg = req.file ? req.file.path : null; 
+    await checkValidation.update({ firstName, lastName, role, gender, dateOfBirth, password: hashedPassword ,profileImg});
 
     switch (checkValidation.role) {
       case "Student":
-        await Student.create({ grade, userId: checkValidation.id, profileImg,treeProgress:1 });
-
-        // Assign all tasks to the student in the StudentTask table
-        const allChallenges = await Challenge.findAll();
-          const allTasks = await Task.findAll();
-
-          const studentChallenges = allChallenges.map((challenge) => ({
-            studentId: checkValidation.id,
-            challengeId: challenge.id,
-            completionStatus: "NotCompleted",
-          }));
-
-          const studentTasks = allTasks.map((task) => ({
-            studentId: checkValidation.id,
-            taskId: task.id,
-            completionStatus: "NotCompleted",
-          }));
-
-          await StudentChallenge.bulkCreate(studentChallenges);
-          await StudentTask.bulkCreate(studentTasks);
+        const connectCode = await generateUniqueConnectCode();
+        await Student.create({ grade, userId: checkValidation.id, profileImg, treeProgress: 1, connectCode });
         break;
       case "Teacher":
         await Teacher.create({ userId: checkValidation.id });
@@ -153,26 +104,16 @@ const registration = async (req: Request, res: Response) => {
         break;
     }
 
-    // Return success response with token and user data
     return res.status(201).json({
-      status: 201,
       message: "Registration successful",
-      data: {
-        token,
-        user: {
-          id: checkValidation.id,
-          email: checkValidation.email,
-          role: checkValidation.role,
-        },
-      },
+      data: { token, user: { id: checkValidation.id, email: checkValidation.email, role, profileImg } },
     });
   } catch (error) {
     console.error("Registration error:", error);
-    return res
-      .status(500)
-      .json({ status: 500, message: "Registration failed", error: error });
+    return res.status(500).json({ message: "Registration failed", error });
   }
 };
+
 const sendOTP = async (req: Request, res: Response) => {
   const { email } = req.body;
 
@@ -301,5 +242,27 @@ const resetPassword = async (req: Request, res: Response) => {
     });
   }
 };
+const updatePassword = async (req: Request, res: Response) => {
+  const user = (req as Request & { user: JwtPayload | undefined }).user;
 
-export { login, registration, sendOTP, verifyOTP, resetPassword };
+  if (!user) {
+    return res.status(404).json({ message: "User data not found in request" });
+  }
+
+  const userRecord = await User.findOne({ where: { id: user.id } });
+  if (!userRecord) {
+    return res.status(404).json({ message: "User data not found in request" });
+  }
+
+  const { old_password, new_password } = req.body;
+
+  if (!bcrypt.compareSync(old_password, userRecord.password)) {
+    return res.status(500).json({ message: "Incorrect current password" });
+  }
+
+  const hashedPassword = bcrypt.hashSync(new_password, 10);
+  await userRecord.update({ password: hashedPassword });
+
+  return res.status(200).json({ message: "Password updated successfully" });
+};
+export { login, registration, sendOTP, verifyOTP, resetPassword ,updatePassword};

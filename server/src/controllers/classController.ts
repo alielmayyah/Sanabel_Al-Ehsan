@@ -15,7 +15,7 @@ const createClassByExcel = async (req: Request, res: Response) => {
           const trimmedRow: Record<string, any> = {};
           for (const key in row) {
             if (row.hasOwnProperty(key)) {
-              trimmedRow[key.trim()] = row[key]; // Trim each key
+              trimmedRow[key.trim().toLowerCase()] = row[key]; // Trim each key to lowercase
             }
           }
           return trimmedRow;
@@ -23,12 +23,12 @@ const createClassByExcel = async (req: Request, res: Response) => {
 
         // Check if the organization (school) exists or create it
         let organization = await Organization.findOne({
-          where: { name: schoolName.trim() },
+          where: { name: schoolName.trim().toLowerCase() }, // Ensure comparison is case-insensitive
         });
 
         if (!organization) {
           organization = await Organization.create({
-            name: schoolName.trim(),
+            name: schoolName.trim().toLowerCase(),
           });
         }
 
@@ -49,8 +49,8 @@ const createClassByExcel = async (req: Request, res: Response) => {
               // Check if a class with the same name, category, and organization already exists
               const existingClass = await Class.findOne({
                 where: {
-                  classname: className.trim(),
-                  category: category.trim(),
+                  classname: className.trim().toLowerCase(), // Ensure class name is in lowercase
+                  category: category.trim().toLowerCase(),  // Ensure category is in lowercase
                   organizationId: organization.id,
                 },
               });
@@ -64,9 +64,9 @@ const createClassByExcel = async (req: Request, res: Response) => {
 
               try {
                 await Class.create({
-                  classname: className.trim(), // Ensures className is passed properly
+                  classname: className.trim().toLowerCase(), // Ensure className is passed properly in lowercase
                   classdescrption: "Description not provided",
-                  category: category.trim(),
+                  category: category.trim().toLowerCase(),
                   organizationId: organization.id,
                 });
               } catch (err) {

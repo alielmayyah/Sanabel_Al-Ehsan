@@ -1,25 +1,29 @@
-// models/student-task.model.ts
 import { Sequelize, DataTypes, Model, CreationOptional } from "@sequelize/core";
 import Student from "./student.model";
 import Task from "./task.model";
+import Challenge from "./challenge.model";
 
-enum CompletionStatus {
+export enum CompletionStatus {
   Completed = "Completed",
   NotCompleted = "NotCompleted",
 }
+
 class StudentChallenge extends Model {
   declare studentId: number;
   declare challengeId: number;
-  declare completionStatus: CompletionStatus; // Add completion status field
-  declare comment: CreationOptional<String>;
+  declare completionStatus: CompletionStatus; // ✅ Use enum properly
+  declare comment: CreationOptional<string>;
+  declare date: CreationOptional<Date>;
+  declare pointOfStudent: number;
+  declare challenge: Challenge; // Optional association with Task model
 
   static initModel(sequelize: Sequelize) {
     StudentChallenge.init(
       {
         completionStatus: {
-          type: DataTypes.STRING,
+          type: DataTypes.ENUM(...Object.values(CompletionStatus)), // ✅ Use ENUM
           allowNull: false,
-          defaultValue: "NotCompleted",
+          defaultValue: CompletionStatus.NotCompleted,
         },
 
         comment: {
@@ -30,7 +34,7 @@ class StudentChallenge extends Model {
           type: DataTypes.DATE,
           allowNull: true,
         },
-        pointOfSutdent: {
+        pointOfStudent: {
           type: DataTypes.INTEGER,
           allowNull: true,
           defaultValue: 0,
@@ -42,7 +46,7 @@ class StudentChallenge extends Model {
       {
         sequelize,
         modelName: "StudentChallenge",
-        timestamps: true, // Not necessary for junction tables
+        timestamps: true,
       }
     );
   }

@@ -1,44 +1,117 @@
-// models/student-task.model.ts
-import { Sequelize, DataTypes, Model, CreationOptional } from "@sequelize/core";
+import { Sequelize, DataTypes, Model, CreationOptional, ValidationError } from "@sequelize/core";
 import Student from "./student.model";
 import Task from "./task.model";
+import Parent from "./parent.model";
+import Teacher from "./teacher.model";
+import User from "./user.model";
 
 enum CompletionStatus {
   Completed = "Completed",
   NotCompleted = "NotCompleted",
 }
-class StudentTask extends Model {
-  declare id: number; 
 
+class StudentTask extends Model {
+  declare id: number;
   declare studentId: number;
   declare taskId: number;
-  declare completionStatus: CompletionStatus; // Add completion status field
-  declare comment: CreationOptional<String>;
+  declare completionStatus: string;
+  declare comment: CreationOptional<string>;
+  declare createdAt: Date;
+  declare updatedAt: Date;
+  declare date: string;
+  declare parentId: number | null;
+  declare teacherId: number | null;
 
   static initModel(sequelize: Sequelize) {
     StudentTask.init(
       {
-       
+        id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+        },
+        studentId: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: { model: Student, key: "id" },
+        },
+        taskId: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          references: { model: Task, key: "id" },
+        },
+        parentId: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          references: { model: Parent, key: "id" },
+        },
+        teacherId: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          references: { model: Teacher, key: "id" },
+        },
         completionStatus: {
           type: DataTypes.STRING,
           allowNull: false,
-          defaultValue: "NotCompleted",
+          defaultValue: CompletionStatus.NotCompleted,
         },
         comment: {
           type: DataTypes.STRING,
           allowNull: true,
         },
-        date: {
+        createdAt: {
           type: DataTypes.DATE,
-          allowNull: true,
+          allowNull: false,
+          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        },
+        updatedAt: {
+          type: DataTypes.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        },
+        date: {
+          type: DataTypes.DATEONLY,
+          allowNull: false,
+          defaultValue: Sequelize.literal("CURRENT_DATE"),
         },
       },
       {
         sequelize,
         modelName: "StudentTask",
-        timestamps: true, // Not necessary for junction tables
+        timestamps: true,
+        indexes: [
+          {
+            unique: true,
+            name: "stu_task_date_p_t_unique", // Shortened index name
+            fields: ["studentId", "taskId", "date", "parentId", "teacherId"],
+          },
+        ],
+        
+        hooks: {
+          beforeValidate: (task: StudentTask) => {
+            if (!(task.parentId || task.teacherId)) {
+              throw new ValidationError("Either parentId or teacherId must be provided.");
+            }
+            if (task.parentId && task.teacherId) {
+              throw new ValidationError("Only one of parentId or teacherId should be set.");
+            }
+          },
+        },
       }
     );
+  }
+
+  static async canAssignTask(studentId: number, taskId: number, date: string) {
+    // Check if the task already exists for the given student and date
+    const existingTask = (await StudentTask.findOne({
+      where: {
+        studentId,
+        taskId,
+        date,
+      },
+    })) as StudentTask | null;
+
+    return !existingTask; // True if the task can be assigned, false otherwise
   }
 }
 

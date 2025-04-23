@@ -5,7 +5,7 @@ import Organization from "./oraganization.model";
 
 class Class extends Model {
   declare id: CreationOptional<number>;
-  declare className: CreationOptional<String>; // Name of the class
+  declare classname: CreationOptional<String>; // Name of the class
   declare organizationId: CreationOptional<number>; // Reference to the Organization
   declare classdescrption: CreationOptional<String>; // Description of the class
   declare category: CreationOptional<String>; // Category of the class

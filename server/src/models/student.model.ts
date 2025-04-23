@@ -12,9 +12,13 @@ export enum Grade {
 class Student extends Model {
   declare id: CreationOptional<number>;
   declare classId: CreationOptional<number>;
-  declare parentId: CreationOptional<number>;
+  declare class: Class | null;
+  declare ParentId: CreationOptional<number>;
+  declare organization: Organization | null;
+  declare connectCode: String;
+
   declare organizationId: CreationOptional<number>; // This is the correct foreign key for Organization
-  declare points: CreationOptional<number>;
+  declare xp: CreationOptional<number>;
   declare studentId: CreationOptional<number>; // Foreign key to the User model
   declare userId: CreationOptional<number>; // Add userId field
   declare user: User | null;
@@ -45,14 +49,11 @@ class Student extends Model {
             min: 0,
           },
         },
-        connectOtp: {
-          type: DataTypes.INTEGER,
+        connectCode: {
+          type: DataTypes.STRING,
           allowNull: true,
         },
-        otpExpiry: {
-          type: DataTypes.DATE,
-          allowNull: true,
-        },
+
         seeders: {
           type: DataTypes.INTEGER,
           allowNull: true,

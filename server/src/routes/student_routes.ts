@@ -2,7 +2,6 @@ import { Response, Request } from "express";
 import {
   studentData,
   updateData,
-  updatePassword,
   deleteData,
   appearTaskes,
   appearChallanges,
@@ -468,7 +467,7 @@ router.get(
  *         description: Internal Server Error
  */
 router.get(
-  "/appear-Taskes-Type-Category/:category/:type",
+  "/appear-Taskes-Type-Category/:categoryId/:type",
   authenticateToken,
   checkstudent,
   appearTaskesTypeandCategory
@@ -527,22 +526,23 @@ router.get(
   checkstudent,
   appearLeaderboard
 );
+
 /**
  * @swagger
- * /students/appear-Taskes-Type/{category}:
+ * /students/appear-Taskes-Type/{categoryId}:
  *   get:
- *     summary: Fetch tasks by type
- *     description: Retrieve tasks filtered by type.
+ *     summary: Fetch tasks by category
+ *     description: Retrieve tasks filtered by category ID.
  *     tags: [Students]
  *     security:
  *       - BearerAuth: []
  *     parameters:
- *       - name: category
+ *       - name: categoryId
  *         in: path
  *         required: true
  *         schema:
- *           type: string
- *         description: The category of tasks to retrieve (e.g., "el3laka m3 allah", "el3laka m3 elnfs", "el3laka m3 el2osara").
+ *           type: integer
+ *         description: The ID of the task category.
  *     responses:
  *       200:
  *         description: Tasks retrieved successfully
@@ -562,8 +562,8 @@ router.get(
  *                         type: string
  *                       description:
  *                         type: string
- *                       category:
- *                         type: string
+ *                       categoryId:
+ *                         type: integer
  *                       snabelRed:
  *                         type: number
  *                       snabelBlue:
@@ -581,17 +581,16 @@ router.get(
  *       401:
  *         description: Unauthorized - User data not found in request
  *       404:
- *         description: Not Found - No tasks found
+ *         description: Not Found - No tasks found for the specified category ID
  *       500:
  *         description: Internal Server Error
  */
 router.get(
-  "/appear-Taskes-Type/:category",
+  "/appear-Taskes-Type/:categoryId",
   authenticateToken,
   checkstudent,
   appearTaskesType
 );
-
 /**
  * @swagger
  * /students/buy-water-seeder:
@@ -793,42 +792,7 @@ router.post(
  */
 router.patch("/update", authenticateToken, checkstudent, updateData);
 
-/**
- * @swagger
- * /students/update-password:
- *   put:
- *     summary: Update student password
- *     description: Update the student's password after verifying the old password.
- *     tags: [Students]
- *     security:
- *       - BearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               old_password:
- *                 type: string
- *               new_password:
- *                 type: string
- *     responses:
- *       200:
- *         description: Password updated successfully
- *       401:
- *         description: Unauthorized - Incorrect current password or user data not found
- *       404:
- *         description: Not Found - User data not found
- *       500:
- *         description: Internal Server Error
- */
-router.patch(
-  "/update-password",
-  authenticateToken,
-  checkstudent,
-  updatePassword
-);
+
 
 /**
  * @swagger

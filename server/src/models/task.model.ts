@@ -1,5 +1,6 @@
 // models/task.model.ts
 import { Sequelize, DataTypes, Model, CreationOptional } from "@sequelize/core";
+import TaskCategory from "./task-category.model"; // ✅ Import the actual model
 
 
 
@@ -7,9 +8,12 @@ class Task extends Model {
   declare id: CreationOptional<number>;
   declare title: string;
   declare description: string;
-  declare category: string;
-  declare points: number;
-
+  declare categoryId: number;
+  declare taskCategory: TaskCategory ; 
+  declare xp: number;
+  declare snabelRed: CreationOptional<number>;
+  declare snabelBlue: CreationOptional<number>;
+  declare snabelYellow: CreationOptional<number>;
 
   static initModel(sequelize: Sequelize) {
     Task.init(
@@ -32,10 +36,17 @@ class Task extends Model {
           allowNull: true,
         },
 
-        category: {
-          type: DataTypes.STRING,
+        categoryId: {
+          type: DataTypes.INTEGER,
           allowNull: true,
-        },
+          references: {
+            model: TaskCategory, // Reference to TaskCategory model
+            key: "id",
+          },
+          onDelete: "CASCADE", // ✅ Move onDelete here
+          onUpdate: "CASCADE", // ✅ Optional: Ensures updates propagate
+                  },
+
         snabelRed: {
           type: DataTypes.INTEGER,
           allowNull: true,
@@ -84,6 +95,12 @@ class Task extends Model {
         timestamps:false,
       }
     );
+  }
+  static associate() {
+    Task.belongsTo(TaskCategory, {
+      foreignKey: "categoryId",
+      as: "category",
+    });
   }
 }
 

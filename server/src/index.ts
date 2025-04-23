@@ -3,7 +3,7 @@ import cors from "cors";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 require("dotenv").config();
-import { sequelize, connectToDb, rundb } from "./config/db_connection";
+import {  connectToDb,  } from "./config/db_connection";
 
 // Define CORS options
 const corsOptions = {
@@ -21,6 +21,8 @@ const student_route = require("../src/routes/student_routes");
 const organization_routes = require("../src/routes/organization_routes");
 const class_routes = require("../src/routes/class_routes");
 const teacher_routes = require("../src/routes/teacher_routes");
+const parent_route = require("../src/routes/parent_routes");
+
 const app = express();
 const PORT = process.env.SERVER_PORT;
 
@@ -32,6 +34,8 @@ app.use(express.json());
 app.use("/users", user_route);
 app.use("/students", student_route);
 app.use("/organization", organization_routes);
+app.use("/parents", parent_route);
+
 app.use("/class", class_routes);
 app.use("/teachers", teacher_routes);
 
