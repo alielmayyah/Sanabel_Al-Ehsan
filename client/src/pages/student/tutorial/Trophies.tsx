@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import trophyImg from "../../../assets/trophy.png";
 import trophies from "../../../data/TrophiesImgs";
-import OtherTrophies from "../../../data/OtherTrophiesImgs";
+import OtherTrophies from "../../../data/SanabelImgsDictionary";
 
 import missionsImg from "../../../assets/target.png";
 import mixSanabel from "../../../assets/resources/سنابل.png";

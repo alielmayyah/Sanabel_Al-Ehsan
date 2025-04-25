@@ -112,8 +112,9 @@ const TreeProgress: React.FC<{
         <h1 className="text-3xl font-bold text-black/80 mb-4">
           {t("شجرة سنابل الإحسان")}
         </h1>
-
-        <p className="text-lg text-green-700">{t("هذه شجرتك الآن، أحسنت")}</p>
+        {isTreePlanted && treeProgress == 4 && (
+          <p className="text-lg text-green-700">{t("هذه شجرتك الآن، أحسنت")}</p>
+        )}
       </motion.div>
 
       <div className="flex flex-col h-full w-full items-center justify-between">

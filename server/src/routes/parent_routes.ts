@@ -1,9 +1,18 @@
 import {
-    parentData, updateDataTeacherParent, deleteData,searchStuentByCode, connectStudentToParent, appearStudentbyparent, addPros 
+  parentData,
+  updateDataTeacherParent,
+  deleteData,
+  searchStuentByCode,
+  connectStudentToParent,
+  appearStudentbyparent,
+  addPros,
 } from "../controllers/parentController";
 import { authenticateToken } from "../middleware/auth";
 import { checkparent } from "../middleware/checkrole";
-import {  appearTaskesCategory, appearTaskesType } from "../controllers/studentController";
+import {
+  appearTaskesCategory,
+  appearTaskesType,
+} from "../controllers/studentController";
 import { appearTaskesTypeandCategories } from "../controllers/teacherController";
 
 const router = require("express").Router();
@@ -104,7 +113,12 @@ router.get("/parent-data", authenticateToken, checkparent, parentData);
  *         description: Internal server error
  */
 
-router.get("/appear-Taskes-Type-Category/:categoryId/:type",authenticateToken,checkparent,appearTaskesTypeandCategories);
+router.get(
+  "/appear-Taskes-Type-Category/:categoryId/:type",
+  authenticateToken,
+  checkparent,
+  appearTaskesTypeandCategories
+);
 /**
  * @swagger
  * /parents/tasks-category:
@@ -137,7 +151,12 @@ router.get("/appear-Taskes-Type-Category/:categoryId/:type",authenticateToken,ch
  *         description: Internal server error
  */
 
-router.get("/tasks-category",authenticateToken,checkparent,appearTaskesCategory);
+router.get(
+  "/tasks-category",
+  authenticateToken,
+  checkparent,
+  appearTaskesCategory
+);
 /**
  * @swagger
  * /parents/appear-Taskes-Type/{categoryId}:
@@ -174,7 +193,12 @@ router.get("/tasks-category",authenticateToken,checkparent,appearTaskesCategory)
  *         description: Internal server error
  */
 
-router.get( "/appear-Taskes-Type/:categoryId", authenticateToken, checkparent, appearTaskesType);
+router.get(
+  "/appear-Taskes-Type/:categoryId",
+  authenticateToken,
+  checkparent,
+  appearTaskesType
+);
 /**
  * @swagger
  * /appear-student-by-parent:
@@ -208,7 +232,12 @@ router.get( "/appear-Taskes-Type/:categoryId", authenticateToken, checkparent, a
  *         description: Error fetching student data
  */
 
-router.get("/appear-student-by-parent", authenticateToken, checkparent, appearStudentbyparent);
+router.get(
+  "/appear-student-by-parent",
+  authenticateToken,
+  checkparent,
+  appearStudentbyparent
+);
 /**
  * @swagger
  * /parents/search-student-by-code/{code}:
@@ -250,7 +279,12 @@ router.get("/appear-student-by-parent", authenticateToken, checkparent, appearSt
  *         description: Server error
  */
 
-router.get("/search-student-by-code/:code", authenticateToken, checkparent, searchStuentByCode);
+router.get(
+  "/search-student-by-code/:code",
+  authenticateToken,
+  checkparent,
+  searchStuentByCode
+);
 /**
  * @swagger
  * /parents/connect-student-to-parent:
@@ -279,7 +313,12 @@ router.get("/search-student-by-code/:code", authenticateToken, checkparent, sear
  *         description: Server error
  */
 
-router.patch("/connect-student-to-parent", authenticateToken, checkparent, connectStudentToParent);
+router.patch(
+  "/connect-student-to-parent",
+  authenticateToken,
+  checkparent,
+  connectStudentToParent
+);
 /**
  * @swagger
  * /parents/update-data:
@@ -338,7 +377,12 @@ router.patch("/connect-student-to-parent", authenticateToken, checkparent, conne
  *                   example: "Error fetching teacher data"
  */
 
-router.patch("/update-data", authenticateToken, checkparent, updateDataTeacherParent);
+router.patch(
+  "/update-data",
+  authenticateToken,
+  checkparent,
+  updateDataTeacherParent
+);
 /**
  * @swagger
  * /parents/delete-parent:
@@ -402,7 +446,6 @@ router.delete("/delete-parent", authenticateToken, checkparent, deleteData);
  *         description: Server error
  */
 
-router.post("/add-pros", authenticateToken, checkparent, addPros  );
-
+router.post("/add-pros", authenticateToken, checkparent, addPros);
 
 module.exports = router;

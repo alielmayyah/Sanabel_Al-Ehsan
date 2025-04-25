@@ -2,14 +2,12 @@
 import { Sequelize, DataTypes, Model, CreationOptional } from "@sequelize/core";
 import TaskCategory from "./task-category.model"; // ✅ Import the actual model
 
-
-
 class Task extends Model {
   declare id: CreationOptional<number>;
   declare title: string;
   declare description: string;
   declare categoryId: number;
-  declare taskCategory: TaskCategory ; 
+  declare taskCategory: TaskCategory;
   declare xp: number;
   declare snabelRed: CreationOptional<number>;
   declare snabelBlue: CreationOptional<number>;
@@ -23,7 +21,7 @@ class Task extends Model {
           primaryKey: true,
           autoIncrement: true,
         },
-        type: { 
+        type: {
           type: DataTypes.STRING,
           allowNull: true,
         },
@@ -45,7 +43,7 @@ class Task extends Model {
           },
           onDelete: "CASCADE", // ✅ Move onDelete here
           onUpdate: "CASCADE", // ✅ Optional: Ensures updates propagate
-                  },
+        },
 
         snabelRed: {
           type: DataTypes.INTEGER,
@@ -92,7 +90,7 @@ class Task extends Model {
       {
         sequelize,
         modelName: "Task",
-        timestamps:false,
+        timestamps: false,
       }
     );
   }

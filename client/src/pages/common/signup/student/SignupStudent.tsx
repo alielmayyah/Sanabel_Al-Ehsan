@@ -113,12 +113,12 @@ const Signup: React.FC = () => {
 
     // Handle API submission here
     try {
-      const response = await axios.post(
+      const response = await axios.patch(
         "http://localhost:3000/users/registration",
         formData
       );
 
-      http: if (response.status === 201) {
+      if (response.status === 201) {
         history.push(`/login`);
         // PUSH TO LOGIN
         toast.success("Sign up");

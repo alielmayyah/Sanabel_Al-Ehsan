@@ -27,12 +27,14 @@ import MedalAndLevel from "../../components/MedalAndLevel";
 import { useEffect } from "react";
 import axios from "axios";
 import React from "react";
+import { calculateLevel } from "../../utils/LevelCalculator";
 
 const Leaderboards: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
 
   interface LeaderboardItem {
+    [x: string]: any;
     id: number;
     name: string;
     avatar: string;
@@ -41,67 +43,66 @@ const Leaderboards: React.FC = () => {
   }
 
   const [leaderboardsData, setLeaderboardsData] = useState<LeaderboardItem[]>([
-    {
-      id: 0,
-      name: "محمد منجي",
-      level: 31,
-      avatar: avatars.boys.boy2,
-    },
-    {
-      id: 1,
-      name: "علي يوسف",
-      level: 5,
-      avatar: avatars.boys.boy3,
-    },
-    {
-      id: 2,
-      name: "سارة حسن",
-      level: 88,
-
-      avatar: avatars.girls.girl2,
-    },
-    {
-      id: 3,
-      name: "فاطمة الكيلاني",
-      level: 15,
-      avatar: avatars.girls.girl1,
-    },
-    {
-      id: 4,
-      name: "أحمد جمال",
-      level: 18,
-      avatar: avatars.boys.boy6,
-    },
-    {
-      id: 5,
-      name: "رانيا عمر",
-      level: 26,
-      avatar: avatars.girls.girl5,
-    },
-    {
-      id: 6,
-      name: "عمر شريف",
-      level: 125,
-      avatar: avatars.boys.boy2,
-    },
-    {
-      id: 7,
-      name: "لين كمال",
-      level: 3,
-      avatar: avatars.girls.girl4,
-    },
-    {
-      id: 8,
-      name: "سعيد موسى",
-      level: 206,
-      avatar: avatars.boys.boy5,
-    },
-    {
-      id: 9,
-      name: "هدى خالد",
-      level: 52,
-      avatar: avatars.girls.girl2,
-    },
+    // {
+    //   id: 0,
+    //   name: "محمد منجي",
+    //   level: 31,
+    //   avatar: avatars.boys.boy2,
+    // },
+    // {
+    //   id: 1,
+    //   name: "علي يوسف",
+    //   level: 5,
+    //   avatar: avatars.boys.boy3,
+    // },
+    // {
+    //   id: 2,
+    //   name: "سارة حسن",
+    //   level: 88,
+    //   avatar: avatars.girls.girl2,
+    // },
+    // {
+    //   id: 3,
+    //   name: "فاطمة الكيلاني",
+    //   level: 15,
+    //   avatar: avatars.girls.girl1,
+    // },
+    // {
+    //   id: 4,
+    //   name: "أحمد جمال",
+    //   level: 18,
+    //   avatar: avatars.boys.boy6,
+    // },
+    // {
+    //   id: 5,
+    //   name: "رانيا عمر",
+    //   level: 26,
+    //   avatar: avatars.girls.girl5,
+    // },
+    // {
+    //   id: 6,
+    //   name: "عمر شريف",
+    //   level: 125,
+    //   avatar: avatars.boys.boy2,
+    // },
+    // {
+    //   id: 7,
+    //   name: "لين كمال",
+    //   level: 3,
+    //   avatar: avatars.girls.girl4,
+    // },
+    // {
+    //   id: 8,
+    //   name: "سعيد موسى",
+    //   level: 206,
+    //   avatar: avatars.boys.boy5,
+    // },
+    // {
+    //   id: 9,
+    //   name: "هدى خالد",
+    //   level: 52,
+    //   avatar: avatars.girls.girl2,
+    // },
   ]);
 
   const fetchUserData = async (token?: string) => {
@@ -126,8 +127,6 @@ const Leaderboards: React.FC = () => {
     }
   };
 
-  console.log(leaderboardsData);
-
   useEffect(() => {
     fetchUserData();
   }, []);
@@ -149,6 +148,22 @@ const Leaderboards: React.FC = () => {
     () => leaderboardsData.slice().sort((a, b) => b.level - a.level),
     [leaderboardsData]
   );
+
+  useEffect(() => {
+    const levelsUpdated = leaderboardsData.some(
+      (item) => item.level !== calculateLevel(item.xp).level
+    );
+
+    if (levelsUpdated) {
+      const updatedData = sortedData.map((item) => {
+        const { level } = calculateLevel(item.xp);
+        return { ...item, level };
+      });
+      setLeaderboardsData(updatedData);
+    }
+  }, [sortedData, leaderboardsData]);
+
+  // const { level, remainingXp, xpForNextLevel } = calculateLevel(xp);
 
   const [openFilter, setOpenFilter] = useState(false);
 
@@ -210,73 +225,90 @@ const Leaderboards: React.FC = () => {
         {/* leaderboards places */}
         <div className="flex flex-col gap-2 h-[90%] w-full overflow-y-auto py-5 px-1 ">
           {/* Leaderboards for top 3 */}
-          <motion.div
-            className="flex justify-between items-end w-full"
-            initial="hidden"
-            animate="visible"
-            variants={listVariants}
-          >
+          {sortedData.length > 0 && (
             <motion.div
-              className="flex flex-col items-center  w-1/3"
-              variants={columnVariants}
+              className="flex justify-between items-end w-full"
+              initial="hidden"
+              animate="visible"
+              variants={listVariants}
             >
-              <div className="w-20 h-20 rounded-full relative border-2 border-blueprimary">
-                <img
-                  className="w-[75px] h-[75px] rounded-full absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                  src={sortedData[0].avatar}
-                />
-                <div className="flex-center absolute p-4 text-center transform -translate-x-1/2 -translate-y-1/2 top-0 left-1/2">
-                  <LeaderboardsStar size={40} className="text-blueprimary" />
+              <motion.div
+                className="flex flex-col items-center  w-1/3"
+                variants={columnVariants}
+              >
+                <div className="w-20 h-20 rounded-full relative border-2 border-blueprimary">
+                  <img
+                    className="w-[75px] h-[75px] rounded-full absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                    src={sortedData[0].avatar}
+                  />
+                  <div className="flex-center absolute p-4 text-center transform -translate-x-1/2 -translate-y-1/2 top-0 left-1/2">
+                    <LeaderboardsStar size={40} className="text-blueprimary" />
+                  </div>
                 </div>
-              </div>
-              <h1 className="text-black">{sortedData[0].name}</h1>
-              <div className="scale-90">
-                <MedalAndLevel
-                  level={sortedData[0].level}
-                  color="text-blueprimary"
-                  dir={""}
-                />
-              </div>
+                <h1 className="text-black">
+                  {sortedData[0].user.firstName +
+                    " " +
+                    sortedData[0].user.lastName}
+                </h1>
+                <div className="scale-90">
+                  <MedalAndLevel
+                    level={sortedData[0].level}
+                    color="text-blueprimary"
+                    dir={""}
+                  />
+                </div>
 
-              <FirstPlaceColumn className="w-full" />
-            </motion.div>
-            <motion.div
-              className="flex flex-col items-center  w-1/3 -order-1"
-              variants={columnVariants}
-            >
-              <img
-                className="w-20 h-20 rounded-full"
-                src={sortedData[1].avatar}
-              />
-              <h1 className="text-black">{sortedData[1].name}</h1>
-              <div className="scale-90">
-                <MedalAndLevel
-                  level={sortedData[1].level}
-                  color={"text-redprimary"}
-                  dir={""}
+                <FirstPlaceColumn className="w-full" />
+              </motion.div>
+              <motion.div
+                className="flex flex-col items-center  w-1/3 -order-1"
+                variants={columnVariants}
+              >
+                <img
+                  className="w-20 h-20 rounded-full"
+                  src={sortedData[1].avatar}
                 />
-              </div>
-              <SecondPlaceColumn className="w-full" />
-            </motion.div>
-            <motion.div
-              className="flex flex-col items-center  w-1/3"
-              variants={columnVariants}
-            >
-              <img
-                className="w-20 h-20 rounded-full"
-                src={sortedData[2].avatar}
-              />
-              <h1 className="text-black">{sortedData[2].name}</h1>
-              <div className="scale-90">
-                <MedalAndLevel
-                  level={sortedData[2].level}
-                  color={"text-yellowprimary"}
-                  dir={""}
+                <h1 className="text-black">
+                  {sortedData[1].user.firstName +
+                    " " +
+                    sortedData[1].user.lastName}
+                </h1>
+                <div className="scale-90">
+                  <MedalAndLevel
+                    level={sortedData[1].level}
+                    color={"text-redprimary"}
+                    dir={""}
+                  />
+                </div>
+                <SecondPlaceColumn className="w-full" />
+              </motion.div>
+              <motion.div
+                className="flex flex-col items-center  w-1/3"
+                variants={columnVariants}
+              >
+                <img
+                  className="w-20 h-20 rounded-full"
+                  src={sortedData[2].avatar}
                 />
-              </div>
-              <ThirdPlaceColumn className="w-full " />
+                <h1 className="text-black">
+                  {" "}
+                  <h1 className="text-black">
+                    {sortedData[2].user.firstName +
+                      " " +
+                      sortedData[2].user.lastName}
+                  </h1>
+                </h1>
+                <div className="scale-90">
+                  <MedalAndLevel
+                    level={sortedData[2].level}
+                    color={"text-yellowprimary"}
+                    dir={""}
+                  />
+                </div>
+                <ThirdPlaceColumn className="w-full " />
+              </motion.div>
             </motion.div>
-          </motion.div>
+          )}
           {/* Remaining leaderboard list */}
           <motion.div
             className="flex flex-col w-full gap-2 "
@@ -301,7 +333,11 @@ const Leaderboards: React.FC = () => {
                   </div>
                   <div className="flex-center gap-2">
                     <div className="flex flex-col text-end">
-                      <h1 className="text-black">{item.name}</h1>
+                      <h1 className="text-black">
+                        {sortedData[2].user.firstName +
+                          " " +
+                          sortedData[2].user.lastName}
+                      </h1>
                       <p className="text-gray-500 font-medium">
                         {ordinalNumbers[index + 3]}
                       </p>

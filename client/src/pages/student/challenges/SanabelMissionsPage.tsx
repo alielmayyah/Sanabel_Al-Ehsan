@@ -20,7 +20,10 @@ import xpIcon from "../../../assets/resources/اكس بي.png";
 
 const SanabelMissionsPage: React.FC = () => {
   const { index, subIndex } = useParams<{ index: any; subIndex: any }>();
-
+  // Ensure index is properly parsed as a number
+  const indexAsNumber = parseInt(index, 10);
+  // Make sure APIIndex is correctly calculated as a number
+  const APIIndex = indexAsNumber + 1;
   // const sanabel = sanabelType[index].sanabel[subIndex];
 
   const sanabelTypes = [
@@ -88,7 +91,7 @@ const SanabelMissionsPage: React.FC = () => {
 
           // Fetch Sanabel
           const sanabelResponse = await axios.get(
-            `http://localhost:3000/students/appear-Taskes-Type/${fetchedCategoryName}`,
+            `http://localhost:3000/students/appear-Taskes-Type/${APIIndex}`,
             {
               headers: {
                 Authorization: `Bearer ${authToken}`,
@@ -109,7 +112,7 @@ const SanabelMissionsPage: React.FC = () => {
             // Fetch Missions
             if (uniqueTypes[subIndex]) {
               const missionsResponse = await axios.get(
-                `http://localhost:3000/students/appear-Taskes-Type-Category/${fetchedCategoryName}/${uniqueTypes[subIndex]}`,
+                `http://localhost:3000/students/appear-Taskes-Type-Category/${APIIndex}/${sanabel[subIndex]}`,
                 {
                   headers: {
                     Authorization: `Bearer ${authToken}`,
@@ -118,6 +121,7 @@ const SanabelMissionsPage: React.FC = () => {
               );
 
               if (missionsResponse.status === 200) {
+                console.log(missionsResponse.data.tasks);
                 setMissions(missionsResponse.data.tasks);
               }
             }
@@ -129,7 +133,7 @@ const SanabelMissionsPage: React.FC = () => {
     };
 
     fetchAllData();
-  }, [index, subIndex]);
+  }, [sanabel, index, subIndex]);
 
   const renderResources = (items: any) =>
     [
@@ -205,12 +209,12 @@ const SanabelMissionsPage: React.FC = () => {
           <div
             key={index}
             className={`flex w-full flex-col items-end justify-between sanabel-shadow-bottom h-max rounded-xl p-4 gap-2 border-t-2  ${
-              mission.studentTask.completionStatus !== "Completed"
+              mission.completionStatus !== "Completed"
                 ? `${colorBorderTop}`
                 : "border-t-[#498200]"
             }`}
           >
-            {mission.studentTask.completionStatus === "Completed" && (
+            {mission.completionStatus === "Completed" && (
               <div className="flex w-full justify-between">
                 <div className="flex w-full justify-between ">
                   <h1 className="text-gray-400 text-sm">
@@ -228,8 +232,7 @@ const SanabelMissionsPage: React.FC = () => {
             <div className="flex justify-between items-center w-full">
               <div
                 className={`flex gap-2 ${
-                  mission.studentTask.completionStatus !== "Completed" &&
-                  "opacity-50"
+                  mission.completionStatus !== "Completed" && "opacity-50"
                 }`}
               >
                 {renderResources(mission)}

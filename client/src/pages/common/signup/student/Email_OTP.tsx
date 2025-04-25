@@ -105,7 +105,7 @@ const EmailOTP: React.FC<OTPProps> = ({
     }
 
     try {
-      const response = await axios.post(
+      const response = await axios.patch(
         "http://localhost:3000/users/verfication-auth",
         { email, otp: otpCode }
       );

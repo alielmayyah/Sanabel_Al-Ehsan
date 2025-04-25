@@ -182,7 +182,19 @@ const ar = {
     timeLeft: "  متبقية  {{hours}} ساعة {{minutes}}دقيقة",
 
     المستوى: "المستوى",
-    
+
+    // Other Trophies
+
+    "Tree Stage": "مرحلة الشجرة",
+    "Progress Tree": "شجرة التقدم",
+    "Missions Finished": "المهام المكتملة",
+    "Total Blue Points": "السنبلة الزرقاء",
+    "Total Yellow Points": "السنبلة الصفراء",
+    "Total Red Points": "السنبلة الحمراء",
+    "Total Mixed Points": " سنابل الإحسان",
+    "Total XP": " الـ XP",
+    "Total Water Bought": "الماء",
+    "Total Fertilizer Bought": "سماد",
   },
 };
 

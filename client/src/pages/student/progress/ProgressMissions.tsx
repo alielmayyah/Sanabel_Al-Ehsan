@@ -2,6 +2,8 @@ import StudentNavbar from "../../../components/navbar/StudentNavbar";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 
+import { useEffect, useState } from "react";
+
 // Sanabel type
 
 import sanabelType1Img from "../../../assets/sanabeltype/سنابل الإحسان في العلاقة مع الأسرة والمجتمع.png";
@@ -20,20 +22,7 @@ import mixedSanabel from "../../../assets/resources/سنابل.png";
 // Navbar
 
 import missionsDoneImg from "../../../assets/target.png";
-
-// Define the data structure for the chart
-interface sanabelType {
-  name: string;
-  value: number;
-}
-
-const sanabelType = [
-  { name: "العلاقة مع الله", img: sanabelType1Img, value: 140 },
-  { name: "العلاقة مع النفس", img: sanabelType2Img, value: 60 },
-  { name: "العلاقة مع الاسرة", img: sanabelType3Img, value: 75 },
-  { name: "العلاقة مع الكوكب", img: sanabelType4Img, value: 125 },
-];
-const total = sanabelType.reduce((acc, item) => acc + item.value, 0);
+import axios from "axios";
 
 // Define the colors for the chart
 const COLORS = ["#FAB700", "#E14E54", "#495638", "#4AAAD6"];
@@ -42,9 +31,7 @@ interface sanabelColor {
   name: string;
   value: number;
 }
-const sanabelCOLORS = ["#FAB700", "#E14E54", "#4AAAD6"];
-const sanabelColor = [{ value: 25 }, { value: 40 }, { value: 20 }];
-const totalSanabel = sanabelColor.reduce((acc, item) => acc + item.value, 0);
+const sanabelCOLORS = ["#4AAAD6", "#FAB700", "#E14E54"];
 
 const containerVariants = {
   hidden: { opacity: 0, scale: 0.9 },
@@ -74,6 +61,98 @@ const gridItemVariants = {
 const ProgressMissions: React.FC = () => {
   const { t } = useTranslation();
 
+  const [completedTasks, setCompletedTasks]: any = useState(0);
+
+  const fetchTasksCompleted = async (token?: string) => {
+    const authToken = token || localStorage.getItem("token");
+    if (!authToken) return;
+
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/students/calculate-completed-tasks-by-category",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setCompletedTasks(response.data.totalCompletedTasks);
+        setCategoryCounts(response.data.categoryCounts);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasksCompleted();
+  }, []);
+
+  // Define the data structure for the chart
+  interface sanabelType {
+    name: string;
+    value: number;
+  }
+
+  const [categoryCounts, setCategoryCounts] = useState({
+    "سنابل الإحسان في العلاقة مع الله": 0,
+    "سنابل الإحسان في العلاقة مع النفس": 0,
+    "سنابل الإحسان في العلاقة مع الأسرة والمجتمع": 0,
+    "سنابل الإحسان في العلاقة مع الأرض والكون": 0,
+  });
+  // Dynamic chart data
+
+  const sanabelType = [
+    {
+      name: "العلاقة مع الله",
+      img: sanabelType4Img,
+      value: Object.values(categoryCounts)[0],
+    },
+    {
+      name: "العلاقة مع النفس",
+      img: sanabelType2Img,
+      value: Object.values(categoryCounts)[1],
+    },
+    {
+      name: "العلاقة مع الأسرة والمجتمع",
+      img: sanabelType1Img,
+      value: Object.values(categoryCounts)[2],
+    },
+    {
+      name: "العلاقة مع الأرض والكون",
+      img: sanabelType3Img,
+      value: Object.values(categoryCounts)[3],
+    },
+  ];
+
+  const total = sanabelType.reduce((acc, item) => acc + item.value, 0);
+
+  const sanabelColor = [
+    {
+      value:
+        sanabelType[0].value * 2 +
+        sanabelType[1].value * 2 +
+        sanabelType[2].value * 1 +
+        sanabelType[3].value * 1,
+    },
+    {
+      value:
+        sanabelType[0].value * 2 +
+        sanabelType[1].value * 1 +
+        sanabelType[2].value * 2 +
+        sanabelType[3].value * 1,
+    },
+    {
+      value:
+        sanabelType[0].value * 2 +
+        sanabelType[1].value * 1 +
+        sanabelType[2].value * 1 +
+        sanabelType[3].value * 2,
+    },
+  ];
+  const totalSanabel = sanabelColor.reduce((acc, item) => acc + item.value, 0);
   return (
     <div className="flex flex-col gap-3 w-full h-3/4 overflow-y-auto ">
       <motion.div
@@ -89,10 +168,7 @@ const ProgressMissions: React.FC = () => {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
-          {sanabelType[0].value +
-            sanabelType[1].value +
-            sanabelType[2].value +
-            sanabelType[3].value}
+          {completedTasks}
         </motion.h1>
 
         <motion.h1
@@ -138,8 +214,8 @@ const ProgressMissions: React.FC = () => {
         ))}
       </motion.div>
 
-      <div className="flex justify-center items-center w-full h-[350px] relative">
-        <PieChart width={window.innerWidth - 50} height={350}>
+      <div className="flex justify-center items-center w-full relative my-4">
+        <PieChart width={window.innerWidth} height={350}>
           <Pie
             data={sanabelType}
             dataKey="value"
@@ -151,7 +227,7 @@ const ProgressMissions: React.FC = () => {
             fill="#8884d8"
             paddingAngle={0}
             label={({ name, value }) =>
-              ` ${((value / total) * 100).toFixed(1)}%`
+              ` ${((value / total) * 100).toFixed(0)}%`
             }
             labelLine={false}
           >

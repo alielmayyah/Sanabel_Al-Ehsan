@@ -53,6 +53,7 @@ const SanabelType: React.FC = () => {
 
       if (response.status === 200) {
         setCategories(response.data.data); // Store the data array in state
+        console.log(response.data.data); // Log the data array
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -138,7 +139,6 @@ const SanabelType: React.FC = () => {
               duration: 0.5,
             }}
           />
-
           {/* Title */}
           <motion.h1
             className="font-bold text-2xl text-black"
@@ -148,7 +148,6 @@ const SanabelType: React.FC = () => {
           >
             {t("توصيات عامة")}
           </motion.h1>
-
           {/* List Items */}
           <div className="flex flex-col gap-2 items-end">
             {reminderData.map((item, index) => (
@@ -300,7 +299,7 @@ const SanabelType: React.FC = () => {
                 <div className="flex-center gap-2">
                   <SanabelArrow className={`${colorClass}`} />
                   <h1 className={`${colorClass} text-end text-sm font-bold`}>
-                    {t(items.category)}
+                    {t(items.title)}
                   </h1>
                 </div>
               </div>

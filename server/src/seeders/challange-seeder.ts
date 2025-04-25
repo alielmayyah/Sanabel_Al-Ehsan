@@ -32,25 +32,28 @@ const generateChallenges = (
     blueMultiplier: number;
     yellowMultiplier: number;
     redMultiplier: number;
-    water? : number;
-    seeder? : number;
-    
+    water?: number;
+    seeder?: number;
   },
   category: TaskCategory,
   taskCategory?: string
 ): ChallengeData[] => {
   const challenges: ChallengeData[] = [];
-  
+
   config.trophyMilestones.forEach((milestone, index) => {
-    const snabelBlue = Math.round(config.blue * config.blueMultiplier * milestone);
-    const snabelYellow = Math.round(config.yellow * config.yellowMultiplier * milestone);
-    const snabelRed = Math.round(config.red * config.redMultiplier * milestone);
-    const xp = Math.round(config.xp * config.xpMultiplier * milestone);
-    const water = config.water ? Math.round(config.water * milestone) : 0;
-    const seeder = config.seeder ? Math.round(config.seeder * milestone) : 0;
+    const snabelBlue = Math.ceil(
+      config.blue * config.blueMultiplier * milestone
+    );
+    const snabelYellow = Math.ceil(
+      config.yellow * config.yellowMultiplier * milestone
+    );
+    const snabelRed = Math.ceil(config.red * config.redMultiplier * milestone);
+    const xp = Math.ceil(config.xp * config.xpMultiplier * milestone);
+    const water = config.water ? Math.ceil(config.water * milestone) : 0;
+    const seeder = config.seeder ? Math.ceil(config.seeder * milestone) : 0;
     challenges.push({
       id: globalIdCounter++, // 🔥 Use global counter instead of resetting each time
-      title: `${missionName} - Level ${index + 1}`,
+      title: `${missionName}`,
       description: `Complete ${milestone} tasks to unlock this challenge.`,
       level: index + 1,
       snabelBlue,
@@ -83,7 +86,7 @@ const milestones = {
 // Generate all challenge data
 const challengeData: ChallengeData[] = [
   ...generateChallenges(
-    "sanabelA",
+    "العلاقة مع الله",
     {
       blue: 2,
       yellow: 2,
@@ -100,7 +103,7 @@ const challengeData: ChallengeData[] = [
   ),
 
   ...generateChallenges(
-    "sanabelB",
+    "العلاقة مع النفس",
     {
       blue: 2,
       yellow: 1,
@@ -117,7 +120,7 @@ const challengeData: ChallengeData[] = [
   ),
 
   ...generateChallenges(
-    "sanabelC",
+    "العلاقة مع الأسرة والمجتمع",
     {
       blue: 1,
       yellow: 2,
@@ -134,7 +137,7 @@ const challengeData: ChallengeData[] = [
   ),
 
   ...generateChallenges(
-    "sanabelD",
+    "العلاقة مع الأرض والكون",
     {
       blue: 1,
       yellow: 1,
@@ -149,7 +152,7 @@ const challengeData: ChallengeData[] = [
     TaskCategory.task,
     "سنابل الإحسان في العلاقة مع الأرض والكون"
   ),
-  
+
   ...generateChallenges(
     "Tree Stage",
     {
@@ -326,11 +329,11 @@ const challengeData: ChallengeData[] = [
 // Export the data and migration functions
 module.exports = {
   data: challengeData, // Explicitly export the data
-  up: async (queryInterface: QueryInterface, Sequelize:  Sequelize) => {
+  up: async (queryInterface: QueryInterface, Sequelize: Sequelize) => {
     await queryInterface.bulkInsert("Challenges", challengeData);
   },
 
-  down: async (queryInterface: QueryInterface, Sequelize:  Sequelize) => {
+  down: async (queryInterface: QueryInterface, Sequelize: Sequelize) => {
     await queryInterface.bulkDelete("Challenges", {});
   },
 };

@@ -25,9 +25,7 @@ import DeleteAccountPopup from "./StudentDeleteAccountPopup";
 
 import GoBackButton from "../../../components/GoBackButton";
 
-import DarkModeComingSoon from "./DarkModeComingSoon";
-
-
+import DarkModeComingSoon from "../../common/DarkModeComingSoon";
 
 const Profile: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();

@@ -5,6 +5,10 @@ class TaskCategory extends Model {
   declare id: number;
   declare title: string;
   declare description: string;
+  declare xp: number;
+  declare snabelRed: number;
+  declare snabelYellow: number;
+  declare snabelBlue: number;
 
   static initModel(sequelize: Sequelize) {
     TaskCategory.init(
@@ -22,6 +26,24 @@ class TaskCategory extends Model {
           type: DataTypes.STRING,
           allowNull: true,
         },
+        xp: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+        },
+        snabelRed: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+        },
+        snabelYellow: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+        },
+        snabelBlue: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+        },
+
+        
       },
       {
         sequelize,

@@ -1,6 +1,6 @@
 import { updatePassword } from "../controllers/userController";
 import { authenticateToken } from "../middleware/auth";
-import upload from "../config/cloudaryconfig" // Import multer config
+import upload from "../config/cloudaryconfig"; // Import multer config
 
 const express = require("express");
 const userController = require("../controllers/userController");
@@ -63,7 +63,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.get("/login", userController.login);
+router.patch("/login", userController.login);
 /**
  * @swagger
  * /users/registration:
@@ -137,7 +137,11 @@ router.get("/login", userController.login);
  *         description: Internal server error
  */
 
-router.patch("/registration",  upload.single("profileImg"),userController.registration);
+router.patch(
+  "/registration",
+  upload.single("profileImg"),
+  userController.registration
+);
 
 /**
  * @swagger
@@ -316,5 +320,5 @@ router.patch("/verfication-auth", authController.verifyOTP);
  *       500:
  *         description: Incorrect current password or internal server error
  */
-router.patch("/update-passowrd",authenticateToken,updatePassword)
+router.patch("/update-passowrd", authenticateToken, updatePassword);
 module.exports = router;

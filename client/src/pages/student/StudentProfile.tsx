@@ -41,7 +41,7 @@ const Profile: React.FC = () => {
       console.error("Failed to copy text:", err);
     }
   };
-  const parentCode = "#12212";
+  const parentCode = user?.connectCode;
   return (
     <div
       className="flex flex-col h-full w-full items-center justify-between z-10"
@@ -81,7 +81,7 @@ const Profile: React.FC = () => {
         <div className="flex-center w-full gap-1">
           <MdContentCopy
             className="text-[#B3B3B3] cursor-pointer"
-            onClick={() => handleCopy(parentCode)}
+            onClick={() => handleCopy(`${parentCode}`)}
           />
           <h1 className="text-[#B3B3B3]">{parentCode}</h1>
 

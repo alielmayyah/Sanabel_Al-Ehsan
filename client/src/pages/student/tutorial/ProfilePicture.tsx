@@ -1,292 +1,220 @@
-import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import PrimaryButton from "../../../components/PrimaryButton";
-import GoBackButton from "../../../components/GoBackButton";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Cropper from "react-easy-crop";
 
-// Import AVATARS
-// Boys Avatars
-import boy1 from "../../../assets/avatars/Boys/boy1.png";
-import boy2 from "../../../assets/avatars/Boys/boy2.png";
-import boy3 from "../../../assets/avatars/Boys/boy3.png";
-import boy4 from "../../../assets/avatars/Boys/boy4.png";
-import boy5 from "../../../assets/avatars/Boys/boy5.png";
-import boy6 from "../../../assets/avatars/Boys/boy6.png";
-import boy7 from "../../../assets/avatars/Boys/boy7.png";
-
-// Girls Avatars
-import girl1 from "../../../assets/avatars/Girls/girl1.png";
-import girl2 from "../../../assets/avatars/Girls/girl2.png";
-import girl3 from "../../../assets/avatars/Girls/girl3.png";
-import girl4 from "../../../assets/avatars/Girls/girl4.png";
-import girl5 from "../../../assets/avatars/Girls/girl5.png";
-import girl6 from "../../../assets/avatars/Girls/girl6.png";
-import girl7 from "../../../assets/avatars/Girls/girl7.png";
-import girl8 from "../../../assets/avatars/Girls/girl8.png";
-import girl9 from "../../../assets/avatars/Girls/girl9.png";
+// Import avatar components correctly
+import AvatarTest from "../../../assets/avatars/AvatarTest";
+import AvatarTest2 from "../../../assets/avatars/AvatarTest2";
 
 import { IoSparkles } from "react-icons/io5";
-import { FaCamera, FaRegSave, FaArrowLeft, FaCheck } from "react-icons/fa";
 import { GiMale, GiFemale } from "react-icons/gi";
-import { RiCloseLine } from "react-icons/ri";
-import { CgZoomIn, CgZoomOut } from "react-icons/cg";
 
-// Grouped arrays for easier access
-const boysAvatars = [boy1, boy2, boy3, boy4, boy5, boy6, boy7];
-const girlsAvatars = [girl1, girl2, girl3, girl4, girl5, girl6, girl7, girl8];
+import { FaTshirt } from "react-icons/fa";
+import { FaPaintBrush } from "react-icons/fa";
+import { MdOutlineWallpaper } from "react-icons/md";
+import { IoCheckmarkCircle } from "react-icons/io5";
 
-// Function to create image from canvas
-const createImage = (url: any) =>
-  new Promise((resolve, reject) => {
-    const image = new Image();
-    image.addEventListener("load", () => resolve(image));
-    image.addEventListener("error", (error) => reject(error));
-    image.src = url;
-  });
+// Define interfaces for our avatar components
+interface CustomIconProps {
+  tshirtColor?: string;
+  hairColor?: string;
+  skinColor?: string;
+  className?: string;
+}
 
-// Function to get cropped image
-const getCroppedImg = async (imageSrc: any, pixelCrop: any) => {
-  const image: any = await createImage(imageSrc);
-  const canvas = document.createElement("canvas");
-  const ctx: any = canvas.getContext("2d");
+// Define avatar types for easier manipulation
+interface AvatarOption {
+  id: string;
+  Component: React.FC<CustomIconProps>;
+}
 
-  // Set canvas size to desired dimensions (always a square for avatar)
-  const size = Math.min(image.width, image.height);
-  canvas.width = size;
-  canvas.height = size;
+// Group avatars by category with proper typing
+const boysAvatars: AvatarOption[] = [
+  {
+    id: "boy-1",
+    Component: AvatarTest,
+  },
+];
 
-  // Draw the cropped image
-  ctx.drawImage(
-    image,
-    pixelCrop.x,
-    pixelCrop.y,
-    pixelCrop.width,
-    pixelCrop.height,
-    0,
-    0,
-    size,
-    size
-  );
+const girlsAvatars: AvatarOption[] = [
+  {
+    id: "girl-1",
+    Component: AvatarTest2,
+  },
+];
 
-  // Return as base64 string
-  return canvas.toDataURL("image/jpeg");
-};
+// Enhanced color palettes with exactly 8 colors per category
+const hairColors = [
+  { color: "#000000" }, // Black
+  { color: "#4B3621" }, // Dark Brown
+  { color: "#8B4513" }, // Medium Brown
+  { color: "#A0522D" }, // Light Brown
+  { color: "#D2B48C" }, // Blonde
+  { color: "#E6BE8A" }, // Light Blonde
+  { color: "#A52A2A" }, // Auburn
+  { color: "#FF6347" }, // Reddish Brown
+];
 
-const Toaster = () => (
-  <ToastContainer
-    position="top-right"
-    autoClose={3000}
-    hideProgressBar={false}
-    newestOnTop={false}
-    closeOnClick
-    rtl={false}
-    pauseOnFocusLoss
-    draggable
-    pauseOnHover
-    theme="light"
-  />
-);
+const shirtColors = [
+  { color: "#FFFFFF" }, // White
+  { color: "#000000" }, // Black
+  { color: "#1E90FF" }, // Dodger Blue
+  { color: "#FF4500" }, // Orange Red
+  { color: "#32CD32" }, // Lime Green
+  { color: "#FFD700" }, // Gold
+  { color: "#8A2BE2" }, // Blue Violet
+  { color: "#FF69B4" }, // Hot Pink
+];
+
+const backgrounds = [
+  { color: "#FFCDD2" }, // Light Pink
+  { color: "#81D4FA" }, // Sky Blue
+  { color: "#FFEB3B" }, // Bright Yellow
+  { color: "#F48FB1" }, // Pink Lavender
+  { color: "#4CAF50" }, // Vibrant Green
+  { color: "#FF5722" }, // Vibrant Orange
+  { color: "#9C27B0" }, // Bright Purple
+  { color: "#E91E63" }, // Bold Red
+];
+
+const skinColor = [
+  { color: "#FFEFD5" }, // Papaya Whip (Very Light)
+  { color: "#FFDAB9" }, // Peachpuff (Light)
+  { color: "#EACBA1" }, // Medium Light
+  { color: "#D6A57A" }, // Medium Skin
+  { color: "#C68A6D" }, // Medium Dark
+  { color: "#A0522D" }, // Dark Skin
+  { color: "#8B4513" }, // Darker Skin
+  { color: "#654321" }, // Very Dark
+];
 
 const Step1 = () => {
   const { t } = useTranslation();
-  const history = useHistory();
 
-  const [gender, setGender] = useState("boy");
-  const [character, setCharacter] = useState(boy1);
-  const [tempCharacter, setTempCharacter] = useState(character);
-  const [uploadedImage, setUploadedImage] = useState(null);
-  const [showUploadOption, setShowUploadOption] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [saveButtonActive, setSaveButtonActive] = useState(false);
-
-  // Cropper state
-  const [showCropper, setShowCropper] = useState(false);
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  const [originalImageSrc, setOriginalImageSrc]: any = useState(null);
-
-  // Check if changes were made to enable save button
-  useEffect(() => {
-    const hasChanges = uploadedImage !== null || tempCharacter !== character;
-    setSaveButtonActive(hasChanges);
-  }, [uploadedImage, tempCharacter, character]);
-
-  const handleImageUpload = (event: any) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      // Check file size
-      if (file.size > 5 * 1024 * 1024) {
-        // 5MB limit
-        toast.error(
-          t("الصورة كبيرة جدًا! يرجى اختيار صورة أقل من 5 ميجابايت.")
-        );
-        return;
-      }
-
-      const reader: any = new FileReader();
-      reader.onload = () => {
-        setOriginalImageSrc(reader.result);
-        setShowCropper(true);
-        setShowUploadOption(false);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const onCropComplete = useCallback(
-    (croppedArea: any, croppedAreaPixels: any) => {
-      setCroppedAreaPixels(croppedAreaPixels);
-    },
-    []
+  const [gender, setGender] = useState<"boy" | "girl">("boy");
+  const [selectedAvatar, setSelectedAvatar] = useState<AvatarOption>(
+    boysAvatars[0]
   );
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  const handleCropCancel = () => {
-    setShowCropper(false);
-    setOriginalImageSrc(null);
-  };
+  // Avatar customization state
+  const [avatarState, setAvatarState] = useState({
+    avatar: selectedAvatar,
+    gender: gender,
+    hairColor: hairColors[0].color,
+    tshirtColor: shirtColors[1].color,
+    bgColor: backgrounds[0].color,
+    skinColor: skinColor[0].color,
+  });
 
-  const handleCropConfirm = async () => {
-    try {
-      const croppedImage: any = await getCroppedImg(
-        originalImageSrc,
-        croppedAreaPixels
-      );
-      setUploadedImage(croppedImage);
-      setShowCropper(false);
-      setOriginalImageSrc(null);
-      toast.success(t("تم اقتصاص الصورة بنجاح!"));
-    } catch (e) {
-      console.error(e);
-      toast.error(t("حدث خطأ أثناء معالجة الصورة"));
-    }
-  };
+  console.log("Avatar State:", avatarState);
+  // Current active tab
+  const [currentTab, setCurrentTab] = useState("القميص");
 
-  const handleSave = () => {
-    if (!saveButtonActive) return;
-
-    setIsAnimating(true);
-    setTimeout(() => {
-      if (uploadedImage) {
-        setCharacter(uploadedImage);
-      } else {
-        setCharacter(tempCharacter);
-      }
-      toast.success(t("!تم تحديث صورة الملف الشخصي"));
-      setIsAnimating(false);
-
-      // Here you would typically update the user's profile in your database
-      // For example: updateUserProfile(userId, { avatar: uploadedImage || tempCharacter });
-    }, 500);
-  };
-
+  // Toggle between boy and girl avatars
   const toggleGender = () => {
     const newGender = gender === "boy" ? "girl" : "boy";
     setGender(newGender);
-    setTempCharacter(newGender === "boy" ? boysAvatars[0] : girlsAvatars[0]);
-    setUploadedImage(null);
+    // Set default avatar for the selected gender
+    setSelectedAvatar(newGender === "boy" ? boysAvatars[0] : girlsAvatars[0]);
+
+    // Trigger animation
+    triggerAnimation();
   };
 
-  const resetSelection = () => {
-    setTempCharacter(character);
-    setUploadedImage(null);
-    setSaveButtonActive(false);
+  // Get current avatar list based on gender
+  const currentAvatarList = gender === "boy" ? boysAvatars : girlsAvatars;
+
+  // Update any avatar property
+  const updateAvatarProperty = (
+    property: keyof typeof avatarState,
+    value: string
+  ) => {
+    setAvatarState((prev) => ({ ...prev, [property]: value }));
+    triggerAnimation();
+  };
+
+  // Trigger animation effect
+  const triggerAnimation = () => {
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 500);
+  };
+
+  // The tabs definition
+  const tabs = [
+    { id: "الشعر", title: "الشعر", icon: <FaPaintBrush className="text-lg" /> },
+    { id: "القميص", title: "القميص", icon: <FaTshirt className="text-lg" /> },
+    {
+      id: "الخلفية",
+      title: "الخلفية",
+      icon: <MdOutlineWallpaper className="text-lg" />,
+    },
+    {
+      id: "البشرة",
+      title: "البشرة",
+      icon: <MdOutlineWallpaper className="text-lg" />,
+    },
+  ];
+
+  // Get current color options based on active tab
+  const getCurrentColorOptions = () => {
+    switch (currentTab) {
+      case "الشعر":
+        return hairColors;
+      case "القميص":
+        return shirtColors;
+      case "الخلفية":
+        return backgrounds;
+      case "البشرة":
+        return skinColor;
+      default:
+        return shirtColors;
+    }
+  };
+
+  // Get current selected color based on active tab
+  const getCurrentSelectedColor = () => {
+    switch (currentTab) {
+      case "الشعر":
+        return avatarState.hairColor;
+      case "القميص":
+        return avatarState.tshirtColor;
+      case "الخلفية":
+        return avatarState.bgColor;
+      case "البشرة":
+        return avatarState.skinColor;
+      default:
+        return avatarState.tshirtColor;
+    }
+  };
+
+  // Handle color selection
+  const handleColorSelect = (color: string) => {
+    switch (currentTab) {
+      case "الشعر":
+        updateAvatarProperty("hairColor", color);
+
+        break;
+      case "القميص":
+        updateAvatarProperty("tshirtColor", color);
+
+        break;
+      case "الخلفية":
+        updateAvatarProperty("bgColor", color);
+
+        break;
+      case "البشرة":
+        updateAvatarProperty("skinColor", color);
+
+        break;
+    }
   };
 
   return (
-    <div className="flex flex-col h-full w-full items-center gap-1 justify-between p-4 bg-gradient-to-b ">
-      <div className="absolute">
-        <Toaster />
-      </div>
-
-      {/* Image Cropper Modal */}
-      <AnimatePresence>
-        {showCropper && (
-          <motion.div
-            className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              className="bg-white w-full max-w-md rounded-2xl p-4 flex flex-col"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-            >
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-bold text-gray-800">
-                  {t("اقتصاص الصورة")}
-                </h3>
-                <button onClick={handleCropCancel} className="text-gray-600">
-                  <RiCloseLine size={24} />
-                </button>
-              </div>
-
-              <div className="relative h-80 w-full bg-gray-100 rounded-lg overflow-hidden">
-                <Cropper
-                  image={originalImageSrc}
-                  crop={crop}
-                  zoom={zoom}
-                  aspect={1}
-                  onCropChange={setCrop}
-                  onCropComplete={onCropComplete}
-                  onZoomChange={setZoom}
-                  cropShape="round"
-                />
-              </div>
-
-              <div className="flex items-center justify-center mt-4 gap-2">
-                <button
-                  className="text-gray-600"
-                  onClick={() => setZoom(Math.max(1, zoom - 0.1))}
-                >
-                  <CgZoomOut size={24} />
-                </button>
-                <input
-                  type="range"
-                  value={zoom}
-                  min={1}
-                  max={3}
-                  step={0.1}
-                  aria-labelledby="Zoom"
-                  onChange={(e) => setZoom(Number(e.target.value))}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                />
-                <button
-                  className="text-gray-600"
-                  onClick={() => setZoom(Math.min(3, zoom + 0.1))}
-                >
-                  <CgZoomIn size={24} />
-                </button>
-              </div>
-
-              <div className="flex gap-2 mt-4">
-                <button
-                  onClick={handleCropCancel}
-                  className="w-1/2 py-3 bg-gray-100 text-gray-700 rounded-xl font-bold"
-                >
-                  {t("إلغاء")}
-                </button>
-                <button
-                  onClick={handleCropConfirm}
-                  className="w-1/2 py-3 bg-blue-500 text-white rounded-xl font-bold flex items-center justify-center gap-2"
-                >
-                  <FaCheck />
-                  {t("تأكيد")}
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
+    <div className="flex flex-col h-full w-full items-center gap-1 justify-between p-1 bg-gradient-to-b ">
       {/* Main Content */}
-      <div className="flex flex-col items-center w-full gap-2">
+      <div className="flex flex-col items-center w-full gap-2 max-w-md mx-auto">
         {/* Avatar Display Section */}
         <motion.div
           className="flex flex-col items-center gap-5 w-full"
@@ -294,7 +222,7 @@ const Step1 = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-xl font-bold text-blueprimary">
+          <h2 className="text-2xl font-bold text-blueprimary text-center">
             {t("!اختر شخصيتك")}
           </h2>
 
@@ -302,18 +230,27 @@ const Step1 = () => {
           <motion.div
             className="relative w-48 h-48"
             whileHover={{ scale: 1.05 }}
-            animate={isAnimating ? { rotate: 360 } : {}}
+            animate={
+              isAnimating ? { rotate: [0, 10, -10, 0], scale: [1, 1.1, 1] } : {}
+            }
             transition={{ duration: 0.5 }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-400 rounded-full transform -rotate-3 shadow-lg"></div>
             <div className="absolute inset-2 bg-white rounded-full shadow-inner"></div>
-            <motion.img
-              src={uploadedImage || tempCharacter}
-              alt="Avatar"
-              className="absolute inset-3 rounded-full object-cover"
-              animate={{ scale: isAnimating ? [1, 1.2, 1] : 1 }}
-              transition={{ duration: 0.5 }}
-            />
+
+            {/* Avatar rendering with background color */}
+            <div
+              className="absolute inset-3 rounded-full overflow-hidden"
+              style={{ backgroundColor: avatarState.bgColor }}
+            >
+              {selectedAvatar && (
+                <selectedAvatar.Component
+                  tshirtColor={avatarState.tshirtColor}
+                  hairColor={avatarState.hairColor}
+                  skinColor={avatarState.skinColor}
+                />
+              )}
+            </div>
 
             {/* Decorative elements */}
             <motion.div
@@ -360,141 +297,133 @@ const Step1 = () => {
               {t("بنت")}
             </button>
           </motion.div>
-        </motion.div>
 
-        {/* Avatars Gallery */}
-        <motion.div
-          className="w-full"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-        >
-          <div className="bg-white rounded-2xl p-4 shadow-lg">
-            <div className="grid grid-cols-4 gap-3">
-              {(gender === "boy" ? boysAvatars : girlsAvatars).map(
-                (avatar, index) => (
-                  <motion.div
-                    key={index}
-                    className={`relative w-16 h-16 rounded-full cursor-pointer transition-all duration-200 ${
-                      tempCharacter === avatar
-                        ? "ring-4 ring-yellow-400 scale-110"
-                        : ""
-                    }`}
-                    whileHover={{ scale: 1.15, rotate: 5 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <img
-                      src={avatar}
-                      alt={`Avatar ${index + 1}`}
-                      className="w-full h-full rounded-full object-cover shadow-sm"
+          {/* Avatars Gallery */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={gender}
+              className="w-full"
+              initial={{ opacity: 0, x: gender === "boy" ? -20 : 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: gender === "boy" ? 20 : -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="bg-white rounded-2xl p-4 shadow-lg">
+                <div className="grid grid-cols-4 gap-3">
+                  {currentAvatarList.map((avatar) => (
+                    <motion.div
+                      key={avatar.id}
+                      className={`relative w-16 h-16 rounded-full cursor-pointer transition-all duration-200 ${
+                        selectedAvatar.id === avatar.id
+                          ? "ring-4 ring-yellow-400 scale-110"
+                          : ""
+                      }`}
+                      whileHover={{ scale: 1.15, rotate: 5 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={() => {
-                        setTempCharacter(avatar);
-                        setUploadedImage(null);
+                        setSelectedAvatar(avatar);
+                        triggerAnimation();
                       }}
-                    />
-                    {tempCharacter === avatar && (
-                      <motion.div
-                        className="absolute -top-1 -right-1 bg-green-500 rounded-full w-6 h-6 flex items-center justify-center text-white text-xs"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: "spring" }}
+                    >
+                      <div
+                        className="w-full h-full rounded-full overflow-hidden"
+                        style={{ backgroundColor: avatarState.bgColor }}
                       >
-                        ✓
-                      </motion.div>
-                    )}
-                  </motion.div>
-                )
-              )}
-            </div>
-          </div>
-        </motion.div>
+                        <avatar.Component
+                          tshirtColor={avatarState.tshirtColor}
+                          hairColor={avatarState.hairColor}
+                          skinColor={avatarState.skinColor}
+                        />
+                      </div>
+                      {selectedAvatar.id === avatar.id && (
+                        <motion.div
+                          className="absolute -top-1 -right-1 bg-green-500 rounded-full w-6 h-6 flex items-center justify-center text-white text-xs"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring" }}
+                        >
+                          ✓
+                        </motion.div>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
 
-        {/* Upload Section */}
-        <motion.div
-          className="w-full mt-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-        >
-          <AnimatePresence>
-            {showUploadOption ? (
+          {/* Customization Tabs */}
+          <motion.div
+            className="w-full"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            {/* Tab Navigation */}
+            <div className="flex w-full bg-white rounded-t-xl shadow-md p-2 mb-2">
+              {tabs.map((tab) => (
+                <motion.button
+                  key={tab.id}
+                  className={`flex-1 flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-300 ${
+                    currentTab === tab.id
+                      ? "bg-blue-100 text-blue-600 shadow-sm"
+                      : "text-gray-500 hover:bg-gray-100"
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setCurrentTab(tab.id as any)}
+                >
+                  <div className="text-xl mb-1">{tab.icon}</div>
+                  <div className="text-sm font-medium">{tab.title}</div>
+                </motion.button>
+              ))}
+            </div>
+
+            {/* Color Selection Panel */}
+            <AnimatePresence mode="wait">
               <motion.div
-                className="bg-white rounded-2xl p-5 shadow-lg border-blueprimary border-[1px]"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
+                key={currentTab}
+                className="bg-white rounded-xl shadow-md p-4"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="flex flex-col items-center gap-3">
-                  <p className="text-center text-gray-600" dir="rtl">
-                    {t("اختر صورة من جهازك")}
-                  </p>
-
-                  <div className="flex w-full gap-2">
-                    <label className="cursor-pointer w-2/3">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleImageUpload}
-                      />
-                      <motion.div
-                        className="bg-gradient-to-t from-blue-500 to-blueprimary text-white py-3 rounded-xl shadow-md text-center font-bold flex items-center justify-center gap-2"
-                        whileHover={{
-                          scale: 1.03,
-                          boxShadow: "0px 6px 15px rgba(0, 0, 0, 0.1)",
-                        }}
-                        whileTap={{ scale: 0.97 }}
-                      >
-                        <FaCamera />
-                        {t("اختر صورة")}
-                      </motion.div>
-                    </label>
-                    <motion.button
-                      className="text-gray-500 mt-2 w-1/3"
-                      onClick={() => setShowUploadOption(false)}
-                      whileHover={{ scale: 1.05 }}
+                <div className="grid grid-cols-4 gap-3">
+                  {getCurrentColorOptions().map((colorOption, index) => (
+                    <motion.div
+                      key={index}
+                      className="flex flex-col items-center gap-1"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
                     >
-                      {t("إلغاء")}
-                    </motion.button>
-                  </div>
+                      <motion.button
+                        className={`w-12 h-12 rounded-full shadow-md relative flex items-center justify-center ${
+                          getCurrentSelectedColor() === colorOption.color
+                            ? "ring-4 ring-blue-400"
+                            : ""
+                        }`}
+                        style={{ backgroundColor: colorOption.color }}
+                        onClick={() => handleColorSelect(colorOption.color)}
+                      >
+                        {getCurrentSelectedColor() === colorOption.color && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="text-white"
+                          >
+                            <IoCheckmarkCircle size={24} />
+                          </motion.div>
+                        )}
+                      </motion.button>
+                    </motion.div>
+                  ))}
                 </div>
               </motion.div>
-            ) : (
-              <motion.button
-                className="bg-white text-blue-600 border border-blue-300 py-3 rounded-xl shadow-sm w-full font-bold flex items-center justify-center gap-2"
-                onClick={() => setShowUploadOption(true)}
-                whileHover={{ scale: 1.03, backgroundColor: "#f0f9ff" }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <FaCamera />
-                {t("اختر صورة من جهازك")}
-              </motion.button>
-            )}
-          </AnimatePresence>
+            </AnimatePresence>
+          </motion.div>
         </motion.div>
       </div>
-
-      {/* Action Buttons */}
-      <motion.div
-        className="w-full flex flex-col gap-3"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-      >
-        {/* Reset button shows only when changes are made */}
-        {saveButtonActive && (
-          <motion.button
-            className="text-gray-600 text-center py-2"
-            onClick={resetSelection}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            {t("إعادة تعيين التغييرات")}
-          </motion.button>
-        )}
-      </motion.div>
     </div>
   );
 };

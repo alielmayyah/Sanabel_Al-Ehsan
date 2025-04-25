@@ -92,7 +92,24 @@ const registration = async (req: Request, res: Response) => {
     switch (checkValidation.role) {
       case "Student":
         const connectCode = await generateUniqueConnectCode();
-        await Student.create({ grade, userId: checkValidation.id, profileImg, treeProgress: 1, connectCode });
+        // Create student first
+        const newStudent = await Student.create({ 
+          grade, 
+          userId: checkValidation.id, 
+          profileImg, 
+          treeProgress: 1, 
+          connectCode 
+        });
+        
+        // Then create all challenges for the student
+        const allChallenges = await Challenge.findAll();
+        const studentChallenges = allChallenges.map(challenge => ({
+          studentId: newStudent.id, // Use the new student's ID
+          challengeId: challenge.id,
+          completionStatus: "NotCompleted",
+          pointOfStudent: 0
+        }));
+        await StudentChallenge.bulkCreate(studentChallenges);
         break;
       case "Teacher":
         await Teacher.create({ userId: checkValidation.id });

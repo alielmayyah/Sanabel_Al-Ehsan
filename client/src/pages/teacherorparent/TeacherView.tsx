@@ -137,7 +137,6 @@ const TeacherView: React.FC = () => {
           <div className="h-1/2 w-full overflow-y-auto flex flex-col gap-3">
             {classData.map((item) => (
               <div className="border-2 rounded-xl flex w-full p-4 justify-between">
-                
                 <div className="flex flex-col">
                   <h1 className="text-black text-end text-md">{item.name}</h1>
                   <h1 className="text-[#999] text-end text-sm" dir="rtl">
@@ -158,7 +157,6 @@ const TeacherView: React.FC = () => {
           <div className="h-1/2 w-full overflow-y-auto flex flex-col gap-3">
             {teamData.map((item) => (
               <div className="border-2 rounded-xl flex w-full p-4 justify-between">
-             
                 <div className="flex flex-col">
                   <h1 className="text-black text-end text-md">{item.name}</h1>
                   <h1 className="text-[#999] text-end text-sm" dir="rtl">

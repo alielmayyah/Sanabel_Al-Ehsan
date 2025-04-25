@@ -3,7 +3,6 @@ import sanabelType2Img from "../../../assets/sanabeltype/سنابل الإحسا
 import sanabelType3Img from "../../../assets/sanabeltype/سنابل-الإحسان-في-العلاقة-مع-الأرض-والكون.png";
 import sanabelType4Img from "../../../assets/sanabeltype/سنابل-الإحسان-في-العلاقة-مع-الله.png";
 
-import StudentNavbar from "../../../components/navbar/StudentNavbar";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "../../../context/ThemeContext";
@@ -12,25 +11,11 @@ import { useTheme } from "../../../context/ThemeContext";
 import { useUserContext } from "../../../context/StudentUserProvider";
 import { motion } from "framer-motion";
 import missionsDoneImg from "../../../assets/target.png";
-import { medalsImgs } from "../../../data/Medals";
 import MedalAndLevel from "../../../components/MedalAndLevel";
-import { medalsData } from "../../../data/MedalsData";
 import { calculateLevel } from "../../../utils/LevelCalculator";
 // Define the data structure for the chart
-
-interface sanabelType {
-  name: string;
-  value: number;
-}
-
-const sanabelType = [
-  { name: "العلاقة مع الله", img: sanabelType1Img, value: 140 },
-  { name: "العلاقة مع النفس", img: sanabelType2Img, value: 60 },
-  { name: "العلاقة مع الاسرة", img: sanabelType3Img, value: 75 },
-  { name: "العلاقة مع الكوكب", img: sanabelType4Img, value: 125 },
-];
-
-const total = sanabelType.reduce((acc, item) => acc + item.value, 0);
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const containerVariants = {
   hidden: { opacity: 0, scale: 0.9 },
@@ -65,6 +50,74 @@ const Profile: React.FC = () => {
   const xp = Number(user?.xp);
 
   const { level, remainingXp, xpForNextLevel } = calculateLevel(xp);
+
+  const [completedTasks, setCompletedTasks]: any = useState(0);
+
+  const fetchTasksCompleted = async (token?: string) => {
+    const authToken = token || localStorage.getItem("token");
+    if (!authToken) return;
+
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/students/calculate-completed-tasks-by-category",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setCompletedTasks(response.data.totalCompletedTasks);
+        setCategoryCounts(response.data.categoryCounts);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasksCompleted();
+  }, []);
+
+  // Define the data structure for the chart
+  interface sanabelType {
+    name: string;
+    value: number;
+  }
+
+  const [categoryCounts, setCategoryCounts] = useState({
+    "سنابل الإحسان في العلاقة مع الله": 0,
+    "سنابل الإحسان في العلاقة مع النفس": 0,
+    "سنابل الإحسان في العلاقة مع الأسرة والمجتمع": 0,
+    "سنابل الإحسان في العلاقة مع الأرض والكون": 0,
+  });
+  // Dynamic chart data
+
+  const sanabelType = [
+    {
+      name: "العلاقة مع الله",
+      img: sanabelType4Img,
+      value: Object.values(categoryCounts)[0],
+    },
+    {
+      name: "العلاقة مع النفس",
+      img: sanabelType2Img,
+      value: Object.values(categoryCounts)[1],
+    },
+    {
+      name: "العلاقة مع الأسرة والمجتمع",
+      img: sanabelType1Img,
+      value: Object.values(categoryCounts)[2],
+    },
+    {
+      name: "العلاقة مع الأرض والكون",
+      img: sanabelType3Img,
+      value: Object.values(categoryCounts)[3],
+    },
+  ];
+
+  const total = sanabelType.reduce((acc, item) => acc + item.value, 0);
 
   return (
     <div
@@ -130,7 +183,9 @@ const Profile: React.FC = () => {
                 </h1>
                 <img src={items.img} alt="sanabel" className="w-1/3" />
               </div>
-              <h1 className="text-black font-bold text-end">{items.name}</h1>
+              <h1 className="text-black font-bold text-end text-sm">
+                {items.name}
+              </h1>
             </motion.div>
           ))}
         </motion.div>

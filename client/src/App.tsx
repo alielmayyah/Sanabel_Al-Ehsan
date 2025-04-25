@@ -83,6 +83,7 @@ import { useTranslation } from "react-i18next";
 import "./i18n";
 import ForgotPassword from "./pages/common/login/ForgotPassword";
 import ChangePassword from "./pages/common/login/ChangePassword";
+
 import Leaderboards from "./pages/student/StudentLeaderboards";
 
 setupIonicReact();
@@ -190,6 +191,7 @@ const App: React.FC = () => {
                   path="/teacher/profile"
                   component={TeacherProfile}
                 />
+
                 <Route
                   exact
                   path="/teacher/challenges"

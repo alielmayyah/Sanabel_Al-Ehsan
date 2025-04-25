@@ -21,9 +21,13 @@ import { sanabelImgs } from "../../../data/SanabelImgs";
 const SanabelType: React.FC = () => {
   const { t } = useTranslation();
   const history = useHistory();
-  const { index } = useParams<{ index: any }>();
-  const sanabel = sanabelTypeData[parseInt(index, 10)];
 
+  const { index } = useParams<{ index: any }>();
+
+  // Ensure index is properly parsed as a number
+  const indexAsNumber = parseInt(index, 10);
+  // Make sure APIIndex is correctly calculated as a number
+  const APIIndex = indexAsNumber + 1;
   let colors = [];
 
   colors = [
@@ -77,7 +81,7 @@ const SanabelType: React.FC = () => {
       );
 
       if (response.status === 200) {
-        setCategoryName(response.data.data[index].category);
+        setCategoryName(response.data.data[index].title);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -96,7 +100,7 @@ const SanabelType: React.FC = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/students/appear-Taskes-Type/${categoryName}`,
+        `http://localhost:3000/students/appear-Taskes-Type/${APIIndex}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
