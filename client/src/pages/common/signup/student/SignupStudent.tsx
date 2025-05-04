@@ -75,13 +75,13 @@ const Signup: React.FC = () => {
     //   parentCode={parentCode}
     //   setParentCode={setParentCode}
     // />,
-    <Step6
-      onComplete={() => handleSubmit()}
-      onBack={() => setStepIndex(stepIndex - 1)}
-      gender={gender}
-      character={character}
-      setCharacter={setCharacter}
-    />,
+    // <Step6
+    //   onComplete={() => handleSubmit()}
+    //   onBack={() => setStepIndex(stepIndex - 1)}
+    //   gender={gender}
+    //   character={character}
+    //   setCharacter={setCharacter}
+    // />,
   ];
 
   const handleSubmit = async () => {
