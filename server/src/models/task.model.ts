@@ -9,6 +9,7 @@ class Task extends Model {
   declare categoryId: number;
   declare taskCategory: TaskCategory;
   declare xp: number;
+  declare type: string;
   declare snabelRed: CreationOptional<number>;
   declare snabelBlue: CreationOptional<number>;
   declare snabelYellow: CreationOptional<number>;
