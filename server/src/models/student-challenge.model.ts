@@ -10,6 +10,8 @@ export enum CompletionStatus {
 
 class StudentChallenge extends Model {
   declare studentId: number;
+  declare student: Student;
+  
   declare challengeId: number;
   declare completionStatus: CompletionStatus; // ✅ Use enum properly
   declare comment: CreationOptional<string>;

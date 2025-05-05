@@ -13,6 +13,7 @@ interface ChallengeData {
   point: number; // Represents the trophy milestone point
   category: TaskCategory; // Category of the challenge
   taskCategory: string | null; // Foreign key to Task (optional)
+  tasktype: string | null; // Foreign key to Task (optional)
   water?: number; // Optional water property
   seeder?: number; // Optional seeder property
 }
@@ -36,7 +37,8 @@ const generateChallenges = (
     seeder?: number;
   },
   category: TaskCategory,
-  taskCategory?: string
+  taskCategory?: string,
+  tasktype?: string
 ): ChallengeData[] => {
   const challenges: ChallengeData[] = [];
 
@@ -63,6 +65,7 @@ const generateChallenges = (
       point: milestone,
       category,
       taskCategory: taskCategory ?? null,
+      tasktype: tasktype ?? null,
       water, // Include water in the challenge data
       seeder, // Include seeder in the challenge data
     });
@@ -323,6 +326,637 @@ const challengeData: ChallengeData[] = [
     },
     TaskCategory.seeder,
     "Total Fertilizer Bought Milestones"
+  ),
+
+  // New challenges for each task type
+  ...generateChallenges(
+    "الصلاة",
+    {
+      blue: 2,
+      yellow: 2,
+      red: 2,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100, 150, 250, 500, 750, 1000],
+      xpMultiplier: 1,
+      blueMultiplier: 0.6 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.6 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الصلاة"
+  ),
+
+  ...generateChallenges(
+    "الصيام",
+    {
+      blue: 2,
+      yellow: 2,
+      red: 2,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.6 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.6 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الصيام"
+  ),
+
+  ...generateChallenges(
+    "الصدقة",
+    {
+      blue: 2,
+      yellow: 2,
+      red: 2,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.6 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.6 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الصدقة"
+  ),
+
+  ...generateChallenges(
+    "العفو والصفح",
+    {
+      blue: 2,
+      yellow: 2,
+      red: 2,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.6 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.6 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "العفو والصفح"
+  ),
+
+  ...generateChallenges(
+    "الشكر",
+    {
+      blue: 2,
+      yellow: 2,
+      red: 2,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.6 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.6 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الشكر"
+  ),
+
+  ...generateChallenges(
+    "الصبر",
+    {
+      blue: 2,
+      yellow: 2,
+      red: 2,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.6 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.6 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الصبر"
+  ),
+
+  ...generateChallenges(
+    "الذكر",
+    {
+      blue: 2,
+      yellow: 2,
+      red: 2,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.6 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.6 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الذكر"
+  ),
+
+  ...generateChallenges(
+    "الدعاء",
+    {
+      blue: 2,
+      yellow: 2,
+      red: 2,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.6 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.6 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الدعاء"
+  ),
+
+  ...generateChallenges(
+    "الإحسان للجسد",
+    {
+      blue: 2,
+      yellow: 1,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.6 * 0.5,
+      yellowMultiplier: 0.3 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الإحسان للجسد"
+  ),
+
+  ...generateChallenges(
+    "الإحسان للعقل",
+    {
+      blue: 2,
+      yellow: 1,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.6 * 0.5,
+      yellowMultiplier: 0.3 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الإحسان للعقل"
+  ),
+
+  ...generateChallenges(
+    "الإحسان للروح",
+    {
+      blue: 2,
+      yellow: 1,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.6 * 0.5,
+      yellowMultiplier: 0.3 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الإحسان للروح"
+  ),
+
+  ...generateChallenges(
+    "الإحسان للقلب",
+    {
+      blue: 2,
+      yellow: 1,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.6 * 0.5,
+      yellowMultiplier: 0.3 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الإحسان للقلب"
+  ),
+
+  ...generateChallenges(
+    "بر الوالدين",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "بر الوالدين"
+  ),
+
+  ...generateChallenges(
+    "صلة الرحم",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "صلة الرحم"
+  ),
+
+  ...generateChallenges(
+    "الصدق والأمانة",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الصدق والأمانة"
+  ),
+
+  ...generateChallenges(
+    "إكرام الضيف",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "إكرام الضيف"
+  ),
+
+  ...generateChallenges(
+    "الإحسان للجار",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الإحسان للجار"
+  ),
+
+  ...generateChallenges(
+    "توقير الكبير ورحمة الصغير",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "توقير الكبير ورحمة الصغير"
+  ),
+
+  ...generateChallenges(
+    "التهادي",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "التهادي"
+  ),
+
+  ...generateChallenges(
+    "الإطعام",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الإطعام"
+  ),
+
+  ...generateChallenges(
+    "الرحمة والرفق",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الرحمة والرفق"
+  ),
+
+  ...generateChallenges(
+    "الوفاء والامتنان",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الوفاء والامتنان"
+  ),
+
+  ...generateChallenges(
+    "إدخال السرور",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "إدخال السرور"
+  ),
+
+  ...generateChallenges(
+    "إيناس الوحشان وترك التناجي",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "إيناس الوحشان وترك التناجي"
+  ),
+
+  ...generateChallenges(
+    "الإصلاح بين متخاصمين",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الإصلاح بين متخاصمين"
+  ),
+
+  ...generateChallenges(
+    "التبسم وإفشاء السلام",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "التبسم وإفشاء السلام"
+  ),
+
+  ...generateChallenges(
+    "إماطة الأذى عن الطريق",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "إماطة الأذى عن الطريق"
+  ),
+
+  ...generateChallenges(
+    "التعاون",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "التعاون"
+  ),
+
+  ...generateChallenges(
+    "الكلمة الطيبة والإحسان في القول",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الكلمة الطيبة والإحسان في القول"
+  ),
+
+  ...generateChallenges(
+    "المشاركة والإيثار",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "المشاركة والإيثار"
+  ),
+
+  ...generateChallenges(
+    "قضاء الحوائج ومساعدة الآخرين",
+    {
+      blue: 1,
+      yellow: 2,
+      red: 1,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "قضاء الحوائج ومساعدة الآخرين"
+  ),
+
+  ...generateChallenges(
+    "عدم الإسراف",
+    {
+      blue: 1,
+      yellow: 1,
+      red: 2,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.3 * 0.5,
+      redMultiplier: 0.6 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "عدم الإسراف"
+  ),
+
+  ...generateChallenges(
+    "الاحسان للمخلوقات (الطيور والحيوانات)",
+    {
+      blue: 1,
+      yellow: 1,
+      red: 2,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.3 * 0.5,
+      redMultiplier: 0.6 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الاحسان للمخلوقات (الطيور والحيوانات)"
+  ),
+
+  ...generateChallenges(
+    "الغرس",
+    {
+      blue: 1,
+      yellow: 1,
+      red: 2,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.3 * 0.5,
+      redMultiplier: 0.6 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الغرس"
+  ),
+
+  ...generateChallenges(
+    "الإحسان للأرض والنبات",
+    {
+      blue: 1,
+      yellow: 1,
+      red: 2,
+      xp: 5,
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      xpMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.3 * 0.5,
+      redMultiplier: 0.6 * 0.5,
+    },
+    TaskCategory.tasktype,
+    undefined,
+    "الإحسان للأرض والنبات"
   ),
 ];
 

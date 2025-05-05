@@ -26,38 +26,93 @@ const login = async (req: Request, res: Response) => {
     // Find the user by email
     const account = await User.findOne({ where: { email } });
 
-    // Check if account exists and password is correct
-    if (account && bcrypt.compareSync(password, account.password)) {
-      // Generate token with a secret and a defined expiration
-      const token = jwt.sign(
-        { id: account.id, email: account.email, role: account.role },
-        process.env.JWT_SECRET
-      );
-      
-
-      // Return success response with token and user data
-      return res.status(200).json({
-        status: 200,
-        message: "Login successful",
-        data: {
-          user: {
-            id: account.id,
-            email: account.email,
-            role: account.role,
-            token: token,
-          },
-        },
+    // Check if account exists
+    if (!account) {
+      return res.status(401).json({ 
+        status: 401, 
+        message: "Incorrect email or password" 
       });
-    } else {
-      return res
-        .status(401)
-        .json({ status: 401, message: "Incorrect email or password" });
     }
-  } catch (error) {
+
+    // Check if password is correct
+    if (!bcrypt.compareSync(password, account.password)) {
+      return res.status(401).json({ 
+        status: 401, 
+        message: "Incorrect email or password" 
+      });
+    }
+
+    // Generate token with a secret and a defined expiration (24 hours)
+    const token = jwt.sign(
+      { 
+        id: account.id, 
+        email: account.email, 
+        role: account.role 
+      },
+      process.env.JWT_SECRET,
+    );
+    
+    // Prepare base response data
+    const responseData = {
+      user: {
+        id: account.id,
+        email: account.email,
+        role: account.role,
+        token: token,
+      }
+    };
+
+    // Handle role-specific logic
+    if (account.role === "Student") {
+      // Find the student record
+      const student = await Student.findOne({ where: { userId: account.id } });
+      
+      if (student) {
+        // Get all available challenges
+        const allChallenges = await Challenge.findAll();
+        
+        // Get student's existing challenges
+        const studentChallenges = await StudentChallenge.findAll({
+          where: { studentId: student.id }
+        });
+        
+        // Check if student has all challenges
+        if (studentChallenges.length !== allChallenges.length) {
+          // Find missing challenges
+          const existingChallengeIds = studentChallenges.map(sc => sc.challengeId);
+          const missingChallenges = allChallenges.filter(
+            challenge => !existingChallengeIds.includes(challenge.id)
+          );
+          
+          // Add missing challenges
+          if (missingChallenges.length > 0) {
+            const newStudentChallenges = missingChallenges.map(challenge => ({
+              studentId: student.id,
+              challengeId: challenge.id,
+              completionStatus: "NotCompleted",
+              pointOfStudent: 0
+            }));
+            
+            await StudentChallenge.bulkCreate(newStudentChallenges);
+          }
+        }
+      }
+    }
+
+    // Return success response
+    return res.status(200).json({
+      status: 200,
+      message: "Login successful",
+      data: responseData
+    });
+
+  } catch (error:any) {
     console.error("Login error:", error);
-    return res
-      .status(500)
-      .json({ status: 500, message: "Login failed", error: error });
+    return res.status(500).json({ 
+      status: 500, 
+      message: "An error occurred during login", 
+      error: error.message 
+    });
   }
 };
 

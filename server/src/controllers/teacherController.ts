@@ -414,15 +414,16 @@ const addPros = async (req: Request, res: Response) => {
       include: [{ model: TaskCategory, as: "taskCategory" }],
     });
     if (!task) return res.status(404).json({ message: "Task not found" });
-
+    
     // Fetch challenges related to the task
     const challenges = await Challenge.findAll({
       where: {
         [Op.or]: [
-          { category: { [Op.in]: ["snabelBlue", "snabelRed", "snabelMixed", "snabelYellow", "xp", "alltask", "task"] } },
+          { category: { [Op.in]: ["snabelBlue", "snabelRed", "snabelMixed", "snabelYellow", "xp", "alltask", "task","tasktype"] } },
           { taskCategory: task.taskCategory?.title || "" },
+          { tasktype: task.type || "" },
         ],
-      } as any, // Explici
+      } as any,
     });
 
     // Fetch student challenges that are not completed
@@ -469,7 +470,11 @@ const addPros = async (req: Request, res: Response) => {
         else if (challenge.category === "snabelYellow") studentChallenge.pointOfStudent += task.snabelYellow;
         else if (challenge.category === "snabelMixed") {
           studentChallenge.pointOfStudent += task.snabelBlue + task.snabelRed + task.snabelYellow;
-        } else if (challenge.taskCategory ===  task.taskCategory.title|| challenge.category === "alltask") {
+        } else if (challenge.category === "alltask") {
+          studentChallenge.pointOfStudent += 1;
+        } else if (challenge.taskCategory === task.taskCategory?.title) {
+          studentChallenge.pointOfStudent += 1;
+        } else if (challenge.tasktype === task.type) {
           studentChallenge.pointOfStudent += 1;
         }
 
@@ -481,7 +486,6 @@ const addPros = async (req: Request, res: Response) => {
           student.snabelRed += challenge.snabelRed;
           student.snabelBlue += challenge.snabelBlue;
           student.snabelYellow += challenge.snabelYellow;
-          
         }
         await studentChallenge.save();
         await student.save();

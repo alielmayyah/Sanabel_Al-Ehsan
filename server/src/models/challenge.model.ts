@@ -12,6 +12,7 @@ export enum TaskCategory {
   alltask="alltask",
   treelevel = "treelevel",
   treestage = "treestage",
+  tasktype = "tasktype",
   
 }
 class Challenge extends Model {
@@ -28,6 +29,7 @@ class Challenge extends Model {
   declare water: number;
   declare seeder: number;
   declare point: number ;
+  declare tasktype: string | null;
   static initModel(sequelize: Sequelize) {
     Challenge.init(
       {
@@ -111,6 +113,10 @@ class Challenge extends Model {
         taskCategory: {
           type: DataTypes.STRING,
           allowNull: true, 
+        },
+        tasktype: {
+          type: DataTypes.STRING,
+          allowNull: true,
         },
       },
       {

@@ -4,12 +4,16 @@ import {
   updateData,
   deleteData,
   appearTaskes,
-  appearChallanges,
+  appearTrophySecondaireCompleted,
+  appearTrophySecondaireNotCompleted,
+  appearTrophyPrimaireCompleted,
+  appearTrophyPrimaireNotCompleted,
   addStudent,
   appearTaskCompletedcountToday,
   calculateCompletedTasksByCategory,
   appearTaskesCategory,
-  appearChallangesCompleted,
+  appearChallangesSecondaire,
+  appearChallangesPrimaire,
   appearTaskCompleted,
   appearLeaderboard,
   appearTaskesType,
@@ -137,7 +141,7 @@ router.get("/student-task", authenticateToken, checkstudent, appearTaskes);
 
 /**
  * @swagger
- * /students/student-challenge:
+ * /students/student-trophy-secondaire:
  *   get:
  *     summary: Fetch active challenges for the student
  *     description: Retrieve all active challenges assigned to the student.
@@ -185,15 +189,131 @@ router.get("/student-task", authenticateToken, checkstudent, appearTaskes);
  *         description: Internal Server Error
  */
 router.get(
-  "/student-challenge",
+  "/student-trophy-secondaire",
   authenticateToken,
   checkstudent,
-  appearChallanges
+  appearChallangesSecondaire,
+
 );
 
 /**
  * @swagger
- * /students/student-challenge-completed:
+ * /students/student-trophy-secondaire-completed:
+ *   get:
+ *     summary: Fetch active challenges for the student
+ *     description: Retrieve all active challenges assigned to the student.
+ *     tags: [Students]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Challenges retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       title:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       category:
+ *                         type: string
+ *                       point:
+ *                         type: number
+ *                       level:
+ *                         type: string
+ *                       xp:
+ *                         type: number
+ *                       snabelBlue:
+ *                         type: number
+ *                       snabelRed:
+ *                         type: number
+ *                       snabelYellow:
+ *                         type: number
+ *       401:
+ *         description: Unauthorized - User data not found in request
+ *       404:
+ *         description: Not Found - No challenges found
+ *       500:
+ *         description: Internal Server Error
+ */
+router.get(
+  "/student-trophy-secondaire-completed",
+  authenticateToken,
+  checkstudent,
+  appearTrophySecondaireCompleted,
+
+);
+
+
+/**
+ * @swagger
+ * /students/student-trophy-secondaire-not-completed:
+ *   get:
+ *     summary: Fetch active challenges for the student
+ *     description: Retrieve all active challenges assigned to the student.
+ *     tags: [Students]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Challenges retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       title:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       category:
+ *                         type: string
+ *                       point:
+ *                         type: number
+ *                       level:
+ *                         type: string
+ *                       xp:
+ *                         type: number
+ *                       snabelBlue:
+ *                         type: number
+ *                       snabelRed:
+ *                         type: number
+ *                       snabelYellow:
+ *                         type: number
+ *       401:
+ *         description: Unauthorized - User data not found in request
+ *       404:
+ *         description: Not Found - No challenges found
+ *       500:
+ *         description: Internal Server Error
+ */
+router.get(
+  "/student-trophy-secondaire-not-completed",
+  authenticateToken,
+  checkstudent,
+  appearTrophySecondaireNotCompleted,
+
+);
+
+/**
+ * @swagger
+ * /students/student-trophy-primaire:
  *   get:
  *     summary: Fetch completed challenges for the student
  *     description: Retrieve all completed challenges for the student.
@@ -241,10 +361,122 @@ router.get(
  *         description: Internal Server Error
  */
 router.get(
-  "/student-challenge-completed",
+  "/student-trophy-primaire",
   authenticateToken,
   checkstudent,
-  appearChallangesCompleted
+  appearChallangesPrimaire
+);
+
+/**
+ * @swagger
+ * /students/student-trophy-primaire-not-completed:
+ *   get:
+ *     summary: Fetch completed challenges for the student
+ *     description: Retrieve all completed challenges for the student.
+ *     tags: [Students]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Completed challenges retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       title:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       category:
+ *                         type: string
+ *                       point:
+ *                         type: number
+ *                       level:
+ *                         type: string
+ *                       xp:
+ *                         type: number
+ *                       snabelBlue:
+ *                         type: number
+ *                       snabelRed:
+ *                         type: number
+ *                       snabelYellow:
+ *                         type: number
+ *       401:
+ *         description: Unauthorized - User data not found in request
+ *       404:
+ *         description: Not Found - No completed challenges found
+ *       500:
+ *         description: Internal Server Error
+ */
+router.get(
+  "/student-trophy-primaire-not-completed",
+  authenticateToken,
+  checkstudent,
+  appearTrophyPrimaireNotCompleted
+);
+
+/**
+ * @swagger
+ * /students/student-trophy-primaire-completed:
+ *   get:
+ *     summary: Fetch completed challenges for the student
+ *     description: Retrieve all completed challenges for the student.
+ *     tags: [Students]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Completed challenges retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       title:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       category:
+ *                         type: string
+ *                       point:
+ *                         type: number
+ *                       level:
+ *                         type: string
+ *                       xp:
+ *                         type: number
+ *                       snabelBlue:
+ *                         type: number
+ *                       snabelRed:
+ *                         type: number
+ *                       snabelYellow:
+ *                         type: number
+ *       401:
+ *         description: Unauthorized - User data not found in request
+ *       404:
+ *         description: Not Found - No completed challenges found
+ *       500:
+ *         description: Internal Server Error
+ */
+router.get(
+  "/student-trophy-primaire-completed",
+  authenticateToken,
+  checkstudent,
+  appearTrophyPrimaireCompleted
 );
 
 /**

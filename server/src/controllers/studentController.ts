@@ -284,7 +284,59 @@ const appearTaskesCategory = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Internal Server Error", details: error });
   }
 };
-const appearChallanges = async (req: Request, res: Response) => {
+const appearTrophySecondaireCompleted = async (req: Request, res: Response) => {
+  try {
+    const user = (req as Request & { user: JwtPayload | undefined }).user;
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User data not found in request" });
+    }
+    const student = await Student.findOne({ where: { userId: user.id } });
+    if (!student) {
+      return res
+        .status(404)
+        .json({ message: "Student data not found in request" });
+    }
+    const challenge = await StudentChallenge.findAll({
+      where: {
+        studentId: student.id,
+        completionStatus: "Completed",
+        '$challenge.tasktype$': { [Op.is]: null }
+      },
+      include: [
+        {
+          model: Challenge,
+          as: "challenge",
+          attributes: [
+            "title",
+            "description",
+            "category",
+            "point",
+            "level",
+            "xp",
+            "snabelBlue",
+            "snabelRed",
+            "snabelYellow",
+            "tasktype",
+            
+            "taskCategory"
+          ],
+        },
+      ],
+    });
+    if (!challenge) {
+      return res
+        .status(404)
+        .json({ message: "Challenges data not found in request" });
+    } else {
+      return res.status(200).json({ data: challenge });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+const appearTrophySecondaireNotCompleted = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
     if (!user) {
@@ -302,6 +354,7 @@ const appearChallanges = async (req: Request, res: Response) => {
       where: {
         studentId: student.id,
         completionStatus: "NotCompleted",
+        '$challenge.tasktype$': { [Op.is]: null }
       },
       include: [
         {
@@ -317,6 +370,8 @@ const appearChallanges = async (req: Request, res: Response) => {
             "snabelBlue",
             "snabelRed",
             "snabelYellow",
+            "tasktype",
+            
             "taskCategory"
           ],
         },
@@ -333,7 +388,110 @@ const appearChallanges = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error });
   }
 };
-
+const appearTrophyPrimaireCompleted = async (req: Request, res: Response) => {
+  try {
+    const user = (req as Request & { user: JwtPayload | undefined }).user;
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User data not found in request" });
+    }
+    const student = await Student.findOne({ where: { userId: user.id } });
+    if (!student) {
+      return res
+        .status(404)
+        .json({ message: "Student data not found in request" });
+    }
+    const challenge = await StudentChallenge.findAll({
+      where: {
+        studentId: student.id,
+        completionStatus: "Completed",
+        '$challenge.tasktype$': { [Op.ne]: null }
+      },
+      include: [
+        {
+          model: Challenge,
+          as: "challenge",
+          attributes: [
+            "title",
+            "description",
+            "category",
+            "point",
+            "level",
+            "xp",
+            "snabelBlue",
+            "snabelRed",
+            "snabelYellow",
+            "tasktype",
+            
+            "taskCategory"
+          ],
+        },
+      ],
+    });
+    if (!challenge) {
+      return res
+        .status(404)
+        .json({ message: "Challenges data not found in request" });
+    } else {
+      return res.status(200).json({ data: challenge });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+const appearTrophyPrimaireNotCompleted = async (req: Request, res: Response) => {
+  try {
+    const user = (req as Request & { user: JwtPayload | undefined }).user;
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User data not found in request" });
+    }
+    const student = await Student.findOne({ where: { userId: user.id } });
+    if (!student) {
+      return res
+        .status(404)
+        .json({ message: "Student data not found in request" });
+    }
+    const challenge = await StudentChallenge.findAll({
+      where: {
+        studentId: student.id,
+        completionStatus: "NotCompleted",
+        '$challenge.tasktype$': { [Op.ne]: null }
+      },
+      include: [
+        {
+          model: Challenge,
+          as: "challenge",
+          attributes: [
+            "title",
+            "description",
+            "category",
+            "point",
+            "level",
+            "xp",
+            "snabelBlue",
+            "snabelRed",
+            "snabelYellow",
+            "tasktype",
+            
+            "taskCategory"
+          ],
+        },
+      ],
+    });
+    if (!challenge) {
+      return res
+        .status(404)
+        .json({ message: "Challenges data not found in request" });
+    } else {
+      return res.status(200).json({ data: challenge });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
 const appearTaskCompletedcountToday = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
@@ -375,6 +533,7 @@ const appearTaskCompletedcountToday = async (req: Request, res: Response) => {
             "snabelRed",
             "snabelYellow",
             "snabelBlue",
+
             "xp",
           ],
         },
@@ -426,10 +585,13 @@ const appearTaskCompleted = async (req: Request, res: Response) => {
             "type",
             "description",
             "categoryId",
+            "createdAt",
+            "updatedAt",
             "snabelRed",
             "snabelYellow",
             "snabelBlue",
             "xp",
+
           ],
           include: [
             {
@@ -456,10 +618,12 @@ const appearTaskCompleted = async (req: Request, res: Response) => {
       description: task.task.description,
       categoryId: task.task.categoryId,
       category: task.task.category ? task.task.category.title : "Unknown", // Category title
+      tasktype: task.task.tasktype ?? "Unknown",
       snabelRed: task.task.snabelRed,
       snabelYellow: task.task.snabelYellow,
       snabelBlue: task.task.snabelBlue,
       xp: task.task.xp,
+      updatedAt: task.updatedAt,
     }));
 
     return res.status(200).json({
@@ -538,7 +702,7 @@ const calculateCompletedTasksByCategory = async (req: Request, res: Response) =>
   }
 };
 
-const appearChallangesCompleted = async (req: Request, res: Response) => {
+const appearChallangesSecondaire = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
     if (!user) {
@@ -555,7 +719,7 @@ const appearChallangesCompleted = async (req: Request, res: Response) => {
     const challenge = await StudentChallenge.findAll({
       where: {
         studentId: student.id,
-        completionStatus: "Completed",
+          '$challenge.tasktype$': { [Op.is]: null },
       },
       include: [
         {
@@ -571,7 +735,58 @@ const appearChallangesCompleted = async (req: Request, res: Response) => {
             "snabelBlue",
             "snabelRed",
             "snabelYellow",
-            "taskCategory"
+            "taskCategory",
+            "tasktype"
+          ],
+        },
+      ],
+    });
+    if (!challenge) {
+      return res
+        .status(404)
+        .json({ message: "Challenges data not found in request" });
+    } else {
+      return res.status(200).json({ data: challenge });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+const appearChallangesPrimaire = async (req: Request, res: Response) => {
+  try {
+    const user = (req as Request & { user: JwtPayload | undefined }).user;
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User data not found in request" });
+    }
+    const student = await Student.findOne({ where: { userId: user.id } });
+    if (!student) {
+      return res
+        .status(404)
+        .json({ message: "Student data not found in request" });
+    }
+    const challenge = await StudentChallenge.findAll({
+      where: {
+        studentId: student.id,
+         '$challenge.tasktype$' : { [Op.ne]: null },
+      },
+      include: [
+        {
+          model: Challenge,
+          as: "challenge",
+          attributes: [
+            "title",
+            "description",
+            "category",
+            "point",
+            "level",
+            "xp",
+            "snabelBlue",
+            "snabelRed",
+            "snabelYellow",
+            "taskCategory",
+            "tasktype"
           ],
         },
       ],
@@ -955,12 +1170,16 @@ export {
   updateData,
   deleteData,
   appearTaskes,
-  appearChallanges,
+  appearTrophySecondaireCompleted,
+  appearTrophySecondaireNotCompleted,
+  appearTrophyPrimaireCompleted,
+  appearTrophyPrimaireNotCompleted,
   appearTaskCompleted,
   appearTaskCompletedcountToday,
   calculateCompletedTasksByCategory,
   appearTaskesCategory,
-  appearChallangesCompleted,
+  appearChallangesSecondaire,
+  appearChallangesPrimaire,
   appearLeaderboard,
   appearTaskesType,
   appearTaskesTypeandCategory,

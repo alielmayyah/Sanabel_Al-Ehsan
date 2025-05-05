@@ -488,7 +488,7 @@ router.get(
  *       400:
  *         description: Missing required fields (classname, category, or organizationId)
  *       401:
- *         description: Unauthorized: User data not found in request
+ *         description: "Unauthorized: User data not found in request"
  *       404:
  *         description: Teacher not found for this user
  *       500:
