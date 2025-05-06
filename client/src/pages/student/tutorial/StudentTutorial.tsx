@@ -27,6 +27,8 @@ import Trophies from "./Trophies";
 
 import { avatars } from "../../../data/Avatars";
 
+import { useUserContext } from "../../../context/StudentUserProvider";
+
 const StudentTutorial: React.FC = () => {
   const { t } = useTranslation();
   const isRTL = i18n.language === "ar";
@@ -50,9 +52,11 @@ const StudentTutorial: React.FC = () => {
     setCurrentTypeIndex(index);
   };
 
+  const { user } = useUserContext();
+
   const steps = [
     <ProfilePicture />,
-    <Intro name={"علي"} profileImage={avatars.boys.boy1} />,
+    <Intro name={`${user?.firstName}`} />,
     <Promo />,
     <SanabelTypes />,
     <Sanabel

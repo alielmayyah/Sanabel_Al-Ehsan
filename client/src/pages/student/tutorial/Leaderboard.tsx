@@ -1,40 +1,21 @@
-import {
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
 import { useTheme } from "../../../context/ThemeContext";
-import StudentNavbar from "../../../components/navbar/StudentNavbar";
-
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-
 import LeaderboardsStar from "../../../icons/Leaderboards/LeaderboardsStar";
 import FirstPlaceColumn from "../../../icons/Leaderboards/FirstPlaceColumn";
 import SecondPlaceColumn from "../../../icons/Leaderboards/SecondPlaceColumn";
 import ThirdPlaceColumn from "../../../icons/Leaderboards/ThirdPlaceColumn";
-
-import { IoCloseCircle } from "react-icons/io5";
-
-import { avatars } from "../../../data/Avatars";
-
-import FilterIcon from "../../../icons/Leaderboards/FilterIcon";
-import PrimaryButton from "../../../components/PrimaryButton";
 import { delay, motion } from "framer-motion";
 import MedalAndLevel from "../../../components/MedalAndLevel";
 
+import avatar1 from "../../../assets/avatars/Boys/1.png";
+import avatar2 from "../../../assets/avatars/Boys/4.png";
+import avatar3 from "../../../assets/avatars/Girls/1.png";
 const Leaderboards: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
 
   const [showWeekOrDay, setShowWeekOrDay] = useState<"day" | "week">("day");
-
-  // day or week
-
-  const [showType, setShowType] = useState("users");
-  // user or classes or teams
 
   type LeaderboardEntry = {
     name: string;
@@ -58,7 +39,7 @@ const Leaderboards: React.FC = () => {
         name: "سارة حسن",
         level: 88,
         color: "bg-yellowprimary",
-        avatar: avatars.girls.girl2,
+        avatar: avatar3,
         stage: "secondary",
         grade: "10",
         class: "1",
@@ -68,7 +49,7 @@ const Leaderboards: React.FC = () => {
         name: "عمر شريف",
         level: 125,
         color: "bg-orangeprimary",
-        avatar: avatars.boys.boy2,
+        avatar: avatar2,
         stage: "primary",
         grade: "2",
         class: "1",
@@ -78,7 +59,7 @@ const Leaderboards: React.FC = () => {
         name: "احمد جمال",
         level: 206,
         color: "bg-pinkprimary",
-        avatar: avatars.boys.boy5,
+        avatar: avatar1,
         stage: "primary",
         grade: "4",
         class: "2",
@@ -89,7 +70,7 @@ const Leaderboards: React.FC = () => {
         name: "سارة حسن",
         level: 702,
         color: "bg-yellowprimary",
-        avatar: avatars.girls.girl2,
+        avatar: avatar1,
         stage: "primary",
         grade: "6",
         class: "3",
@@ -99,7 +80,7 @@ const Leaderboards: React.FC = () => {
         name: "أحمد جمال",
         level: 700,
         color: "bg-greenprimary",
-        avatar: avatars.boys.boy6,
+        avatar: avatar1,
         stage: "secondary",
         grade: "11",
         class: "3",
@@ -109,7 +90,7 @@ const Leaderboards: React.FC = () => {
         name: "عمر شريف",
         level: 700,
         color: "bg-orangeprimary",
-        avatar: avatars.boys.boy2,
+        avatar: avatar1,
         stage: "preparatory",
         grade: "9",
         class: "2",
@@ -167,7 +148,7 @@ const Leaderboards: React.FC = () => {
           >
             <div className="w-20 h-20 rounded-full relative border-2 border-blueprimary">
               <img
-                className="w-[75px] h-[75px] rounded-full absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                className="w-[75px] h-[75px] rounded-full absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 bg-blueprimary/80"
                 src={sortedData[0].avatar}
               />
               <div className="flex-center absolute p-4 text-center transform -translate-x-1/2 -translate-y-1/2 top-0 left-1/2">
@@ -190,7 +171,7 @@ const Leaderboards: React.FC = () => {
             variants={columnVariants}
           >
             <img
-              className="w-20 h-20 rounded-full"
+              className="w-20 h-20 rounded-full bg-redprimary/80"
               src={sortedData[1].avatar}
             />
             <h1 className="text-black">{sortedData[1].name}</h1>
@@ -208,7 +189,7 @@ const Leaderboards: React.FC = () => {
             variants={columnVariants}
           >
             <img
-              className="w-20 h-20 rounded-full"
+              className="w-20 h-20 rounded-full bg-yellowprimary/80"
               src={sortedData[2].avatar}
             />
             <h1 className="text-black">{sortedData[2].name}</h1>

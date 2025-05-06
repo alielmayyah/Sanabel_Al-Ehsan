@@ -45,7 +45,9 @@ import StudentProgress from "./pages/student/StudentProgress";
 import TeacherNavbar from "./components/navbar/TeacherNavbar";
 import TeacherHome from "./pages/teacherorparent/teacher/TeacherHome";
 import TeacherProfile from "./pages/teacherorparent/profile/Profile";
-import TeacherChallenges from "./pages/teacherorparent/TeacherChallenges";
+import TeacherChooseSanabelType from "./pages/teacherorparent/challenges/ChooseSanabelType";
+import TeacherChooseSanabel from "./pages/teacherorparent/challenges/ChooseSanabel";
+import TeacherSanabelMissionsPage from "./pages/teacherorparent/challenges/SanabelMissionsPage";
 import TeacherView from "./pages/teacherorparent/TeacherView";
 
 // Teacher View Details
@@ -62,14 +64,6 @@ import ClassList from "./pages/teacherorparent/pointsregistration/ClassList";
 import RegistrationProcess from "./pages/teacherorparent/pointsregistration/registrationprocess/RegistrationProcess";
 
 import ClassRegistrationDetails from "./pages/teacherorparent/pointsregistration/pointsregistrationdetails/ClassRegistrationDetails";
-
-// Teacher Sanabel and Missions
-
-// import TeacherMissions from "./pages/teacherorparent/missionsandsanabel/missions/TeacherMissions";
-// import TeacherMissionsPage from "./pages/teacherorparent/missionsandsanabel/missions/TeacherMissionsPage";
-// import TeacherSanabel from "./pages/teacherorparent/missionsandsanabel/sanabel/TeacherSanabel";
-// import TeacherSanabelPage from "./pages/teacherorparent/missionsandsanabel/sanabel/TeacherSanabelPage";
-// import TeacherSanabelPrayer from "./pages/teacherorparent/missionsandsanabel/sanabel/TeacherSanabelPrayer";
 
 // Parent
 import ParentNavbar from "./components/navbar/ParentNavbar";
@@ -195,8 +189,22 @@ const App: React.FC = () => {
                 <Route
                   exact
                   path="/teacher/challenges"
-                  component={TeacherChallenges}
+                  component={TeacherChooseSanabelType}
                 />
+                <Route
+                  path="/teacher/sanabel/:index/:subIndex"
+                  component={TeacherSanabelMissionsPage}
+                />
+                <Route
+                  path="/teacher/sanabel/:index"
+                  component={TeacherChooseSanabel}
+                />
+
+                <Route
+                  path="/teacher/leaderboards/"
+                  component={StudentLeaderboards}
+                />
+
                 <Route exact path="/teacher/view" component={TeacherView} />
                 <Route
                   exact

@@ -283,22 +283,24 @@ const Shop: React.FC = () => {
         </div>
       ) : (
         <div className="w-2/3">
-          <motion.button
-            className="flex-center w-full px-6 py-3 bg-gradient-to-r from-blueprimary to-blue-400 text-white font-bold rounded-full shadow-lg"
-            initial={{ scale: 1 }}
-            animate={{
-              y: [0, -5, 0],
-              transition: { repeat: Infinity, duration: 1.5 },
-            }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => progressTree()}
-          >
-            <div className="flex items-center gap-2">
-              <span>🌟</span>
-              {t("كبر الشجرة")}
-            </div>
-          </motion.button>
+          {treeProgress < 51 && (
+            <motion.button
+              className="flex-center w-full px-6 py-3 bg-gradient-to-r from-blueprimary to-blue-400 text-white font-bold rounded-full shadow-lg"
+              initial={{ scale: 1 }}
+              animate={{
+                y: [0, -5, 0],
+                transition: { repeat: Infinity, duration: 1.5 },
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => progressTree()}
+            >
+              <div className="flex items-center gap-2">
+                <span>🌟</span>
+                {t("كبر الشجرة")}
+              </div>
+            </motion.button>
+          )}
 
           {/* Celebration Popup */}
 

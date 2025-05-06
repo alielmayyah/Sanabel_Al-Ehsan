@@ -17,7 +17,7 @@ import ChallengesIcon from "../../icons/navbar/ChallengesIcon";
 import LeaderboardsIcon from "../../icons/navbar/LeaderboardsIcon";
 import ViewIcon from "../../icons/TeacherHome/ApplyTeam";
 import ProfileIcon from "../../icons/navbar/ProfileIcon";
-
+import { IoIosSettings } from "react-icons/io";
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
 
@@ -41,8 +41,8 @@ const navList = [
     to: "/teacher/view",
   },
   {
-    title: "البروفايل",
-    icon: <ProfileIcon size={30} />,
+    title: "الاعدادات",
+    icon: <IoIosSettings size={30} />,
     to: "/teacher/profile",
   },
 ];

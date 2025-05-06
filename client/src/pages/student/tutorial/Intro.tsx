@@ -2,13 +2,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import sanabelAlEhsanLogo from "../../../assets/login/logo.png";
+import GetAvatar from "./GetAvatar";
 
 interface IntroProps {
   name: string;
-  profileImage: string;
 }
 
-const Intro: React.FC<IntroProps> = ({ name, profileImage }) => {
+const Intro: React.FC<IntroProps> = ({ name }) => {
   const { t } = useTranslation();
 
   const containerVariants = {
@@ -72,20 +72,15 @@ const Intro: React.FC<IntroProps> = ({ name, profileImage }) => {
             {t("مرحبًا")}
           </motion.h1>
         </div>
-
         <motion.div
           className="flex-center flex-col w-full gap-2"
           variants={itemVariants}
         >
-          <motion.div className="w-44 h-44 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden border-[1px] border-blueprimary shadow-lg">
-            <img
-              src={profileImage}
-              alt="Profile"
-              className="w-full h-full object-cover"
-            />
+          <motion.div className="w-44 h-44 rounded-full overflow-hidden border-[1px] shadow-lg">
+            {/* Using GetAvatar component to display the customized avatar */}
+            <GetAvatar />
           </motion.div>
         </motion.div>
-
         <motion.h1
           className="text-2xl font-bold text-gray-800 "
           variants={itemVariants}
@@ -93,7 +88,6 @@ const Intro: React.FC<IntroProps> = ({ name, profileImage }) => {
           {t("في")}
         </motion.h1>
       </motion.div>
-
       <motion.div
         className="w-56 h-56 flex items-center justify-center"
         variants={itemVariants}

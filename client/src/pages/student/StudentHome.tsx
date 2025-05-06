@@ -30,19 +30,6 @@ import { calculateLevel } from "../../utils/LevelCalculator";
 
 import { medalsData } from "../../data/MedalsData";
 
-const calculateXpForLevel = (targetLevel: any) => {
-  const baseXp = 10;
-  const increment = 5;
-
-  let totalXp = 0;
-
-  for (let level = 1; level < targetLevel; level++) {
-    totalXp += baseXp + increment * (level - 1);
-  }
-
-  return totalXp;
-};
-
 const StudentHome: React.FC = () => {
   const history = useHistory();
   const { t } = useTranslation();

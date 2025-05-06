@@ -110,7 +110,7 @@ const Profile: React.FC = () => {
             transition={{ delay: index * 0.1, duration: 1 }}
             className="flex  w-full justify-between items-center"
           >
-            <h1 className="text-black text-sm ">
+            <h1 className="text-black text-xs w-1/4">
               {getRelativeTime(activity.createdAt)}
             </h1>
             <div className="flex-center gap-3">

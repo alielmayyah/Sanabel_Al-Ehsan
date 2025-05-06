@@ -59,8 +59,8 @@ const TeacherHome: React.FC = () => {
       id="page-height"
     >
       <div className="flex items-center justify-between w-full p-4">
-        <Notification />
-        <Greeting name={`مرحباً مريم`} text={"هيا بنا نصنع الخير معًا!"} />
+        {/* <Notification /> */}
+        <Greeting name={`مرحباً مريم`} text={"هيا بنا نصنع الخير معًا"} />
       </div>
 
       <div className="w-full flex flex-col gap-3 h-2/3 p-4">

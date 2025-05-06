@@ -99,12 +99,6 @@ const Profile: React.FC = () => {
       ),
       to: "",
     },
-    {
-      title: "تسجيل الخروج",
-      icon: <Logout size={25} />,
-      to: "choosesignmethod",
-      function: logout,
-    },
   ];
 
   const [showDarkModePopup, setShowDarkModePopup] = useState(false);
@@ -125,12 +119,13 @@ const Profile: React.FC = () => {
         </h1>
         <GoBackButton />
       </div>
-      <IonRouterLink
+
+      {/* <IonRouterLink
         className="flex-center text-[#999999] w-full border-2 rounded-lg py-3"
         routerLink="/editprofile"
       >
         <h1>{t("تعديل الملف الشخصي")}</h1>
-      </IonRouterLink>
+      </IonRouterLink> */}
 
       <div className="flex flex-col justify-around h-3/5 items-center w-full">
         {profileButtons.map((item, index) => (
@@ -190,14 +185,19 @@ const Profile: React.FC = () => {
         ))}
       </div>
 
-      <div className="mt-6 w-full flex justify-center">
-        <button
-          onClick={logout}
-          className="flex items-center gap-3 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-200"
+      <div className="flex flex-col -mt-10 w-full">
+        <div
+          className="flex w-full p-2 justify-between items-center  border-b-[#E14E54] border-b-[1px] rounded-lg"
+          onClick={() => logout}
         >
-          <Logout size={25} />
-          <span>{t("تسجيل الخروج")}</span>
-        </button>
+          <ProfileArrow size={25} />
+          <div className="flex-center gap-3">
+            <h1 className={`${"text-[#E14E54] "}`}>{t("تسجيل الخروج")}</h1>
+            <div className={`${"bg-[#e14e5349]"}  p-2 rounded-full`}>
+              <Logout size={25} />
+            </div>
+          </div>
+        </div>
       </div>
 
       <DarkModeComingSoon
