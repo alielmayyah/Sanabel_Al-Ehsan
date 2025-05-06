@@ -26,7 +26,7 @@ const Progress: React.FC = () => {
 
       <Shop />
       {/* Tree */}
-      <SanabelTree treeStage={0} />
+      <SanabelTree />
     </div>
   );
 };

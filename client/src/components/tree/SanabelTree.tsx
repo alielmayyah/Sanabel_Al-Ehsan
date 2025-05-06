@@ -11,12 +11,7 @@ import fertilizerImg from "../../assets/resources/سماد.png";
 // Tree
 import { treeStages } from "../../data/Tree";
 
-
-interface SanabelTreeProps {
-  treeStage: number; // Prop for the tree stage
-}
-
-const SanabelTree: React.FC<SanabelTreeProps> = () => {
+const SanabelTree = () => {
   const history = useHistory();
   const { t } = useTranslation();
   const { user } = useUserContext();

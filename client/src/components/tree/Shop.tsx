@@ -17,9 +17,10 @@ import { useUserContext } from "../../context/StudentUserProvider";
 
 import CheckmarkAnimation from "../../assets/checkmarkAnimation";
 import { treeStages } from "../../data/Tree";
+import axios from "axios";
 const Shop: React.FC = () => {
   const { t } = useTranslation();
-  const { user } = useUserContext();
+  const { user, refreshUserData } = useUserContext();
 
   const shop = [
     { icon: blueSanabel },
@@ -82,9 +83,67 @@ const Shop: React.FC = () => {
 
   const [isCelebrationVisible, setIsCelebrationVisible] = useState(false);
 
+  // Buy Shop
+  // Function to handle purchase
+  const buyShop = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.patch(
+        "http://localhost:3000/students/buy-water-seeder",
+        {
+          water: buyWaterCount,
+          seeders: buyFertilizerCount, // "seeders" is the API param name for fertilizer
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setBuyWaterCount(0);
+        setBuyFertilizerCount(0);
+        setIsPopupVisible(false);
+        setIsPurchaseConfirmed(true);
+        setIsPopupVisible(false);
+
+        // Refresh user data to update UI with new resource counts
+        await refreshUserData();
+
+        // Reset purchase counts after successful purchase
+        setTimeout(() => {
+          setBuyWaterCount(0);
+          setBuyFertilizerCount(0);
+        }, 2000);
+      }
+    } catch (error) {
+      console.error("Error purchasing items:", error);
+    }
+  };
+
   // Progress TREE
-  function progressTree() {
-    setIsCelebrationVisible(true);
+  async function progressTree() {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.patch(
+        "http://localhost:3000/students/grow-tree",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setIsCelebrationVisible(true);
+        // Refresh user data to show updated tree stage
+        await refreshUserData();
+      }
+    } catch (error) {}
   }
   return (
     <div className="flex-center flex-col w-full h-full">
@@ -249,11 +308,7 @@ const Shop: React.FC = () => {
                     </button>
                     <button
                       className="bg-white border-2 border-gray-300 text-gray-700 px-4 py-3 rounded-xl font-bold shadow-sm transition-transform transform hover:scale-105 active:scale-95"
-                      onClick={() => {
-                        setBuyWaterCount(0);
-                        setBuyFertilizerCount(0);
-                        setIsPopupVisible(false);
-                      }}
+                      onClick={buyShop}
                     >
                       {t("إلغاء")}
                     </button>

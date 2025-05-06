@@ -22,7 +22,7 @@ const Profile: React.FC = () => {
     if (!authToken) return;
     try {
       const response = await axios.get(
-        "http://localhost:3000/students/student-challenge-completed",
+        "http://localhost:3000/students/student-trophy-primaire-completed",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

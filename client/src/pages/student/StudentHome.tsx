@@ -186,7 +186,7 @@ const StudentHome: React.FC = () => {
         </div>
       </div>
 
-      <SanabelTree treeStage={0} />
+      <SanabelTree />
       <StudentNavbar />
     </div>
   );
