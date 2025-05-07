@@ -10,30 +10,22 @@ interface GreetingProps {
   hello?: string; // Optional prop
 }
 
-const role = localStorage.getItem("role");
-
 const Greeting: React.FC<GreetingProps> = ({ name, text, hello }) => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex-center p-2 gap-3">
-      {role === "Student" ? (
-        <div className="flex-center gap-3">
-          <div className="flex flex-col text-end">
-            <h1 className="text-[#040415] dark:text-white">
-              {hello === "yes" && t("مرحباً")} {name}
-            </h1>
-            <h2 className="text-[#B3B3B3]">{t(text)}</h2>
-          </div>
-          <div className="w-16 h-16">
-            <GetAvatar />
-          </div>{" "}
+    <div className="flex-center p-0 gap-3">
+      <div className="flex-center gap-3">
+        <div className="flex flex-col text-end">
+          <h1 className="text-[#040415] dark:text-white">
+            {hello === "yes" && t("مرحباً")} {name}
+          </h1>
+          <h2 className="text-[#B3B3B3]">{t(text)}</h2>
         </div>
-      ) : (
-        <div>
-          <h1 className="text-black">geg</h1>
-        </div>
-      )}
+        <div className="w-16 h-16">
+          <GetAvatar />
+        </div>{" "}
+      </div>
     </div>
   );
 };
