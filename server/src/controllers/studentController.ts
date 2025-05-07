@@ -617,8 +617,7 @@ const appearTaskCompleted = async (req: Request, res: Response) => {
             "type",
             "description",
             "categoryId",
-            "createdAt",
-            "updatedAt",
+
             "snabelRed",
             "snabelYellow",
             "snabelBlue",
