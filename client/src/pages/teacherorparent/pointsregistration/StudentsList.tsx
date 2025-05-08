@@ -3,13 +3,14 @@ import { useTheme } from "../../../context/ThemeContext";
 import TeacherNavbar from "../../../components/navbar/TeacherNavbar";
 import { useTranslation } from "react-i18next";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchIcon from "../../../icons/SearchIcon";
 import GoBackButton from "../../../components/GoBackButton";
 
 import avtar1 from "../../../assets/avatars/Boys/1.png";
 import PrimaryButton from "../../../components/PrimaryButton";
 import { FaCheck } from "react-icons/fa";
+import axios from "axios";
 
 const StudentList: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
@@ -27,6 +28,35 @@ const StudentList: React.FC = () => {
           : [...prev, index] // Mark if not marked
     );
   };
+
+  const [studentsData, setStudentsData] = useState<any>([]);
+
+  const fetchStudentsData = async (token?: string) => {
+    const authToken = token || localStorage.getItem("token");
+    if (!authToken) return;
+
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/teachers/appear-student",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setStudentsData(response.data.data);
+        console.log("Students data:", response.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudentsData();
+  }, []);
 
   const studentList = [
     { name: "محمد منجي", avatar: avtar1 },
@@ -114,7 +144,7 @@ const StudentList: React.FC = () => {
         </div>
       </div>
       <div className="flex flex-col gap-2 overflow-y-auto w-full h-">
-        {filteredStudents.map((student, index) => (
+        {studentsData.map((student: any, index: any) => (
           <div
             className="w-full flex p-3  justify-between items-center border-2 rounded-xl "
             key={index}
@@ -131,8 +161,11 @@ const StudentList: React.FC = () => {
             </div>
             <div className="gap-3 flex-center">
               <div className="flex flex-col gap-3">
-                <h1 className="text-black"> {student.name}</h1>
-                <h1 className="text-black text-end"> class</h1>
+                <h1 className="text-black">
+                  {" "}
+                  {student.user.firstName + " " + student.user.lastName}{" "}
+                </h1>
+                <h1 className="text-black text-end"> {student.class}</h1>
               </div>
               <img src={student.avatar} alt="" className="w-12" />
             </div>

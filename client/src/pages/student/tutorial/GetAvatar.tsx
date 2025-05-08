@@ -20,7 +20,6 @@ import { useTranslation } from "react-i18next";
 
 const GetAvatar = () => {
   const [avatarData, setAvatarData] = useState({
-    avatar: 0,
     avatarId: 0,
     bgColor: "#2196F3",
     bgPattern: "solid",
@@ -106,10 +105,7 @@ const GetAvatar = () => {
         ? avatarData.gender
         : "boy";
 
-    // Ensure the avatar index is within bounds (0-7)
-    const safeIndex = Math.min(Math.max(0, avatarData.avatar), 7);
-
-    return avatarComponents[gender][safeIndex];
+    return avatarComponents[gender][avatarData.avatarId];
   };
 
   // Get the current avatar component

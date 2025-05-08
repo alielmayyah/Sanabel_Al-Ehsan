@@ -355,17 +355,9 @@ const appearTrophySecondaireCompleted = async (req: Request, res: Response) => {
             "snabelRed",
             "snabelYellow",
             "tasktype",
-<<<<<<< HEAD
-            "water",
-            "seeder",
-            "taskCategory",
-=======
-
-            "taskCategory",
             "water",
             "seeder",
             "taskCategory"
->>>>>>> 1f7204ced1ec0b257e75b2c7b966899e3779d6b5
           ],
         },
       ],
@@ -419,17 +411,9 @@ const appearTrophySecondaireNotCompleted = async (
             "snabelRed",
             "snabelYellow",
             "tasktype",
-<<<<<<< HEAD
-            "water",
-            "seeder",
-            "taskCategory",
-=======
-
-            "taskCategory",
               "water",
               "seeder",
             "taskCategory"
->>>>>>> 1f7204ced1ec0b257e75b2c7b966899e3779d6b5
           ],
         },
       ],
