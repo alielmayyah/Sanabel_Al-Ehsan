@@ -210,10 +210,9 @@ const Step1 = () => {
   );
   const [isAnimating, setIsAnimating] = useState(false);
 
-  
   // Avatar customization state
   const [avatarState, setAvatarState] = useState({
-    avatar: selectedAvatar,
+    avatarId: 0,
     gender: gender,
     hairColor: "",
     tshirtColor: "",
@@ -223,7 +222,7 @@ const Step1 = () => {
   });
 
   useEffect(() => {
-    localStorage.setItem('avatarData', JSON.stringify(avatarState));
+    localStorage.setItem("avatarData", JSON.stringify(avatarState));
   }, [avatarState]);
 
   console.log(avatarState);
@@ -231,20 +230,20 @@ const Step1 = () => {
   const [currentTab, setCurrentTab] = useState("الشخصية");
 
   // Toggle between boy and girl avatars
-  // Replace your current toggleGender function with this:
+
   const toggleGender = () => {
     const newGender = gender === "boy" ? "girl" : "boy";
     setGender(newGender);
 
-    // Set default avatar for the selected gender
-    const newAvatar = newGender === "boy" ? boysAvatars[0] : girlsAvatars[0];
-    setSelectedAvatar(newAvatar);
+    // Set default avatar ID for the selected gender
+    const newAvatarId = 0; // Default to first avatar
+    setSelectedAvatar(newGender === "boy" ? boysAvatars[0] : girlsAvatars[0]);
 
-    // Update avatarState with the new gender, avatar, and appropriate background color
+    // Update avatarState with the new gender, avatar ID, and appropriate background color
     setAvatarState((prev) => ({
       ...prev,
       gender: newGender,
-      avatar: newAvatar,
+      avatarId: newAvatarId, // Store ID instead of avatar object
       bgColor:
         newGender === "boy" ? backgrounds[0].color : backgrounds[2].color,
     }));
@@ -309,6 +308,18 @@ const Step1 = () => {
 
     // Convert back to hex
     return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+  };
+
+  const getCurrentAvatarComponent = () => {
+    const avatarList =
+      avatarState.gender === "boy" ? boysAvatars : girlsAvatars;
+    return (
+      avatarList.find((avatar) => avatar.id === avatarState.avatarId)
+        ?.Component ||
+      (avatarState.gender === "boy"
+        ? boysAvatars[0].Component
+        : girlsAvatars[0].Component)
+    );
   };
 
   // Render content based on current tab
@@ -378,7 +389,7 @@ const Step1 = () => {
                       setSelectedAvatar(avatar);
                       setAvatarState((prev) => ({
                         ...prev,
-                        avatar: avatar,
+                        avatarId: avatar.id,
                         tshirtColor: "",
                         hairColor: "",
                         skinColor: "",

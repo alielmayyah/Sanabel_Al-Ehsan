@@ -68,7 +68,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
           allowNull: true,
           defaultValue: "Student",
         },
-        
+
         resetOTP: {
           type: DataTypes.STRING,
           allowNull: true,

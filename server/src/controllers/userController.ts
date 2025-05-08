@@ -28,30 +28,30 @@ const login = async (req: Request, res: Response) => {
 
     // Check if account exists
     if (!account) {
-      return res.status(401).json({ 
-        status: 401, 
-        message: "Incorrect email or password" 
+      return res.status(401).json({
+        status: 401,
+        message: "Incorrect email or password",
       });
     }
 
     // Check if password is correct
     if (!bcrypt.compareSync(password, account.password)) {
-      return res.status(401).json({ 
-        status: 401, 
-        message: "Incorrect email or password" 
+      return res.status(401).json({
+        status: 401,
+        message: "Incorrect email or password",
       });
     }
 
     // Generate token with a secret and a defined expiration (24 hours)
     const token = jwt.sign(
-      { 
-        id: account.id, 
-        email: account.email, 
-        role: account.role 
+      {
+        id: account.id,
+        email: account.email,
+        role: account.role,
       },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET
     );
-    
+
     // Prepare base response data
     const responseData = {
       user: {
@@ -59,40 +59,42 @@ const login = async (req: Request, res: Response) => {
         email: account.email,
         role: account.role,
         token: token,
-      }
+      },
     };
 
     // Handle role-specific logic
     if (account.role === "Student") {
       // Find the student record
       const student = await Student.findOne({ where: { userId: account.id } });
-      
+
       if (student) {
         // Get all available challenges
         const allChallenges = await Challenge.findAll();
-        
+
         // Get student's existing challenges
         const studentChallenges = await StudentChallenge.findAll({
-          where: { studentId: student.id }
+          where: { studentId: student.id },
         });
-        
+
         // Check if student has all challenges
         if (studentChallenges.length !== allChallenges.length) {
           // Find missing challenges
-          const existingChallengeIds = studentChallenges.map(sc => sc.challengeId);
-          const missingChallenges = allChallenges.filter(
-            challenge => !existingChallengeIds.includes(challenge.id)
+          const existingChallengeIds = studentChallenges.map(
+            (sc) => sc.challengeId
           );
-          
+          const missingChallenges = allChallenges.filter(
+            (challenge) => !existingChallengeIds.includes(challenge.id)
+          );
+
           // Add missing challenges
           if (missingChallenges.length > 0) {
-            const newStudentChallenges = missingChallenges.map(challenge => ({
+            const newStudentChallenges = missingChallenges.map((challenge) => ({
               studentId: student.id,
               challengeId: challenge.id,
               completionStatus: "NotCompleted",
-              pointOfStudent: 0
+              pointOfStudent: 0,
             }));
-            
+
             await StudentChallenge.bulkCreate(newStudentChallenges);
           }
         }
@@ -103,15 +105,14 @@ const login = async (req: Request, res: Response) => {
     return res.status(200).json({
       status: 200,
       message: "Login successful",
-      data: responseData
+      data: responseData,
     });
-
-  } catch (error:any) {
+  } catch (error: any) {
     console.error("Login error:", error);
-    return res.status(500).json({ 
-      status: 500, 
-      message: "An error occurred during login", 
-      error: error.message 
+    return res.status(500).json({
+      status: 500,
+      message: "An error occurred during login",
+      error: error.message,
     });
   }
 };
@@ -120,48 +121,85 @@ const login = async (req: Request, res: Response) => {
 
 const registration = async (req: Request, res: Response) => {
   try {
-    const { firstName, lastName, email, password, role, dateOfBirth, gender, grade ,profileImg} = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+      dateOfBirth,
+      gender,
+      grade,
+      profileImg,
+    } = req.body;
 
     const checkValidation = await User.findOne({ where: { email } });
 
     if (!checkValidation) {
-      return res.status(403).json({ message: "OTP record not found. Verify OTP before registering." });
+      return res
+        .status(403)
+        .json({
+          message: "OTP record not found. Verify OTP before registering.",
+        });
     }
 
     if (!checkValidation.isAccess) {
-      return res.status(403).json({ message: "OTP not verified. Verify OTP before resetting password." });
+      return res
+        .status(403)
+        .json({
+          message: "OTP not verified. Verify OTP before resetting password.",
+        });
     }
 
     if (checkValidation.password) {
-      return res.status(403).json({ message: "Email is already registered. Login or use another email." });
+      return res
+        .status(403)
+        .json({
+          message: "Email is already registered. Login or use another email.",
+        });
     }
 
     const hashedPassword = bcrypt.hashSync(password, 10);
-    const token = jwt.sign({ id: checkValidation.id, email: checkValidation.email, role: checkValidation.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
-
+    const token = jwt.sign(
+      {
+        id: checkValidation.id,
+        email: checkValidation.email,
+        role: checkValidation.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
 
     // Handle Image Upload (get URL from Cloudinary)
-    await checkValidation.update({ firstName, lastName, role, gender, dateOfBirth, password: hashedPassword ,profileImg});
+    await checkValidation.update({
+      firstName,
+      lastName,
+      role,
+      gender,
+      dateOfBirth,
+      password: hashedPassword,
+      profileImg,
+    });
 
     switch (checkValidation.role) {
       case "Student":
         const connectCode = await generateUniqueConnectCode();
         // Create student first
-        const newStudent = await Student.create({ 
-          grade, 
-          userId: checkValidation.id, 
-          profileImg, 
-          treeProgress: 1, 
-          connectCode 
+        const newStudent = await Student.create({
+          grade,
+          userId: checkValidation.id,
+          profileImg,
+          treeProgress: 1,
+          connectCode,
         });
-        
+
         // Then create all challenges for the student
         const allChallenges = await Challenge.findAll();
-        const studentChallenges = allChallenges.map(challenge => ({
+        const studentChallenges = allChallenges.map((challenge) => ({
           studentId: newStudent.id, // Use the new student's ID
           challengeId: challenge.id,
           completionStatus: "NotCompleted",
-          pointOfStudent: 0
+          pointOfStudent: 0,
         }));
         await StudentChallenge.bulkCreate(studentChallenges);
         break;
@@ -177,7 +215,15 @@ const registration = async (req: Request, res: Response) => {
 
     return res.status(201).json({
       message: "Registration successful",
-      data: { token, user: { id: checkValidation.id, email: checkValidation.email, role, profileImg } },
+      data: {
+        token,
+        user: {
+          id: checkValidation.id,
+          email: checkValidation.email,
+          role,
+          profileImg,
+        },
+      },
     });
   } catch (error) {
     console.error("Registration error:", error);
@@ -336,4 +382,11 @@ const updatePassword = async (req: Request, res: Response) => {
 
   return res.status(200).json({ message: "Password updated successfully" });
 };
-export { login, registration, sendOTP, verifyOTP, resetPassword ,updatePassword};
+export {
+  login,
+  registration,
+  sendOTP,
+  verifyOTP,
+  resetPassword,
+  updatePassword,
+};

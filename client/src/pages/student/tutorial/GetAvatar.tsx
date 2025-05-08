@@ -19,6 +19,17 @@ import Girl8 from "../../../assets/avatars/Girls/Girl8";
 import { useTranslation } from "react-i18next";
 
 const GetAvatar = () => {
+  const [avatarData, setAvatarData] = useState({
+    avatar: 0,
+    avatarId: 0,
+    bgColor: "#2196F3",
+    bgPattern: "solid",
+    gender: "boy",
+    hairColor: "",
+    skinColor: "",
+    tshirtColor: "",
+  });
+
   // Map avatar components by gender and index
   const avatarComponents = {
     boy: [Boy1, Boy2, Boy3, Boy4, Boy5, Boy6, Boy7, Boy8],
@@ -28,7 +39,11 @@ const GetAvatar = () => {
   const { t } = useTranslation();
 
   // Helper function to adjust color brightness
-  const adjustColorBrightness = (hex: string, percent: number) => {
+  const adjustColorBrightness = (hex: any, percent: any) => {
+    if (!hex || !hex.startsWith("#") || hex.length !== 7) {
+      return "#000000"; // Return black as fallback
+    }
+
     // Convert hex to RGB
     let r = parseInt(hex.substring(1, 3), 16);
     let g = parseInt(hex.substring(3, 5), 16);
@@ -44,52 +59,57 @@ const GetAvatar = () => {
   };
 
   // Helper function to generate a gradient string
-  const getGradientString = (color: string) => {
+  const getGradientString = (color: any) => {
     return `linear-gradient(135deg, ${color} 0%, ${adjustColorBrightness(
       color,
       -30
     )} 100%)`;
   };
-  // Move the state inside the component and change avatar to be a number
-
-  const [avatarData, setAvatarData] = useState({
-    avatar: 1,
-    bgColor: "#",
-    bgPattern: "",
-    gender: "",
-    hairColor: "#",
-    skinColor: "#",
-    tshirtColor: "#",
-  });
 
   useEffect(() => {
     // Retrieve avatar data from localStorage when component mounts
     const storedAvatarData = localStorage.getItem("avatarData");
     if (storedAvatarData) {
-      const parsedData = JSON.parse(storedAvatarData);
+      try {
+        const parsedData = JSON.parse(storedAvatarData);
 
-      // Fix for the avatar structure
-      setAvatarData({
-        ...avatarData,
-        ...parsedData,
-        avatar: parsedData.avatar?.id ?? 0, // Ensure avatar is a number
-      });
+        // Update state with stored data, using avatarId as avatar if available
+        setAvatarData({
+          ...avatarData,
+          ...parsedData,
+          // Use avatarId for the avatar property if available
+          avatar:
+            parsedData.avatarId !== undefined
+              ? parsedData.avatarId
+              : parsedData.avatar || 0,
+        });
+
+        console.log("Processed Avatar Data:", {
+          ...avatarData,
+          ...parsedData,
+          avatar:
+            parsedData.avatarId !== undefined
+              ? parsedData.avatarId
+              : parsedData.avatar || 0,
+        });
+      } catch (error) {
+        console.error("Error parsing avatar data:", error);
+      }
     }
-    console.log("Avatar Data:", storedAvatarData); // Debugging line to check avatar data
   }, []);
 
   // Get the appropriate avatar component based on gender and avatar index
   const getAvatarComponent = () => {
+    // Default to "boy" if gender is not valid
+    const gender =
+      avatarData.gender === "boy" || avatarData.gender === "girl"
+        ? avatarData.gender
+        : "boy";
+
     // Ensure the avatar index is within bounds (0-7)
     const safeIndex = Math.min(Math.max(0, avatarData.avatar), 7);
 
-    // Get the component based on gender
-    if (avatarData.gender === "boy" || avatarData.gender === "girl") {
-      return avatarComponents[avatarData.gender][safeIndex];
-    }
-
-    // Default to Boy1 if gender is invalid
-    return Boy1;
+    return avatarComponents[gender][safeIndex];
   };
 
   // Get the current avatar component
@@ -116,7 +136,7 @@ const GetAvatar = () => {
                 avatarData.bgColor,
                 20
               )} 5px, ${adjustColorBrightness(avatarData.bgColor, 20)} 10px)`
-            : avatarData.bgColor,
+            : avatarData.bgColor || "#2196F3",
       }}
     >
       {AvatarComponent && (

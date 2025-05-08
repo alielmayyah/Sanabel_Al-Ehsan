@@ -301,6 +301,7 @@ const challengeData: ChallengeData[] = [
       xp: 0,
       water: 1,
       trophyMilestones: milestones.totalWaterBought,
+      // math.ceil / 10  ->>>>  5 water / 10 = 0.5 , math.ceil(0.5) = 1
       xpMultiplier: 1,
       blueMultiplier: 1,
       yellowMultiplier: 1,
@@ -319,6 +320,7 @@ const challengeData: ChallengeData[] = [
       xp: 0,
       seeder: 1,
       trophyMilestones: milestones.totalFertilizerBought,
+      // math.ceil / 15  ->>>>  5 fertilzer / 15 = 0.5 , math.ceil(0.5) = 1
       xpMultiplier: 1,
       blueMultiplier: 1,
       yellowMultiplier: 1,
