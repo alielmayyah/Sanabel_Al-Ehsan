@@ -42,7 +42,7 @@ const studentData = async (req: Request, res: Response) => {
         {
           model: User,
           as: "user", // use the alias defined in the association
-          attributes: ["firstName", "lastName", "email"],
+          attributes: ["firstName", "lastName", "email","profileImg","gender","dateOfBirth"],
         },
       ],
     });
