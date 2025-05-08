@@ -188,7 +188,7 @@ const Profile: React.FC = () => {
       <div className="flex flex-col -mt-10 w-full">
         <div
           className="flex w-full p-2 justify-between items-center  border-b-[#E14E54] border-b-[1px] rounded-lg"
-          onClick={() => logout}
+          onClick={logout}
         >
           <ProfileArrow size={25} />
           <div className="flex-center gap-3">

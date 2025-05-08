@@ -107,8 +107,8 @@ const StudentHome: React.FC = () => {
       className="flex flex-col h-full w-full items-center justify-between p-4  gap-3 overflow-y-auto"
       id="page-height"
     >
-      <div className="flex justify-between w-full items-center">
-        <Notification />
+      <div className="flex flex-row-reverse justify-between w-full items-center">
+        {/* <Notification /> */}
         <Greeting
           name={`مرحباً ${user?.firstName}`}
           text={"!هيا بنا نصنع الخير معًا"}

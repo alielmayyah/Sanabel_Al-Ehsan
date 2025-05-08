@@ -339,8 +339,14 @@ const appearTrophySecondaireCompleted = async (req: Request, res: Response) => {
             "snabelRed",
             "snabelYellow",
             "tasktype",
+<<<<<<< HEAD
 
             "taskCategory",
+=======
+            "water",
+            "seeder",
+            "taskCategory"
+>>>>>>> 4b0c36b9ca1ca167ac93263146c81258b0c30b2d
           ],
         },
       ],
@@ -394,8 +400,14 @@ const appearTrophySecondaireNotCompleted = async (
             "snabelRed",
             "snabelYellow",
             "tasktype",
+<<<<<<< HEAD
 
             "taskCategory",
+=======
+              "water",
+              "seeder",
+            "taskCategory"
+>>>>>>> 4b0c36b9ca1ca167ac93263146c81258b0c30b2d
           ],
         },
       ],
@@ -442,6 +454,8 @@ const appearTrophyPrimaireCompleted = async (req: Request, res: Response) => {
             "point",
             "level",
             "xp",
+            "water",
+            "seeder",
             "snabelBlue",
             "snabelRed",
             "snabelYellow",
@@ -497,6 +511,8 @@ const appearTrophyPrimaireNotCompleted = async (
             "point",
             "level",
             "xp",
+            "water",
+            "seeder",
             "snabelBlue",
             "snabelRed",
             "snabelYellow",
@@ -767,6 +783,8 @@ const appearChallangesSecondaire = async (req: Request, res: Response) => {
             "point",
             "level",
             "xp",
+            "water",
+            "seeder",
             "snabelBlue",
             "snabelRed",
             "snabelYellow",
@@ -817,6 +835,8 @@ const appearChallangesPrimaire = async (req: Request, res: Response) => {
             "point",
             "level",
             "xp",
+            "water",
+            "seeder",
             "snabelBlue",
             "snabelRed",
             "snabelYellow",

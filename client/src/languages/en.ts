@@ -1,5 +1,10 @@
 const en = {
   translation: {
+
+    // NAVBAR
+
+
+    
     الرئيسية: "Home",
     التحديات: "Challenges",
     المتصدرين: "Rankings",
@@ -183,13 +188,6 @@ const en = {
     حذف: "Delete",
 
     المستوى: "Level",
-
-
-
-
-
-
-    
   },
 };
 

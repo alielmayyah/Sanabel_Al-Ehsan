@@ -120,7 +120,7 @@ const login = async (req: Request, res: Response) => {
 
 const registration = async (req: Request, res: Response) => {
   try {
-    const { firstName, lastName, email, password, role, dateOfBirth, gender, grade } = req.body;
+    const { firstName, lastName, email, password, role, dateOfBirth, gender, grade ,profileImg} = req.body;
 
     const checkValidation = await User.findOne({ where: { email } });
 
@@ -141,7 +141,6 @@ const registration = async (req: Request, res: Response) => {
 
 
     // Handle Image Upload (get URL from Cloudinary)
-    const profileImg = req.file ? req.file.path : null; 
     await checkValidation.update({ firstName, lastName, role, gender, dateOfBirth, password: hashedPassword ,profileImg});
 
     switch (checkValidation.role) {

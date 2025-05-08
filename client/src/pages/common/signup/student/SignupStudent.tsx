@@ -58,7 +58,7 @@ const Signup: React.FC = () => {
       setGender={setGender}
     />,
     <Step3
-      onContinue={() => setStepIndex(stepIndex + 1)}
+      onContinue={() => handleSubmit()}
       onBack={() => setStepIndex(stepIndex - 1)}
       birthdate={birthdate}
       setBirthdate={setBirthdate}

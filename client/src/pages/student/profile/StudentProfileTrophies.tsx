@@ -152,15 +152,11 @@ const Profile: React.FC = () => {
                   }
                   alt={trophy.challenge.title}
                 />
-                {/* THE LARGEST COMPLETED  MILESTONE NUMBER SHOULD SHOW HERE  */}
-                <h1 className="text-xs text-black text-center h-8">
-                  {trophy.challenge.point > 1 && (
-                    <div className="text-xs font-semibold mt-1">
-                      {trophy.challenge.point}
-                    </div>
-                  )}
+
+                <h1 className="text-xs text-black text-center ">
+                  {trophy.challenge.point}
                 </h1>
-                <h1 className="text-xs text-black text-center h-8">
+                <h1 className="text-xs text-black text-center h-8" dir="rtl">
                   {t(trophy.challenge.title).split(" ").slice(0, 4).join(" ")}
                 </h1>
               </motion.div>
