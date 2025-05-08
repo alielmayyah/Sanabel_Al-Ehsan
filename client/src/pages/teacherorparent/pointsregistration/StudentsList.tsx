@@ -58,60 +58,11 @@ const StudentList: React.FC = () => {
     fetchStudentsData();
   }, []);
 
-  const studentList = [
-    { name: "محمد منجي", avatar: avtar1 },
-    { name: "محمد عمرو", avatar: avtar1 },
-    { name: "أحمد خالد", avatar: avtar1 },
-    { name: "علي يوسف", avatar: avtar1 },
-    { name: "عبد الله سالم", avatar: avtar1 },
-    { name: "خالد إبراهيم", avatar: avtar1 },
-    { name: "ياسين محمد", avatar: avtar1 },
-    { name: "عمر حازم", avatar: avtar1 },
-    { name: "سيف الدين علاء", avatar: avtar1 },
-    { name: "يوسف حسن", avatar: avtar1 },
-    { name: "مالك أحمد", avatar: avtar1 },
-    { name: "رامز عادل", avatar: avtar1 },
-    { name: "حمزة مصطفى", avatar: avtar1 },
-    { name: "زياد سامي", avatar: avtar1 },
-    { name: "آدم كريم", avatar: avtar1 },
-    { name: "مازن عبد العزيز", avatar: avtar1 },
-    { name: "تميم محمود", avatar: avtar1 },
-    { name: "نور الدين عماد", avatar: avtar1 },
-    { name: "إياد عبد الرحمن", avatar: avtar1 },
-    { name: "باسل أمجد", avatar: avtar1 },
-    { name: "لينا خالد", avatar: avtar1 },
-    { name: "مريم عادل", avatar: avtar1 },
-    { name: "سارة أحمد", avatar: avtar1 },
-    { name: "نوران يوسف", avatar: avtar1 },
-    { name: "شهد محمد", avatar: avtar1 },
-    { name: "ملك كريم", avatar: avtar1 },
-    { name: "هالة خالد", avatar: avtar1 },
-    { name: "ريما أحمد", avatar: avtar1 },
-    { name: "مها إبراهيم", avatar: avtar1 },
-    { name: "آلاء سعيد", avatar: avtar1 },
-    { name: "رنا عمرو", avatar: avtar1 },
-    { name: "جنى خالد", avatar: avtar1 },
-    { name: "ميار محمد", avatar: avtar1 },
-    { name: "رغد أحمد", avatar: avtar1 },
-    { name: "ليان محمود", avatar: avtar1 },
-    { name: "تالين كريم", avatar: avtar1 },
-    { name: "ديما يوسف", avatar: avtar1 },
-    { name: "لارا مازن", avatar: avtar1 },
-    { name: "نور حازم", avatar: avtar1 },
-    { name: "يمنى خالد", avatar: avtar1 },
-    { name: "نادين عمر", avatar: avtar1 },
-    { name: "جود عبد الله", avatar: avtar1 },
-    { name: "لارين سامي", avatar: avtar1 },
-    { name: "تالا خالد", avatar: avtar1 },
-    { name: "لمى أحمد", avatar: avtar1 },
-    { name: "آية إبراهيم", avatar: avtar1 },
-    { name: "فرح خالد", avatar: avtar1 },
-    { name: "سلمى أمجد", avatar: avtar1 },
-    { name: "رزان يوسف", avatar: avtar1 },
-  ];
-
-  const filteredStudents = studentList.filter((student) =>
-    student.name.includes(searchQuery)
+  // Updated code (case-insensitive)
+  const filteredStudents = studentsData.filter((student: any) =>
+    `${student.user.firstName} ${student.user.lastName}`
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -143,8 +94,8 @@ const StudentList: React.FC = () => {
           />
         </div>
       </div>
-      <div className="flex flex-col gap-2 overflow-y-auto w-full h-">
-        {studentsData.map((student: any, index: any) => (
+      <div className="flex flex-col gap-2  justify-start overflow-y-auto w-full h-full">
+        {filteredStudents.map((student: any, index: any) => (
           <div
             className="w-full flex p-3  justify-between items-center border-2 rounded-xl "
             key={index}
@@ -162,12 +113,16 @@ const StudentList: React.FC = () => {
             <div className="gap-3 flex-center">
               <div className="flex flex-col gap-3">
                 <h1 className="text-black">
-                  {" "}
-                  {student.user.firstName + " " + student.user.lastName}{" "}
+                  {`${student.user.firstName} ${student.user.lastName}`}
                 </h1>
-                <h1 className="text-black text-end"> {student.class}</h1>
+                <h1 className="text-black text-end"> {student.class || ""}</h1>
               </div>
-              <img src={student.avatar} alt="" className="w-12" />
+              {/* <img src={} alt="" className="w-12" /> */}
+              <h1 className="text-black text-3xl">
+                {student.user.profileImg.gender}
+              </h1>
+              i want to give the data of profile image here to show each profile
+              img for the students
             </div>
           </div>
         ))}

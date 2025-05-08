@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import GetAvatar from "../pages/student/tutorial/GetAvatar";
+import { useUserContext } from "../context/StudentUserProvider";
 
 // Define the type for the component props
 interface GreetingProps {
@@ -13,6 +14,10 @@ interface GreetingProps {
 const Greeting: React.FC<GreetingProps> = ({ name, text, hello }) => {
   const { t } = useTranslation();
 
+  const { user } = useUserContext();
+  const avatar = user?.profileImg;
+
+  console.log(user);
   return (
     <div className="flex-center p-0 gap-3">
       <div className="flex-center gap-3">
@@ -23,7 +28,7 @@ const Greeting: React.FC<GreetingProps> = ({ name, text, hello }) => {
           <h2 className="text-[#B3B3B3]">{t(text)}</h2>
         </div>
         <div className="w-16 h-16">
-          <GetAvatar />
+          <GetAvatar userAvatarData={avatar} />
         </div>{" "}
       </div>
     </div>

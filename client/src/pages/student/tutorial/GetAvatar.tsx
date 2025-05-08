@@ -18,8 +18,8 @@ import Girl7 from "../../../assets/avatars/Girls/Girl7";
 import Girl8 from "../../../assets/avatars/Girls/Girl8";
 import { useTranslation } from "react-i18next";
 
-const GetAvatar = () => {
-  const [avatarData, setAvatarData] = useState({
+const GetAvatar = ({ userAvatarData = {} }) => {
+  const defaultAvatarData = {
     avatarId: 0,
     bgColor: "#2196F3",
     bgPattern: "solid",
@@ -27,7 +27,23 @@ const GetAvatar = () => {
     hairColor: "",
     skinColor: "",
     tshirtColor: "",
+  };
+
+  // Merge default values with props, props take precedence
+  const [avatarData, setAvatarData] = useState({
+    ...defaultAvatarData,
+    ...userAvatarData,
   });
+
+  // Update state when props change
+  useEffect(() => {
+    if (Object.keys(userAvatarData).length > 0) {
+      setAvatarData({
+        ...defaultAvatarData,
+        ...userAvatarData,
+      });
+    }
+  }, [userAvatarData]);
 
   // Map avatar components by gender and index
   const avatarComponents = {
@@ -65,38 +81,6 @@ const GetAvatar = () => {
     )} 100%)`;
   };
 
-  useEffect(() => {
-    // Retrieve avatar data from localStorage when component mounts
-    const storedAvatarData = localStorage.getItem("avatarData");
-    if (storedAvatarData) {
-      try {
-        const parsedData = JSON.parse(storedAvatarData);
-
-        // Update state with stored data, using avatarId as avatar if available
-        setAvatarData({
-          ...avatarData,
-          ...parsedData,
-          // Use avatarId for the avatar property if available
-          avatar:
-            parsedData.avatarId !== undefined
-              ? parsedData.avatarId
-              : parsedData.avatar || 0,
-        });
-
-        console.log("Processed Avatar Data:", {
-          ...avatarData,
-          ...parsedData,
-          avatar:
-            parsedData.avatarId !== undefined
-              ? parsedData.avatarId
-              : parsedData.avatar || 0,
-        });
-      } catch (error) {
-        console.error("Error parsing avatar data:", error);
-      }
-    }
-  }, []);
-
   // Get the appropriate avatar component based on gender and avatar index
   const getAvatarComponent = () => {
     // Default to "boy" if gender is not valid
@@ -105,7 +89,13 @@ const GetAvatar = () => {
         ? avatarData.gender
         : "boy";
 
-    return avatarComponents[gender][avatarData.avatarId];
+    // Ensure avatarId is within bounds of the array
+    const safeAvatarId = Math.min(
+      Math.max(0, avatarData.avatarId),
+      avatarComponents[gender].length - 1
+    );
+
+    return avatarComponents[gender][safeAvatarId];
   };
 
   // Get the current avatar component

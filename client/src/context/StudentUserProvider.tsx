@@ -31,6 +31,8 @@ interface User {
   treeStage: number;
   treeProgress: number;
   connectCode: string;
+
+  profileImg: object;
 }
 
 interface UserContextProps {
@@ -78,7 +80,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           fertilizerNeeded: response.data.data.treePoint.seeders,
           treeStage: response.data.data.treePoint.stage,
           treeProgress: response.data.data.treePoint.treeProgress,
+          profileImg: response.data.data.student.user.profileImg,
         });
+        console.log("User data:", response.data.data);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -113,24 +117,3 @@ export const useUserContext = (): UserContextProps => {
   }
   return context;
 };
-
-// useEffect(() => {
-//   // Set static user data
-//   setUser({
-//     firstName: "علي",
-//     lastName: "المياح",
-//     email: "alielmayyah@gmail.com",
-//     role: "Student", // Static role
-//     grade: 12,
-//     snabelBlue: 170,
-//     snabelRed: 160,
-//     snabelYellow: 150,
-//     xp: 1800,
-//     water: 4,
-//     fertilizer: 2,
-//     waterNeeded: 5,
-//     fertilizerNeeded: 3,
-//     treeStage: 2,
-//     treeProgress: 36,
-//   });
-// }, []); // Static data only set once

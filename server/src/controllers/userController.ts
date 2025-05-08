@@ -136,38 +136,47 @@ const registration = async (req: Request, res: Response) => {
     const checkValidation = await User.findOne({ where: { email } });
 
     if (!checkValidation) {
-      return res
-        .status(403)
-        .json({
-          message: "OTP record not found. Verify OTP before registering.",
-        });
+      return res.status(403).json({
+        message: "OTP record not found. Verify OTP before registering.",
+      });
     }
 
     if (!checkValidation.isAccess) {
-      return res
-        .status(403)
-        .json({
-          message: "OTP not verified. Verify OTP before resetting password.",
-        });
+      return res.status(403).json({
+        message: "OTP not verified. Verify OTP before resetting password.",
+      });
     }
 
     if (checkValidation.password) {
-      return res
-        .status(403)
-        .json({
-          message: "Email is already registered. Login or use another email.",
-        });
+      return res.status(403).json({
+        message: "Email is already registered. Login or use another email.",
+      });
     }
 
     const hashedPassword = bcrypt.hashSync(password, 10);
-    const token = jwt.sign({ id: checkValidation.id, email: checkValidation.email, role: checkValidation.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
-    const validatedProfileImg = profileImg && typeof profileImg === "object" 
-    ? profileImg
-    : null;
+    const token = jwt.sign(
+      {
+        id: checkValidation.id,
+        email: checkValidation.email,
+        role: checkValidation.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    const validatedProfileImg =
+      profileImg && typeof profileImg === "object" ? profileImg : null;
 
     // Handle Image Upload (get URL from Cloudinary)
-    await checkValidation.update({ firstName, lastName, role, gender, dateOfBirth, password: hashedPassword ,profileImg:validatedProfileImg});
-    
+    await checkValidation.update({
+      firstName,
+      lastName,
+      role,
+      gender,
+      dateOfBirth,
+      password: hashedPassword,
+      profileImg: validatedProfileImg,
+    });
+
     switch (checkValidation.role) {
       case "Student":
         const connectCode = await generateUniqueConnectCode();
@@ -202,7 +211,15 @@ const registration = async (req: Request, res: Response) => {
 
     return res.status(201).json({
       message: "Registration successful",
-      data: { token, user: { id: checkValidation.id, email: checkValidation.email, role, profileImg:validatedProfileImg } },
+      data: {
+        token,
+        user: {
+          id: checkValidation.id,
+          email: checkValidation.email,
+          role,
+          profileImg: validatedProfileImg,
+        },
+      },
     });
   } catch (error) {
     console.error("Registration error:", error);
