@@ -20,6 +20,7 @@ import {
   appearTaskesTypeandCategory,
   buyWaterSeeder,
   growTheTree,
+  updateProfileImage,
 } from "../controllers/studentController";
 import { authenticateToken } from "../middleware/auth";
 import { checkstudent } from "../middleware/checkrole";
@@ -1046,5 +1047,36 @@ router.patch("/update", authenticateToken, checkstudent, updateData);
  *         description: Internal Server Error
  */
 router.delete("/delete", authenticateToken, checkstudent, deleteData);
+
+/**
+ * @swagger
+ * /students/update-profile-image:
+ *   patch:
+ *     summary: Update student profile image
+ *     description: Update the student's profile image.
+ *     tags: [Students]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               profileImg:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Profile image updated successfully
+ *       401:
+ *         description: Unauthorized - User data not found in request
+ *       404:
+ *         description: Not Found - User or Student not found
+ *       500:
+ *         description: Internal Server Error
+ */
+router.patch("/update-profile-image", authenticateToken, checkstudent, updateProfileImage);
+
 
 module.exports = router;

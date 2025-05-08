@@ -1282,6 +1282,39 @@ const addStudent = async (req: Request, res: Response) => {
   }
 };
 
+const updateProfileImage = async (req: Request, res: Response) => {
+  const user = (req as Request & { user: JwtPayload | undefined }).user;
+  const { profileImg } = req.body;
+
+  if (!user) {
+    return res.status(404).json({ message: "User data not found in request" });
+  }
+
+  if (!profileImg || typeof profileImg !== "object") {
+    return res.status(400).json({ message: "Invalid profile image data" });
+  }
+
+  try {
+    const userRecord = await User.findOne({ where: { id: user.id } });
+    if (!userRecord) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await userRecord.update({ profileImg });
+
+    const student = await Student.findOne({ where: { userId: user.id } });
+    if (student) {
+      await student.update({ profileImg });
+    }
+
+    return res.status(200).json({ message: "Profile image updated successfully" });
+  } catch (error) {
+    console.error("Error updating profile image:", error);
+    return res.status(500).json({ message: "Failed to update profile image", error });
+  }
+};
+
+
 export {
   addStudent,
   studentData,
@@ -1303,4 +1336,5 @@ export {
   appearTaskesTypeandCategory,
   buyWaterSeeder,
   growTheTree,
+  updateProfileImage,
 };
