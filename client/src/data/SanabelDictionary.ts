@@ -46,7 +46,7 @@ export const sanabelImgs: any = {
   الصلاة: sanabel00,
   الصيام: sanabel01,
   الصدقة: sanabel02,
-  العفو: sanabel03,
+  "العفو والصفح": sanabel03,
   الشكر: sanabel04,
   الصبر: sanabel05,
   الذكر: sanabel06,
@@ -77,7 +77,7 @@ export const sanabelImgs: any = {
   التعاون: sanabel215,
   "الكلمة الطيبة والإحسان في القول": sanabel216,
   "المشاركة والإيثار": sanabel217,
-  "قضاء الحوائج": sanabel218,
+  "قضاء الحوائج ومساعدة الآخرين": sanabel218,
 
   // Type4
   "عدم الإسراف": sanabel30,

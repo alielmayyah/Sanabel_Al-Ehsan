@@ -51,11 +51,11 @@ const studentData = async (req: Request, res: Response) => {
     } else {
       const treePoint = await Tree.findOne({
         where: { id: student.treeProgress },
-        attributes: ["id", "seeders", "water","stage","treeProgress"],
+        attributes: ["id", "seeders", "water", "stage", "treeProgress"],
       });
       const responseData = {
         student,
-        treePoint: treePoint || null, 
+        treePoint: treePoint || null,
       };
       res.status(200).json({ data: responseData });
     }
@@ -105,7 +105,6 @@ const updateData = async (req: Request, res: Response) => {
   res.status(200).json({ message: "User and Student data updated successfully" });
 };
 
-
 const deleteData = async (req: Request, res: Response) => {
   const user = (req as Request & { user: JwtPayload | undefined }).user;
 
@@ -122,11 +121,9 @@ const deleteData = async (req: Request, res: Response) => {
   await StudentTask.destroy({ where: { studentId: student?.id } });
   await StudentChallenge.destroy({ where: { studentId: student?.id } });
 
-
   // Delete student first, then delete user
   await student.destroy();
   await userRecord.destroy();
-
 
   res
     .status(200)
@@ -163,7 +160,9 @@ const appearTaskesType = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
     if (!user) {
-      return res.status(404).json({ message: "User data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "User data not found in request" });
     }
 
     const student = await Student.findOne({ where: { userId: user.id } });
@@ -171,7 +170,9 @@ const appearTaskesType = async (req: Request, res: Response) => {
     const parent = await Parent.findOne({ where: { userId: user.id } });
 
     if (!student && !teacher && !parent) {
-      return res.status(404).json({ message: "Student data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "Student data not found in request" });
     }
 
     const categoryId = Number(req.params.categoryId);
@@ -184,11 +185,12 @@ const appearTaskesType = async (req: Request, res: Response) => {
     const task = await Task.findAll({ where: { categoryId } });
 
     if (!task || task.length === 0) {
-      return res.status(404).json({ message: "No tasks found for this category" });
+      return res
+        .status(404)
+        .json({ message: "No tasks found for this category" });
     }
 
     return res.status(200).json({ data: task });
-
   } catch (error) {
     console.error("Error fetching tasks:", error);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -198,12 +200,16 @@ const appearTaskesTypeandCategory = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
     if (!user) {
-      return res.status(404).json({ message: "User data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "User data not found in request" });
     }
 
     const student = await Student.findOne({ where: { userId: user.id } });
     if (!student) {
-      return res.status(404).json({ message: "Student data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "Student data not found in request" });
     }
 
     const type = req.params.type;
@@ -211,7 +217,9 @@ const appearTaskesTypeandCategory = async (req: Request, res: Response) => {
 
     // Validate categoryId and type
     if (isNaN(categoryId) || !type || typeof type !== "string") {
-      return res.status(400).json({ message: "Invalid category or type parameter" });
+      return res
+        .status(400)
+        .json({ message: "Invalid category or type parameter" });
     }
 
     // Get the start and end of today
@@ -241,7 +249,9 @@ const appearTaskesTypeandCategory = async (req: Request, res: Response) => {
     });
 
     if (tasks.length === 0) {
-      return res.status(404).json({ message: "No tasks found for today in the given category and type" });
+      return res.status(404).json({
+        message: "No tasks found for today in the given category and type",
+      });
     }
 
     // Extract task IDs
@@ -265,7 +275,9 @@ const appearTaskesTypeandCategory = async (req: Request, res: Response) => {
     // Merge task data with completion status
     const mergedTasks = tasks.map((task) => ({
       ...task,
-      completionStatus: completedTaskIds.has(task.id) ? "Completed" : "Not Completed",
+      completionStatus: completedTaskIds.has(task.id)
+        ? "Completed"
+        : "Not Completed",
     }));
 
     return res.status(200).json({ tasks: mergedTasks });
@@ -279,7 +291,9 @@ const appearTaskesCategory = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
     if (!user) {
-      return res.status(404).json({ message: "User data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "User data not found in request" });
     }
 
     const student = await Student.findOne({ where: { userId: user.id } });
@@ -287,17 +301,23 @@ const appearTaskesCategory = async (req: Request, res: Response) => {
     const parent = await Parent.findOne({ where: { userId: user.id } });
 
     if (!student && !teacher && !parent) {
-      return res.status(404).json({ message: "Student data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "Student data not found in request" });
     }
-    const cateogrydata = await TaskCategory.findAll()
+    const cateogrydata = await TaskCategory.findAll();
     if (!cateogrydata) {
-      return res.status(404).json({ message: "Category data not found in request" });
-    }  
-       
+      return res
+        .status(404)
+        .json({ message: "Category data not found in request" });
+    }
+
     return res.status(200).json({ data: cateogrydata });
   } catch (error) {
     console.error("❌ Error in appearTaskesCategory:", error);
-    return res.status(500).json({ error: "Internal Server Error", details: error });
+    return res
+      .status(500)
+      .json({ error: "Internal Server Error", details: error });
   }
 };
 const appearTrophySecondaireCompleted = async (req: Request, res: Response) => {
@@ -318,7 +338,7 @@ const appearTrophySecondaireCompleted = async (req: Request, res: Response) => {
       where: {
         studentId: student.id,
         completionStatus: "Completed",
-        '$challenge.tasktype$': { [Op.is]: null }
+        "$challenge.tasktype$": { [Op.is]: null },
       },
       include: [
         {
@@ -335,9 +355,14 @@ const appearTrophySecondaireCompleted = async (req: Request, res: Response) => {
             "snabelRed",
             "snabelYellow",
             "tasktype",
+<<<<<<< HEAD
+
+            "taskCategory",
+=======
             "water",
             "seeder",
             "taskCategory"
+>>>>>>> 4b0c36b9ca1ca167ac93263146c81258b0c30b2d
           ],
         },
       ],
@@ -353,7 +378,10 @@ const appearTrophySecondaireCompleted = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error });
   }
 };
-const appearTrophySecondaireNotCompleted = async (req: Request, res: Response) => {
+const appearTrophySecondaireNotCompleted = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
     if (!user) {
@@ -371,7 +399,7 @@ const appearTrophySecondaireNotCompleted = async (req: Request, res: Response) =
       where: {
         studentId: student.id,
         completionStatus: "NotCompleted",
-        '$challenge.tasktype$': { [Op.is]: null }
+        "$challenge.tasktype$": { [Op.is]: null },
       },
       include: [
         {
@@ -388,9 +416,14 @@ const appearTrophySecondaireNotCompleted = async (req: Request, res: Response) =
             "snabelRed",
             "snabelYellow",
             "tasktype",
+<<<<<<< HEAD
+
+            "taskCategory",
+=======
               "water",
               "seeder",
             "taskCategory"
+>>>>>>> 4b0c36b9ca1ca167ac93263146c81258b0c30b2d
           ],
         },
       ],
@@ -424,7 +457,7 @@ const appearTrophyPrimaireCompleted = async (req: Request, res: Response) => {
       where: {
         studentId: student.id,
         completionStatus: "Completed",
-        '$challenge.tasktype$': { [Op.ne]: null }
+        "$challenge.tasktype$": { [Op.ne]: null },
       },
       include: [
         {
@@ -443,8 +476,8 @@ const appearTrophyPrimaireCompleted = async (req: Request, res: Response) => {
             "snabelRed",
             "snabelYellow",
             "tasktype",
-            
-            "taskCategory"
+
+            "taskCategory",
           ],
         },
       ],
@@ -460,7 +493,10 @@ const appearTrophyPrimaireCompleted = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error });
   }
 };
-const appearTrophyPrimaireNotCompleted = async (req: Request, res: Response) => {
+const appearTrophyPrimaireNotCompleted = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
     if (!user) {
@@ -478,7 +514,7 @@ const appearTrophyPrimaireNotCompleted = async (req: Request, res: Response) => 
       where: {
         studentId: student.id,
         completionStatus: "NotCompleted",
-        '$challenge.tasktype$': { [Op.ne]: null }
+        "$challenge.tasktype$": { [Op.ne]: null },
       },
       include: [
         {
@@ -497,8 +533,8 @@ const appearTrophyPrimaireNotCompleted = async (req: Request, res: Response) => 
             "snabelRed",
             "snabelYellow",
             "tasktype",
-            
-            "taskCategory"
+
+            "taskCategory",
           ],
         },
       ],
@@ -519,13 +555,17 @@ const appearTaskCompletedcountToday = async (req: Request, res: Response) => {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
 
     if (!user) {
-      return res.status(404).json({ message: "User data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "User data not found in request" });
     }
 
     const student = await Student.findOne({ where: { userId: user.id } });
 
     if (!student) {
-      return res.status(404).json({ message: "Student data not found for the user" });
+      return res
+        .status(404)
+        .json({ message: "Student data not found for the user" });
     }
 
     // Get the current date (without time)
@@ -563,7 +603,9 @@ const appearTaskCompletedcountToday = async (req: Request, res: Response) => {
     });
 
     if (!tasks || tasks.length === 0) {
-      return res.status(404).json({ message: "No completed tasks found for the student today" });
+      return res
+        .status(404)
+        .json({ message: "No completed tasks found for the student today" });
     }
 
     return res.status(200).json({
@@ -612,7 +654,6 @@ const appearTaskCompleted = async (req: Request, res: Response) => {
             "snabelYellow",
             "snabelBlue",
             "xp",
-
           ],
           include: [
             {
@@ -658,7 +699,10 @@ const appearTaskCompleted = async (req: Request, res: Response) => {
   }
 };
 
-const calculateCompletedTasksByCategory = async (req: Request, res: Response) => {
+const calculateCompletedTasksByCategory = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const user = (req as Request & { user?: JwtPayload }).user;
     if (!user) {
@@ -694,10 +738,13 @@ const calculateCompletedTasksByCategory = async (req: Request, res: Response) =>
     );
 
     // Convert the query result into an object mapping category titles to counts
-    const categoryCounts = completedTasks.reduce((acc: Record<string, number>, row: any) => {
-      acc[row["title"]] = Number(row["count"]) || 0;
-      return acc;
-    }, {} as Record<string, number>);
+    const categoryCounts = completedTasks.reduce(
+      (acc: Record<string, number>, row: any) => {
+        acc[row["title"]] = Number(row["count"]) || 0;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     // Ensure all unique categories appear in the final response (even if count is 0)
     const finalCategoryCounts = allCategories.reduce((acc, category) => {
@@ -706,10 +753,9 @@ const calculateCompletedTasksByCategory = async (req: Request, res: Response) =>
     }, {} as Record<string, number>);
 
     // Calculate total completed tasks
-    const totalCompletedTasks = (Object.values(finalCategoryCounts) as number[]).reduce(
-      (sum: number, count: number) => sum + count,
-      0
-    );
+    const totalCompletedTasks = (
+      Object.values(finalCategoryCounts) as number[]
+    ).reduce((sum: number, count: number) => sum + count, 0);
     return res.status(200).json({
       totalCompletedTasks,
       categoryCounts: finalCategoryCounts,
@@ -740,7 +786,7 @@ const appearChallangesSecondaire = async (req: Request, res: Response) => {
     const challenge = await StudentChallenge.findAll({
       where: {
         studentId: student.id,
-          '$challenge.tasktype$': { [Op.is]: null },
+        "$challenge.tasktype$": { [Op.is]: null },
       },
       include: [
         {
@@ -759,7 +805,7 @@ const appearChallangesSecondaire = async (req: Request, res: Response) => {
             "snabelRed",
             "snabelYellow",
             "taskCategory",
-            "tasktype"
+            "tasktype",
           ],
         },
       ],
@@ -792,7 +838,7 @@ const appearChallangesPrimaire = async (req: Request, res: Response) => {
     const challenge = await StudentChallenge.findAll({
       where: {
         studentId: student.id,
-         '$challenge.tasktype$' : { [Op.ne]: null },
+        "$challenge.tasktype$": { [Op.ne]: null },
       },
       include: [
         {
@@ -811,7 +857,7 @@ const appearChallangesPrimaire = async (req: Request, res: Response) => {
             "snabelRed",
             "snabelYellow",
             "taskCategory",
-            "tasktype"
+            "tasktype",
           ],
         },
       ],
@@ -840,7 +886,9 @@ const appearLeaderboard = async (req: Request, res: Response) => {
     const parent = await Parent.findOne({ where: { userId: user.id } });
 
     if (!student && !teacher && !parent) {
-      return res.status(404).json({ message: "Student data not found in request" });
+      return res
+        .status(404)
+        .json({ message: "Student data not found in request" });
     }
 
     const students = await Student.findAll({
@@ -879,7 +927,7 @@ const buyWaterSeeder = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Add some seeders or water first" });
     }
 
-    const totalRed = 2 * (water + seeders);
+    const totalRed = 20 * water + 30 * seeders;
     const totalBlue = totalRed;
     const totalYellow = totalRed;
 
@@ -891,38 +939,63 @@ const buyWaterSeeder = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Insufficient snabel balance" });
     }
 
-     // update the challagange of water
-    if(water){
-      const water_challanges = await StudentChallenge.findAll({where:{studentId:student.id },include:[{model:Challenge,as:"challenge",where:{Category:"water"}}]})
+    // update the challagange of water
+    if (water) {
+      const water_challanges = await StudentChallenge.findAll({
+        where: { studentId: student.id },
+        include: [
+          { model: Challenge, as: "challenge", where: { Category: "water" } },
+        ],
+      });
       if (water_challanges.length === 0) {
         return res.status(404).json({ message: "No water challenge found" });
       }
-      
+
       for (const water_challange of water_challanges) {
         if (water_challange.completionStatus === "NotCompleted") {
-          await water_challange.update({ pointOfStudent: water_challange.pointOfStudent + water });
-          if (water_challange.challenge && water_challange.pointOfStudent + water >= water_challange.challenge.point) {
+          await water_challange.update({
+            pointOfStudent: water_challange.pointOfStudent + water,
+          });
+          if (
+            water_challange.challenge &&
+            water_challange.pointOfStudent + water >=
+              water_challange.challenge.point
+          ) {
             await water_challange.update({ completionStatus: "Completed" });
-            await student.update({ water: student.water + water_challange.challenge.water });
+            await student.update({
+              water: student.water + water_challange.challenge.water,
+            });
           }
           await student.save();
           await water_challange.save(); // Save updates
         }
       }
     }
-    if(seeders){
-      const seeder_challanges = await StudentChallenge.findAll({where:{studentId:student.id },include:[{model:Challenge,as:"challenge",where:{Category:"seeder"}}]})
+    if (seeders) {
+      const seeder_challanges = await StudentChallenge.findAll({
+        where: { studentId: student.id },
+        include: [
+          { model: Challenge, as: "challenge", where: { Category: "seeder" } },
+        ],
+      });
       if (seeder_challanges.length === 0) {
         return res.status(404).json({ message: "No water challenge found" });
       }
-      
+
       for (const seeder_challange of seeder_challanges) {
         if (seeder_challange.completionStatus === "NotCompleted") {
-          await seeder_challange.update({ pointOfStudent: seeder_challange.pointOfStudent + seeders });
-          if (seeder_challange.challenge && seeder_challange.pointOfStudent + seeders >= seeder_challange.challenge.point) {
+          await seeder_challange.update({
+            pointOfStudent: seeder_challange.pointOfStudent + seeders,
+          });
+          if (
+            seeder_challange.challenge &&
+            seeder_challange.pointOfStudent + seeders >=
+              seeder_challange.challenge.point
+          ) {
             await seeder_challange.update({ completionStatus: "Completed" });
-            await student.update({ seeders: student.seeders + seeder_challange.challenge.seeder });
-
+            await student.update({
+              seeders: student.seeders + seeder_challange.challenge.seeder,
+            });
           }
           await seeder_challange.save(); // Save updates
           await student.save();
@@ -946,23 +1019,34 @@ const buyWaterSeeder = async (req: Request, res: Response) => {
 const growTheTree = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user?: JwtPayload }).user;
-    if (!user) return res.status(404).json({ message: "User data not found in request" });
+    if (!user)
+      return res
+        .status(404)
+        .json({ message: "User data not found in request" });
 
     // Fetch student and current tree level in parallel
     const student = await Student.findOne({ where: { userId: user.id } });
-    if (!student) return res.status(404).json({ message: "Student data not found in request" });
+    if (!student)
+      return res
+        .status(404)
+        .json({ message: "Student data not found in request" });
 
     const [treeLevel, maxTreeLevel] = await Promise.all([
       Tree.findByPk(student.treeProgress),
       Tree.max("id") as Promise<number>, // Explicitly tell TypeScript it's a number
     ]);
 
-    if (!treeLevel) return res.status(404).json({ message: "Tree data not found" });
+    if (!treeLevel)
+      return res.status(404).json({ message: "Tree data not found" });
     if (student.treeProgress >= maxTreeLevel)
-      return res.status(400).json({ message: "You have reached the maximum tree level!" });
+      return res
+        .status(400)
+        .json({ message: "You have reached the maximum tree level!" });
 
     if (student.seeders < treeLevel.seeders || student.water < treeLevel.water)
-      return res.status(400).json({ message: "Not enough seeders or water to grow the tree" });
+      return res
+        .status(400)
+        .json({ message: "Not enough seeders or water to grow the tree" });
 
     // Deduct resources and update progress
     Object.assign(student, {
@@ -990,13 +1074,15 @@ const growTheTree = async (req: Request, res: Response) => {
         const newPoints = treeChallenge.pointOfStudent + 1;
         await treeChallenge.update({ pointOfStudent: newPoints });
 
-        if (treeChallenge.challenge && newPoints >= treeChallenge.challenge.point) {
+        if (
+          treeChallenge.challenge &&
+          newPoints >= treeChallenge.challenge.point
+        ) {
           await treeChallenge.update({ completionStatus: "Completed" });
           student.snabelRed += treeChallenge.challenge.snabelRed;
           student.snabelBlue += treeChallenge.challenge.snabelBlue;
           student.snabelYellow += treeChallenge.challenge.snabelYellow;
           student.xp += treeChallenge.challenge.xp;
-
         }
       }
     });
@@ -1004,20 +1090,25 @@ const growTheTree = async (req: Request, res: Response) => {
     // Fetch next tree level only if needed
     if (student.treeProgress <= maxTreeLevel) {
       const treeLevelForChallenge = await Tree.findByPk(student.treeProgress);
-      if (!treeLevelForChallenge) return res.status(404).json({ message: "Tree data not found" });
+      if (!treeLevelForChallenge)
+        return res.status(404).json({ message: "Tree data not found" });
 
       // Process tree stage challenges
       treeStageChallenges.forEach(async (treeChallenge) => {
         if (treeChallenge.completionStatus === "NotCompleted") {
-          await treeChallenge.update({ pointOfStudent: treeLevelForChallenge.stage });
+          await treeChallenge.update({
+            pointOfStudent: treeLevelForChallenge.stage,
+          });
 
-          if (treeChallenge.challenge && treeLevelForChallenge.stage === treeChallenge.challenge.point) {
+          if (
+            treeChallenge.challenge &&
+            treeLevelForChallenge.stage === treeChallenge.challenge.point
+          ) {
             await treeChallenge.update({ completionStatus: "Completed" });
             student.snabelRed += treeChallenge.challenge.snabelRed;
             student.snabelBlue += treeChallenge.challenge.snabelBlue;
             student.snabelYellow += treeChallenge.challenge.snabelYellow;
             student.xp += treeChallenge.challenge.xp;
-
           }
         }
       });
@@ -1027,13 +1118,14 @@ const growTheTree = async (req: Request, res: Response) => {
     await Promise.all(challengeUpdates);
     await student.save();
 
-    return res.status(200).json({ message: "Tree successfully grown!", student });
+    return res
+      .status(200)
+      .json({ message: "Tree successfully grown!", student });
   } catch (error) {
     console.error("Error in growing the tree:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 
 const addStudent = async (req: Request, res: Response) => {
   const processedData: any = req.processedData;
@@ -1054,7 +1146,10 @@ const addStudent = async (req: Request, res: Response) => {
             where: { name: data.OrganizationName },
           });
           if (!organization) {
-            failedEntries.push({ row: data, error: "School not found in request" });
+            failedEntries.push({
+              row: data,
+              error: "School not found in request",
+            });
             continue;
           }
 
@@ -1080,7 +1175,10 @@ const addStudent = async (req: Request, res: Response) => {
             },
           });
           if (!class_data) {
-            failedEntries.push({ row: data, error: "Class not found in request" });
+            failedEntries.push({
+              row: data,
+              error: "Class not found in request",
+            });
             continue;
           }
 
@@ -1142,14 +1240,14 @@ const addStudent = async (req: Request, res: Response) => {
             completionStatus: "NotCompleted",
           }));
 
-        
-
           await StudentChallenge.bulkCreate(studentChallenges);
 
           // ✅ Update Success Entries & Excel File
-          successfulEntries.push({ row: data, message: "Student added successfully" });
+          successfulEntries.push({
+            row: data,
+            message: "Student added successfully",
+          });
           worksheet.addRow({ email, password });
-
         } catch (error) {
           failedEntries.push({ row: data, error: error });
         }
@@ -1166,7 +1264,10 @@ const addStudent = async (req: Request, res: Response) => {
     for (const orgName in organizationFiles) {
       const { workbook } = organizationFiles[orgName];
       const sanitizedOrgName = orgName.replace(/[\/\\?%*:|"<>]/g, "_"); // Sanitize filename
-      const filePath = path.resolve(outputDir, `${sanitizedOrgName}_Users.xlsx`);
+      const filePath = path.resolve(
+        outputDir,
+        `${sanitizedOrgName}_Users.xlsx`
+      );
 
       await workbook.xlsx.writeFile(filePath);
       savedFiles.push(filePath);
@@ -1181,13 +1282,11 @@ const addStudent = async (req: Request, res: Response) => {
       failedEntries,
       files: savedFiles,
     });
-
   } catch (error) {
     console.error("Error processing Excel file:", error);
     res.status(500).json({ message: "Internal server error", error: error });
   }
 };
-
 
 export {
   addStudent,

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import trophy from "../../../assets/trophy.png";
 import Loading from "../../../components/Loading";
+import i18n from "i18next";
 
 // Sanabel
 import blueSanabel from "../../../assets/resources/سنبلة زرقاء.png";
@@ -16,7 +17,9 @@ import fertilizer from "../../../assets/resources/سماد.png";
 // Trophies
 import xpTrophy from "../../../assets/trophies/Other Trophies/اكس-بي.png";
 
+// Import trophy image mappings
 import { OtherTrophies } from "../../../data/OtherTrophies";
+import { SanabelTrophies } from "../../../data/SanabelTrophies";
 
 import axios from "axios";
 
@@ -34,17 +37,20 @@ const containerVariants = {
 
 const Progress: React.FC = () => {
   const { t } = useTranslation();
-  const [trophyType, setTrophyType] = useState(1);
+  const [trophyType, setTrophyType] = useState(0); // Default to Other trophies
   const [trophies, setTrophies] = useState<any[]>([]);
   const [groupedTrophies, setGroupedTrophies] = useState<any>({});
   const [loading, setLoading] = useState(true); // Loading state
 
   const fetchTrophies = async (token?: string) => {
+    setLoading(true);
     const authToken = token || localStorage.getItem("token");
     if (!authToken) return;
     try {
       const response = await axios.get(
-        "http://localhost:3000/students/student-challenge",
+        trophyType === 1
+          ? "http://localhost:3000/students/student-trophy-secondaire"
+          : "http://localhost:3000/students/student-trophy-primaire",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -64,7 +70,7 @@ const Progress: React.FC = () => {
 
   useEffect(() => {
     fetchTrophies();
-  }, []);
+  }, [trophyType]);
 
   // Group trophies by title to show one card per trophy type
   const groupTrophiesByTitle = (trophiesData: any[]) => {
@@ -86,8 +92,8 @@ const Progress: React.FC = () => {
       { value: trophy.challenge.snabelYellow || 0, icon: yellowSanabel },
       { value: trophy.challenge.xp || 0, icon: xpIcon },
       { value: trophy.challenge.water || 0, icon: water },
-      { value: trophy.challenge.fertilizer || 0, icon: fertilizer },
-    ].filter((reward) => reward.value > 0); // Only show rewards with value > 0
+      { value: trophy.challenge.seeder || 0, icon: fertilizer },
+    ].filter((reward) => reward.value > 0);
   };
 
   // Find the most progressed trophy within a group
@@ -111,11 +117,6 @@ const Progress: React.FC = () => {
       })
       .filter((value) => value !== null);
 
-    // If we couldn't extract any milestones, use the default ones
-    if (milestones.length === 0) {
-      return [1, 5, 10, 25, 50, 75, 100, 1000, 2500];
-    }
-
     // Sort milestones in ascending order
     return milestones.sort((a, b) => a - b);
   };
@@ -132,6 +133,32 @@ const Progress: React.FC = () => {
     return <Loading />;
   }
 
+  // Get formatted milestone value (convert numbers > 100 to 1k/1ك format)
+  const formatMilestone = (value: any, isArabic = true) => {
+    if (value >= 1000) {
+      const formattedValue = (value / 1000).toFixed(value % 1000 === 0 ? 0 : 1);
+      return isArabic ? `${formattedValue}ك` : `${formattedValue}k`;
+    }
+    return value.toString();
+  };
+
+  const handleTrophyTypeChange = (type: number) => {
+    if (type !== trophyType) {
+      setTrophyType(type);
+    }
+  };
+
+  // Get the next milestone based on current progress
+  const getNextMilestone = (currentPoints: number, milestones: number[]) => {
+    // Find the first milestone that is greater than the current points
+    const nextMilestone = milestones.find(
+      (milestone) => milestone > currentPoints
+    );
+
+    // If there's no next milestone (already completed all), use the last milestone
+    return nextMilestone || milestones[milestones.length - 1] || currentPoints;
+  };
+
   return (
     <div className="flex flex-col gap-3 w-full h-3/4 overflow-y-auto">
       <div className="flex w-full rounded-2xl bg-[#e6e6e6]">
@@ -139,7 +166,7 @@ const Progress: React.FC = () => {
           className={`text-[#999] text-sm p-2 rounded-2xl w-1/2 flex-center ${
             trophyType === 1 && "bg-yellowprimary text-white"
           }`}
-          onClick={() => setTrophyType(1)}
+          onClick={() => handleTrophyTypeChange(1)}
         >
           {t("جوائز أخري")}
         </h1>
@@ -147,7 +174,7 @@ const Progress: React.FC = () => {
           className={`text-[#999] text-sm p-2 rounded-2xl w-1/2 flex-center ${
             trophyType === 0 && "bg-yellowprimary text-white"
           }`}
-          onClick={() => setTrophyType(0)}
+          onClick={() => handleTrophyTypeChange(0)}
         >
           {t("جوائز السنابل")}
         </h1>
@@ -158,6 +185,7 @@ const Progress: React.FC = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
+        key={trophyType} // Add key to reset animation when trophy type changes
       >
         <motion.h1
           className="text-white font-bold"
@@ -193,19 +221,28 @@ const Progress: React.FC = () => {
         ([title, trophyGroup]: [string, any]) => {
           const representativeTrophy = getMostProgressedTrophy(trophyGroup);
           const currentPoints = representativeTrophy.pointOfStudent;
-          const targetPoints = representativeTrophy.challenge.point;
+          const trophyMilestones = getTrophyMilestones(trophyGroup);
+          const nextMilestone = getNextMilestone(
+            currentPoints,
+            trophyMilestones
+          );
+
+          // Calculate progress percentage based on next milestone
           const progressPercentage = Math.min(
-            (currentPoints / targetPoints) * 100,
+            (currentPoints / nextMilestone) * 100,
             100
           );
 
-          // Get the specific milestones for this trophy group
-          const trophyMilestones = getTrophyMilestones(trophyGroup);
+          // Get appropriate trophy image based on trophy type
+          const trophyImage =
+            trophyType === 1
+              ? OtherTrophies[title]
+              : SanabelTrophies[title as keyof typeof SanabelTrophies];
 
           return (
             <div
               className="w-full flex flex-col justify-between items-center shadow-sm p-3 rounded-xl border-[1px] gap-2"
-              key={title}
+              key={`${trophyType}-${title}`}
             >
               <div className="w-full flex justify-between items-center">
                 <div className="flex gap-2">
@@ -217,12 +254,11 @@ const Progress: React.FC = () => {
                   ))}
                 </div>
                 <div className="flex flex-center flex-col gap-1">
-                  <img
-                    src={OtherTrophies[title]}
-                    alt="trophy"
-                    className="w-16"
-                  />
-                  <h1 className="text-black font-bold text-end w-full">
+                  <img src={trophyImage} alt="trophy" className="w-16" />
+                  <h1
+                    className="text-black font-bold text-end w-full"
+                    dir="rtl"
+                  >
                     {"جائزة" + " " + t(title)}
                   </h1>
                 </div>
@@ -233,10 +269,10 @@ const Progress: React.FC = () => {
               </p>
 
               <div className="w-full bg-[#fab70050] rounded-3xl h-6 flex justify-end items-center relative overflow-hidden">
-                {/* Text displaying current and needed points */}
+                {/* Text displaying current and needed points (now shows next milestone instead of target) */}
                 <h1 className="text-[#997000] px-3 relative z-10">
                   {currentPoints}
-                  <span className="text-black">/{targetPoints}</span>
+                  <span className="text-black">/{nextMilestone}</span>
                 </h1>
 
                 {/* Progress bar */}
@@ -248,7 +284,7 @@ const Progress: React.FC = () => {
                 ></motion.div>
               </div>
 
-              <div className="w-full flex justify-around">
+              <div className="w-full flex justify-center items-center flex-wrap gap-1 mt-2">
                 {trophyMilestones.map((milestone, idx) => (
                   <div
                     key={idx}
@@ -258,8 +294,8 @@ const Progress: React.FC = () => {
                         : "bg-[#FFF8E5]"
                     }`}
                   >
-                    <h1 className="text-xs text-black font-bold">
-                      {milestone}
+                    <h1 className="text-xs text-black font-bold " dir="rtl">
+                      {formatMilestone(milestone, i18n.language === "ar")}
                     </h1>
                   </div>
                 ))}

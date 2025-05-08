@@ -95,7 +95,7 @@ const challengeData: ChallengeData[] = [
       yellow: 2,
       red: 2,
       xp: 5,
-      trophyMilestones: [1, 5, 10, 25, 50, 75, 100],
+      trophyMilestones: [1, 5, 10, 25, 50, 75, 100, 500, 1000],
       xpMultiplier: 1,
       blueMultiplier: 0.6 * 0.5,
       yellowMultiplier: 0.6 * 0.5,

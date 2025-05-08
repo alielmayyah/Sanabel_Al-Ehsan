@@ -14,6 +14,7 @@ import loginImg from "../../../assets/login/logo.png";
 import sanabelVideo from "../../../assets/login/loginVideo.mp4";
 import { FaHome } from "react-icons/fa";
 import { useUserContext } from "../../../context/StudentUserProvider";
+
 const Toaster = () => (
   <ToastContainer
     position="top-center"
@@ -45,15 +46,11 @@ const Login: React.FC = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  console.log(email);
-  console.log(password);
 
   const { refreshUserData } = useUserContext();
 
-  // In Login.jsx, modify your handleLogin function:
+  // Modified handleLogin function with proper firstTimer handling
   const handleLogin = async () => {
-    // Your existing validation code...
-
     try {
       const response = await axios.patch("http://localhost:3000/users/login", {
         email,
@@ -66,12 +63,25 @@ const Login: React.FC = () => {
           "token",
           `${response.data.data.user.token.toString()}`
         );
-        localStorage.setItem("firstTimer", "true");
+
         // Store Role preference
         localStorage.setItem("role", response.data.data.user.role.toString());
 
         // Store keepLoggedIn preference
         localStorage.setItem("keepLoggedIn", "true");
+
+        // Check if this user has logged in before
+        const hasCompletedTutorial = localStorage.getItem(
+          `tutorialComplete-${email}`
+        );
+
+        // Only set firstTimer to true if they haven't completed the tutorial before
+        if (!hasCompletedTutorial) {
+          localStorage.setItem("firstTimer", "true");
+        } else {
+          // Make sure firstTimer is set to false for returning users
+          localStorage.setItem("firstTimer", "false");
+        }
 
         // Fetch user data immediately after login
         try {
@@ -90,7 +100,6 @@ const Login: React.FC = () => {
             const userData = userDataResponse.data.data.student;
 
             // Set user in context
-            // You'll need to import useUserContext at the top
             const { setUser } = useUserContext();
             setUser({
               firstName: userData.user.firstName,
@@ -104,11 +113,11 @@ const Login: React.FC = () => {
               xp: userData.xp,
               water: userData.water,
               fertilizer: userData.seeders,
-
               waterNeeded: userData.waterNeeded,
               fertilizerNeeded: response.data.data.treePoint.seeders,
               treeStage: response.data.data.treePoint.stage,
               treeProgress: response.data.data.treePoint.treeProgress,
+              connectCode: userData.connectCode,
             });
           }
         } catch (error) {
@@ -145,9 +154,14 @@ const Login: React.FC = () => {
           </p>
         </div>
       </div>
-      {/* <img src={loginImg} alt="" className="w-2/5 -my-7" /> */}
       <div className="w-full -my-7 ">
-        <video src={sanabelVideo} autoPlay muted preload="metadata" />
+        <video
+          ref={videoRef}
+          src={sanabelVideo}
+          autoPlay
+          muted
+          preload="metadata"
+        />
       </div>
 
       <div className="flex flex-col gap-4 w-full">

@@ -1,12 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
 // Import avatar components correctly
 import Boy1 from "../../../assets/avatars/Boys/Boy1";
 import Boy2 from "../../../assets/avatars/Boys/Boy2";
+import Boy3 from "../../../assets/avatars/Boys/Boy3";
+import Boy4 from "../../../assets/avatars/Boys/Boy4";
+import Boy5 from "../../../assets/avatars/Boys/Boy5";
+import Boy6 from "../../../assets/avatars/Boys/Boy6";
+import Boy7 from "../../../assets/avatars/Boys/Boy7";
+import Boy8 from "../../../assets/avatars/Boys/Boy8";
 
-import AvatarTest2 from "../../../assets/avatars/AvatarTest2";
+import Girl1 from "../../../assets/avatars/Girls/Girl1";
+import Girl2 from "../../../assets/avatars/Girls/Girl2";
+import Girl3 from "../../../assets/avatars/Girls/Girl3";
+import Girl4 from "../../../assets/avatars/Girls/Girl4";
+import Girl5 from "../../../assets/avatars/Girls/Girl5";
+import Girl6 from "../../../assets/avatars/Girls/Girl6";
+import Girl7 from "../../../assets/avatars/Girls/Girl7";
+import Girl8 from "../../../assets/avatars/Girls/Girl8";
 
 import { IoSparkles } from "react-icons/io5";
 import { GiMale, GiFemale } from "react-icons/gi";
@@ -28,85 +41,137 @@ interface CustomIconProps {
 
 // Define avatar types for easier manipulation
 interface AvatarOption {
-  id: string;
+  id: number;
   Component: React.FC<CustomIconProps>;
 }
 
 // Group avatars by category with proper typing
 const boysAvatars: AvatarOption[] = [
   {
-    id: "boy-1",
+    id: 0,
     Component: Boy1,
   },
   {
-    id: "boy-2",
+    id: 1,
     Component: Boy2,
   },
   {
-    id: "boy-3",
-    Component: Boy2,
+    id: 2,
+    Component: Boy3,
   },
   {
-    id: "boy-4",
-    Component: Boy2,
+    id: 3,
+    Component: Boy4,
   },
   {
-    id: "boy-5",
-    Component: Boy2,
+    id: 4,
+    Component: Boy5,
   },
   {
-    id: "boy-6",
-    Component: Boy2,
+    id: 5,
+    Component: Boy6,
   },
   {
-    id: "boy-7",
-    Component: Boy2,
+    id: 6,
+    Component: Boy7,
   },
   {
-    id: "boy-8",
-    Component: Boy2,
+    id: 7,
+    Component: Boy8,
   },
 ];
 
 const girlsAvatars: AvatarOption[] = [
   {
-    id: "girl-1",
-    Component: AvatarTest2,
+    id: 0,
+    Component: Girl1,
+  },
+  {
+    id: 1,
+    Component: Girl2,
+  },
+  {
+    id: 2,
+    Component: Girl3,
+  },
+  {
+    id: 3,
+    Component: Girl4,
+  },
+  {
+    id: 4,
+    Component: Girl5,
+  },
+  {
+    id: 5,
+    Component: Girl6,
+  },
+  {
+    id: 6,
+    Component: Girl7,
+  },
+  {
+    id: 7,
+    Component: Girl8,
   },
 ];
 
 // Enhanced color palettes with exactly 8 colors per category
 const hairColors = [
   { color: "#000000", name: "أسود" }, // Black
+  { color: "#2C2C2C", name: "أسود فحمي" }, // Charcoal Black
   { color: "#4B3621", name: "بني داكن" }, // Dark Brown
+  { color: "#654321", name: "بني محروق" }, // Burnt Brown
   { color: "#8B4513", name: "بني متوسط" }, // Medium Brown
   { color: "#A0522D", name: "بني فاتح" }, // Light Brown
+  { color: "#CD853F", name: "بني ذهبي" }, // Golden Brown
   { color: "#D2B48C", name: "أشقر" }, // Blonde
   { color: "#E6BE8A", name: "أشقر فاتح" }, // Light Blonde
+  { color: "#F5DEB3", name: "أشقر ذهبي" }, // Golden Blonde
   { color: "#A52A2A", name: "كستنائي" }, // Auburn
+  { color: "#8B0000", name: "كستنائي داكن" }, // Dark Auburn
   { color: "#FF6347", name: "أحمر" }, // Reddish Brown
+  { color: "#CD5C5C", name: "أحمر نحاسي" }, // Copper Red
+  { color: "#708090", name: "رمادي" }, // Gray
+  { color: "#C0C0C0", name: "فضي" }, // Silver/Gray
 ];
 
 const shirtColors = [
   { color: "#FFFFFF", name: "أبيض" }, // White
+  { color: "#F5F5F5", name: "أبيض مائل للرمادي" }, // Off-White
   { color: "#000000", name: "أسود" }, // Black
+  { color: "#36454F", name: "أسود فحمي" }, // Charcoal Black
   { color: "#1E90FF", name: "أزرق" }, // Dodger Blue
+  { color: "#4169E1", name: "أزرق ملكي" }, // Royal Blue
   { color: "#FF4500", name: "برتقالي" }, // Orange Red
+  { color: "#FF8C00", name: "برتقالي ذهبي" }, // Dark Orange
   { color: "#32CD32", name: "أخضر" }, // Lime Green
+  { color: "#228B22", name: "أخضر غابة" }, // Forest Green
   { color: "#FFD700", name: "ذهبي" }, // Gold
+  { color: "#DAA520", name: "ذهبي داكن" }, // Goldenrod
   { color: "#8A2BE2", name: "بنفسجي" }, // Blue Violet
+  { color: "#9400D3", name: "بنفسجي داكن" }, // Dark Violet
   { color: "#FF69B4", name: "وردي" }, // Hot Pink
+  { color: "#FF1493", name: "وردي غامق" }, // Deep Pink
 ];
 
 const backgrounds = [
-  { color: "#FFCDD2", name: "وردي فاتح" }, // Light Pink
-  { color: "#81D4FA", name: "أزرق سماوي" }, // Sky Blue
-  { color: "#FFEB3B", name: "أصفر" }, // Bright Yellow
-  { color: "#F48FB1", name: "وردي لافندر" }, // Pink Lavender
-  { color: "#4CAF50", name: "أخضر" }, // Vibrant Green
-  { color: "#FF5722", name: "برتقالي" }, // Vibrant Orange
-  { color: "#9C27B0", name: "أرجواني" }, // Bright Purple
-  { color: "#E91E63", name: "أحمر" }, // Bold Red
+  { color: "#2196F3", name: "أزرق ملكي" }, // Royal Blue
+  { color: "#BBDEFB", name: "أزرق باهت" }, // Pale Blue
+  { color: "#FF80AB", name: "وردي زاهي" }, // Hot Pink
+  { color: "#F8BBD0", name: "وردي حريري" }, // Silky Pink
+  { color: "#FFEB3B", name: "أصفر ذهبي" }, // Golden Yellow
+  { color: "#FFF176", name: "أصفر مشع" }, // Radiant Yellow
+  { color: "#E1BEE7", name: "أرجواني خفيف" }, // Soft Lavender
+  { color: "#CE93D8", name: "أرجواني وردي" }, // Orchid Pink
+  { color: "#4CAF50", name: "أخضر زمردي" }, // Emerald Green
+  { color: "#A5D6A7", name: "أخضر نعناعي" }, // Mint Green
+  { color: "#FF7043", name: "برتقالي غروب الشمس" }, // Sunset Orange
+  { color: "#FFAB91", name: "برتقالي وردي" }, // Coral Orange
+  { color: "#7E57C2", name: "أرجواني ملكي" }, // Royal Purple
+  { color: "#B39DDB", name: "أرجواني مخملي" }, // Velvet Purple
+  { color: "#F44336", name: "أحمر بركاني" }, // Volcanic Red
+  { color: "#EF9A9A", name: "وردي قرمزي" }, // Crimson Pink
 ];
 
 // Define background patterns for the background tab
@@ -119,13 +184,21 @@ const backgroundPatterns = [
 
 const skinColor = [
   { color: "#FFEFD5", name: "فاتح جداً" }, // Papaya Whip (Very Light)
+  { color: "#FFF8DC", name: "أبيض كريمي" }, // Cornsilk (Cream)
   { color: "#FFDAB9", name: "فاتح" }, // Peachpuff (Light)
+  { color: "#FFE4C4", name: "بيج" }, // Bisque (Light Beige)
   { color: "#EACBA1", name: "فاتح متوسط" }, // Medium Light
+  { color: "#E3BC98", name: "ذهبي فاتح" }, // Light Golden
   { color: "#D6A57A", name: "متوسط" }, // Medium Skin
+  { color: "#CBA375", name: "برونزي فاتح" }, // Light Bronze
   { color: "#C68A6D", name: "متوسط داكن" }, // Medium Dark
+  { color: "#B87C59", name: "برونزي" }, // Bronze
   { color: "#A0522D", name: "داكن" }, // Dark Skin
+  { color: "#956642", name: "بني نحاسي" }, // Copper Brown
   { color: "#8B4513", name: "داكن جداً" }, // Darker Skin
+  { color: "#7B3F00", name: "بني محروق" }, // Burnt Umber
   { color: "#654321", name: "غامق جداً" }, // Very Dark
+  { color: "#513620", name: "بني أسود" }, // Dark Chocolate
 ];
 
 const Step1 = () => {
@@ -137,32 +210,48 @@ const Step1 = () => {
   );
   const [isAnimating, setIsAnimating] = useState(false);
 
+  
   // Avatar customization state
   const [avatarState, setAvatarState] = useState({
     avatar: selectedAvatar,
     gender: gender,
-    hairColor: hairColors[0].color,
-    tshirtColor: shirtColors[1].color,
-    bgColor: backgrounds[0].color,
-    skinColor: skinColor[0].color,
-
+    hairColor: "",
+    tshirtColor: "",
+    bgColor: gender === "boy" ? backgrounds[0].color : backgrounds[1].color,
+    skinColor: "",
     bgPattern: backgroundPatterns[0].id,
   });
+
+  useEffect(() => {
+    localStorage.setItem('avatarData', JSON.stringify(avatarState));
+  }, [avatarState]);
+
   console.log(avatarState);
   // Current active tab
   const [currentTab, setCurrentTab] = useState("الشخصية");
 
   // Toggle between boy and girl avatars
+  // Replace your current toggleGender function with this:
   const toggleGender = () => {
     const newGender = gender === "boy" ? "girl" : "boy";
     setGender(newGender);
+
     // Set default avatar for the selected gender
-    setSelectedAvatar(newGender === "boy" ? boysAvatars[0] : girlsAvatars[0]);
+    const newAvatar = newGender === "boy" ? boysAvatars[0] : girlsAvatars[0];
+    setSelectedAvatar(newAvatar);
+
+    // Update avatarState with the new gender, avatar, and appropriate background color
+    setAvatarState((prev) => ({
+      ...prev,
+      gender: newGender,
+      avatar: newAvatar,
+      bgColor:
+        newGender === "boy" ? backgrounds[0].color : backgrounds[2].color,
+    }));
 
     // Trigger animation
     triggerAnimation();
   };
-
   // Get current avatar list based on gender
   const currentAvatarList = gender === "boy" ? boysAvatars : girlsAvatars;
 
@@ -287,6 +376,13 @@ const Step1 = () => {
                     whileTap={{ scale: 0.95 }}
                     onClick={() => {
                       setSelectedAvatar(avatar);
+                      setAvatarState((prev) => ({
+                        ...prev,
+                        avatar: avatar,
+                        tshirtColor: "",
+                        hairColor: "",
+                        skinColor: "",
+                      }));
                       triggerAnimation();
                     }}
                   >
@@ -295,9 +391,9 @@ const Step1 = () => {
                       style={{ backgroundColor: avatarState.bgColor }}
                     >
                       <avatar.Component
-                        tshirtColor={avatarState.tshirtColor}
-                        hairColor={avatarState.hairColor}
-                        skinColor={avatarState.skinColor}
+                        tshirtColor={undefined}
+                        hairColor={undefined}
+                        skinColor={undefined}
                       />
                     </div>
                     {selectedAvatar.id === avatar.id && (
@@ -346,7 +442,7 @@ const Step1 = () => {
                   }
                 >
                   <FaTshirt
-                    className="w-full h-full p-1"
+                    className="w-full h-full p-1 stroke-black stroke-2"
                     style={{ color: colorOption.color }}
                   />
 
@@ -414,7 +510,9 @@ const Step1 = () => {
                         : avatarState.bgColor,
                   }}
                 ></div>
-                <span className="text-xs font-medium">{pattern.name}</span>
+                <span className="text-xs font-medium text-[#999]">
+                  {pattern.name}
+                </span>
               </motion.div>
             ))}
           </div>
@@ -468,7 +566,6 @@ const Step1 = () => {
                     </motion.div>
                   )}
                 </motion.button>
-                <span className="text-xs">{bgOption.name}</span>
               </motion.div>
             ))}
           </div>
@@ -599,8 +696,8 @@ const Step1 = () => {
         >
           <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-400 rounded-full transform -rotate-3 shadow-lg"></div>
           <div className="absolute inset-2 bg-white rounded-full shadow-inner"></div>
-
           {/* Avatar rendering with background color and pattern */}
+
           <div
             className="absolute inset-3 rounded-full overflow-hidden"
             style={{
@@ -629,13 +726,12 @@ const Step1 = () => {
           >
             {selectedAvatar && (
               <selectedAvatar.Component
-                tshirtColor={avatarState.tshirtColor}
-                hairColor={avatarState.hairColor}
-                skinColor={avatarState.skinColor}
+                tshirtColor={avatarState.tshirtColor || undefined}
+                hairColor={avatarState.hairColor || undefined}
+                skinColor={avatarState.skinColor || undefined}
               />
             )}
           </div>
-
           {/* Decorative elements */}
           <motion.div
             className="absolute -top-1 -right-1 text-yellowprimary"
@@ -655,7 +751,7 @@ const Step1 = () => {
 
         {/* Tab Navigation */}
         <div className="flex w-full bg-white rounded-t-xl shadow-md p-2">
-          <div className="grid grid-cols-5 gap-1 w-full">
+          <div className="grid grid-cols-5 grid-reversse gap-1 w-full">
             {tabs.map((tab) => (
               <motion.button
                 key={tab.id}

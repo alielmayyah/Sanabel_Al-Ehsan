@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { avatars } from "../data/Avatars";
+
+import GetAvatar from "../pages/student/tutorial/GetAvatar";
 
 // Define the type for the component props
 interface GreetingProps {
@@ -13,17 +14,18 @@ const Greeting: React.FC<GreetingProps> = ({ name, text, hello }) => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex-center p-2 gap-3">
-      <div className="flex flex-col text-end">
-        <h1 className="text-[#040415] dark:text-white">
-          {hello === "yes" && t("مرحباً")} {name}
-        </h1>
-        <h2 className="text-[#B3B3B3]">{t(text)}</h2>
+    <div className="flex-center p-0 gap-3">
+      <div className="flex-center gap-3">
+        <div className="flex flex-col text-end">
+          <h1 className="text-[#040415] dark:text-white">
+            {hello === "yes" && t("مرحباً")} {name}
+          </h1>
+          <h2 className="text-[#B3B3B3]">{t(text)}</h2>
+        </div>
+        <div className="w-16 h-16">
+          <GetAvatar />
+        </div>{" "}
       </div>
-      <img
-        className="w-12 h-12 bg-red-300 rounded-full"
-        src={avatars.boys.boy1}
-      ></img>
     </div>
   );
 };

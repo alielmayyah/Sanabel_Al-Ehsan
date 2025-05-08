@@ -8,45 +8,6 @@ import wonderlearnLogo from "../../../assets/WonderLearn.png";
 const SplashScreen: React.FC = () => {
   const history = useHistory();
 
-  // useEffect(() => {
-  //   const hasVisited = localStorage.getItem("hasVisited") === "true";
-  //   const keepLoggedIn = localStorage.getItem("keepLoggedIn") === "true";
-  //   const role = localStorage.getItem("role");
-  //   const firstTimer = localStorage.getItem("firstTimer");
-
-  //   const timer = setTimeout(() => {
-  //     if (keepLoggedIn) {
-  //       // Logged-in user redirects to home based on role
-  //       if (role === "Student") {
-  //         if (firstTimer === "true") {
-  //           history.replace("/student/tutorial");
-  //         } else {
-  //           history.replace("/student/home");
-  //         }
-  //       } else if (role === "Teacher") {
-  //         history.replace("/teacher/home");
-  //       } else if (role === "Parent") {
-  //         history.replace("/parent/home");
-  //       }
-  //     } else if (!hasVisited) {
-  //       // First-time user redirects to onboarding
-  //       localStorage.setItem("hasVisited", "true");
-  //       history.replace("/onboarding");
-  //     } else {
-  //       // Returning user redirects to choose sign method
-  //       history.replace("/choosesignmethod");
-  //     }
-  //   }, 4000); // 4-second delay for splash screen
-
-  //   return () => clearTimeout(timer);
-  // }, [history]);
-
-  // Testing
-
-  localStorage.setItem("keepLoggedIn", "true");
-  localStorage.setItem("role", "Student");
-  localStorage.setItem("firstTimer", "true");
-
   useEffect(() => {
     const hasVisited = localStorage.getItem("hasVisited") === "true";
     const keepLoggedIn = localStorage.getItem("keepLoggedIn") === "true";
@@ -54,17 +15,27 @@ const SplashScreen: React.FC = () => {
     const firstTimer = localStorage.getItem("firstTimer");
 
     const timer = setTimeout(() => {
-      if (keepLoggedIn && role === "Student") {
-        if (firstTimer === "true") {
-          localStorage.setItem("firstTimer", "false"); // Mark tutorial as complete
-          history.replace("/student/tutorial");
-        } else {
-          history.replace("/student/home");
+      if (keepLoggedIn) {
+        // Logged-in user redirects to home based on role
+        if (role === "Student") {
+          // Check if this is their first time (they need to see tutorial)
+          if (firstTimer === "true") {
+            history.replace("/student/tutorial");
+          } else {
+            // This is a returning user, send directly to home
+            history.replace("/student/home");
+          }
+        } else if (role === "Teacher") {
+          history.replace("/teacher/home");
+        } else if (role === "Parent") {
+          history.replace("/parent/home");
         }
       } else if (!hasVisited) {
+        // First-time visitor to app redirects to onboarding
         localStorage.setItem("hasVisited", "true");
         history.replace("/onboarding");
       } else {
+        // Returning visitor (but not logged in) redirects to choose sign method
         history.replace("/choosesignmethod");
       }
     }, 4000); // 4-second delay for splash screen

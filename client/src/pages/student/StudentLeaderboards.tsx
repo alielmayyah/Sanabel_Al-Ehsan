@@ -28,6 +28,9 @@ import { useEffect } from "react";
 import axios from "axios";
 import React from "react";
 import { calculateLevel } from "../../utils/LevelCalculator";
+import TeacherNavbar from "../../components/navbar/TeacherNavbar";
+import LeaderboardFilter from "./Leaderboards/LeaderboardsFilter";
+import LeaderboardsFilter from "./Leaderboards/LeaderboardsFilter";
 
 const Leaderboards: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
@@ -200,18 +203,16 @@ const Leaderboards: React.FC = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: 1 } },
   };
 
+  const role = localStorage.getItem("role");
+
   return (
     <div className="w-full" id="page-height">
       <div className="flex flex-col h-full w-full items-center justify-between p-4">
         <div className="flex flex-col gap-2 justify-between items-center w-full">
           <div className="flex justify-between items-center w-full">
-            <div
-              className="flex-center bg-[#E6E6E6] p-3 rounded-2xl"
-              onClick={() => setOpenFilter(true)}
-            >
-              <h1 className="text-[#999] text-md font-bold">{t("فلترة")}</h1>
-              <FilterIcon />
-            </div>
+            <LeaderboardsFilter
+              onApplyFilters={(filters) => console.log(filters)}
+            />
             <h1 className="text-black font-bold text-2xl text-end ">
               {t("لوحة المتصدرين")}
             </h1>
@@ -221,7 +222,6 @@ const Leaderboards: React.FC = () => {
           </p>
         </div>
         {/* SET TYPE */}
-
         {/* leaderboards places */}
         <div className="flex flex-col gap-2 h-[90%] w-full overflow-y-auto py-5 px-1 ">
           {/* Leaderboards for top 3 */}
@@ -348,46 +348,8 @@ const Leaderboards: React.FC = () => {
               ))}
           </motion.div>
         </div>
-        <StudentNavbar />
+        {role == "Student" ? <StudentNavbar /> : <TeacherNavbar />}
       </div>
-
-      {openFilter && (
-        <div className="w-[100%] h-[100%] absolute top-0 bg-white flex flex-col justify-between p-4">
-          <div className="flex w-full justify-between items-center ">
-            <h1 className="text-blueprimary font-bold text-md w-1/3">
-              {t("إعادة تعيين الكل")}
-            </h1>
-            <h1 className="text-black font-bold text-2xl text-center">
-              {t("فلترة")}
-            </h1>
-            <div
-              className="flex text-redprimary w-1/3 justify-end"
-              onClick={() => setOpenFilter(false)}
-            >
-              <IoCloseCircle size={30} />
-            </div>
-          </div>
-          {filterOptions.map((option, index) => (
-            <div className="flex flex-col gap-2 ">
-              <h1 className="text-[#B3B3B3] text-end">{option.title}</h1>
-              <div className="flex justify-between flex-row-reverse  w-full gap-3">
-                {option.options.map((opt, i) => (
-                  <div
-                    key={i}
-                    className="bg-[#E6E6E6] px-4 py-2 rounded-2xl text-[#999] w-full text-center"
-                  >
-                    {opt}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-
-          <div className="flex-center w-full mb-3">
-            <PrimaryButton arrow="none" style={""} text={"فلترة"} />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

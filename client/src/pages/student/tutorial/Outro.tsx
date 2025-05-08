@@ -21,11 +21,12 @@ import logo from "../../../assets/login/logo.png";
 
 import splashgif from "../../../assets/splashscreen/Snabl-El-Ehsan Animation-Vertical.mp4";
 import wonderlearnLogo from "../../../assets/WonderLearn.png";
+import { useUserContext } from "../../../context/StudentUserProvider";
 
 const StartJourney: React.FC = () => {
   const { t } = useTranslation();
   const history = useHistory();
-
+  const { user } = useUserContext();
   const backgroundAssets = [
     blueSanabel,
     redSanabel,
@@ -41,6 +42,12 @@ const StartJourney: React.FC = () => {
 
   function navigateHome() {
     history.push("/student/home");
+    if (user && user.email) {
+      localStorage.setItem(`tutorialComplete-${user.email}`, "true");
+    }
+
+    // Set firstTimer to false
+    localStorage.setItem("firstTimer", "false");
     localStorage.setItem("firstTimer", "false");
   }
   return (

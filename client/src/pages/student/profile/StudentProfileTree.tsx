@@ -46,7 +46,7 @@ const Profile: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.1 }}
-        src={treeStages[stage]}
+        src={treeStages[stage - 1]}
         alt="tree"
         className="w-2/3"
       />

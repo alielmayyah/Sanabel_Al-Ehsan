@@ -11,17 +11,7 @@ import fertilizerImg from "../../assets/resources/سماد.png";
 // Tree
 import { treeStages } from "../../data/Tree";
 
-// treestage;
-// water;
-// fertilzer;
-// waterNeeded;
-// fertilzerNeeded;
-
-interface SanabelTreeProps {
-  treeStage: number; // Prop for the tree stage
-}
-
-const SanabelTree: React.FC<SanabelTreeProps> = () => {
+const SanabelTree = () => {
   const history = useHistory();
   const { t } = useTranslation();
   const { user } = useUserContext();
@@ -37,6 +27,9 @@ const SanabelTree: React.FC<SanabelTreeProps> = () => {
 
   const treeProgress = Number(user?.treeProgress);
 
+  // Check if tree is at final stage
+  const isFinalStage = treeProgress >= 51;
+
   return (
     <div className="flex flex-col h-full w-full items-center justify-between  ">
       {/* Tree */}
@@ -45,47 +38,56 @@ const SanabelTree: React.FC<SanabelTreeProps> = () => {
         <h1 className="text-black text-end text-lg">
           {t("شجرة سنابل الحسنات")}
         </h1>
-        <div className="flex w-full h-full  justify-between">
+
+        <div
+          className={`flex w-full h-full ${
+            isFinalStage ? "justify-center" : "justify-between"
+          } `}
+        >
           {/* Water Indicator */}
-          <div className="flex items-center flex-col w-max gap-1">
-            <img src={waterImg} alt="Water Icon" className="w-8" />
-            <h1 className="text-black text-sm">
-              {currentWater} / {waterNeeded}{" "}
-            </h1>
-            <div className="relative w-full h-full rounded-2xl bg-[#D1E2EA] overflow-hidden">
-              <div
-                className="absolute bottom-0 w-full rounded-2xl bg-gradient-to-t from-[#4AAAD6] to-[#8ED6F8] transition-all duration-300"
-                style={{
-                  height: `${(currentWater / waterNeeded) * 100}%`,
-                }}
-              ></div>
+          {!isFinalStage && (
+            <div className="flex items-center flex-col w-max gap-1">
+              <img src={waterImg} alt="Water Icon" className="w-8" />
+              <h1 className="text-black text-sm">
+                {currentWater} / {waterNeeded}{" "}
+              </h1>
+              <div className="relative w-full h-full rounded-2xl bg-[#D1E2EA] overflow-hidden">
+                <div
+                  className="absolute bottom-0 w-full rounded-2xl bg-gradient-to-t from-[#4AAAD6] to-[#8ED6F8] transition-all duration-300"
+                  style={{
+                    height: `${(currentWater / waterNeeded) * 100}%`,
+                  }}
+                ></div>
+              </div>
             </div>
-          </div>
+          )}
           {/* Tree */}
           <div className="flex-center flex-col w-7/12  h-auto">
             <img
-              src={treeStages[treeProgress + 3]}
+              src={treeStages[treeProgress + 2]}
               className="h-full w-full"
               alt=""
             />
           </div>
 
           {/* Fertilizer */}
-          <div className="flex items-center flex-col w-max gap-1">
-            <img src={fertilizerImg} alt="fertilizerImg" className="w-8" />
-            <h1 className="text-black text-sm">
-              {" "}
-              {currentFertilizer} / {fertilizerNeeded}{" "}
-            </h1>
-            <div className="relative w-full h-full rounded-2xl bg-[#D1E2EA] overflow-hidden">
-              <div
-                className="absolute bottom-0 w-full rounded-2xl bg-gradient-to-t from-[#7F4333] to-[#b46a56] flex-center transition-all duration-300"
-                style={{
-                  height: `${(currentFertilizer / fertilizerNeeded) * 100}%`,
-                }}
-              ></div>
+          {!isFinalStage && (
+            <div className="flex items-center flex-col w-max gap-1">
+              <img src={fertilizerImg} alt="fertilizerImg" className="w-8" />
+              <h1 className="text-black text-sm">
+                {" "}
+                {currentFertilizer} / {fertilizerNeeded}{" "}
+              </h1>
+              <div className="relative w-full h-full rounded-2xl bg-[#D1E2EA] overflow-hidden">
+                <div
+                  className="absolute bottom-0 w-full rounded-2xl bg-gradient-to-t from-[#7F4333] to-[#b46a56] flex-center transition-all duration-300"
+                  style={{
+                    height: `${(currentFertilizer / fertilizerNeeded) * 100}%`,
+                  }}
+                ></div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

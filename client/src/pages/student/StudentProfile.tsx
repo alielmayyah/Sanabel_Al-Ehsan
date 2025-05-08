@@ -20,6 +20,7 @@ import StudentProfileTrophies from "./profile/StudentProfileTrophies";
 import StudentProfileActivity from "./profile/StudentProfileActivity";
 import { MdContentCopy } from "react-icons/md";
 import { avatars } from "../../data/Avatars";
+import GetAvatar from "./tutorial/GetAvatar";
 
 const Profile: React.FC = () => {
   const history = useHistory();
@@ -68,10 +69,9 @@ const Profile: React.FC = () => {
       </div>
 
       <div className="flex flex-col items-center gap-1 justify-between">
-        <img
-          className="w-32 h-32 rounded-full -mt-6 border-8 border-white"
-          src={avatars.boys.boy1}
-        ></img>
+        <div className="w-32 h-32 rounded-full -mt-6 border-8 border-white">
+          <GetAvatar />
+        </div>
         <h1 className="text-black">
           {user?.firstName} {user?.lastName}
         </h1>

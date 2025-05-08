@@ -1,10 +1,17 @@
 const en = {
   translation: {
+
+    // NAVBAR
+
+
+    
     الرئيسية: "Home",
     التحديات: "Challenges",
     المتصدرين: "Rankings",
     التقدم: "Progress",
     البروفايل: "Profile",
+    استعراض: "View",
+    الاعدادات: "Settings",
 
     "سجل الآن وابدأ": "Register now and begin",
     "رحلة الإحسان": "Journey of Benevolence",

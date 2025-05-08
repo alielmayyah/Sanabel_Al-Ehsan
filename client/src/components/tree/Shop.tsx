@@ -17,9 +17,10 @@ import { useUserContext } from "../../context/StudentUserProvider";
 
 import CheckmarkAnimation from "../../assets/checkmarkAnimation";
 import { treeStages } from "../../data/Tree";
+import axios from "axios";
 const Shop: React.FC = () => {
   const { t } = useTranslation();
-  const { user } = useUserContext();
+  const { user, refreshUserData } = useUserContext();
 
   const shop = [
     { icon: blueSanabel },
@@ -32,6 +33,7 @@ const Shop: React.FC = () => {
 
   const waterCount = Number(user?.water);
   const fertilizerCount = Number(user?.fertilizer);
+
   const blueCount = Number(user?.snabelBlue);
   const redCount = Number(user?.snabelRed);
   const yellowCount = Number(user?.snabelYellow);
@@ -56,8 +58,14 @@ const Shop: React.FC = () => {
   );
 
   // Check if tree progress is ready
-  const isProgressReady =
-    waterCount >= waterNeeded && fertilizerCount >= fertilizerNeeded;
+
+  const [isProgressReady, setIsProgressReady] = useState(false);
+
+  useEffect(() => {
+    setIsProgressReady(
+      waterCount >= waterNeeded && fertilizerCount >= fertilizerNeeded
+    );
+  }, [waterCount, fertilizerCount, waterNeeded, fertilizerNeeded]);
 
   function changeBuyWaterCount(operation: any) {
     if (operation === "-" && buyWaterCount !== 0) {
@@ -82,10 +90,71 @@ const Shop: React.FC = () => {
 
   const [isCelebrationVisible, setIsCelebrationVisible] = useState(false);
 
-  // Progress TREE
-  function progressTree() {
-    setIsCelebrationVisible(true);
-  }
+  // Buy Shop
+  // Function to handle purchase
+  const buyShop = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.patch(
+        "http://localhost:3000/students/buy-water-seeder",
+        {
+          water: buyWaterCount,
+          seeders: buyFertilizerCount,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setBuyWaterCount(0);
+        setBuyFertilizerCount(0);
+        setIsPopupVisible(false);
+        setIsPurchaseConfirmed(true);
+        setIsPopupVisible(false);
+        setIsProgressReady(false);
+
+        // Refresh user data to update UI with new resource counts
+        await refreshUserData();
+
+        // Reset purchase counts after successful purchase
+        setTimeout(() => {
+          setBuyWaterCount(0);
+          setBuyFertilizerCount(0);
+        }, 2000);
+      }
+    } catch (error) {
+      console.error("Error purchasing items:", error);
+    }
+  };
+
+  const progressTree = async () => {
+    try {
+      setIsPurchaseConfirmed(false);
+      const token = localStorage.getItem("token");
+      console.log(token);
+      const response = await axios.patch(
+        "http://localhost:3000/students/grow-tree",
+        {}, // Empty request body or you can add payload data here if needed
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setIsCelebrationVisible(true);
+        // Refresh user data to show updated tree stage
+      }
+    } catch (error) {
+      console.error("Error progress tree:", error);
+    }
+  };
+
   return (
     <div className="flex-center flex-col w-full h-full">
       {isProgressReady == false ? (
@@ -238,22 +307,13 @@ const Shop: React.FC = () => {
                   <div className="flex justify-center gap-4 mt-4">
                     <button
                       className="bg-blueprimary text-white px-6 py-3 rounded-xl font-bold shadow-md transition-transform transform hover:scale-105 active:scale-95 flex-1"
-                      onClick={() => {
-                        setBuyWaterCount(0);
-                        setBuyFertilizerCount(0);
-                        setIsPurchaseConfirmed(true);
-                        setIsPopupVisible(false);
-                      }}
+                      onClick={buyShop}
                     >
                       {t("تأكيد الشراء")}
                     </button>
                     <button
                       className="bg-white border-2 border-gray-300 text-gray-700 px-4 py-3 rounded-xl font-bold shadow-sm transition-transform transform hover:scale-105 active:scale-95"
-                      onClick={() => {
-                        setBuyWaterCount(0);
-                        setBuyFertilizerCount(0);
-                        setIsPopupVisible(false);
-                      }}
+                      onClick={() => setIsPopupVisible(false)}
                     >
                       {t("إلغاء")}
                     </button>
@@ -283,22 +343,24 @@ const Shop: React.FC = () => {
         </div>
       ) : (
         <div className="w-2/3">
-          <motion.button
-            className="flex-center w-full px-6 py-3 bg-gradient-to-r from-blueprimary to-blue-400 text-white font-bold rounded-full shadow-lg"
-            initial={{ scale: 1 }}
-            animate={{
-              y: [0, -5, 0],
-              transition: { repeat: Infinity, duration: 1.5 },
-            }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => progressTree()}
-          >
-            <div className="flex items-center gap-2">
-              <span>🌟</span>
-              {t("كبر الشجرة")}
-            </div>
-          </motion.button>
+          {treeProgress < 51 && (
+            <motion.button
+              className="flex-center gap-2 w-full px-6 py-3 bg-gradient-to-r from-blueprimary to-blue-400 text-white font-bold rounded-full shadow-lg"
+              initial={{ scale: 1 }}
+              animate={{
+                y: [0, -5, 0],
+                transition: { repeat: Infinity, duration: 1.5 },
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={progressTree}
+            >
+              <div className="">
+                <span>🌟</span>
+                {t("كبر الشجرة")}
+              </div>
+            </motion.button>
+          )}
 
           {/* Celebration Popup */}
 
@@ -419,7 +481,10 @@ const Shop: React.FC = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.3 }}
-                  onClick={() => setIsCelebrationVisible(false)}
+                  onClick={() => {
+                    setIsCelebrationVisible(false);
+                    refreshUserData();
+                  }}
                 >
                   {t("رائع!")}
                 </motion.button>
