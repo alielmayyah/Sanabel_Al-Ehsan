@@ -160,6 +160,7 @@ const registration = async (req: Request, res: Response) => {
     }
 
     const hashedPassword = bcrypt.hashSync(password, 10);
+<<<<<<< HEAD
     const token = jwt.sign(
       {
         id: checkValidation.id,
@@ -181,6 +182,16 @@ const registration = async (req: Request, res: Response) => {
       profileImg,
     });
 
+=======
+    const token = jwt.sign({ id: checkValidation.id, email: checkValidation.email, role: checkValidation.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const validatedProfileImg = profileImg && typeof profileImg === "object" 
+    ? profileImg
+    : null;
+
+    // Handle Image Upload (get URL from Cloudinary)
+    await checkValidation.update({ firstName, lastName, role, gender, dateOfBirth, password: hashedPassword ,profileImg:validatedProfileImg});
+    
+>>>>>>> 1f7204ced1ec0b257e75b2c7b966899e3779d6b5
     switch (checkValidation.role) {
       case "Student":
         const connectCode = await generateUniqueConnectCode();
@@ -215,6 +226,7 @@ const registration = async (req: Request, res: Response) => {
 
     return res.status(201).json({
       message: "Registration successful",
+<<<<<<< HEAD
       data: {
         token,
         user: {
@@ -224,6 +236,9 @@ const registration = async (req: Request, res: Response) => {
           profileImg,
         },
       },
+=======
+      data: { token, user: { id: checkValidation.id, email: checkValidation.email, role, profileImg:validatedProfileImg } },
+>>>>>>> 1f7204ced1ec0b257e75b2c7b966899e3779d6b5
     });
   } catch (error) {
     console.error("Registration error:", error);

@@ -33,7 +33,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare otpVerified: CreationOptional<boolean>;
   declare gender: CreationOptional<String>;
   declare dateOfBirth: CreationOptional<Date>;
-  declare profileImg: CreationOptional<string>;
+  declare profileImg: CreationOptional<Record<string, any> | null>;
   declare isAccess: CreationOptional<Boolean>;
   static initModel(sequelize: Sequelize) {
     User.init(
@@ -96,7 +96,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
           defaultValue: false,
         },
         profileImg: {
-          type: DataTypes.STRING,
+          type: DataTypes.JSON,
           allowNull: true,
         },
       },
