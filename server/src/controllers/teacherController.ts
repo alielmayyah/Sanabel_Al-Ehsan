@@ -28,31 +28,53 @@ const appearStudent = async (req: Request, res: Response) => {
   if (!user) {
     return res.status(404).json({ message: "User data not found in request" });
   }
+
   try {
     const teacher = await Teacher.findOne({
       where: { userId: user.id },
       include: [
         {
           model: User,
-          as: "user", // use the alias defined in the association
+          as: "user",
           attributes: ["firstName", "lastName", "email"],
         },
       ],
     });
+
     if (!teacher) {
       return res.status(404).json({ message: "User or Teacher not found" });
-    } else {
-      const students = await User.findAll({
-        attributes: ["id", "firstName", "lastName", "email"],
-        where: { role: "Student" },
-      });
-      res.status(200).json({ data: students });
     }
+
+    const students = await Student.findAll({
+      include: [
+        {
+          model: User,
+          as: "user",
+          attributes: [
+            "firstName",
+            "lastName",
+            "email",
+            "profileImg",
+            "gender",
+            "dateOfBirth",
+          ],
+        },
+        {
+          model: Class,
+          as: "Class", 
+          attributes: ["id", "classname","category"], 
+          required: false, 
+        },
+      ],
+    });
+
+    res.status(200).json({ data: students });
   } catch (error) {
     console.error("Error something wrong in TeacherControll", error);
     res.status(500).json({ message: "Error something wrong in Teacher" });
   }
 };
+
 
 const appearclass = async (req: Request, res: Response) => {
   const user = (req as Request & { user: JwtPayload | undefined }).user;

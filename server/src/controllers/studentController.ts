@@ -64,10 +64,9 @@ const studentData = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error fetching student data" });
   }
 };
-
 const updateData = async (req: Request, res: Response) => {
   const user = (req as Request & { user: JwtPayload | undefined }).user;
-  const { firstName, lastName, grade } = req.body;
+  const { firstName, lastName, grade, profileImg } = req.body;
 
   if (!user) {
     return res.status(404).json({ message: "User data not found in request" });
@@ -80,13 +79,30 @@ const updateData = async (req: Request, res: Response) => {
     return res.status(404).json({ message: "User or Student not found" });
   }
 
-  await userRecord.update({ firstName, lastName });
+  const userUpdateData: Record<string, any> = {};
+  const studentUpdateData: Record<string, any> = {};
 
-  await student.update({ grade });
+  if (firstName) userUpdateData.firstName = firstName;
+  if (lastName) userUpdateData.lastName = lastName;
 
-  res
-    .status(200)
-    .json({ message: "User and Student data updated successfully" });
+  if (grade) studentUpdateData.grade = grade;
+
+  if (profileImg && typeof profileImg === "object") {
+    // Optional: add shape validation here
+    userUpdateData.profileImg = profileImg;
+    studentUpdateData.profileImg = profileImg;
+  }
+
+  // Update only if there's something to update
+  if (Object.keys(userUpdateData).length > 0) {
+    await userRecord.update(userUpdateData);
+  }
+
+  if (Object.keys(studentUpdateData).length > 0) {
+    await student.update(studentUpdateData);
+  }
+
+  res.status(200).json({ message: "User and Student data updated successfully" });
 };
 
 
