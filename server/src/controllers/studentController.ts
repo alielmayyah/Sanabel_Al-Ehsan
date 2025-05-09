@@ -863,44 +863,54 @@ const appearChallangesPrimaire = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error });
   }
 };
+// GET /leaderboard?grade=5&gender=Female
+
+
 const appearLeaderboard = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "User data not found in request" });
+      return res.status(404).json({ message: "User data not found in request" });
     }
+
+    // Optional filters from query
+    const { classId, grade, gender } = req.query;
+
     const student = await Student.findOne({ where: { userId: user.id } });
     const teacher = await Teacher.findOne({ where: { userId: user.id } });
     const parent = await Parent.findOne({ where: { userId: user.id } });
 
     if (!student && !teacher && !parent) {
-      return res
-        .status(404)
-        .json({ message: "Student data not found in request" });
+      return res.status(404).json({ message: "Student data not found in request" });
     }
 
+    const studentFilters: any = {};
+    const userFilters: any = {};
+
+    if (classId) studentFilters.classId = classId;
+    if (grade) studentFilters.grade = grade;
+    if (gender) userFilters.gender = gender;
+
     const students = await Student.findAll({
-      order: [
-        ["level", "DESC"], // Sort by level in descending order
-        ["xp", "DESC"], // Sort by xp in descending order
-      ],
+      where: studentFilters,
+      order: [["xp", "DESC"]],
       include: [
         {
           model: User,
-          as: "user", // use the alias defined in the association
-          attributes: ["firstName", "lastName", "email"],
+          as: "user",
+          where: userFilters,
+          attributes: ["firstName", "lastName", "email", "profileImg", "gender", "dateOfBirth"],
         },
       ],
     });
 
-    res.json(students); // Send the sorted data as JSON response
+    res.json(students);
   } catch (error) {
     console.error("Error fetching leaderboard:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 const buyWaterSeeder = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user: JwtPayload | undefined }).user;
