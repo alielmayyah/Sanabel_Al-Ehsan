@@ -117,7 +117,7 @@ const searchStuentByCode = async (req: Request, res: Response) => {
             include:[{
                 model:User,
                 as:"user",
-                attributes: ["firstName", "lastName"]
+                attributes: ["firstName", "lastName","profileImg","gender","dateOfBirth"]
             }]
         }
         
@@ -147,7 +147,7 @@ const connectStudentToParent = async (req: Request, res: Response) => {
             include:[{
                 model:User,
                 as:"user",
-                attributes: ["firstName", "lastName"]
+                attributes: ["firstName", "lastName","profileImg","gender","dateOfBirth"]
             }]
         });
         if (!student) {
@@ -178,7 +178,7 @@ const appearStudentbyparent = async (req: Request, res: Response) => {
             include:[{
                 model:User,
                 as:"user",
-                attributes: ["firstName", "lastName"]
+                attributes: ["firstName", "lastName","profileImg","gender","dateOfBirth"]
             }]
         });
         if (!student) {
