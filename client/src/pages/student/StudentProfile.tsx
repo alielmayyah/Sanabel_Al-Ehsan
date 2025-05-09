@@ -26,7 +26,10 @@ const Profile: React.FC = () => {
   const history = useHistory();
   const { t } = useTranslation();
 
+
   const { user } = useUserContext();
+  const avatar = user?.profileImg;
+
 
   const profileNav = ["نظرة عامة", "الشجرة", "الجوائز", "النشاط"];
   const [show, setShow] = useState(profileNav[0]);
@@ -70,7 +73,7 @@ const Profile: React.FC = () => {
 
       <div className="flex flex-col items-center gap-1 justify-between">
         <div className="w-32 h-32 rounded-full -mt-6 border-8 border-white">
-          <GetAvatar />
+        <GetAvatar userAvatarData={avatar} />
         </div>
         <h1 className="text-black">
           {user?.firstName} {user?.lastName}

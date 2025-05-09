@@ -31,6 +31,8 @@ import { calculateLevel } from "../../utils/LevelCalculator";
 import TeacherNavbar from "../../components/navbar/TeacherNavbar";
 import LeaderboardFilter from "./Leaderboards/LeaderboardsFilter";
 import LeaderboardsFilter from "./Leaderboards/LeaderboardsFilter";
+import GetAvatar from "./tutorial/GetAvatar";
+import { useUserContext } from "../../context/StudentUserProvider";
 
 const Leaderboards: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
@@ -151,7 +153,7 @@ const Leaderboards: React.FC = () => {
     () => leaderboardsData.slice().sort((a, b) => b.level - a.level),
     [leaderboardsData]
   );
-
+  console.log(sortedData);
   useEffect(() => {
     const levelsUpdated = leaderboardsData.some(
       (item) => item.level !== calculateLevel(item.xp).level
@@ -286,10 +288,9 @@ const Leaderboards: React.FC = () => {
                 className="flex flex-col items-center  w-1/3"
                 variants={columnVariants}
               >
-                <img
-                  className="w-20 h-20 rounded-full"
-                  src={sortedData[2].avatar}
-                />
+                <div className="h-20 w-20">
+                  <GetAvatar userAvatarData={sortedData[2].user.email} />
+                </div>
                 <h1 className="text-black">
                   {" "}
                   <h1 className="text-black">

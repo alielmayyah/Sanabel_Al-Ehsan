@@ -56,6 +56,9 @@ const Intro: React.FC<IntroProps> = ({ name }) => {
     },
   };
 
+  const avatarDataString = localStorage.getItem("avatarData");
+  const avatarData = avatarDataString ? JSON.parse(avatarDataString) : null;
+
   return (
     <motion.div
       className="flex flex-col items-center justify-center space-y-6 p-6 text-center"
@@ -77,8 +80,7 @@ const Intro: React.FC<IntroProps> = ({ name }) => {
           variants={itemVariants}
         >
           <motion.div className="w-44 h-44 rounded-full overflow-hidden border-[1px] shadow-lg">
-            {/* Using GetAvatar component to display the customized avatar */}
-            <GetAvatar />
+            <GetAvatar userAvatarData={avatarData} />
           </motion.div>
         </motion.div>
         <motion.h1

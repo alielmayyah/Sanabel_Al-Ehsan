@@ -12,15 +12,16 @@ const StartJourney: React.FC = () => {
   const history = useHistory();
   const { user } = useUserContext();
 
+  // Fetch and parse avatarData from local storage
+  const avatarDataString = localStorage.getItem("avatarData");
+  const avatarData = avatarDataString ? JSON.parse(avatarDataString) : null;
+  console.log(avatarData);
+
   const handleTutorial = async (token?: string) => {
     const authToken = token || localStorage.getItem("token");
     if (!authToken) return;
 
     try {
-      // Fetch and parse avatarData from local storage
-      const avatarDataString = localStorage.getItem("avatarData");
-      const avatarData = avatarDataString ? JSON.parse(avatarDataString) : null;
-
       if (!avatarData) {
         console.error("No avatar data found in local storage.");
         return;
@@ -30,8 +31,8 @@ const StartJourney: React.FC = () => {
         "http://localhost:3000/students/update-profile-image",
         {
           profileImg: {
-            avatarId: avatarData.avatarid,
             bgColor: avatarData.bgColor,
+            avatarId: avatarData.avatarid,
             bgPattern: avatarData.bgPattern,
             gender: avatarData.gender,
             hairColor: avatarData.hairColor,

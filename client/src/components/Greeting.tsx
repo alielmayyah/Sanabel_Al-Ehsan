@@ -17,7 +17,6 @@ const Greeting: React.FC<GreetingProps> = ({ name, text, hello }) => {
   const { user } = useUserContext();
   const avatar = user?.profileImg;
 
-  console.log(user);
   return (
     <div className="flex-center p-0 gap-3">
       <div className="flex-center gap-3">

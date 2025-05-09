@@ -44,7 +44,7 @@ const SanabelType: React.FC = () => {
 
     try {
       const response = await axios.get(
-        "http://localhost:3000/students/tasks-category",
+        "http://localhost:3000/teachers/tasks-category",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

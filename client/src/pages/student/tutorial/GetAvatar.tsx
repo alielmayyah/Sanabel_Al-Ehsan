@@ -37,12 +37,10 @@ const GetAvatar = ({ userAvatarData = {} }) => {
 
   // Update state when props change
   useEffect(() => {
-    if (Object.keys(userAvatarData).length > 0) {
-      setAvatarData({
-        ...defaultAvatarData,
-        ...userAvatarData,
-      });
-    }
+    setAvatarData({
+      ...defaultAvatarData,
+      ...userAvatarData,
+    });
   }, [userAvatarData]);
 
   // Map avatar components by gender and index
@@ -89,9 +87,11 @@ const GetAvatar = ({ userAvatarData = {} }) => {
         ? avatarData.gender
         : "boy";
 
-    // Ensure avatarId is within bounds of the array
+    // Ensure avatarId is within bounds of the array (default to 0 if not set)
+    const avatarId =
+      avatarData.avatarId !== undefined ? avatarData.avatarId : 0;
     const safeAvatarId = Math.min(
-      Math.max(0, avatarData.avatarId),
+      Math.max(0, avatarId),
       avatarComponents[gender].length - 1
     );
 

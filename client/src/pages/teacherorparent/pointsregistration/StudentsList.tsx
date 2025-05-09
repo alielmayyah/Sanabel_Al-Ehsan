@@ -7,25 +7,26 @@ import { useEffect, useState } from "react";
 import SearchIcon from "../../../icons/SearchIcon";
 import GoBackButton from "../../../components/GoBackButton";
 
-import avtar1 from "../../../assets/avatars/Boys/1.png";
 import PrimaryButton from "../../../components/PrimaryButton";
 import { FaCheck } from "react-icons/fa";
 import axios from "axios";
+import GetAvatar from "../../student/tutorial/GetAvatar";
 
 const StudentList: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
   const [openInvite, setOpenInvite] = useState(false);
 
-  const [markedIndices, setMarkedIndices] = useState<number[]>([]);
+  // Change to store user IDs instead of array indices
+  const [selectedStudentIds, setSelectedStudentIds] = useState<number[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>(""); // State for search input
 
-  const toggleMarked = (index: number) => {
-    setMarkedIndices(
+  const toggleStudentSelection = (userId: number) => {
+    setSelectedStudentIds(
       (prev) =>
-        prev.includes(index)
-          ? prev.filter((i) => i !== index) // Unmark if already marked
-          : [...prev, index] // Mark if not marked
+        prev.includes(userId)
+          ? prev.filter((id) => id !== userId) // Remove if already selected
+          : [...prev, userId] // Add if not selected
     );
   };
 
@@ -58,6 +59,11 @@ const StudentList: React.FC = () => {
     fetchStudentsData();
   }, []);
 
+  // Log selected student IDs whenever they change
+  useEffect(() => {
+    console.log("Selected student IDs:", selectedStudentIds);
+  }, [selectedStudentIds]);
+
   // Updated code (case-insensitive)
   const filteredStudents = studentsData.filter((student: any) =>
     `${student.user.firstName} ${student.user.lastName}`
@@ -65,6 +71,7 @@ const StudentList: React.FC = () => {
       .includes(searchQuery.toLowerCase())
   );
 
+  const [isStudentsSelected, setIsStudentsSelected] = useState(false);
   return (
     <div
       className="flex flex-col items-center justify-between gap-10 p-4"
@@ -72,41 +79,41 @@ const StudentList: React.FC = () => {
     >
       <div className="flex-center flex-col gap-3 w-full">
         <div className="flex items-center w-full justify-between">
-          <div className="w-16 h-16  "></div>
+          <div className="w-16 h-16"></div>
 
-          <h1 className="text-black font-bold text-2xl self-center" dir="ltr">
+          <h1 className="text-black font-bold text-2xl " dir="ltr">
             {t("الطلاب")}
           </h1>
 
           <GoBackButton />
         </div>
 
-        <div className="flex w-full justify-between items-center  border-2 rounded-xl px-2 py-1">
+        <div className="flex w-full justify-between items-center border-2 rounded-xl px-2 py-1">
           <div className="w-10 h-10 bg-blueprimary rounded-xl flex-center">
             <SearchIcon className="text-white" size={20} />
           </div>
           <input
             type="text"
             placeholder={t("ابحث عن طالب")}
-            className=" drop-shadow-sm py-3 w-full bg-transparent  text-end  text-black"
+            className="drop-shadow-sm py-3 w-full bg-transparent text-end text-black"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </div>
-      <div className="flex flex-col gap-2  justify-start overflow-y-auto w-full h-full">
-        {filteredStudents.map((student: any, index: any) => (
+      <div className="flex flex-col gap-2 justify-start overflow-y-auto w-full h-full">
+        {filteredStudents.map((student: any) => (
           <div
-            className="w-full flex p-3  justify-between items-center border-2 rounded-xl "
-            key={index}
+            className="w-full flex p-3 justify-between items-center border-2 rounded-xl"
+            key={student.id}
           >
             <div
               className={`w-10 h-10 flex-center rounded-xl ${
-                markedIndices.includes(index)
+                selectedStudentIds.includes(student.userId)
                   ? "bg-blueprimary border-0"
                   : "bg-transparent border-2"
               }`}
-              onClick={() => toggleMarked(index)}
+              onClick={() => toggleStudentSelection(student.userId)}
             >
               <FaCheck />
             </div>
@@ -115,19 +122,27 @@ const StudentList: React.FC = () => {
                 <h1 className="text-black">
                   {`${student.user.firstName} ${student.user.lastName}`}
                 </h1>
-                <h1 className="text-black text-end"> {student.class || ""}</h1>
+                <h1 className="text-black text-end">{student.class || ""}</h1>
               </div>
-              {/* <img src={} alt="" className="w-12" /> */}
-              <h1 className="text-black text-3xl">
-                {student.user.profileImg.gender}
-              </h1>
-              i want to give the data of profile image here to show each profile
-              img for the students
+
+              <div className="w-12 h-12">
+                <GetAvatar userAvatarData={student.user.profileImg} />
+              </div>
             </div>
           </div>
         ))}
       </div>
-      <PrimaryButton style={""} text={t("تسجيل حسنات")} arrow={"none"} />
+
+      <PrimaryButton
+        style={""}
+        text={t("تسجيل حسنات")}
+        arrow={"none"}
+        onClick={() => {
+          // Here you can handle what happens with the selected student IDs
+          console.log("Processing selected students:", selectedStudentIds);
+          // You can send these IDs to your backend or navigate to another page
+        }}
+      />
       <TeacherNavbar />
     </div>
   );
