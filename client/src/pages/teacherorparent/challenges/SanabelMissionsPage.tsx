@@ -112,7 +112,7 @@ const SanabelMissionsPage: React.FC = () => {
             // Fetch Missions
             if (uniqueTypes[subIndex]) {
               const missionsResponse = await axios.get(
-                `http://localhost:3000/students/appear-Taskes-Type-Category/${APIIndex}/${sanabel[subIndex]}`,
+                `http://localhost:3000/teachers/appear-Taskes-Type-Category/${APIIndex}/${sanabel[subIndex]}`,
                 {
                   headers: {
                     Authorization: `Bearer ${authToken}`,

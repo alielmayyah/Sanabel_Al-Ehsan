@@ -191,6 +191,7 @@ const App: React.FC = () => {
                   path="/teacher/challenges"
                   component={TeacherChooseSanabelType}
                 />
+
                 <Route
                   path="/teacher/sanabel/:index/:subIndex"
                   component={TeacherSanabelMissionsPage}
@@ -201,7 +202,7 @@ const App: React.FC = () => {
                 />
 
                 <Route
-                  path="/teacher/leaderboards/"
+                  path="/teacher/leaderboards"
                   component={StudentLeaderboards}
                 />
 

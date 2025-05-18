@@ -72,18 +72,34 @@ const Profile: React.FC = () => {
     const now = new Date();
     const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-    const rtf = new Intl.RelativeTimeFormat(`${savedLanguage}`, {
+    console.log("Parsed Date:", date);
+    console.log("Current Date:", now);
+    // Determine if the date is in the past or future
+    const isPast = diffInSeconds > 0;
+    const absDiff = Math.abs(diffInSeconds);
+
+    // Set up the formatter
+    const rtf = new Intl.RelativeTimeFormat(savedLanguage, {
       numeric: "auto",
     });
 
-    if (diffInSeconds < 60) {
-      return rtf.format(-diffInSeconds, "second");
-    } else if (diffInSeconds < 3600) {
-      return rtf.format(-Math.floor(diffInSeconds / 60), "minute");
-    } else if (diffInSeconds < 86400) {
-      return rtf.format(-Math.floor(diffInSeconds / 3600), "hour");
+    if (absDiff < 60) {
+      return t("ثوانٍ معدودة"); // Manually handle seconds
+    } else if (absDiff < 3600) {
+      return rtf.format(
+        isPast ? -Math.floor(absDiff / 60) : Math.floor(absDiff / 60),
+        "minute"
+      );
+    } else if (absDiff < 86400) {
+      return rtf.format(
+        isPast ? -Math.floor(absDiff / 3600) : Math.floor(absDiff / 3600),
+        "hour"
+      );
     } else {
-      return rtf.format(-Math.floor(diffInSeconds / 86400), "day");
+      return rtf.format(
+        isPast ? -Math.floor(absDiff / 86400) : Math.floor(absDiff / 86400),
+        "day"
+      );
     }
   };
 

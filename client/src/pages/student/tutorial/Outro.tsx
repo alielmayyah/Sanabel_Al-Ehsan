@@ -31,8 +31,8 @@ const StartJourney: React.FC = () => {
         "http://localhost:3000/students/update-profile-image",
         {
           profileImg: {
+            avatarId: avatarData.avatarId,
             bgColor: avatarData.bgColor,
-            avatarId: avatarData.avatarid,
             bgPattern: avatarData.bgPattern,
             gender: avatarData.gender,
             hairColor: avatarData.hairColor,

@@ -239,10 +239,8 @@ const Leaderboards: React.FC = () => {
                 variants={columnVariants}
               >
                 <div className="w-20 h-20 rounded-full relative border-2 border-blueprimary">
-                  <img
-                    className="w-[75px] h-[75px] rounded-full absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                    src={sortedData[0].avatar}
-                  />
+                  <GetAvatar userAvatarData={sortedData[0].user.profileImg} />
+
                   <div className="flex-center absolute p-4 text-center transform -translate-x-1/2 -translate-y-1/2 top-0 left-1/2">
                     <LeaderboardsStar size={40} className="text-blueprimary" />
                   </div>
@@ -266,10 +264,9 @@ const Leaderboards: React.FC = () => {
                 className="flex flex-col items-center  w-1/3 -order-1"
                 variants={columnVariants}
               >
-                <img
-                  className="w-20 h-20 rounded-full"
-                  src={sortedData[1].avatar}
-                />
+                <div className="h-20 w-20">
+                  <GetAvatar userAvatarData={sortedData[1].user.profileImg} />
+                </div>
                 <h1 className="text-black">
                   {sortedData[1].user.firstName +
                     " " +
@@ -289,7 +286,7 @@ const Leaderboards: React.FC = () => {
                 variants={columnVariants}
               >
                 <div className="h-20 w-20">
-                  <GetAvatar userAvatarData={sortedData[2].user.email} />
+                  <GetAvatar userAvatarData={sortedData[2].user.profileImg} />
                 </div>
                 <h1 className="text-black">
                   {" "}
@@ -335,15 +332,15 @@ const Leaderboards: React.FC = () => {
                   <div className="flex-center gap-2">
                     <div className="flex flex-col text-end">
                       <h1 className="text-black">
-                        {sortedData[2].user.firstName +
-                          " " +
-                          sortedData[2].user.lastName}
+                        {item.user.firstName + " " + item.user.lastName}
                       </h1>
                       <p className="text-gray-500 font-medium">
                         {ordinalNumbers[index + 3]}
                       </p>
                     </div>
-                    <img className="w-12 h-12 rounded-full" src={item.avatar} />
+                    <div className="h-12 w-12">
+                      <GetAvatar userAvatarData={item.user.profileImg} />
+                    </div>
                   </div>
                 </motion.div>
               ))}
