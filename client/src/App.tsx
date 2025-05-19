@@ -219,7 +219,7 @@ const App: React.FC = () => {
                 />
                 <Route
                   exact
-                  path="/teacher/studentdetails"
+                  path="/teacher/student/:studentId"
                   component={StudentDetails}
                 />
                 {/* Registration */}

@@ -6,9 +6,15 @@ interface MedalAndLevelProps {
   level: number;
   color: string;
   dir: string;
+  size: string;
 }
 
-const MedalAndLevel: React.FC<MedalAndLevelProps> = ({ level, color, dir }) => {
+const MedalAndLevel: React.FC<MedalAndLevelProps> = ({
+  level,
+  color,
+  dir,
+  size,
+}) => {
   const [medalImgTracker, setMedalImgTracker] = useState(0);
 
   useEffect(() => {
@@ -42,7 +48,7 @@ const MedalAndLevel: React.FC<MedalAndLevelProps> = ({ level, color, dir }) => {
       <img
         src={medalsImgs[medalImgTracker]}
         alt={`${level}`}
-        className="w-16"
+        className={`${size}`}
       />
       <h1 className={`text-md ${color}`}>المستوي {level}</h1>
     </div>

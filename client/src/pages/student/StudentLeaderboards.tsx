@@ -1,10 +1,4 @@
-import {
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+
 import { useTheme } from "../../context/ThemeContext";
 import StudentNavbar from "../../components/navbar/StudentNavbar";
 
@@ -15,10 +9,6 @@ import LeaderboardsStar from "../../icons/Leaderboards/LeaderboardsStar";
 import FirstPlaceColumn from "../../icons/Leaderboards/FirstPlaceColumn";
 import SecondPlaceColumn from "../../icons/Leaderboards/SecondPlaceColumn";
 import ThirdPlaceColumn from "../../icons/Leaderboards/ThirdPlaceColumn";
-
-import { IoCloseCircle } from "react-icons/io5";
-
-import { avatars } from "../../data/Avatars";
 
 import FilterIcon from "../../icons/Leaderboards/FilterIcon";
 import PrimaryButton from "../../components/PrimaryButton";
@@ -113,10 +103,13 @@ const Leaderboards: React.FC = () => {
   const fetchUserData = async (token?: string) => {
     const authToken = token || localStorage.getItem("token");
     if (!authToken) return;
-
+    const userRole = localStorage.getItem("role");
     try {
       const response = await axios.get(
-        "http://localhost:3000/students/appear-Leaderboard",
+        // Determine the API endpoint based on the role
+        userRole === "Teacher"
+          ? "http://localhost:3000/teachers/leader-board"
+          : "http://localhost:3000/students/appear-Leaderboard",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -255,6 +248,7 @@ const Leaderboards: React.FC = () => {
                     level={sortedData[0].level}
                     color="text-blueprimary"
                     dir={""}
+                    size="w-16"
                   />
                 </div>
 
@@ -277,6 +271,7 @@ const Leaderboards: React.FC = () => {
                     level={sortedData[1].level}
                     color={"text-redprimary"}
                     dir={""}
+                    size="w-16"
                   />
                 </div>
                 <SecondPlaceColumn className="w-full" />
@@ -301,6 +296,7 @@ const Leaderboards: React.FC = () => {
                     level={sortedData[2].level}
                     color={"text-yellowprimary"}
                     dir={""}
+                    size="w-16"
                   />
                 </div>
                 <ThirdPlaceColumn className="w-full " />
@@ -327,6 +323,7 @@ const Leaderboards: React.FC = () => {
                       level={item.level}
                       color={"text-black"}
                       dir="horizontal"
+                      size="w-16"
                     />
                   </div>
                   <div className="flex-center gap-2">
