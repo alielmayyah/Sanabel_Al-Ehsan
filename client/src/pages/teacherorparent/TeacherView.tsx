@@ -568,7 +568,7 @@ const TeacherView: React.FC = () => {
                         <span className="text-gray-500 text-sm capitalize">
                           {student.Class.classname || t("لا يوجد فصل")}
                         </span>
-                        <span className="text-gray-500 text-sm capitalize">
+                        <span className="text-gray-500 text-sm uppercase">
                           {student.Class.category || t("لا يوجد فصل")}
                         </span>
                       </div>
@@ -587,33 +587,31 @@ const TeacherView: React.FC = () => {
                   {filteredStudents.map((student: any) => (
                     <div
                       key={student.id}
-                      className="flex items-center justify-between p-2 border-2 rounded-xl hover:bg-gray-50 cursor-pointer"
+                      className="flex w-full items-center justify-between p-1 border-2 rounded-xl "
                       onClick={() => navigateToStudentDetail(student.id)}
                     >
-                      <div className="flex items-center gap-3">
-                        <MedalAndLevel
-                          level={calculateLevel(student.xp).level}
-                          color="text-black text-sm"
-                          dir=""
-                          size={"w-12"}
-                        />
-                        <div className="flex-center flex-col">
-                          <span className="text-gray-500 text-sm capitalize">
-                            {student.Class.classname || t("لا يوجد فصل")}
-                          </span>
-                          <span className="text-gray-500 text-sm capitalize">
-                            {student.Class.category || t("لا يوجد فصل")}
-                          </span>
-                        </div>
-                      </div>
+                      <MedalAndLevel
+                        level={calculateLevel(student.xp).level}
+                        color="text-black text-sm"
+                        dir="horizontal"
+                        size={"w-12"}
+                      />
 
-                      <div className="flex items-center gap-3">
-                        <h1 className="text-black font-medium">
-                          {`${student.user.firstName} ${student.user.lastName}`}
-                        </h1>
+                      <div className="flex-center flex-col">
+                        <span className="text-gray-500 text-sm capitalize">
+                          {student.Class.classname || t("لا يوجد فصل")}
+                        </span>
+                        <span className="text-gray-500 text-sm uppercase">
+                          {student.Class.category || t("لا يوجد فصل")}
+                        </span>
+                      </div>
+                      <div className="flex flex-col items-center  w-full">
                         <div className="w-10 h-10 rounded-full overflow-hidden">
                           <GetAvatar userAvatarData={student.user.profileImg} />
                         </div>
+                        <h1 className="text-black font-medium">
+                          {`${student.user.firstName} ${student.user.lastName}`}
+                        </h1>
                       </div>
                     </div>
                   ))}

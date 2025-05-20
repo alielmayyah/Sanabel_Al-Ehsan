@@ -28,6 +28,7 @@ git add commit_number.txt
 git add gitbashfile.bat
 git add .vscode
 git add run.bat
+git add killserver.bat
 
 :: Commit changes with incremented commit number
 git commit -m "commit number !commitNumber!"
