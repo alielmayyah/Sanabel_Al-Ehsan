@@ -413,11 +413,11 @@ const addPros = async (req: Request, res: Response) => {
         studentId: { [Op.in]: studentIds },
         taskId,
         createdAt: {
-          [Op.gte]: new Date().setHours(0, 0, 0, 0), // Start of today
-          [Op.lt]: new Date().setHours(23, 59, 59, 999), // End of today
+          [Op.gte]: new Date().setHours(0, 0, 0, 0),
+          [Op.lt]: new Date().setHours(23, 59, 59, 999),
         },
       },
-      attributes: ["studentId"],
+      include: [{ model: Student, as: "student" }],
     });
 
     const existingStudentIds = existingRecords.map((record) => record.studentId);
