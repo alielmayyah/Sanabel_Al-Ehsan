@@ -158,7 +158,7 @@ const appearStudentByclass = async (req: Request, res: Response) => {
         return res.status(400).json({ message: "Class ID is required" });
       }
       const students = await Student.findAll({
-        attributes: ["id", "grade"],
+        
         where: { classId: classId },
         include: [
           {
