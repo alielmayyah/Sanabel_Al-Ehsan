@@ -22,7 +22,7 @@ const GoBackButton: React.FC<GoBackButtonProps> = ({ onClick }) => {
   return (
     <div
       onClick={handleGoBack}
-      className="flex-center p-2 border-2 border-[#EAECF0] rounded-xl self-end cursor-pointer"
+      className="flex-center p-2 border-2 border-[#EAECF0] rounded-xl self-end"
     >
       <BackArrow
         size={25}

@@ -12,53 +12,23 @@ import { FiGrid } from "react-icons/fi";
 import { FaThList } from "react-icons/fa";
 
 // Define types for better type safety
-interface User {
-  id: number;
-  userId: number;
-  firstName: string;
-  lastName: string;
-  profileImg: any;
-}
-
-interface StudentData {
-  xp: number;
-  level: number;
-  id: number;
-  userId: number;
-  user: User;
-  class?: string;
-}
-
-interface ClassData {
-  name: string;
-  points: number;
-  studentCount: number;
-}
-
-interface TeamData {
-  name: string;
-  points: number;
-  studentCount: number;
-}
 
 const TeacherView: React.FC = () => {
   const history = useHistory();
   const { t } = useTranslation();
   const [selectViewType, setSelectViewType] = useState("students");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [studentsData, setStudentsData] = useState<StudentData[]>([]);
+  const [studentsData, setStudentsData]: any = useState([]);
+  const [classesData, setClassesData]: any = useState([]);
+  const [classStudentsData, setClassStudentsData] = useState<
+    Record<number, any[]>
+  >({});
+  const [classXpData, setClassXpData]: any = useState({});
   const [layoutType, setLayoutType] = useState<"grid" | "row">("grid");
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string>("all");
-
-  const classData: ClassData[] = [
-    { name: "فصل 2/1 الابتدائي", points: 300, studentCount: 23 },
-    { name: "فصل 2/2 الابتدائي", points: 280, studentCount: 21 },
-    { name: "فصل 2/3 الابتدائي", points: 320, studentCount: 24 },
-    { name: "فصل 3/1 الابتدائي", points: 290, studentCount: 22 },
-    { name: "فصل 3/2 الابتدائي", points: 310, studentCount: 25 },
-    { name: "فصل 4/1 الابتدائي", points: 330, studentCount: 26 },
-  ];
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingClassXp, setIsLoadingClassXp] = useState(false);
 
   const filterOptions = [
     { value: "all", label: "الكل" },
@@ -68,23 +38,36 @@ const TeacherView: React.FC = () => {
     { value: "name_desc", label: "الاسم (ي-أ)" },
   ];
 
-  const teamData: TeamData[] = [
-    { name: "فريق الخير", points: 300, studentCount: 10 },
-    { name: "فريق النور", points: 280, studentCount: 12 },
-    { name: "فريق العلم", points: 290, studentCount: 9 },
-    { name: "فريق الأمل", points: 310, studentCount: 11 },
-    { name: "فريق السلام", points: 320, studentCount: 10 },
-    { name: "فريق المحبة", points: 330, studentCount: 8 },
+  const classFilterOptions = [
+    { value: "all", label: "الكل" },
+    { value: "xp_high", label: "النقاط (الأعلى)" },
+    { value: "xp_low", label: "النقاط (الأدنى)" },
+    { value: "name_asc", label: "الاسم (أ-ي)" },
+    { value: "name_desc", label: "الاسم (ي-أ)" },
+    { value: "students_high", label: "عدد الطلاب (الأعلى)" },
+    { value: "students_low", label: "عدد الطلاب (الأدنى)" },
   ];
 
   // Fetch students data on component mount
   useEffect(() => {
     fetchStudentsData();
+    fetchClassesData();
   }, []);
 
+  // Fetch class XP data when classes are loaded
+  useEffect(() => {
+    if (classesData.length > 0) {
+      fetchClassXpData();
+    }
+  }, [classesData]);
+
   const fetchStudentsData = async () => {
+    setIsLoading(true);
     const authToken = localStorage.getItem("token");
-    if (!authToken) return;
+    if (!authToken) {
+      setIsLoading(false);
+      return;
+    }
     try {
       const response = await fetch(
         `http://localhost:3000/teachers/appear-student`,
@@ -95,16 +78,179 @@ const TeacherView: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setStudentsData(data.data);
-        console.log(studentsData);
+        console.log("Students data:", data.data);
       }
     } catch (error) {
       console.error("Error fetching students:", error);
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const fetchClassesData = async () => {
+    setIsLoading(true);
+    const authToken = localStorage.getItem("token");
+    if (!authToken) {
+      setIsLoading(false);
+      return;
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/teachers/appear-class`,
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setClassesData(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching classes:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Fetch students for each class to calculate total XP
+  const fetchClassXpData = async () => {
+    setIsLoadingClassXp(true);
+    const authToken = localStorage.getItem("token");
+    if (!authToken) {
+      setIsLoadingClassXp(false);
+      return;
+    }
+
+    const xpDataObj: Record<number, { totalXp: number; studentCount: number }> =
+      {};
+
+    try {
+      // Process classes sequentially to avoid rate limiting
+      for (const classItem of classesData) {
+        try {
+          const response = await fetch(
+            `http://localhost:3000/teachers/appear-student-class/${classItem.classId}`,
+            {
+              headers: { Authorization: `Bearer ${authToken}` },
+            }
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            const students = data.data || [];
+
+            // Calculate total XP for this class
+            const totalXp = students.reduce(
+              (sum: number, student: any) => sum + (student.xp || 0),
+              0
+            );
+
+            xpDataObj[classItem.classId] = {
+              totalXp,
+              studentCount: students.length,
+            };
+          }
+        } catch (error) {
+          console.error(
+            `Error fetching students for class ${classItem.classId}:`,
+            error
+          );
+          // Set default values if fetch fails
+          xpDataObj[classItem.classId] = {
+            totalXp: 0,
+            studentCount: 0,
+          };
+        }
+      }
+
+      setClassXpData(xpDataObj);
+    } catch (error) {
+      console.error("Error in fetchClassXpData:", error);
+    } finally {
+      setIsLoadingClassXp(false);
+    }
+  };
+
+  // Fetch students for each class (for avatars)
+  const fetchClassStudents = async () => {
+    const authToken = localStorage.getItem("token");
+    if (!authToken) return;
+
+    const studentsDataObj: Record<number, any[]> = {};
+
+    try {
+      // Process classes sequentially
+      for (const classItem of classesData) {
+        try {
+          const response = await fetch(
+            `http://localhost:3000/teachers/appear-student-class/${classItem.classId}`,
+            {
+              headers: { Authorization: `Bearer ${authToken}` },
+            }
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            const students = data.data || [];
+
+            studentsDataObj[classItem.classId] = students.slice(0, 10);
+          }
+        } catch (error) {
+          console.error(
+            `Error fetching students for class ${classItem.classId}:`,
+            error
+          );
+          studentsDataObj[classItem.classId] = [];
+        }
+      }
+
+      setClassStudentsData(studentsDataObj);
+    } catch (error) {
+      console.error("Error in fetchClassStudents:", error);
+    }
+  };
+
+  // Modify your useEffect to call the new function
+  useEffect(() => {
+    if (classesData.length > 0) {
+      fetchClassXpData();
+      fetchClassStudents(); // Add this line
+    }
+  }, [classesData]);
+
+  // Helper function to render student avatars
+  const renderClassAvatars = (classId: number) => {
+    const students = classStudentsData[classId] || [];
+
+    if (students.length === 0) {
+      return (
+        <div className="text-gray-400 text-xs italic">{t("لا يوجد طلاب")}</div>
+      );
+    }
+
+    return (
+      <div className="flex -space-x-3 rtl:space-x-reverse">
+        {students.map((student, index) => (
+          <div
+            key={student.id}
+            className="w-8 h-8 rounded-full border-2 border-white overflow-hidden relative z-10"
+            style={{ marginLeft: index > 0 ? "-0.75rem" : "0" }}
+          >
+            <GetAvatar userAvatarData={student.user.profileImg} />
+          </div>
+        ))}
+        {classXpData[classId]?.studentCount > 10 && (
+          <div className="w-8 h-8 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center text-xs font-medium">
+            +{classXpData[classId]?.studentCount - 10}
+          </div>
+        )}
+      </div>
+    );
   };
 
   // Filter and sort students based on search query and active filter
   const getFilteredStudents = () => {
-    const searchFiltered = studentsData.filter((student) =>
+    const searchFiltered = studentsData.filter((student: any) =>
       `${student.user.firstName} ${student.user.lastName}`
         .toLowerCase()
         .includes(searchQuery.toLowerCase())
@@ -133,11 +279,63 @@ const TeacherView: React.FC = () => {
     }
   };
 
+  // Filter and sort classes based on search query and active filter
+  const getFilteredClasses = () => {
+    const searchFiltered = classesData.filter((classItem: any) =>
+      classItem.className.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    // Apply sorting based on active filter
+    switch (activeFilter) {
+      case "xp_high":
+        return [...searchFiltered].sort(
+          (a, b) =>
+            (classXpData[b.classId]?.totalXp || 0) -
+            (classXpData[a.classId]?.totalXp || 0)
+        );
+      case "xp_low":
+        return [...searchFiltered].sort(
+          (a, b) =>
+            (classXpData[a.classId]?.totalXp || 0) -
+            (classXpData[b.classId]?.totalXp || 0)
+        );
+      case "name_asc":
+        return [...searchFiltered].sort((a, b) =>
+          a.className.localeCompare(b.className)
+        );
+      case "name_desc":
+        return [...searchFiltered].sort((a, b) =>
+          b.className.localeCompare(a.className)
+        );
+      case "students_high":
+        return [...searchFiltered].sort(
+          (a, b) =>
+            (classXpData[b.classId]?.studentCount || 0) -
+            (classXpData[a.classId]?.studentCount || 0)
+        );
+      case "students_low":
+        return [...searchFiltered].sort(
+          (a, b) =>
+            (classXpData[a.classId]?.studentCount || 0) -
+            (classXpData[b.classId]?.studentCount || 0)
+        );
+      default:
+        return searchFiltered;
+    }
+  };
+
   const filteredStudents = getFilteredStudents();
+  const filteredClasses = getFilteredClasses();
 
   // Modified to navigate to student details page
   const navigateToStudentDetail = (studentId: number) => {
     history.push(`/teacher/student/${studentId}`);
+  };
+
+  // Navigate to class detail page if needed
+  const navigateToClassDetail = (classId: number) => {
+    // Implement if needed
+    history.push(`/teacher/classes/${classId}`);
   };
 
   return (
@@ -148,21 +346,11 @@ const TeacherView: React.FC = () => {
       {/* Header */}
       <div className="flex-center flex-col gap-3 w-full">
         <div className="flex items-center w-full justify-between">
-          {selectViewType === "classes" ? (
-            <div className="flex-center bg-gray-200 p-3 rounded-2xl">
-              <FilterIcon />
-              <h1 className="text-gray-500 text-md font-bold">{t("الصف")}</h1>
-            </div>
-          ) : (
-            <div className="w-16 h-16"></div>
-          )}
+          <div className="w-16"></div>
           <div className="flex items-center justify-center flex-col gap-2">
             <h1 className="text-black font-bold text-2xl text-end">
               {t("استعرض الطلاب")}
             </h1>
-            {/* <p className="text-gray-400 text-end">
-              {t("اطلع علي الفرق والطلاب والفصول")}
-            </p> */}
           </div>
           <GoBackButton />
         </div>
@@ -193,50 +381,55 @@ const TeacherView: React.FC = () => {
         </div>
       </div>
 
-      {/* Search Bar and Layout Options - Only show for students view */}
-      {selectViewType === "students" && (
-        <div className="w-full space-y-3">
-          {/* Filter and Layout Options Row */}
-          <div className="flex justify-between items-center w-full">
-            {/* Filter Menu */}
-            <div className="relative">
-              <div
-                className="flex items-center gap-2 bg-gray-200 px-4 py-2 rounded-xl "
-                onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-              >
-                <FilterIcon />
-                <span className="text-gray-700">
-                  {t(
-                    filterOptions.find((opt) => opt.value === activeFilter)
-                      ?.label || "فلتر"
-                  )}
-                </span>
-              </div>
-
-              {/* Dropdown Menu */}
-              {showFilterDropdown && (
-                <div className="absolute left-0 mt-2 bg-white text-black shadow-lg rounded-xl z-10 min-w-max border">
-                  {filterOptions.map((option) => (
-                    <div
-                      key={option.value}
-                      className={`px-4 py-2 hover:bg-gray-100 cursor-pointer ${
-                        activeFilter === option.value
-                          ? "bg-gray-100 font-medium"
-                          : ""
-                      }`}
-                      onClick={() => {
-                        setActiveFilter(option.value);
-                        setShowFilterDropdown(false);
-                      }}
-                    >
-                      {t(option.label)}
-                    </div>
-                  ))}
-                </div>
-              )}
+      {/* Search Bar and Layout Options */}
+      <div className="w-full space-y-3">
+        {/* Filter and Layout Options Row */}
+        <div className="flex justify-between items-center w-full">
+          {/* Filter Menu */}
+          <div className="relative">
+            <div
+              className="flex items-center gap-2 bg-gray-200 px-4 py-2 rounded-xl "
+              onClick={() => setShowFilterDropdown(!showFilterDropdown)}
+            >
+              <FilterIcon />
+              <span className="text-gray-700">
+                {t(
+                  (selectViewType === "students"
+                    ? filterOptions
+                    : classFilterOptions
+                  ).find((opt) => opt.value === activeFilter)?.label || "فلتر"
+                )}
+              </span>
             </div>
 
-            {/* Layout Switcher */}
+            {/* Dropdown Menu */}
+            {showFilterDropdown && (
+              <div className="absolute left-0 mt-2 bg-white text-black shadow-lg rounded-xl z-10 min-w-max border">
+                {(selectViewType === "students"
+                  ? filterOptions
+                  : classFilterOptions
+                ).map((option) => (
+                  <div
+                    key={option.value}
+                    className={`px-4 py-2 hover:bg-gray-100 cursor-pointer ${
+                      activeFilter === option.value
+                        ? "bg-gray-100 font-medium"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      setActiveFilter(option.value);
+                      setShowFilterDropdown(false);
+                    }}
+                  >
+                    {t(option.label)}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Layout Switcher - Only for Students View */}
+          {selectViewType === "students" && (
             <div className="flex items-center gap-2 bg-gray-200 rounded-xl overflow-hidden">
               <div
                 className={`p-2 cursor-pointer ${
@@ -259,23 +452,27 @@ const TeacherView: React.FC = () => {
                 <FaThList size={20} />
               </div>
             </div>
-          </div>
-
-          {/* Search bar */}
-          <div className="flex w-full justify-between items-center border-2 rounded-xl px-2 py-1">
-            <div className="w-10 h-10 bg-blueprimary rounded-xl flex-center">
-              <SearchIcon className="text-white" size={20} />
-            </div>
-            <input
-              type="text"
-              placeholder={t("ابحث عن طالب")}
-              className="drop-shadow-sm py-3 w-full bg-transparent text-end text-black"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
+          )}
         </div>
-      )}
+
+        {/* Search bar */}
+        <div className="flex w-full justify-between items-center border-2 rounded-xl px-2 py-1">
+          <div className="w-10 h-10 bg-blueprimary rounded-xl flex-center">
+            <SearchIcon className="text-white" size={20} />
+          </div>
+          <input
+            type="text"
+            placeholder={t(
+              selectViewType === "students"
+                ? t("ابحث عن طالب")
+                : t("ابحث عن فصل")
+            )}
+            className="drop-shadow-sm py-3 w-full bg-transparent text-end text-black"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+      </div>
 
       {/* Content Area */}
       <div className="w-full overflow-y-auto flex-1">
@@ -286,55 +483,56 @@ const TeacherView: React.FC = () => {
               {t("الفصول")}
             </h1>
             <div className="w-full flex flex-col gap-3">
-              {classData.map((item, index) => (
-                <div
-                  key={index}
-                  className="border-2 rounded-xl flex w-full p-4 justify-between"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-blueprimary font-bold">
-                      {item.points}
-                    </span>
-                    <span className="text-gray-500">{t("نقطة")}</span>
-                  </div>
-                  <div className="flex flex-col items-end">
-                    <h1 className="text-black text-end text-md">{item.name}</h1>
-                    <h1 className="text-gray-500 text-end text-sm" dir="rtl">
-                      {item.studentCount} {t("طالب")}
-                    </h1>
-                  </div>
+              {isLoading || isLoadingClassXp ? (
+                <div className="flex justify-center items-center w-full py-10">
+                  <p className="text-gray-500">{t("جاري التحميل...")}</p>
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
+              ) : filteredClasses.length > 0 ? (
+                filteredClasses.map((item: any) => (
+                  <div
+                    key={item.classId}
+                    className="border-2 rounded-xl flex w-full p-4 justify-between hover:bg-gray-50 cursor-pointer"
+                    onClick={() => navigateToClassDetail(item.classId)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <MedalAndLevel
+                        level={
+                          calculateLevel(
+                            classXpData[item.classId]?.totalXp || 0
+                          ).level
+                        }
+                        color={"text-black text-center"}
+                        dir={""}
+                        size={""}
+                      />
+                    </div>
+                    <div className="flex-col flex w-full text-end">
+                      <h1 className="text-black text-md capitalize">
+                        {item.className}
+                      </h1>
+                      <h1 className="text-gray-500 text-sm capitalize">
+                        {item.organizationName}
+                      </h1>
 
-        {/* Teams View */}
-        {selectViewType === "teams" && (
-          <div className="flex items-end flex-col gap-2 w-full">
-            <h1 className="text-black font-bold text-xl text-end">
-              {t("الفرق")}
-            </h1>
-            <div className="w-full flex flex-col gap-3">
-              {teamData.map((item, index) => (
-                <div
-                  key={index}
-                  className="border-2 rounded-xl flex w-full p-4 justify-between"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-blueprimary font-bold">
-                      {item.points}
-                    </span>
-                    <span className="text-gray-500">{t("نقطة")}</span>
+                      <div
+                        className="text-gray-800 font-medium px-3 py-1 rounded-lg"
+                        dir="rtl"
+                      >
+                        {classXpData[item.classId]?.studentCount + " " || 0}
+                        {t("طلاب")}
+                      </div>
+
+                      <div className="flex justify-end w-full mt-2">
+                        {renderClassAvatars(item.classId)}
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex flex-col items-end">
-                    <h1 className="text-black text-end text-md">{item.name}</h1>
-                    <h1 className="text-gray-500 text-end text-sm" dir="rtl">
-                      {item.studentCount} {t("طالب")}
-                    </h1>
-                  </div>
+                ))
+              ) : (
+                <div className="flex justify-center items-center w-full py-10">
+                  <p className="text-gray-500">{t("لا يوجد فصول")}</p>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         )}
@@ -346,25 +544,34 @@ const TeacherView: React.FC = () => {
               {t("الطلاب")}
             </h1>
 
-            {filteredStudents.length > 0 ? (
+            {isLoading ? (
+              <div className="flex justify-center items-center w-full py-10">
+                <p className="text-gray-500">{t("جاري التحميل...")}</p>
+              </div>
+            ) : filteredStudents.length > 0 ? (
               layoutType === "grid" ? (
                 // Grid View
                 <div className="grid grid-cols-3 w-full gap-2 mt-2">
-                  {filteredStudents.map((student) => (
+                  {filteredStudents.map((student: any) => (
                     <div
                       key={student.id}
                       className="flex flex-col items-center p-2 gap-1 border-2 rounded-xl hover:bg-gray-50 cursor-pointer"
                       onClick={() => navigateToStudentDetail(student.id)}
                     >
-                      <div className="w-14 h-14 rounded-full">
+                      <div className="w-12 h-12 rounded-full  mb-1">
                         <GetAvatar userAvatarData={student.user.profileImg} />
                       </div>
-                      <h1 className="text-black text-center font-medium mt-1">
+                      <h1 className="text-black text-center font-medium">
                         {`${student.user.firstName}`}
                       </h1>
-                      <h1 className="text-gray-500 text-xs text-center">
-                        {student.class || t("لا يوجد فصل")}
-                      </h1>
+                      <div className="flex-center flex-col">
+                        <span className="text-gray-500 text-sm capitalize">
+                          {student.Class.classname || t("لا يوجد فصل")}
+                        </span>
+                        <span className="text-gray-500 text-sm capitalize">
+                          {student.Class.category || t("لا يوجد فصل")}
+                        </span>
+                      </div>
                       <MedalAndLevel
                         level={calculateLevel(student.xp).level}
                         color="text-black text-sm"
@@ -377,7 +584,7 @@ const TeacherView: React.FC = () => {
               ) : (
                 // Row View
                 <div className="flex flex-col w-full gap-2 mt-1">
-                  {filteredStudents.map((student) => (
+                  {filteredStudents.map((student: any) => (
                     <div
                       key={student.id}
                       className="flex items-center justify-between p-2 border-2 rounded-xl hover:bg-gray-50 cursor-pointer"
@@ -390,16 +597,21 @@ const TeacherView: React.FC = () => {
                           dir=""
                           size={"w-12"}
                         />
-                        <span className="text-gray-500 text-sm">
-                          {student.class || t("لا يوجد فصل")}
-                        </span>
+                        <div className="flex-center flex-col">
+                          <span className="text-gray-500 text-sm capitalize">
+                            {student.Class.classname || t("لا يوجد فصل")}
+                          </span>
+                          <span className="text-gray-500 text-sm capitalize">
+                            {student.Class.category || t("لا يوجد فصل")}
+                          </span>
+                        </div>
                       </div>
 
                       <div className="flex items-center gap-3">
                         <h1 className="text-black font-medium">
                           {`${student.user.firstName} ${student.user.lastName}`}
                         </h1>
-                        <div className="w-10 h-10 rounded-full">
+                        <div className="w-10 h-10 rounded-full overflow-hidden">
                           <GetAvatar userAvatarData={student.user.profileImg} />
                         </div>
                       </div>

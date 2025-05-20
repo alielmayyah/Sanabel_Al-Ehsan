@@ -88,14 +88,14 @@ const StudentProfileOverview: React.FC<ProfileProps> = ({
 
   return (
     <div
-      className="flex flex-col h-full w-full items-start justify-start z-10 p-4 overflow-y-auto"
+      className="flex flex-col h-full w-full items-start justify-around z-10 p-4 overflow-y-auto"
       id="page-height"
     >
       <MedalAndLevel
         level={level}
         color={"text-black text-sm"}
         dir={""}
-        size={""}
+        size={"w-16 h-16"}
       />
 
       <div className="flex flex-col gap-1">

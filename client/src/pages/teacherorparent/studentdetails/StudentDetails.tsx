@@ -126,7 +126,11 @@ const Profile: React.FC = () => {
       className="flex flex-col h-full w-full items-center justify-between z-10"
       id="page-height"
     >
-      <div className="flex items-center justify-between bg-yellowprimary py-7 w-full  p-4 rounded-b-[25px] "></div>
+      <div className="flex items-center justify-end bg-yellowprimary py-7 w-full  p-4 rounded-b-[25px] ">
+        <div className="flex-center bg-white b rounded-xl self-end">
+          <GoBackButton />
+        </div>
+      </div>
 
       <div className="flex flex-col items-center gap-1 justify-between">
         <div className="w-32 h-32 rounded-full -mt-6 border-8 border-white">
@@ -136,7 +140,14 @@ const Profile: React.FC = () => {
           {`${student.user.firstName} ${student.user.lastName}`}
         </h1>
         <h1 className="text-[#B3B3B3]"> {t("طالب")}</h1>
-        <h1 className="text-[#B3B3B3]"> المرحلة الاعدادية - فصل 4/8</h1>
+        <h1 className="text-[#B3B3B3] capitalize">
+          {" "}
+          {student.class?.classname}
+        </h1>
+        <h1 className="text-[#B3B3B3] capitalize">
+          {" "}
+          {student.class?.category}
+        </h1>
       </div>
 
       {/* Navbar */}
@@ -171,6 +182,7 @@ const Profile: React.FC = () => {
           treeProgress={student.treeProgress}
         />
       )}
+
       {/* {show == profileNav[2] && <StudentProfileTrophies />}
 
       {show == profileNav[3] && <StudentProfileActivity />} */}

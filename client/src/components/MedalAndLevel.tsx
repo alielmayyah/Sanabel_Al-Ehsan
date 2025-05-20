@@ -41,7 +41,7 @@ const MedalAndLevel: React.FC<MedalAndLevelProps> = ({
 
   return (
     <div
-      className={`w-full h-full flex-center gap-0 ${
+      className={`w-full mb-5 flex-center gap-0 ${
         dir === "horizontal" ? "flex" : "flex-col"
       }`}
     >

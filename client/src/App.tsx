@@ -213,7 +213,7 @@ const App: React.FC = () => {
                 <Route exact path="/teacher/view" component={TeacherView} />
                 <Route
                   exact
-                  path="/teacher/classdetails"
+                  path="/teacher/classes/:classId"
                   component={ClassDetails}
                 />
 
@@ -231,29 +231,12 @@ const App: React.FC = () => {
                 <Route exact path="/teacher/classlist" component={ClassList} />
                 <Route exact path="/teacher/teamslist" component={TeamsList} />
 
-                {/* Registration */}
-                {/* Teacher Sanabel */}
-                {/* <Route
-                  exact
-                  path="/Teacher/sanabel"
-                  component={TeacherSanabel}
-                />
-
-                <Route
-                  path="/Teacher/sanabel/:index"
-                  component={TeacherSanabelPage}
-                /> */}
-                {/* <Route
-                  path="/Teacher/sanabel/0"
-                  component={TeacherSanabelPrayer}
-                /> */}
+       
                 {/* Parent */}
                 <Route exact path="/parent/home" component={ParentNavbar} />
-                {/* Profile Pages */}
-                {/* Sanabel Pages */}
-                {/* Student */}
-                {/* Teacher */}
-                {/* Teacher */}
+              
+
+              
               </Switch>
             </div>
           </IonRouterOutlet>
