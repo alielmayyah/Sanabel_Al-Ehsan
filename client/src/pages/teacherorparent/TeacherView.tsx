@@ -180,16 +180,7 @@ const TeacherView: React.FC = () => {
         >
           <h1>{t("طلاب")}</h1>
         </div>
-        <div
-          className={`w-full text-center py-1 rounded-3xl ${
-            selectViewType === "teams"
-              ? "bg-blueprimary text-white"
-              : "text-gray-500"
-          }`}
-          onClick={() => setSelectViewType("teams")}
-        >
-          <h1>{t("فرق")}</h1>
-        </div>
+
         <div
           className={`w-full text-center py-1 rounded-3xl ${
             selectViewType === "classes"

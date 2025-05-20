@@ -9,7 +9,7 @@ import GoBackButton from "../../../../components/GoBackButton";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import parentOrTeacherImg from "../../../../assets/parentorteacher/chooseparentorteacher.png";
+import parentOrTeacherImg from "../../../../assets/choosesignmethod/chooseparentorteacher.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import i18n from "../../../../i18n";

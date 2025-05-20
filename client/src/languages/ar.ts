@@ -67,7 +67,7 @@ const ar = {
     "لم تتلق رمز": "لم تتلق رمز",
     "بعد؟": "بعد؟",
     "إعادة الإرسال": "إعادة الإرسال",
-    email_example: "مثال: mohamedmonge7@gmail.com",
+    email_example: "مثال: amrahmed@gmail.com",
 
     // Login component translations
 

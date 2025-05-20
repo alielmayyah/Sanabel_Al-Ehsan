@@ -51,19 +51,18 @@ import TeacherSanabelMissionsPage from "./pages/teacherorparent/challenges/Sanab
 import TeacherView from "./pages/teacherorparent/TeacherView";
 
 // Teacher View Details
-import TeamsDetails from "./pages/teacherorparent/teacherviewdetails/TeamsDetails";
-import StudentDetails from "./pages/teacherorparent/teacherviewdetails/StudentDetails";
+
+import StudentDetails from "./pages/teacherorparent/studentdetails/StudentDetails";
 import ClassDetails from "./pages/teacherorparent/teacherviewdetails/ClassDetails";
 
 // Registration
+
+import SignupParentOrTeacher from "./pages/common/signup/parent_teacher/SignupParentOrTeacher";
+
 // Teacher Lists
 import StudentsList from "./pages/teacherorparent/pointsregistration/StudentsList";
 import TeamsList from "./pages/teacherorparent/pointsregistration/TeamsList";
 import ClassList from "./pages/teacherorparent/pointsregistration/ClassList";
-
-import RegistrationProcess from "./pages/teacherorparent/pointsregistration/registrationprocess/RegistrationProcess";
-
-import ClassRegistrationDetails from "./pages/teacherorparent/pointsregistration/pointsregistrationdetails/ClassRegistrationDetails";
 
 // Parent
 import ParentNavbar from "./components/navbar/ParentNavbar";
@@ -113,6 +112,11 @@ const App: React.FC = () => {
                 />
                 {/* Signup */}
                 <Route exact path="/signupstudent" component={SignupStudent} />
+                <Route
+                  exact
+                  path="/signupparentorteacher"
+                  component={SignupParentOrTeacher}
+                />
                 {/* Login */}
                 <Route exact path="/login" component={Login} />
                 <Route
@@ -212,11 +216,7 @@ const App: React.FC = () => {
                   path="/teacher/classdetails"
                   component={ClassDetails}
                 />
-                <Route
-                  exact
-                  path="/teacher/teamsdetails"
-                  component={TeamsDetails}
-                />
+
                 <Route
                   exact
                   path="/teacher/student/:studentId"
@@ -230,11 +230,7 @@ const App: React.FC = () => {
                 />
                 <Route exact path="/teacher/classlist" component={ClassList} />
                 <Route exact path="/teacher/teamslist" component={TeamsList} />
-                <Route
-                  exact
-                  path="/teacher/classregistrationdetails"
-                  component={ClassRegistrationDetails}
-                />
+
                 {/* Registration */}
                 {/* Teacher Sanabel */}
                 {/* <Route

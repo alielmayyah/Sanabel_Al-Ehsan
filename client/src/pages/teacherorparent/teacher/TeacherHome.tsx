@@ -1,98 +1,107 @@
 import { useTheme } from "../../../context/ThemeContext";
-
 import Notification from "../../../components/Notification";
-
-import Greeting from "../../../components/Greeting";
-
 import Navbar from "../../../components/navbar/TeacherNavbar";
 import { useTranslation } from "react-i18next";
-
-import InviteStudent from "../../../icons/TeacherHome/InviteStudent";
-import ApplyClass from "../../../icons/TeacherHome/ApplyClass";
-import ApplyTeam from "../../../icons/TeacherHome/ApplyTeam";
-import ApplyStudents from "../../../icons/TeacherHome/ApplyStudents";
-
-import { IoCloseCircle } from "react-icons/io5";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const TeacherHome: React.FC = () => {
-  const history = useHistory();
+import {
+  FaChalkboardTeacher,
+  FaUserGraduate,
+  FaTrophy,
+  FaUserFriends,
+  FaClipboardList,
+} from "react-icons/fa";
 
+const TeacherHome = () => {
+  const history = useHistory();
   const { t } = useTranslation();
-  const [openInvite, setOpenInvite] = useState(false);
 
   const teacherHomeButtons = [
     {
-      title: "دعوة طلاب",
-      description: "أرسل دعوات إلى الطلاب للانضمام إلى برنامج الحسنات.",
-      bgColor: "bg-[#498200]",
-      icon: <InviteStudent />,
-      onclick: () => setOpenInvite(true),
+      title: "Register Classes",
+      description: "Record achievements and track progress for your classroom.",
+      bgColor: "bg-blueprimary",
+      icon: <FaChalkboardTeacher className="text-blue-600" size={24} />,
+      onclick: () => history.push("/teacher/classlist"),
     },
     {
-      title: "تسجيل حسنات الفصول",
-      description: "سجل إنجازات الحسنات التي جمعها الطلاب في فصولهم الدراسية.",
-      bgColor: "bg-[#4AAAD6]",
-      icon: <ApplyClass />,
-      onclick: () => history.push("/teacher/classlist"), // Fixed to correctly invoke the function
+      title: "Register Students",
+      description: "Record individual student achievements and progress.",
+      bgColor: "bg-greenprimary",
+      icon: <FaUserGraduate className="text-green-600" size={24} />,
+      onclick: () => history.push("/teacher/studentslist"),
     },
     {
-      title: "تسجيل حسنات الفرق",
-      description: "سجل الحسنات التي جمعها الطلاب عند العمل كفرق.",
-      bgColor: "bg-[#E14E54]",
-      icon: <ApplyTeam className="text-[#E14E54]" />,
-      onclick: () => history.push("/teacher/teamslist"), // Fixed to correctly invoke the function
+      title: "Leaderboards",
+      description: "View top performing classes and students.",
+      bgColor: "bg-yellowprimary",
+      icon: <FaTrophy className="text-yellow-500" size={24} />,
+      onclick: () => history.push("/teacher/leaderboards"),
     },
     {
-      title: "تسجيل حسنات للطلاب",
-      description: "سجل الحسنات الفردية المكتسبة من قبل كل طالب.",
-      bgColor: "bg-[#FAB700]",
-      icon: <ApplyStudents />,
-      onclick: () => history.push("/teacher/studentslist"), // Fixed to correctly invoke the function
+      title: "View Students & Classes",
+      description: "Browse and manage your students and classes.",
+      bgColor: "bg-redprimary",
+      icon: <FaUserFriends className="text-purple-600" size={24} />,
+      onclick: () => history.push("/teacher/view"),
+    },
+    {
+      title: "View Challenges",
+      description: "Explore available challenges and activities.",
+      bgColor: "bg-red-600",
+      icon: <FaClipboardList className="text-red-600" size={24} />,
+      onclick: () => history.push("/teacher/challenges"),
     },
   ];
 
   return (
     <div
-      className="flex flex-col items-center justify-start gap-10"
+      className="flex flex-col items-center justify-start gap-6 bg-gray-50"
+      dir="rtl"
       id="page-height"
     >
-      <div className="flex  items-center justify-end w-full p-4">
-        {/* <Notification /> */}
-        <Greeting name={`مرحباً مريم`} text={"هيا بنا نصنع الخير معًا"} />
+      <div className="w-full flex items-center justify-between p-4 bg-white shadow">
+        <div className="flex items-center">
+          <div className="w-12 h-12 rounded-full bg-gray-200 ml-3 overflow-hidden">
+            {/* صورة المعلم */}
+            <img
+              src="/assets/teacher-avatar.png"
+              alt="معلم"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="text-right">
+            <h1 className="text-xl font-bold">مرحباً أستاذ</h1>
+            <p className="text-gray-600 text-sm">هيا بنا نصنع الفرق معًا</p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-4">
+          <Notification />
+        </div>
       </div>
 
-      <div className="w-full flex flex-col gap-3 h-2/3 p-4">
+      <div className="w-full grid grid-cols-1 gap-4 px-4 pb-20">
         {teacherHomeButtons.map((button, index) => (
           <div
-            className={`${button.bgColor} w-full rounded-3xl flex-center flex-col gap-2 h-full`}
+            className={`${button.bgColor} rounded-xl shadow-md overflow-hidden cursor-pointer transition-transform hover:scale-105`}
             key={index}
-            onClick={button.onclick} // Correctly passing the function
+            onClick={button.onclick}
           >
-            <div className="flex-center p-2 bg-white rounded-full">
-              {button.icon}
+            <div className="flex items-center p-4">
+              <div className="flex-1 text-white text-right">
+                <h2 className="font-bold text-lg">{button.title}</h2>
+                <p className="text-sm opacity-90">{button.description}</p>
+              </div>
+              <div className="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-white mr-4">
+                {button.icon}
+              </div>
             </div>
-            <h1 className="text-white font-bold text-2xl">{button.title}</h1>
           </div>
         ))}
       </div>
-      <Navbar />
 
-      {openInvite && (
-        <div className="w-screen h-screen absolute flex-center flex-col ">
-          <div className="h-1/3 bg-black opacity-10 w-full"></div>
-          <div className="h-2/3 w-full bg-white flex-center p-4">
-            <div
-              className="flex text-redprimary w-full justify-between items-center"
-              onClick={() => setOpenInvite(false)}
-            >
-              <IoCloseCircle size={35} />
-              <h1 className="text-black text-2xl">{t("دعوة طالب")}</h1>
-            </div>
-          </div>
-        </div>
-      )}
+      <Navbar />
     </div>
   );
 };

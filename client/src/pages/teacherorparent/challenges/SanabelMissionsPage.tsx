@@ -1,59 +1,155 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
 
+// Components
 import GoBackButton from "../../../components/GoBackButton";
+import PrayerTimes from "./PrayerTimes";
 
-import Tickcircle from "../../../icons/Sanabel/Tickcircle";
+// Icons
 import { FaLocationArrow } from "react-icons/fa";
 
-import sanabelType from "../../../data/SanabelTypeData";
-import PrayerTimes from "./PrayerTimes";
-import axios from "axios";
+// Assets
 import { sanabelImgs } from "../../../data/SanabelImgs";
-
-// Sanabel
 import blueSanabel from "../../../assets/resources/سنبلة زرقاء.png";
 import redSanabel from "../../../assets/resources/سنبلة حمراء.png";
 import yellowSanabel from "../../../assets/resources/سنبلة صفراء.png";
 import xpIcon from "../../../assets/resources/اكس بي.png";
 
-const SanabelMissionsPage: React.FC = () => {
-  const { index, subIndex } = useParams<{ index: any; subIndex: any }>();
-  // Ensure index is properly parsed as a number
-  const indexAsNumber = parseInt(index, 10);
-  // Make sure APIIndex is correctly calculated as a number
-  const APIIndex = indexAsNumber + 1;
-  // const sanabel = sanabelType[index].sanabel[subIndex];
+// API service functions
+const fetchCategoryName = async (index: number) => {
+  const authToken = localStorage.getItem("token");
+  if (!authToken) {
+    console.error("Auth token not found");
+    return null;
+  }
 
-  const sanabelTypes = [
-    "سنابل الإحسان في العلاقة مع الله",
-    "سنابل الإحسان في العلاقة مع النفس",
-    "سنابل الإحسان في العلاقة مع الاسرة والمجتمع",
-    "سنابل الإحسان في العلاقة مع الارض والكون",
-  ];
+  try {
+    console.log("Fetching category name...");
+    const response = await axios.get(
+      "http://localhost:3000/teachers/tasks-category",
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+
+    console.log("Category data received:", response.data);
+    if (response.status === 200 && response.data.data[index]) {
+      return response.data.data[index].category;
+    } else {
+      console.error(
+        "Invalid category response or index out of bounds",
+        index,
+        response.data
+      );
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching category name:", error);
+    return null;
+  }
+};
+
+const fetchSanabelTypes = async (categoryId: number) => {
+  const authToken = localStorage.getItem("token");
+  if (!authToken) {
+    console.error("Auth token not found");
+    return [];
+  }
+
+  try {
+    console.log(`Fetching sanabel types for category ID ${categoryId}...`);
+    const response = await axios.get(
+      `http://localhost:3000/teachers/appear-Taskes-Type/${categoryId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+
+    console.log("Sanabel types received:", response.data);
+    if (response.status === 200) {
+      const uniqueTypes: string[] = [];
+      response.data.data.forEach((task: { type: string }) => {
+        if (!uniqueTypes.includes(task.type)) {
+          uniqueTypes.push(task.type);
+        }
+      });
+      console.log("Unique sanabel types:", uniqueTypes);
+      return uniqueTypes;
+    } else {
+      console.error("Invalid sanabel types response", response);
+      return [];
+    }
+  } catch (error) {
+    console.error("Error fetching sanabel types:", error);
+    return [];
+  }
+};
+
+const fetchMissions = async (categoryId: number, sanabelType: string) => {
+  const authToken = localStorage.getItem("token");
+  if (!authToken) {
+    console.error("Auth token not found");
+    return [];
+  }
+
+  try {
+    console.log(
+      `Fetching missions for category ${categoryId} and type ${sanabelType}...`
+    );
+    const response = await axios.get(
+      `http://localhost:3000/teachers/appear-Taskes-Type-Category/${categoryId}/${sanabelType}`,
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+
+    console.log("Missions received:", response.data);
+    if (response.status === 200) {
+      // From the console logs, it appears the data is directly in response.data.data
+      const missionData = response.data.data;
+
+      console.log("Extracted mission data:", missionData);
+
+      if (Array.isArray(missionData)) {
+        return missionData;
+      } else {
+        console.error("Mission data is not an array:", missionData);
+        return [];
+      }
+    } else {
+      console.error("Invalid missions response", response);
+      return [];
+    }
+  } catch (error) {
+    console.error("Error fetching missions:", error);
+    return [];
+  }
+};
+
+const SanabelMissionsPage: React.FC = () => {
+  const { index, subIndex } = useParams<{ index: string; subIndex: string }>();
+  const indexAsNumber = parseInt(index || "0", 10);
+  const subIndexAsNumber = parseInt(subIndex || "0", 10);
+  const APIIndex = indexAsNumber + 1; // API uses 1-based indexing
 
   const { t } = useTranslation();
-
-  const sanabelIndex = index;
-
-  let colors = [];
-
-  colors = ["bg-blueprimary", "bg-redprimary", "bg-yellowprimary"];
-
-  const colorBG = colors[index % colors.length];
-  let colorBorder = [];
-  colorBorder = [
-    "border-t-blueprimary",
-    "border-t-redprimary",
-    "border-t-yellowprimary",
-  ];
-
-  const colorBorderTop = colorBorder[index % colors.length];
 
   const [location, setLocation] = useState<string>(
     localStorage.getItem("selectedLocation") || "الإسكندرية"
   );
+  const [categoryName, setCategoryName] = useState("");
+  const [sanabel, setSanabel] = useState<string[]>([]);
+  const [missions, setMissions] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
   // Add a list of available cities
   const availableCities = ["القاهرة", "الإسكندرية"];
@@ -64,76 +160,66 @@ const SanabelMissionsPage: React.FC = () => {
     localStorage.setItem("selectedLocation", newLocation);
   };
 
-  const [categoryName, setCategoryName] = useState("");
-  const [sanabel, setSanabel] = useState<string[]>([]);
-  const [missions, setMissions] = useState([]);
+  // Colors for styling based on index
+  const colors = ["bg-blueprimary", "bg-redprimary", "bg-yellowprimary"];
+  const colorBG = colors[indexAsNumber % colors.length];
+
+  const colorBorder = [
+    "border-t-blueprimary",
+    "border-t-redprimary",
+    "border-t-yellowprimary",
+  ];
+  const colorBorderTop = colorBorder[indexAsNumber % colors.length];
 
   useEffect(() => {
-    const fetchAllData = async () => {
-      const authToken = localStorage.getItem("token");
-      if (!authToken) return;
+    const loadAllData = async () => {
+      setIsLoading(true);
+      setError("");
 
       try {
-        // Fetch Category Name
-        const categoryResponse = await axios.get(
-          "http://localhost:3000/teachers/tasks-category",
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
-
-        if (categoryResponse.status === 200) {
-          const fetchedCategoryName =
-            categoryResponse.data.data[index].category;
+        // Step 1: Fetch category name
+        const fetchedCategoryName = await fetchCategoryName(indexAsNumber);
+        if (fetchedCategoryName) {
           setCategoryName(fetchedCategoryName);
+          console.log("Category name set:", fetchedCategoryName);
+        }
 
-          // Fetch Sanabel
-          const sanabelResponse = await axios.get(
-            `http://localhost:3000/teachers/appear-Taskes-Type/${APIIndex}`,
-            {
-              headers: {
-                Authorization: `Bearer ${authToken}`,
-              },
-            }
-          );
+        // Step 2: Fetch sanabel types
+        const fetchedSanabelTypes = await fetchSanabelTypes(APIIndex);
+        if (fetchedSanabelTypes.length > 0) {
+          setSanabel(fetchedSanabelTypes);
+          console.log("Sanabel types set:", fetchedSanabelTypes);
 
-          if (sanabelResponse.status === 200) {
-            const uniqueTypes: string[] = [];
-            sanabelResponse.data.data.forEach((task: { type: string }) => {
-              if (!uniqueTypes.includes(task.type)) {
-                uniqueTypes.push(task.type);
-              }
-            });
-
-            setSanabel(uniqueTypes);
-
-            // Fetch Missions
-            if (uniqueTypes[subIndex]) {
-              const missionsResponse = await axios.get(
-                `http://localhost:3000/teachers/appear-Taskes-Type-Category/${APIIndex}/${sanabel[subIndex]}`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${authToken}`,
-                  },
-                }
-              );
-
-              if (missionsResponse.status === 200) {
-                console.log(missionsResponse.data.tasks);
-                setMissions(missionsResponse.data.tasks);
-              }
-            }
+          // Step 3: Fetch missions if we have sanabel types and valid subIndex
+          if (fetchedSanabelTypes[subIndexAsNumber]) {
+            // Restore the dynamic API calls but ensure we're using the correct parameters
+            console.log(
+              `Using category ID ${APIIndex} and type ${fetchedSanabelTypes[subIndexAsNumber]}`
+            );
+            const fetchedMissions = await fetchMissions(
+              APIIndex,
+              fetchedSanabelTypes[subIndexAsNumber]
+            );
+            setMissions(fetchedMissions);
+            console.log("Missions set:", fetchedMissions);
+          } else {
+            console.error(
+              "Invalid subIndex or no sanabel type found:",
+              subIndexAsNumber
+            );
+            setMissions([]);
           }
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      } catch (err) {
+        console.error("Error in data loading process:", err);
+        setError("Failed to load data. Please try again.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchAllData();
-  }, [sanabel, index, subIndex]);
+    loadAllData();
+  }, [indexAsNumber, subIndexAsNumber, APIIndex]);
 
   const renderResources = (items: any) =>
     [
@@ -141,8 +227,8 @@ const SanabelMissionsPage: React.FC = () => {
       { icon: redSanabel, value: items.snabelRed },
       { icon: yellowSanabel, value: items.snabelYellow },
       { icon: xpIcon, value: items.xp },
-    ].map((resource, index) => (
-      <div key={index} className="flex flex-col items-center">
+    ].map((resource, idx) => (
+      <div key={idx} className="flex flex-col items-center">
         <img
           src={resource.icon}
           alt="icon"
@@ -153,36 +239,58 @@ const SanabelMissionsPage: React.FC = () => {
       </div>
     ));
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen text-red-500">
+        {error}
+      </div>
+    );
+  }
+
+  const currentSanabelType = sanabel[subIndexAsNumber];
+
   return (
     <div className="flex flex-col h-screen w-full items-center p-4 ">
       <div className="flex items-center w-full justify-between">
         <div className="opacity-0 w-[25px] h-25" />
         <h1 className="text-black font-bold text-2xl self-center" dir="ltr">
-          {t(sanabel[subIndex])}
+          {currentSanabelType ? t(currentSanabelType) : ""}
         </h1>
         <GoBackButton />
       </div>
+
       <div
-        className={`w-full ${colorBG} flex justify-between items-center  p-5 rounded-lg  mt-8`}
+        className={`w-full ${colorBG} flex justify-between items-center p-5 rounded-lg mt-8`}
       >
-        <img
-          src={sanabelImgs[sanabelIndex][subIndex]}
-          alt={sanabel[subIndex]}
-          className="w-1/3 object-contain"
-        />
+        {sanabelImgs && sanabelImgs[indexAsNumber] && (
+          <img
+            src={sanabelImgs[indexAsNumber][subIndexAsNumber]}
+            alt={currentSanabelType}
+            className="w-1/3 object-contain"
+          />
+        )}
 
         <div className="flex flex-col justify-between gap-3">
           <h1 className="text-white font-bold text-xl text-center ">
             <span>{t("تحديات")}</span>
-            <br></br>
-            {t(sanabel[subIndex])}
+            <br />
+            {currentSanabelType ? t(currentSanabelType) : ""}
           </h1>
-          {index == 0 && subIndex == 0 && (
+
+          {indexAsNumber === 0 && subIndexAsNumber === 0 && (
             <div className="flex flex-col items-center w-full scale-90">
               <div className="flex items-center gap-1 border-2 border-gray-300 rounded-lg p-1">
                 <FaLocationArrow className="text-white" />
                 <select
-                  className="bg-transparent text-white border-none outline-none px-2 py-1 rounded-lg cursor-pointer "
+                  className="bg-transparent text-white border-none outline-none px-2 py-1 rounded-lg cursor-pointer"
                   value={location}
                   onChange={(e) => handleLocationChange(e.target.value)}
                 >
@@ -202,25 +310,30 @@ const SanabelMissionsPage: React.FC = () => {
         </div>
       </div>
 
-      {index == 0 && subIndex == 0 && <PrayerTimes location={location} />}
+      {indexAsNumber === 0 && subIndexAsNumber === 0 && (
+        <PrayerTimes location={location} />
+      )}
 
       <div className="flex flex-col gap-5 items-center justify-start h-2/3 w-full mt-5 overflow-y-auto">
-        {missions.map((mission: any, index: number) => (
-          <div
-            key={index}
-            className={`flex w-full flex-col items-end justify-between sanabel-shadow-bottom h-max rounded-xl p-4 gap-2 border-t-2  ${colorBorderTop}
-           
-            `}
-          >
-            <div className="flex justify-between items-center w-full">
-              <div className="flex gap-2">{renderResources(mission)}</div>
-
-              <h1 className="text-black text-end text-sm w-2/3">
-                {mission.title}
-              </h1>
+        {missions.length > 0 ? (
+          missions.map((mission: any, idx: number) => (
+            <div
+              key={idx}
+              className={`flex w-full flex-col items-end justify-between sanabel-shadow-bottom h-max rounded-xl p-4 gap-2 border-t-2 ${colorBorderTop}`}
+            >
+              <div className="flex justify-between items-center w-full">
+                <div className="flex gap-2">{renderResources(mission)}</div>
+                <h1 className="text-black text-end text-sm w-2/3">
+                  {mission.title}
+                </h1>
+              </div>
             </div>
+          ))
+        ) : (
+          <div className="text-center text-gray-500 py-8">
+            No missions found
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

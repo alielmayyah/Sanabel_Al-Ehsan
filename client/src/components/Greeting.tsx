@@ -27,7 +27,7 @@ const Greeting: React.FC<GreetingProps> = ({ name, text, hello }) => {
           <h2 className="text-[#B3B3B3]">{t(text)}</h2>
         </div>
         <div className="w-16 h-16">
-          <GetAvatar userAvatarData={avatar} />
+          <GetAvatar userAvatarData={avatar ?? {}} />
         </div>{" "}
       </div>
     </div>

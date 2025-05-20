@@ -1,10 +1,7 @@
 const en = {
   translation: {
-
     // NAVBAR
 
-
-    
     الرئيسية: "Home",
     التحديات: "Challenges",
     المتصدرين: "Rankings",
@@ -75,7 +72,7 @@ const en = {
     "لم تتلق رمز": "Didn’t receive a code",
     "بعد؟": "yet?",
     "إعادة الإرسال": "Resend",
-    email_example: "Ex: mohamedmonge7@gmail.com",
+    email_example: "Ex: amrahmed@gmail.com",
 
     // Login component translations
 

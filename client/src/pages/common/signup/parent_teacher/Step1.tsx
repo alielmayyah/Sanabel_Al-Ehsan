@@ -1,18 +1,18 @@
 import { useState } from "react";
-import { useTheme } from "../../../context/ThemeContext";
-import PrimaryButton from "../../../components/PrimaryButton";
-import GenericInput from "../../../components/GenericInput";
-import GoBackButton from "../../../components/GoBackButton";
+import { useTheme } from "../../../../context/ThemeContext";
+import PrimaryButton from "../../../../components/PrimaryButton";
+import GenericInput from "../../../../components/GenericInput";
+import GoBackButton from "../../../../components/GoBackButton";
 import { useTranslation } from "react-i18next";
 
-import parentFemaleImg from "../../../assets/parentorteacher/Parents/parentfemale.png";
-import parentMaleImg from "../../../assets/parentorteacher/Parents/parentmale.png";
-import teacherMaleImg from "../../../assets/parentorteacher/Teachers/teachermale.png";
-import teacherFemaleImg from "../../../assets/parentorteacher/Teachers/teacherfemale.png";
+import parentFemaleImg from "../../../../assets/choosesignmethod/chooseparentorteacher.png";
+
+import parentMaleImg from "../../../../assets/choosesignmethod/chooseparentorteacher.png";
+import teacherMaleImg from "../../../../assets/choosesignmethod/chooseparentorteacher.png";
+import teacherFemaleImg from "../../../../assets/choosesignmethod/chooseparentorteacher.png";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import i18n from "../../../i18n";
 
 const Toaster = () => (
   <ToastContainer

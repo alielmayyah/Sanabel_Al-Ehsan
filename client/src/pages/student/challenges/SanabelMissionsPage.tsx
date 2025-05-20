@@ -26,13 +26,6 @@ const SanabelMissionsPage: React.FC = () => {
   const APIIndex = indexAsNumber + 1;
   // const sanabel = sanabelType[index].sanabel[subIndex];
 
-  const sanabelTypes = [
-    "سنابل الإحسان في العلاقة مع الله",
-    "سنابل الإحسان في العلاقة مع النفس",
-    "سنابل الإحسان في العلاقة مع الاسرة والمجتمع",
-    "سنابل الإحسان في العلاقة مع الارض والكون",
-  ];
-
   const { t } = useTranslation();
 
   const sanabelIndex = index;
@@ -122,6 +115,9 @@ const SanabelMissionsPage: React.FC = () => {
 
               if (missionsResponse.status === 200) {
                 console.log(missionsResponse.data.tasks);
+                console.log(APIIndex);
+                console.log(sanabel);
+                console.log(sanabel[subIndex]);
                 setMissions(missionsResponse.data.tasks);
               }
             }
