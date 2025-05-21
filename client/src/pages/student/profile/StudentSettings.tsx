@@ -187,9 +187,9 @@ const Profile: React.FC = () => {
       <div className="flex flex-col w-full items-center gap-2 pb-8">
         <h1
           className="text-redprimary"
-          onClick={() => setDeleteAccountPopup(true)}
+          // onClick={() => setDeleteAccountPopup(true)}
         >
-          {t("حذف الحساب")}
+          {/* {t("حذف الحساب")} */}
         </h1>
       </div>
 
@@ -198,12 +198,12 @@ const Profile: React.FC = () => {
         onClose={() => setShowDarkModePopup(false)}
       />
 
-      {deleteAccountPopup && (
+      {/* {deleteAccountPopup && (
         <DeleteAccountPopup
           deleteAccountPopup={deleteAccountPopup}
           setDeleteAccountPopup={setDeleteAccountPopup}
         />
-      )}
+      )} */}
     </div>
   );
 };

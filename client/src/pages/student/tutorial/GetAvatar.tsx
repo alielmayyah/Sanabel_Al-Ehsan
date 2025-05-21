@@ -7,7 +7,6 @@ import Boy5 from "../../../assets/avatars/Boys/Boy5";
 import Boy6 from "../../../assets/avatars/Boys/Boy6";
 import Boy7 from "../../../assets/avatars/Boys/Boy7";
 import Boy8 from "../../../assets/avatars/Boys/Boy8";
-
 import Girl1 from "../../../assets/avatars/Girls/Girl1";
 import Girl2 from "../../../assets/avatars/Girls/Girl2";
 import Girl3 from "../../../assets/avatars/Girls/Girl3";
@@ -30,13 +29,11 @@ const GetAvatar = ({ userAvatarData = {} }) => {
     tshirtColor: "",
   };
 
-  // Merge default values with props, props take precedence
   const [avatarData, setAvatarData] = useState({
     ...defaultAvatarData,
     ...userAvatarData,
   });
 
-  // Update state when props change
   useEffect(() => {
     setAvatarData({
       ...defaultAvatarData,
@@ -44,7 +41,6 @@ const GetAvatar = ({ userAvatarData = {} }) => {
     });
   }, [userAvatarData]);
 
-  // Map avatar components by gender and index
   const avatarComponents = {
     boy: [Boy1, Boy2, Boy3, Boy4, Boy5, Boy6, Boy7, Boy8],
     girl: [Girl1, Girl2, Girl3, Girl4, Girl5, Girl6, Girl7, Girl8],
@@ -52,27 +48,22 @@ const GetAvatar = ({ userAvatarData = {} }) => {
 
   const { t } = useTranslation();
 
-  // Helper function to adjust color brightness
   const adjustColorBrightness = (hex: any, percent: any) => {
     if (!hex || !hex.startsWith("#") || hex.length !== 7) {
-      return "#000000"; // Return black as fallback
+      return "#000000";
     }
 
-    // Convert hex to RGB
     let r = parseInt(hex.substring(1, 3), 16);
     let g = parseInt(hex.substring(3, 5), 16);
     let b = parseInt(hex.substring(5, 7), 16);
 
-    // Adjust brightness
     r = Math.max(0, Math.min(255, r + percent));
     g = Math.max(0, Math.min(255, g + percent));
     b = Math.max(0, Math.min(255, b + percent));
 
-    // Convert back to hex
     return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
   };
 
-  // Helper function to generate a gradient string
   const getGradientString = (color: any) => {
     return `linear-gradient(135deg, ${color} 0%, ${adjustColorBrightness(
       color,
@@ -80,15 +71,12 @@ const GetAvatar = ({ userAvatarData = {} }) => {
     )} 100%)`;
   };
 
-  // Get the appropriate avatar component based on gender and avatar index
   const getAvatarComponent = () => {
-    // Default to "boy" if gender is not valid
     const gender =
       avatarData.gender === "boy" || avatarData.gender === "girl"
         ? avatarData.gender
         : "boy";
 
-    // Ensure avatarId is within bounds of the array (default to 0 if not set)
     const avatarId =
       avatarData.avatarId !== undefined ? avatarData.avatarId : 0;
     const safeAvatarId = Math.min(
@@ -99,19 +87,23 @@ const GetAvatar = ({ userAvatarData = {} }) => {
     return avatarComponents[gender][safeAvatarId];
   };
 
-  // Get the current avatar component
   const AvatarComponent = getAvatarComponent();
 
-  const updatePhoto = async (token?: string) => {
+  // Remove the direct call to updatePhoto()
+  // Expose updatePhoto as a function that can be called by the parent component
+  const updatePhoto = async (token: any) => {
     const authToken = token || localStorage.getItem("token");
-    if (!authToken) return;
+    if (!authToken) {
+      console.error("No authentication token found.");
+      return false;
+    }
+
+    if (!avatarData || !avatarData.avatarId) {
+      console.error("Invalid avatar data.");
+      return false;
+    }
 
     try {
-      if (!avatarData) {
-        console.error("No avatar data found in local storage.");
-        return;
-      }
-
       const response = await axios.patch(
         "http://localhost:3000/students/update-profile-image",
         {
@@ -133,13 +125,15 @@ const GetAvatar = ({ userAvatarData = {} }) => {
       );
 
       if (response.status === 200) {
+        console.log("Profile image updated successfully.");
+        return true;
       }
+      return false;
     } catch (error) {
       console.error("Error updating profile image:", error);
+      return false;
     }
   };
-
-  updatePhoto();
 
   return (
     <div

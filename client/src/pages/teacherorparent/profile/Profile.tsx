@@ -205,12 +205,12 @@ const Profile: React.FC = () => {
         onClose={() => setShowDarkModePopup(false)}
       />
 
-      {deleteAccountPopup && (
+      {/* {deleteAccountPopup && (
         <DeleteAccountPopup
           deleteAccountPopup={deleteAccountPopup}
           setDeleteAccountPopup={setDeleteAccountPopup}
         />
-      )}
+      )} */}
     </div>
   );
 };
