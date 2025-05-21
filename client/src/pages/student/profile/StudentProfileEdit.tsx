@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-
+import { useHistory } from "react-router-dom";
 // Import avatar components correctly
 import Boy1 from "../../../assets/avatars/Boys/Boy1";
 import Boy2 from "../../../assets/avatars/Boys/Boy2";
@@ -35,6 +35,7 @@ import PrimaryButton from "../../../components/PrimaryButton";
 import GetAvatar from "../tutorial/GetAvatar";
 
 import { useUserContext } from "../../../context/StudentUserProvider";
+import axios from "axios";
 // Define interfaces for our avatar components
 interface CustomIconProps {
   tshirtColor?: string;
@@ -220,6 +221,8 @@ const Step1 = () => {
       : boysAvatars[0]
   );
 
+  const history = useHistory();
+
   const [isAnimating, setIsAnimating] = useState(false);
 
   // Avatar customization state
@@ -228,11 +231,9 @@ const Step1 = () => {
     gender: oldAvatar?.gender,
     hairColor: oldAvatar?.hairColor,
     tshirtColor: oldAvatar?.tshirtColor,
-    bgColor:
-      oldAvatar?.bgColor ||
-      (gender === "boy" ? backgrounds[0].color : backgrounds[1].color),
+    bgColor: oldAvatar?.bgColor,
     skinColor: oldAvatar?.skinColor,
-    bgPattern: oldAvatar?.bgPattern || backgroundPatterns[0].id,
+    bgPattern: oldAvatar?.bgPattern,
   });
 
   console.log("Avatar State:", avatarState);
@@ -402,7 +403,12 @@ const Step1 = () => {
                   >
                     <div
                       className="w-full h-full rounded-full overflow-hidden"
-                      style={{ backgroundColor: avatarState.bgColor }}
+                      style={{
+                        backgroundColor:
+                          gender === "boy"
+                            ? backgrounds[0].color
+                            : backgrounds[2].color,
+                      }}
                     >
                       <avatar.Component
                         tshirtColor={undefined}
@@ -680,7 +686,38 @@ const Step1 = () => {
     }
   };
 
-  function handleSave() {}
+  const handleSave = async (token?: string) => {
+    const authToken = token || localStorage.getItem("token");
+    if (!authToken) return;
+
+    try {
+      const response = await axios.patch(
+        "http://localhost:3000/students/update-profile-image",
+        {
+          profileImg: {
+            avatarId: avatarState.avatar,
+            bgColor: avatarState.bgColor,
+            bgPattern: avatarState.bgPattern,
+            gender: avatarState.gender,
+            hairColor: avatarState.hairColor,
+            skinColor: avatarState.skinColor,
+            tshirtColor: avatarState.tshirtColor,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        history.push("/student/home");
+      }
+    } catch (error) {
+      console.error("Error updating profile image:", error);
+    }
+  };
 
   return (
     <div className="flex flex-col h-full w-full items-center gap-3 justify-between p-4">
@@ -806,7 +843,7 @@ const Step1 = () => {
           transition={{ delay: 0.5, duration: 0.5 }}
         >
           {/* Save Button */}
-          <div onClick={handleSave}>
+          <div onClick={() => handleSave()}>
             <PrimaryButton style="fill" text={t("حفظ")} arrow="none" />
           </div>
         </motion.div>
