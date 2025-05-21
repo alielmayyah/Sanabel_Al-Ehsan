@@ -34,6 +34,7 @@ import GoBackButton from "../../../components/GoBackButton";
 import PrimaryButton from "../../../components/PrimaryButton";
 import GetAvatar from "../tutorial/GetAvatar";
 
+import { useUserContext } from "../../../context/StudentUserProvider";
 // Define interfaces for our avatar components
 interface CustomIconProps {
   tshirtColor?: string;
@@ -206,24 +207,35 @@ const skinColor = [
 
 const Step1 = () => {
   const { t } = useTranslation();
+  const { user } = useUserContext();
 
+  const oldAvatar: any = user?.profileImg;
+  console.log(oldAvatar);
   const [gender, setGender] = useState<"boy" | "girl">("boy");
   const [selectedAvatar, setSelectedAvatar] = useState<AvatarOption>(
-    boysAvatars[0]
+    oldAvatar
+      ? (oldAvatar.gender === "boy" ? boysAvatars : girlsAvatars)[
+          oldAvatar.avatarId
+        ]
+      : boysAvatars[0]
   );
+
   const [isAnimating, setIsAnimating] = useState(false);
 
   // Avatar customization state
   const [avatarState, setAvatarState] = useState({
-    avatar: selectedAvatar,
-    gender: gender,
-    hairColor: "",
-    tshirtColor: "",
-    bgColor: gender === "boy" ? backgrounds[0].color : backgrounds[1].color,
-    skinColor: "",
-    bgPattern: backgroundPatterns[0].id,
+    avatar: oldAvatar?.avatarId,
+    gender: oldAvatar?.gender,
+    hairColor: oldAvatar?.hairColor,
+    tshirtColor: oldAvatar?.tshirtColor,
+    bgColor:
+      oldAvatar?.bgColor ||
+      (gender === "boy" ? backgrounds[0].color : backgrounds[1].color),
+    skinColor: oldAvatar?.skinColor,
+    bgPattern: oldAvatar?.bgPattern || backgroundPatterns[0].id,
   });
 
+  console.log("Avatar State:", avatarState);
   useEffect(() => {
     localStorage.setItem("avatarData", JSON.stringify(avatarState));
   }, [avatarState]);

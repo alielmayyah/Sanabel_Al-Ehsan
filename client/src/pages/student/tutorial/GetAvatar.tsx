@@ -17,6 +17,7 @@ import Girl6 from "../../../assets/avatars/Girls/Girl6";
 import Girl7 from "../../../assets/avatars/Girls/Girl7";
 import Girl8 from "../../../assets/avatars/Girls/Girl8";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
 
 const GetAvatar = ({ userAvatarData = {} }) => {
   const defaultAvatarData = {
@@ -100,6 +101,45 @@ const GetAvatar = ({ userAvatarData = {} }) => {
 
   // Get the current avatar component
   const AvatarComponent = getAvatarComponent();
+
+  const updatePhoto = async (token?: string) => {
+    const authToken = token || localStorage.getItem("token");
+    if (!authToken) return;
+
+    try {
+      if (!avatarData) {
+        console.error("No avatar data found in local storage.");
+        return;
+      }
+
+      const response = await axios.patch(
+        "http://localhost:3000/students/update-profile-image",
+        {
+          profileImg: {
+            avatarId: avatarData.avatarId,
+            bgColor: avatarData.bgColor,
+            bgPattern: avatarData.bgPattern,
+            gender: avatarData.gender,
+            hairColor: avatarData.hairColor,
+            skinColor: avatarData.skinColor,
+            tshirtColor: avatarData.tshirtColor,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+      }
+    } catch (error) {
+      console.error("Error updating profile image:", error);
+    }
+  };
+
+  updatePhoto();
 
   return (
     <div
