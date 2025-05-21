@@ -237,11 +237,7 @@ const Step1 = () => {
   });
 
   console.log("Avatar State:", avatarState);
-  useEffect(() => {
-    localStorage.setItem("avatarData", JSON.stringify(avatarState));
-  }, [avatarState]);
 
-  console.log(avatarState);
   // Current active tab
   const [currentTab, setCurrentTab] = useState("الشخصية");
 
@@ -691,19 +687,22 @@ const Step1 = () => {
     if (!authToken) return;
 
     try {
+      // Format the avatar data properly before sending
+      const formattedAvatarData = {
+        profileImg: {
+          avatarId: selectedAvatar.id, // Use the ID from selectedAvatar
+          bgColor: avatarState.bgColor || backgrounds[0].color, // Provide default if not set
+          bgPattern: avatarState.bgPattern || "solid", // Provide default if not set
+          gender: gender, // Use the current gender state
+          hairColor: avatarState.hairColor || hairColors[0].color, // Provide default if not set
+          skinColor: avatarState.skinColor || skinColor[0].color, // Provide default if not set
+          tshirtColor: avatarState.tshirtColor || shirtColors[0].color, // Provide default if not set
+        },
+      };
+
       const response = await axios.patch(
         "http://localhost:3000/students/update-profile-image",
-        {
-          profileImg: {
-            avatarId: avatarState.avatar,
-            bgColor: avatarState.bgColor,
-            bgPattern: avatarState.bgPattern,
-            gender: avatarState.gender,
-            hairColor: avatarState.hairColor,
-            skinColor: avatarState.skinColor,
-            tshirtColor: avatarState.tshirtColor,
-          },
-        },
+        formattedAvatarData,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -712,10 +711,15 @@ const Step1 = () => {
       );
 
       if (response.status === 200) {
+        // Update the local user context if available
+        if (user && typeof user === "object") {
+          user.profileImg = formattedAvatarData.profileImg;
+        }
         history.push("/student/home");
       }
     } catch (error) {
       console.error("Error updating profile image:", error);
+      // You might want to show an error message to the user here
     }
   };
 
