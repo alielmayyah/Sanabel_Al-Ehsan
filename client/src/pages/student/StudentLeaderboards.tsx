@@ -1,4 +1,3 @@
-
 import { useTheme } from "../../context/ThemeContext";
 import StudentNavbar from "../../components/navbar/StudentNavbar";
 
@@ -19,7 +18,7 @@ import axios from "axios";
 import React from "react";
 import { calculateLevel } from "../../utils/LevelCalculator";
 import TeacherNavbar from "../../components/navbar/TeacherNavbar";
-import LeaderboardFilter from "./Leaderboards/LeaderboardsFilter";
+import LeaderboardFilter, { ViewType } from "./Leaderboards/LeaderboardsFilter";
 import LeaderboardsFilter from "./Leaderboards/LeaderboardsFilter";
 import GetAvatar from "./tutorial/GetAvatar";
 import { useUserContext } from "../../context/StudentUserProvider";
@@ -37,68 +36,9 @@ const Leaderboards: React.FC = () => {
     // Add other relevant fields as necessary
   }
 
-  const [leaderboardsData, setLeaderboardsData] = useState<LeaderboardItem[]>([
-    // {
-    //   id: 0,
-    //   name: "محمد منجي",
-    //   level: 31,
-    //   avatar: avatars.boys.boy2,
-    // },
-    // {
-    //   id: 1,
-    //   name: "علي يوسف",
-    //   level: 5,
-    //   avatar: avatars.boys.boy3,
-    // },
-    // {
-    //   id: 2,
-    //   name: "سارة حسن",
-    //   level: 88,
-    //   avatar: avatars.girls.girl2,
-    // },
-    // {
-    //   id: 3,
-    //   name: "فاطمة الكيلاني",
-    //   level: 15,
-    //   avatar: avatars.girls.girl1,
-    // },
-    // {
-    //   id: 4,
-    //   name: "أحمد جمال",
-    //   level: 18,
-    //   avatar: avatars.boys.boy6,
-    // },
-    // {
-    //   id: 5,
-    //   name: "رانيا عمر",
-    //   level: 26,
-    //   avatar: avatars.girls.girl5,
-    // },
-    // {
-    //   id: 6,
-    //   name: "عمر شريف",
-    //   level: 125,
-    //   avatar: avatars.boys.boy2,
-    // },
-    // {
-    //   id: 7,
-    //   name: "لين كمال",
-    //   level: 3,
-    //   avatar: avatars.girls.girl4,
-    // },
-    // {
-    //   id: 8,
-    //   name: "سعيد موسى",
-    //   level: 206,
-    //   avatar: avatars.boys.boy5,
-    // },
-    // {
-    //   id: 9,
-    //   name: "هدى خالد",
-    //   level: 52,
-    //   avatar: avatars.girls.girl2,
-    // },
-  ]);
+  const [leaderboardsData, setLeaderboardsData] = useState<LeaderboardItem[]>(
+    []
+  );
 
   const fetchUserData = async (token?: string) => {
     const authToken = token || localStorage.getItem("token");
@@ -207,6 +147,12 @@ const Leaderboards: React.FC = () => {
           <div className="flex justify-between items-center w-full">
             <LeaderboardsFilter
               onApplyFilters={(filters) => console.log(filters)}
+              onViewChange={function (
+                viewType: ViewType,
+                itemsPerPage: number
+              ): void {
+                throw new Error("Function not implemented.");
+              }}
             />
             <h1 className="text-black font-bold text-2xl text-end ">
               {t("لوحة المتصدرين")}

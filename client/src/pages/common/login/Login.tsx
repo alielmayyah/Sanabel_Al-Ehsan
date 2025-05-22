@@ -118,6 +118,7 @@ const Login: React.FC = () => {
               treeStage: response.data.data.treePoint.stage,
               treeProgress: response.data.data.treePoint.treeProgress,
               connectCode: userData.connectCode,
+              profileImg: userData.user.profileImg || "", // Add this line
             });
           }
         } catch (error) {

@@ -43,7 +43,7 @@ import StudentProgress from "./pages/student/StudentProgress";
 
 // Teacher
 import TeacherNavbar from "./components/navbar/TeacherNavbar";
-import TeacherHome from "./pages/teacherorparent/teacher/TeacherHome";
+import TeacherHome from "./pages/teacherorparent/TeacherHome";
 import TeacherProfile from "./pages/teacherorparent/profile/Profile";
 import TeacherChooseSanabelType from "./pages/teacherorparent/challenges/ChooseSanabelType";
 import TeacherChooseSanabel from "./pages/teacherorparent/challenges/ChooseSanabel";
@@ -231,12 +231,8 @@ const App: React.FC = () => {
                 <Route exact path="/teacher/classlist" component={ClassList} />
                 <Route exact path="/teacher/teamslist" component={TeamsList} />
 
-       
                 {/* Parent */}
                 <Route exact path="/parent/home" component={ParentNavbar} />
-              
-
-              
               </Switch>
             </div>
           </IonRouterOutlet>

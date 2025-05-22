@@ -161,6 +161,7 @@ const Leaderboards: React.FC = () => {
                 level={sortedData[0].level}
                 color="text-blueprimary"
                 dir={""}
+                size={""}
               />
             </div>
 
@@ -180,6 +181,7 @@ const Leaderboards: React.FC = () => {
                 level={sortedData[1].level}
                 color={"text-redprimary"}
                 dir={""}
+                size={""}
               />
             </div>
             <SecondPlaceColumn className="w-full" />
@@ -198,6 +200,7 @@ const Leaderboards: React.FC = () => {
                 level={sortedData[2].level}
                 color={"text-yellowprimary"}
                 dir={""}
+                size={""}
               />
             </div>
             <ThirdPlaceColumn className="w-full " />

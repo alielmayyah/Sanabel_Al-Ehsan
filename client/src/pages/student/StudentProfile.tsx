@@ -69,8 +69,8 @@ const Profile: React.FC = () => {
         <h1 className="text-2xl text-black font-bold">{t("الملف الشخصي")}</h1>
       </div>
 
-      <div className="flex flex-col items-center gap-1 justify-between">
-        <div className="w-32 h-32 rounded-full -mt-6 border-8 border-white">
+      <div className="flex flex-col items-center gap-0 justify-between">
+        <div className="w-32 h-32 rounded-full -mt-8 border-4 border-white">
           <GetAvatar userAvatarData={avatar} />
         </div>
         <h1 className="text-black">

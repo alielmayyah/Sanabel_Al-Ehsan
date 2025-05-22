@@ -70,6 +70,7 @@ const ClassDetails: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setStudentsData(data.data || []);
+        console.log("Fetched students data:", data.data);
       }
       console.log("Students data:", studentsData);
     } catch (error) {
@@ -252,6 +253,9 @@ const ClassDetails: React.FC = () => {
                     <span className="text-gray-500 text-sm capitalize">
                       {student.class?.classname || t("لا يوجد فصل")}
                     </span>
+                    <span className="text-gray-500 text-sm capitalize">
+                      {student.grade || t("لا يوجد فصل")}
+                    </span>
                   </div>
                   <MedalAndLevel
                     level={calculateLevel(student.xp).level}
@@ -280,10 +284,10 @@ const ClassDetails: React.FC = () => {
                     />
                     <div className="flex-center flex-col">
                       <span className="text-gray-500 text-sm capitalize">
-                        {student.Class?.classname || t("لا يوجد فصل")}
+                        {student.class?.classname || t("لا يوجد فصل")}
                       </span>
                       <span className="text-gray-500 text-sm capitalize">
-                        {student.Class?.category || t("لا يوجد فصل")}
+                        {student.grade || t("لا يوجد فصل")}
                       </span>
                     </div>
                   </div>

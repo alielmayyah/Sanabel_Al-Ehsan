@@ -34,7 +34,7 @@ interface StudentData {
   id: number;
   userId: number;
   user: User;
-  class?: string;
+  Class?: any;
 }
 
 interface TaskCategory {
@@ -54,6 +54,87 @@ interface Task {
   snabelYellow: number;
   snabelBlue: number;
 }
+
+// Duplicate Task Popup Component
+const DuplicateTaskPopup = ({
+  isOpen,
+  onClose,
+  onContinue,
+  existingStudentIds,
+  allStudents,
+  onDeselectStudent,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onContinue: () => void;
+  existingStudentIds: number[];
+  allStudents: StudentData[];
+  onDeselectStudent: (studentId: number) => void;
+}) => {
+  const { t } = useTranslation();
+
+  if (!isOpen) return null;
+
+  // Find student objects for existingStudentIds
+  const existingStudents = existingStudentIds
+    .map((id) => allStudents.find((student) => student.id === id))
+    .filter(Boolean) as StudentData[];
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-xl p-5 w-11/12 max-w-md max-h-90vh overflow-y-auto">
+        <h2 className="text-black font-bold text-xl mb-4 text-center">
+          {t("مهمة مكررة!")}
+        </h2>
+
+        <p className="text-gray-600 mb-4 text-center">
+          {t("بعض الطلاب أكملوا هذه المهمة بالفعل اليوم")}
+        </p>
+
+        {/* Existing Students */}
+        <div className="mb-5">
+          <div className="flex flex-wrap gap-3 justify-center">
+            {existingStudents.map((student) => (
+              <div
+                key={student.id}
+                className="flex flex-col items-center relative"
+              >
+                <div
+                  className="absolute -top-1 -right-1 bg-red-500 rounded-full w-5 h-5 flex items-center justify-center cursor-pointer z-10"
+                  onClick={() => onDeselectStudent(student.id)}
+                >
+                  <FaTimes className="text-white text-xs" />
+                </div>
+                <div className="w-16 h-16 rounded-full overflow-hidden">
+                  <GetAvatar userAvatarData={student.user.profileImg} />
+                </div>
+                <span className="text-xs text-center mt-1 font-medium text-black">
+                  {`${student.user.firstName}`}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-3 w-full">
+          <PrimaryButton
+            style="bg-gray-300 text-black flex-1"
+            text={t("إلغاء")}
+            arrow="none"
+            onClick={onClose}
+          />
+          <PrimaryButton
+            style=""
+            text={t("تسجيل للباقي")}
+            arrow="none"
+            onClick={onContinue}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Confirmation Popup Component
 const ConfirmationPopup = ({
@@ -75,6 +156,11 @@ const ConfirmationPopup = ({
 
   if (!isOpen || !selectedTask) return null;
 
+  // Get the image for the selected task type
+  const getTaskTypeImage = (type: string) => {
+    return sanabelImgs[type] || null;
+  };
+
   const renderResources = (task: any) =>
     [
       { icon: blueSanabel, value: task.snabelBlue, label: "سنبلة زرقاء" },
@@ -95,16 +181,23 @@ const ConfirmationPopup = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-5 w-11/12 max-w-md max-h-90vh overflow-y-auto">
+      <div className="bg-white rounded-xl p-5 w-11/12  max-w-md max-h-90vh overflow-y-auto">
         <h2 className="text-black font-bold text-xl mb-4 text-center">
           {t("تأكيد تسجيل المهمة")}
         </h2>
 
         {/* Task Information */}
-        <div className="mb-5 border-2 rounded-xl p-3">
-          <h3 className="text-black font-bold text-lg text-right mb-2">
+        <div className="mb-5 border-2 rounded-xl p-3 flex-center flex-col justify-center w-full">
+          <h3 className="text-black font-bold text-lg text-center mb-2">
             {selectedTask.title}
           </h3>
+          <div className="flex justify-center mb-3">
+            <img
+              src={getTaskTypeImage(selectedTask?.type ?? "")}
+              alt={selectedTask?.type}
+              className="w-16 h-16 object-contain"
+            />
+          </div>
           <div className="flex justify-end items-center gap-3 mb-2">
             <div className="flex gap-2">{renderResources(selectedTask)}</div>
           </div>
@@ -113,7 +206,7 @@ const ConfirmationPopup = ({
         {/* Selected Students */}
         <div className="mb-5">
           <h3 className="text-black font-medium text-right mb-2">
-            {t("الطلاب المختارين:")}
+            {t("الطلاب المختارين")}
           </h3>
           <div className="flex flex-wrap gap-3 justify-center">
             {selectedStudents.map((student: any) => (
@@ -175,23 +268,68 @@ const CongratsPopup = ({
   // Make the popup show even if task is null (for debugging purposes)
   if (!isOpen) return null;
 
+  // Get the image for the selected task type
+  const getTaskTypeImage = (type: string) => {
+    return sanabelImgs[type] || null;
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-xl p-5 w-11/12 max-w-md text-center">
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center mb-2">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
             <FaCheck className="text-green-500 text-3xl" />
           </div>
         </div>
-        <h2 className="text-black font-bold text-xl mb-2">
-          {t("تم تسجيل المهمة بنجاح!")}
-        </h2>
-        <p className="text-gray-600 mb-4">
-          {t("تم تسجيل المهمة")} "{selectedTask?.title || "المحددة"}"{" "}
-          {t("لعدد")} {selectedStudents.length} {t("طالب")}
-        </p>
+        {/* Added Sanabel Type Image */}
+        <div className="flex-center flex-col w-full justify-center mb-3">
+          <h2 className="text-black font-bold text-xl mb-2">
+            {t("تم تسجيل المهمة بنجاح")}
+          </h2>
+          <p className="text-gray-600 mb-2">
+            <span className="font-bold">
+              {selectedTask?.title || "المحددة"}
+            </span>
+          </p>
+          <p className="text-gray-600 mb-4">
+            {t("لعدد")}{" "}
+            <span className="font-bold text-blueprimary">
+              {selectedStudents.length}
+            </span>{" "}
+            {t("طالب")}
+          </p>
+          <img
+            src={getTaskTypeImage(selectedTask?.type ?? "")}
+            alt={selectedTask?.type}
+            className="w-16 h-16 object-contain"
+          />
+        </div>
+        {/* Task Resources */}
+        {selectedTask && (
+          <div className="flex justify-center gap-3 mb-4">
+            {[
+              { icon: blueSanabel, value: selectedTask.snabelBlue },
+              { icon: redSanabel, value: selectedTask.snabelRed },
+              { icon: yellowSanabel, value: selectedTask.snabelYellow },
+              { icon: xpIcon, value: selectedTask.xp },
+            ].map((resource, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <img
+                  src={resource.icon}
+                  alt="icon"
+                  className="w-auto h-6"
+                  loading="lazy"
+                />
+                <h1 className="text-black text-sm font-bold">
+                  +{resource.value}
+                </h1>
+              </div>
+            ))}
+          </div>
+        )}
+
         <PrimaryButton
-          style="w-full"
+          style="w-full bg-blueprimary"
           text={t("حسناً")}
           arrow="none"
           onClick={onClose}
@@ -216,6 +354,8 @@ const StudentList = () => {
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showCongrats, setShowCongrats] = useState(false);
+  const [showDuplicateTask, setShowDuplicateTask] = useState(false);
+  const [existingStudentIds, setExistingStudentIds] = useState<number[]>([]);
 
   const sanabelTypeImg = [
     sanabelType1Img,
@@ -271,6 +411,7 @@ const StudentList = () => {
       if (response.ok) {
         const data = await response.json();
         setStudentsData(data.data);
+        console.log("Students data,", data.data);
       }
     } catch (error) {
       console.error("Error fetching students:", error);
@@ -299,14 +440,12 @@ const StudentList = () => {
   };
 
   const addProgress = async () => {
-    if (!selectedStudentIds.length || !selectedTaskId) return;
+    if (!selectedStudentIds.length || selectedTaskId === null) return;
     const authToken = localStorage.getItem("token");
     if (!authToken) return;
     try {
-      // Find selected task
-      const selectedTask = taskdata.find(
-        (_, index) => index === selectedTaskId
-      );
+      // Find selected task from filteredTasks array
+      const selectedTask = filteredTasks[selectedTaskId];
       if (!selectedTask) {
         console.error("Selected task not found");
         return;
@@ -319,19 +458,68 @@ const StudentList = () => {
           Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify({
-          taskId: selectedTaskId + 1,
+          taskId:
+            taskdata.findIndex(
+              (task) =>
+                task.type === selectedTask.type &&
+                task.title === selectedTask.title
+            ) + 1,
           studentIds: selectedStudentIds.map((id) => id + 1),
           comment: "Great job!",
           time: getCurrentTime(),
         }),
       });
 
-      console.log("Progress added successfully");
-      // Always show congrats popup for testing purposes (remove this condition for production)
-      setShowConfirmation(false);
-      setShowCongrats(true);
+      if (response.ok) {
+        console.log("Progress added successfully");
+        setShowConfirmation(false);
+        setShowCongrats(true);
+      } else {
+        const errorData = await response.json();
+        if (
+          errorData.message ===
+            "Some students have already completed this task today" &&
+          errorData.existingStudents
+        ) {
+          setExistingStudentIds(errorData.existingStudents);
+          setShowDuplicateTask(true);
+          setShowConfirmation(false);
+        } else {
+          console.error("Error adding progress:", errorData.message);
+        }
+      }
     } catch (error) {
       console.error("Error adding progress:", error);
+    }
+  };
+
+  // Handles the continuation after showing duplicate task warning
+  const handleContinueAfterDuplicate = () => {
+    // Remove existing student IDs from the selected IDs
+    const filteredStudentIds = selectedStudentIds.filter(
+      (id) => !existingStudentIds.includes(id + 1)
+    );
+    setSelectedStudentIds(filteredStudentIds);
+    setShowDuplicateTask(false);
+
+    // If there are still students to register, continue with the process
+    if (filteredStudentIds.length > 0) {
+      addProgress();
+    } else {
+      // If no students left, just close the popup
+      setShowConfirmation(false);
+    }
+  };
+
+  // Handle removing a student from the duplicate task list
+  const handleRemoveDuplicateStudent = (studentId: number) => {
+    // Remove from existingStudentIds
+    setExistingStudentIds((prev) => prev.filter((id) => id !== studentId));
+
+    // Also remove from selectedStudentIds
+    const studentIndex = studentsData.findIndex((s) => s.id === studentId);
+    if (studentIndex !== -1) {
+      removeSelectedStudent(studentIndex);
     }
   };
 
@@ -540,13 +728,20 @@ const StudentList = () => {
                 <FaCheck />
               </div>
               <div className="gap-3 flex-center">
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-0">
                   <h1 className="text-black">
                     {`${student.user.firstName} ${student.user.lastName}`}
                   </h1>
-                  {student.class && (
-                    <h1 className="text-black text-end">{student.class}</h1>
-                  )}
+
+                  <div className="flex justify-end text-blueprimary">
+                    <h1 className=" text-end capitalize">
+                      {student.Class.classname}
+                    </h1>
+                    <h1>-</h1>
+                    <h1 className=" text-end uppercase">
+                      {student.Class.category}
+                    </h1>
+                  </div>
                 </div>
                 <div className="w-12 h-12">
                   <GetAvatar userAvatarData={student.user.profileImg} />
@@ -561,9 +756,6 @@ const StudentList = () => {
           {selectedCategoryId === null ? (
             // Category Selection View
             <div className="w-full">
-              <h2 className="text-black font-bold text-xl mb-4 text-center">
-                {t("اختر الفئة")}
-              </h2>
               <div className="grid grid-cols-2 gap-3">
                 {taskCategories.map((category, index) => (
                   <div
@@ -588,9 +780,6 @@ const StudentList = () => {
           ) : selectedType === null ? (
             // Type Selection View
             <div className="w-full overflow-y-auto h-full">
-              <h2 className="text-black font-bold text-xl mb-4 text-center ">
-                {t("اختر النوع")}
-              </h2>
               <div className="grid grid-cols-2 gap-3">
                 {availableTypes.map((type, index) => (
                   <div
@@ -613,9 +802,6 @@ const StudentList = () => {
           ) : (
             // Task Selection View
             <div className="w-full overflow-y-auto h-full">
-              <h2 className="text-black font-bold text-xl mb-4 text-center">
-                {t("اختر المهمة")}
-              </h2>
               <div className="flex flex-col gap-3">
                 {filteredTasks.map((task, index) => (
                   <div
@@ -625,9 +811,11 @@ const StudentList = () => {
                     }`}
                     onClick={() => setSelectedTaskId(index)}
                   >
-                    <div className="flex justify-between items-center">
-                      <div className="flex gap-2">{renderResources(task)}</div>
-                      <h3 className="text-black font-bold text-right">
+                    <div className="flex justify-between items-center w-full">
+                      <div className="flex gap-2 w-20">
+                        {renderResources(task)}
+                      </div>
+                      <h3 className="text-black text-md text-right">
                         {task.title}
                       </h3>
                     </div>
@@ -677,6 +865,16 @@ const StudentList = () => {
           )}
         </div>
       )}
+
+      {/* Duplicate Task Popup */}
+      <DuplicateTaskPopup
+        isOpen={showDuplicateTask}
+        onClose={() => setShowDuplicateTask(false)}
+        onContinue={handleContinueAfterDuplicate}
+        existingStudentIds={existingStudentIds}
+        allStudents={studentsData}
+        onDeselectStudent={handleRemoveDuplicateStudent}
+      />
 
       {/* Confirmation Popup */}
       <ConfirmationPopup
