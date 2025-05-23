@@ -194,17 +194,6 @@ const rundb = async () => {
     as: "Representatives",
   });
 
-  // Donation and Student Relationships
-  Donation.belongsTo(Student, {
-    foreignKey: "donaterId",
-    targetKey: "id",
-    as: "Students",
-  });
-  Student.hasMany(Donation, {
-    foreignKey: "donaterId",
-    sourceKey: "id",
-    as: "Donations",
-  });
 
   // Reward and Student Relationships
   Reward.belongsTo(Student, {
@@ -265,9 +254,20 @@ const rundb = async () => {
     as: "Groupe",
   });
 
-  StudentTask.belongsTo(Student, { foreignKey: "studentId", as: "student" }); // ✅ alias: "Student"
-  StudentTask.belongsTo(Task, { foreignKey: "taskId", as: "task" }); // ✅ alias: "Task"
-
+  Student.belongsToMany(Task, {
+    through: StudentTask,
+    foreignKey: "studentId",
+    otherKey: "taskId",
+    as: "Tasks",
+  });
+  
+  Task.belongsToMany(Student, {
+    through: StudentTask,
+    foreignKey: "taskId",
+    otherKey: "studentId",
+    as: "Students",
+  });
+  
   TaskCategory.associate();
   Task.associate();
   try {

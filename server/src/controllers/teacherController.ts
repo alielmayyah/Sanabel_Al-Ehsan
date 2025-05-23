@@ -65,6 +65,13 @@ const appearStudent = async (req: Request, res: Response) => {
           attributes: ["id", "classname","category"], 
           required: false, 
         },
+        {
+          model: Organization,
+          as: "organization",
+          attributes: ["id", "name"],
+        
+        },
+        
       ],
     });
 
@@ -550,7 +557,41 @@ const appearStudentInDetails = async (req: Request, res: Response) => {
       ,{model: Organization,
         as: "organization",
         attributes: ["id", "name"],
-      }
+      },
+      
+      {
+        model: StudentChallenge,
+        as: "challengeStudent",
+        attributes: [ "challengeId", "CompletionStatus", "updatedAt"],
+        where: {
+          CompletionStatus: CompletionStatus.Completed,
+        },
+        required: false,
+        include: [{
+          model: Challenge,
+          as: "challenge",
+          attributes: ["id", "title", "description", "category", "point", "xp", "snabelRed", "snabelBlue", "snabelYellow", "water","seeder","point","taskCategory","tasktype"],
+        }],
+      },
+      {
+        model: StudentTask,
+        as: "TasksStudents",
+        attributes: ["id", "taskId", "CompletionStatus", "updatedAt"],
+        where: {
+          CompletionStatus: CompletionStatus.Completed,
+        },
+        required: false,
+        include: [{
+          model: Task,
+          as: "task",
+          attributes: ["id", "title", "type", "description", "xp", "snabelRed", "snabelBlue", "snabelYellow"],
+          include: [{
+            model: TaskCategory,
+            as: "taskCategory",
+            attributes: ["id", "title"],
+          }],
+        }],
+      },
 
     ],}
     );

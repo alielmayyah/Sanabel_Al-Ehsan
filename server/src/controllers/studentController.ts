@@ -20,6 +20,7 @@ import { Op, fn, col, literal } from "sequelize";
 import TaskCategory from "../models/task-category.model";
 import Teacher from "../models/teacher.model";
 import Parent from "../models/parent.model";
+import generateUniqueConnectCode from "../helpers/generateRandomconnectcode";
 
 declare global {
   namespace Express {
@@ -1192,6 +1193,7 @@ const addStudent = async (req: Request, res: Response) => {
           // ✅ Create User & Student
           const password = generatePassword();
           const hashedPassword = bcrypt.hashSync(password, 10);
+          worksheet.addRow({ email, password });
 
           const new_user = await User.create({
             firstName: data.FirstName,
@@ -1202,9 +1204,12 @@ const addStudent = async (req: Request, res: Response) => {
             dateOfBirth: data.DateOfBirth,
             gender: data.Gender,
             isAccess: true,
-          });
 
+          });
+          const connectCode = await generateUniqueConnectCode();
           const new_student = await Student.create({
+            connectCode,
+            treeProgress: 1,
             grade: data.Grade,
             userId: new_user.id,
             organizationId: organization.id,
@@ -1247,7 +1252,6 @@ const addStudent = async (req: Request, res: Response) => {
             row: data,
             message: "Student added successfully",
           });
-          worksheet.addRow({ email, password });
         } catch (error) {
           failedEntries.push({ row: data, error: error });
         }
