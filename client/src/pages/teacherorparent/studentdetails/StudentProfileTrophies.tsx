@@ -118,7 +118,7 @@ const Profile: React.FC = () => {
 
   return (
     <div
-      className="flex flex-col h-full w-full items-center justify-between z-10 p-4 overflow-y-auto"
+      className="z-10 flex flex-col items-center justify-between w-full h-full p-4 overflow-y-auto"
       id="page-height"
     >
       {isLoading ? (
@@ -130,7 +130,7 @@ const Profile: React.FC = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="grid grid-cols-4 w-full justify-between gap-1"
+          className="grid justify-between w-full grid-cols-4 gap-1"
         >
           {allTrophies.length > 0 ? (
             allTrophies.map((trophy: any, index: number) => (
@@ -139,7 +139,7 @@ const Profile: React.FC = () => {
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="flex-center flex-col"
+                className="flex-col flex-center"
               >
                 <img
                   src={
@@ -153,10 +153,10 @@ const Profile: React.FC = () => {
                   alt={trophy.challenge.title}
                 />
 
-                <h1 className="text-xs text-black text-center ">
+                <h1 className="text-xs text-center text-black ">
                   {trophy.challenge.point}
                 </h1>
-                <h1 className="text-xs text-black text-center h-8" dir="rtl">
+                <h1 className="h-8 text-xs text-center text-black" dir="rtl">
                   {t(trophy.challenge.title).split(" ").slice(0, 4).join(" ")}
                 </h1>
               </motion.div>

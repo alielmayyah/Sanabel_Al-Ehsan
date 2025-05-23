@@ -123,17 +123,17 @@ const Profile: React.FC = () => {
 
   return (
     <div
-      className="flex flex-col h-full w-full items-center justify-between z-10"
+      className="z-10 flex flex-col items-center justify-between w-full h-full"
       id="page-height"
     >
       <div className="flex items-center justify-end bg-yellowprimary py-7 w-full  p-4 rounded-b-[25px] ">
-        <div className="flex-center bg-white b rounded-xl self-end">
+        <div className="self-end bg-white flex-center b rounded-xl">
           <GoBackButton />
         </div>
       </div>
 
-      <div className="flex flex-col items-center gap-1 justify-between">
-        <div className="w-32 h-32 rounded-full -mt-6 border-8 border-white">
+      <div className="flex flex-col items-center justify-between gap-1">
+        <div className="w-32 h-32 -mt-6 border-8 border-white rounded-full">
           <GetAvatar userAvatarData={student.user.profileImg} />
         </div>
         <h1 className="text-black">
@@ -151,8 +151,8 @@ const Profile: React.FC = () => {
       </div>
 
       {/* Navbar */}
-      <div className="flex justify-between flex-col  w-full gap-3 p-4">
-        <div className="flex flex-row-reverse  gap-1 items-center w-full">
+      <div className="flex flex-col justify-between w-full gap-3 p-4">
+        <div className="flex flex-row-reverse items-center w-full gap-1">
           {profileNav.map((item) => (
             <div
               className={`${
