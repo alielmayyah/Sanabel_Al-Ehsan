@@ -138,7 +138,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10">
       <div className="absolute">
         <Toaster />
       </div>
@@ -146,8 +146,8 @@ const Login: React.FC = () => {
       <div className="flex flex-col w-full gap-3">
         <GoBackButton />
 
-        <div className="flex flex-col gap-2 self-end">
-          <h1 className="text-black font-bold text-2xl text-end ">
+        <div className="flex flex-col self-end gap-2">
+          <h1 className="text-2xl font-bold text-black text-end ">
             {t("تسجيل الدخول")}{" "}
           </h1>
           <p className="text-[#B3B3B3] text-sm  text-end ">
@@ -165,7 +165,7 @@ const Login: React.FC = () => {
         />
       </div>
 
-      <div className="flex flex-col gap-4 w-full">
+      <div className="flex flex-col w-full gap-4">
         {" "}
         <GenericInput
           type="email"
@@ -182,7 +182,7 @@ const Login: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
-          <div className="flex  items-center justify-between">
+          <div className="flex items-center justify-between">
             <IonRouterLink routerLink="/forgotpassword">
               <h1 className="text-blueprimary">{t("هل نسيت كلمة السر؟")}</h1>
             </IonRouterLink>

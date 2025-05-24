@@ -95,7 +95,7 @@ const Profile: React.FC = () => {
 
       if (response.status === 200) {
         setStudentData(response.data);
-        console.log("Student data:", studentData);
+        console.log("Student data profile:", studentData);
         setLoading(false);
       }
     } catch (error) {
@@ -131,7 +131,6 @@ const Profile: React.FC = () => {
           <GoBackButton />
         </div>
       </div>
-
       <div className="flex flex-col items-center justify-between gap-1">
         <div className="w-32 h-32 -mt-6 border-8 border-white rounded-full">
           <GetAvatar userAvatarData={student.user.profileImg} />
@@ -149,7 +148,6 @@ const Profile: React.FC = () => {
           {student.class?.category}
         </h1>
       </div>
-
       {/* Navbar */}
       <div className="flex flex-col justify-between w-full gap-3 p-4">
         <div className="flex flex-row-reverse items-center w-full gap-1">
@@ -167,7 +165,6 @@ const Profile: React.FC = () => {
           ))}
         </div>
       </div>
-
       {show === profileNav[0] && (
         <StudentProfileOverview
           xp={studentData.student.xp}
@@ -175,18 +172,21 @@ const Profile: React.FC = () => {
           totalCompletedTasks={studentData.totalCompletedTasks}
         />
       )}
-
       {show == profileNav[1] && (
         <StudentProfileTree
           treeStage={student.treeStage}
           treeProgress={student.treeProgress}
         />
       )}
-
-      {/* {show == profileNav[2] && <StudentProfileTrophies />}
-
-      {show == profileNav[3] && <StudentProfileActivity />} */}
-
+      {/* {show == profileNav[2] && <StudentProfileTrophies />} */}
+      {show == profileNav[3] && (
+        <StudentProfileActivity
+          recentActivity={student.TasksStudents}
+          studentData={studentData}
+          totalCompletedTasks={totalCompletedTasks}
+          categoryCounts={categoryCounts}
+        />
+      )}
       <TeacherNavbar />
     </div>
   );
