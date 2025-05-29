@@ -100,24 +100,24 @@ const TeacherHome = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start gap-1 bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+    <div className="flex flex-col items-center justify-start min-h-screen gap-1 bg-gradient-to-br from-gray-50 to-blue-50">
       {/* Header Section */}
       <motion.div
-        className="w-full flex flex-col items-center justify-between p-5 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 text-white relative overflow-hidden"
+        className="relative flex flex-col items-center justify-between w-full p-5 overflow-hidden text-white bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
         {/* Background decorative elements */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white"></div>
-          <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full bg-white"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full bg-white"></div>
+          <div className="absolute w-32 h-32 bg-white rounded-full top-4 right-4"></div>
+          <div className="absolute w-24 h-24 bg-white rounded-full bottom-4 left-4"></div>
+          <div className="absolute w-40 h-40 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full top-1/2 left-1/2"></div>
         </div>
 
         <div className="relative z-10 text-center">
           <motion.h1
-            className="text-3xl font-extrabold mb-2"
+            className="mb-2 text-3xl font-extrabold"
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.5, type: "spring" }}
@@ -125,7 +125,7 @@ const TeacherHome = () => {
             {t("مرحباً أستاذ")}
           </motion.h1>
           <motion.p
-            className="text-blue-100 text-lg"
+            className="text-lg text-blue-100"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
@@ -136,14 +136,14 @@ const TeacherHome = () => {
 
         {/* Quick Stats */}
         <motion.div
-          className="w-full max-w-4xl grid grid-cols-3 gap-1 mt-2 relative z-10"
+          className="relative z-10 grid w-full max-w-4xl grid-cols-3 gap-1 mt-2"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           <motion.div
             variants={itemVariants}
-            className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center"
+            className="p-3 text-center rounded-lg bg-white/20 backdrop-blur-sm"
           >
             <FaUserGraduate className="mx-auto mb-1 text-white" size={20} />
             <div className="text-xl font-bold text-white">
@@ -153,7 +153,7 @@ const TeacherHome = () => {
           </motion.div>
           <motion.div
             variants={itemVariants}
-            className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center"
+            className="p-3 text-center rounded-lg bg-white/20 backdrop-blur-sm"
           >
             <FaChalkboardTeacher
               className="mx-auto mb-1 text-white"
@@ -166,7 +166,7 @@ const TeacherHome = () => {
           </motion.div>
           <motion.div
             variants={itemVariants}
-            className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center"
+            className="p-3 text-center rounded-lg bg-white/20 backdrop-blur-sm"
           >
             <FaTrophy className="mx-auto mb-1 text-white" size={20} />
             <div className="text-xl font-bold text-white">
@@ -179,7 +179,7 @@ const TeacherHome = () => {
 
       {/* Main Content */}
       <motion.div
-        className="w-full grid grid-cols-2 gap-2 px-4 "
+        className="grid w-full grid-cols-2 gap-2 px-4 "
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -202,26 +202,26 @@ const TeacherHome = () => {
           >
             {/* Background pattern */}
             <div className="absolute inset-0 opacity-10">
-              <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-white"></div>
-              <div className="absolute -bottom-4 -left-4 w-12 h-12 rounded-full bg-white"></div>
+              <div className="absolute w-16 h-16 bg-white rounded-full -top-4 -right-4"></div>
+              <div className="absolute w-12 h-12 bg-white rounded-full -bottom-4 -left-4"></div>
             </div>
 
             {/* Content */}
             <div className="relative z-10 flex flex-col items-center gap-3">
               <motion.div
-                className="flex-shrink-0 h-16 w-16 flex items-center justify-center rounded-full bg-white shadow-lg group-hover:shadow-xl transition-shadow duration-300"
+                className="flex items-center justify-center flex-shrink-0 w-16 h-16 transition-shadow duration-300 bg-white rounded-full shadow-lg group-hover:shadow-xl"
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.6 }}
               >
                 {button.icon}
               </motion.div>
-              <h2 className="font-bold text-lg text-white text-center px-2">
+              <h2 className="px-2 text-lg font-bold text-center text-white">
                 {button.title}
               </h2>
             </div>
 
             {/* Shine effect on hover */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            <div className="absolute inset-0 transition-transform duration-1000 transform -translate-x-full -skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full"></div>
           </motion.div>
         ))}
       </motion.div>
