@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+
 import { JwtPayload } from "jsonwebtoken";
 import Student from "../models/student.model";
 import Teacher from "../models/teacher.model";
@@ -14,6 +15,13 @@ import TaskCategory from "../models/task-category.model";
 import StudentChallenge from "../models/student-challenge.model";
 import { CompletionStatus } from "../models/student-challenge.model"; // ✅ Correct Import
 import Parent from "../models/parent.model";
+import ExcelJS from "exceljs";
+import bcrypt from "bcryptjs";
+import path from "path";
+import fs from "fs";
+import nodemailer from "nodemailer";
+import { generatePassword } from "../helpers/generatePassword";
+
 declare global {
   namespace Express {
     interface Request {
@@ -73,6 +81,7 @@ const appearStudent = async (req: Request, res: Response) => {
         },
         
       ],
+      where:{organizationId:teacher.organizationId}
     });
 
     res.status(200).json({ data: students });
@@ -166,7 +175,8 @@ const appearStudentByclass = async (req: Request, res: Response) => {
       }
       const students = await Student.findAll({
         
-        where: { classId: classId },
+        where: { classId: classId, organizationId:teacher.organizationId
+      },
         include: [
           {
             model: Class,
@@ -543,7 +553,7 @@ const appearStudentInDetails = async (req: Request, res: Response) => {
     const studentId = Number(req.params.studentId);
     if (!studentId) return res.status(400).json({ message: "Student ID is required" });
     const student = await Student.findOne({
-      where: { id: studentId },
+      where: { id: studentId,organizationId:teacher.organizationId },
     
       include: [{
         model: User,
@@ -724,6 +734,208 @@ const deleteData = async (req: Request, res: Response) => {
     .json({ message: "User and Student data deleted successfully" });
 };
 
+const addTeacher = async (req: Request, res: Response) => {
+  if (!req.processedData) {
+    return res.status(400).json({
+      success: false,
+      message: "No processed data available",
+      error: "File was not processed correctly",
+    });
+  }
+
+  const processedData = req.processedData;
+  const successfulEntries: any[] = [];
+  const failedEntries: any[] = [];
+  const organizationFiles: Record<string, { workbook: ExcelJS.Workbook; worksheet: ExcelJS.Worksheet }> = {};
+
+  try {
+    for (const sheet in processedData) {
+      const all_data = processedData[sheet];
+
+      for (const data of all_data) {
+        try {
+          const firstName = data.FirstName?.toString().trim();
+          const lastName = data.LastName?.toString().trim();
+          const email = data.Email?.toString().trim();
+          const gender = data.Gender?.toString().trim();
+          const orgName = data.OrganizationName?.toString().trim();
+          const dateOfBirth = data.DateOfBirth || null;
+
+          if (!firstName || !lastName || !email || !orgName) {
+            failedEntries.push({ row: data, error: "Missing required fields" });
+            continue;
+          }
+
+          const organization = await Organization.findOne({ where: { name: orgName } });
+          if (!organization) {
+            failedEntries.push({ row: data, error: "Organization not found" });
+            continue;
+          }
+
+          if (!organizationFiles[organization.name]) {
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet("Teachers");
+            worksheet.columns = [
+              { header: "Email", key: "email", width: 30 },
+              { header: "Password", key: "password", width: 20 },
+            ];
+            organizationFiles[organization.name] = { workbook, worksheet };
+          }
+
+          const { worksheet } = organizationFiles[organization.name];
+
+          if (await User.findOne({ where: { email } })) {
+            failedEntries.push({ row: data, error: "Email is already in use" });
+            continue;
+          }
+
+          const password = generatePassword();
+          const hashedPassword = bcrypt.hashSync(password, 10);
+
+          const user = await User.create({
+            firstName,
+            lastName,
+            email,
+            role: "Teacher",
+            password: hashedPassword,
+            dateOfBirth,
+            gender,
+            isAccess: true,
+          });
+
+          await Teacher.create({
+            userId: user.id,
+            organizationId: organization.id,
+          });
+
+          worksheet.addRow({ email, password });
+
+          if (data["Assigned Classes"]) {
+            console.warn(
+              `Note: 'Assigned Classes' provided for ${firstName} ${lastName}, but no class assignment logic exists.`
+            );
+          }
+
+          const transporter = nodemailer.createTransport({
+            host: process.env.MAIL_HOST,
+            port: Number(process.env.MAIL_PORT) || 587,
+            secure: false,
+            auth: {
+              user: process.env.MAIL_USERNAME,
+              pass: process.env.MAIL_PASSWORD,
+            },
+          });
+
+          await transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: "Your Teacher Account in Snabel elahssan",
+            text: `Hello ${firstName},\n\nYour teacher account has been created.\n\nEmail: ${email}\nPassword: ${password}\n\nPlease log in and change your password immediately.`,
+          });
+
+          successfulEntries.push({ row: data, message: "Teacher added successfully" });
+        } catch (error) {
+          failedEntries.push({
+            row: data,
+            error: error instanceof Error ? error.message : String(error),
+          });
+        }
+      }
+    }
+
+    // Save Excel Files for each organization
+    const outputDir = path.resolve(__dirname, "../../output_teacher");
+    if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+
+    const savedFiles: string[] = [];
+    for (const orgName in organizationFiles) {
+      const { workbook } = organizationFiles[orgName];
+      const safeName = orgName.replace(/[\/\\?%*:|"<>]/g, "_");
+      const filePath = path.resolve(outputDir, `${safeName}_Teachers.xlsx`);
+      await workbook.xlsx.writeFile(filePath);
+      savedFiles.push(filePath);
+    }
+
+    res.json({
+      message: "Teacher import completed",
+      successCount: successfulEntries.length,
+      failureCount: failedEntries.length,
+      successfulEntries,
+      failedEntries,
+      files: savedFiles,
+    });
+  } catch (error) {
+    console.error("Error in addTeacher:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error during teacher creation",
+      error: error instanceof Error ? error.message : JSON.stringify(error),
+    });
+  }
+};
+const appearClassCategory =  async (req: Request, res: Response) => {
+  try {
+    const user = (req as Request & { user?: JwtPayload }).user;
+
+    if (!user) {
+      return res.status(404).json({ message: "User data not found in request" });
+    }
+
+    const teacher = await Teacher.findOne({ where: { userId: user.id } });
+    const student = await Student.findOne({ where: { userId: user.id } });
+
+    if (!teacher && !student) {
+      return res.status(403).json({ message: "Access denied. Not a teacher or student." });
+    }
+
+    const classCategories = await Class.findAll({
+      where: { organizationId: teacher?.organizationId || student?.organizationId },
+      attributes: ["category"],
+      group: ["category"],
+    });
+
+    const categories = classCategories.map((cls) => cls.category);
+    return res.status(200).json({ categories });
+  } catch (error) {
+    console.error("Error in appearClassCategory:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+const getClassesByCategory = async (req: Request, res: Response) => {
+  try {
+    const user = (req as Request & { user?: JwtPayload }).user;
+    const { category } = req.body;
+
+    if (!user) {
+      return res.status(404).json({ message: "User data not found in request" });
+    }
+
+    if (!category || typeof category !== "string") {
+      return res.status(400).json({ message: "Missing or invalid 'category' in body" });
+    }
+
+    const teacher = await Teacher.findOne({ where: { userId: user.id } });
+    const student = await Student.findOne({ where: { userId: user.id } });
+
+    if (!teacher && !student) {
+      return res.status(403).json({ message: "Access denied. Not a teacher or student." });
+    }
+
+    const classes = await Class.findAll({
+      where: {
+        organizationId: teacher?.organizationId || student?.organizationId,
+        category,
+      },
+      attributes: ["id", "classname"],
+    });
+
+    return res.status(200).json({ classes });
+  } catch (error) {
+    console.error("Error in getClassesByCategory:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export {
   appearStudent,
   appearclass,
@@ -736,5 +948,8 @@ export {
   teacherData,
   updateDataTeacher,
   deleteData,
-  addStudentToClass
+  addStudentToClass,
+  addTeacher,
+  appearClassCategory,
+  getClassesByCategory
 };

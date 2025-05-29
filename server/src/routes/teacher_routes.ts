@@ -1,5 +1,7 @@
-import { Response, Request } from "express";
+import { Response, Request,NextFunction } from "express";
 import { authenticateToken } from "../middleware/auth";
+import multer from "multer";
+
 import { checkTeacher } from "../middleware/checkrole";
 import {
   appearclass,
@@ -14,12 +16,17 @@ import {
   updateDataTeacher,
   deleteData,
   addStudentToClass,
+  addTeacher,
+  appearClassCategory,
+  getClassesByCategory
 } from "../controllers/teacherController";
 import {
   appearLeaderboard,
   appearTaskesCategory,
   appearTaskesType,
 } from "../controllers/studentController";
+import {  processTeacherMiddleware } from "../middleware/processExcelfile";
+const upload = multer({ dest: "uploads/" });
 
 const router = require("express").Router();
 /**
@@ -1000,5 +1007,137 @@ router.patch(
  */
 
 router.delete("/delete-teacher", authenticateToken, checkTeacher, deleteData);
+/**
+ * @swagger
+ * /teachers/add-teacher:
+ *   post:
+ *     summary: Bulk import teachers from an uploaded Excel file
+ *     tags: [Teachers]
+ *     security:
+ *       - bearerAuth: []  # Requires JWT token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Teachers imported successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Teacher import completed
+ *                 successCount:
+ *                   type: integer
+ *                   example: 10
+ *                 failureCount:
+ *                   type: integer
+ *                   example: 2
+ *                 successfulEntries:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     example: { row: {}, message: "Teacher added successfully" }
+ *                 failedEntries:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     example: { row: {}, error: "Email is already in use" }
+ *                 files:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                     example: "/output_teacher/MySchool_Teachers.xlsx"
+ *       400:
+ *         description: No processed data available or invalid file
+ *       500:
+ *         description: Internal server error during teacher creation
+ */
+router.post(
+  "/add-teacher",
+  upload.single("file"),
+ 
+  processTeacherMiddleware,
+  addTeacher
+);
+/**
+ * @swagger
+ * /teachers/class-categories:
+ *   get:
+ *     summary: Retrieve unique class categories for the authenticated teacher's organization
+ *     tags: [Teachers]
+ *     security:
+ *       - bearerAuth: []  # Requires JWT token
+ *     responses:
+ *       200:
+ *         description: List of class categories
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 categories:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                     example: "Science"
+ *       404:
+ *         description: User or Teacher not found
+ *       500:
+ *         description: Internal server error
+ */
 
+router.get("/class-categories",  authenticateToken, checkTeacher,appearClassCategory);
+/**
+ * @swagger
+ * /teachers/classes-by-category:
+ *   get:
+ *     summary: Get classes under a specific category for the authenticated teacher's organization
+ *     tags: [Teachers]
+ *     security:
+ *       - bearerAuth: []  # Requires JWT token
+ *     parameters:
+ *       - in: body
+ *         name: category
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The class category to filter by
+ *     responses:
+ *       200:
+ *         description: List of classes in the specified category
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 classes:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 5
+ *                       name:
+ *                         type: string
+ *                         example: "Physics 101"
+ *       400:
+ *         description: Missing or invalid category query parameter
+ *       404:
+ *         description: User or Teacher not found
+ *       500:
+ *         description: Internal server error
+ */
+
+router.get("/classes-by-category" ,authenticateToken, checkTeacher, getClassesByCategory);
 module.exports = router;

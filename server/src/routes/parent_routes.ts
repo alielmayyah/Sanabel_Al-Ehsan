@@ -6,6 +6,7 @@ import {
   connectStudentToParent,
   appearStudentbyparent,
   addPros,
+  parentLeaderboard,
 } from "../controllers/parentController";
 import { authenticateToken } from "../middleware/auth";
 import { checkparent } from "../middleware/checkrole";
@@ -447,5 +448,6 @@ router.delete("/delete-parent", authenticateToken, checkparent, deleteData);
  */
 
 router.post("/add-pros", authenticateToken, checkparent, addPros);
+router.get("/appear-leaderboard", authenticateToken, checkparent, parentLeaderboard);
 
 module.exports = router;

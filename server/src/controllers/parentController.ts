@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
 import User from "../models/user.model";
 import { Op, fn, col, literal } from "sequelize";
+import { Sequelize, QueryTypes, where } from "sequelize";
 
 import TaskCategory from "../models/task-category.model";
 import Parent from "../models/parent.model";
@@ -9,6 +10,8 @@ import Student from "../models/student.model";
 import StudentTask from "../models/student-task.model";
 import Task from "../models/task.model";
 import Challenge from "../models/challenge.model";
+import Class from "../models/class.model"
+import Organization from "../models/oraganization.model";
 import StudentChallenge, { CompletionStatus } from "../models/student-challenge.model";
 
 const parentData = async (req: Request, res: Response) => {
@@ -359,4 +362,164 @@ const addPros = async (req: Request, res: Response) => {
         return res.status(500).json({ error: "Internal Server Error" });
       }
     };
-export { parentData, updateDataTeacherParent, deleteData, searchStuentByCode, connectStudentToParent, appearStudentbyparent, addPros };
+
+    const appearStudentInDetails = async (req: Request, res: Response) => {
+      try {
+        // Extract user data
+        const user = (req as Request & { user: JwtPayload | undefined }).user;
+        if (!user) return res.status(404).json({ message: "User data not found in request" });
+    
+        const parent = await Parent.findOne({ where: { userId: user.id } });
+        if (!parent) return res.status(404).json({ message: "parent data not found in request" });
+        
+        const studentId = Number(req.params.studentId);
+        if (!studentId) return res.status(400).json({ message: "Student ID is required" });
+        const student = await Student.findOne({
+          where: { id: studentId},
+        
+          include: [{
+            model: User,
+            as: "user", // use the alias defined in the association
+            attributes: ["firstName", "lastName", "email","profileImg","gender","dateOfBirth"],
+          },
+          {model: Class,
+            as: "class",
+            attributes: ["id", "classname",'category'],
+          }
+          ,{model: Organization,
+            as: "organization",
+            attributes: ["id", "name"],
+          },
+          
+          {
+            model: StudentChallenge,
+            as: "challengeStudent",
+            attributes: [ "challengeId", "CompletionStatus", "updatedAt"],
+            where: {
+              CompletionStatus: CompletionStatus.Completed,
+            },
+            required: false,
+            include: [{
+              model: Challenge,
+              as: "challenge",
+              attributes: ["id", "title", "description", "category", "point", "xp", "snabelRed", "snabelBlue", "snabelYellow", "water","seeder","point","taskCategory","tasktype"],
+            }],
+          },
+          {
+            model: StudentTask,
+            as: "TasksStudents",
+            attributes: ["id", "taskId", "CompletionStatus", "updatedAt"],
+            where: {
+              CompletionStatus: CompletionStatus.Completed,
+            },
+            required: false,
+            include: [{
+              model: Task,
+              as: "task",
+              attributes: ["id", "title", "type", "description", "xp", "snabelRed", "snabelBlue", "snabelYellow"],
+              include: [{
+                model: TaskCategory,
+                as: "taskCategory",
+                attributes: ["id", "title"],
+              }],
+            }],
+          },
+    
+        ],}
+        );
+        if (!student) return res.status(404).json({ message: "Student not found" });
+        const allCategories = await TaskCategory.findAll({
+              attributes: ["id", "title"], // ✅ Get categoryId and title
+              raw: true,
+            });
+        
+            // Fetch completed task counts grouped by categoryId
+            const completedTasks = await Student.sequelize.query(
+              `
+              SELECT COUNT(studenttasks.taskId) AS count, tasks.categoryId, taskcategories.title
+              FROM studenttasks
+              INNER JOIN tasks ON studenttasks.taskId = tasks.id
+              INNER JOIN taskcategories ON tasks.categoryId = taskcategories.id
+              WHERE studenttasks.studentId = :studentId
+              AND studenttasks.completionStatus = 'Completed'
+              GROUP BY tasks.categoryId, taskcategories.title
+              `,
+              {
+                replacements: { studentId: student.id },
+                type: QueryTypes.SELECT,
+              }
+            );
+        
+            // Convert the query result into an object mapping category titles to counts
+            const categoryCounts = completedTasks.reduce((acc: Record<string, number>, row: any) => {
+              acc[row["title"]] = Number(row["count"]) || 0;
+              return acc;
+            }, {} as Record<string, number>);
+        
+            // Ensure all unique categories appear in the final response (even if count is 0)
+            const finalCategoryCounts = allCategories.reduce((acc, category) => {
+              acc[category.title] = categoryCounts[category.title] || 0;
+              return acc;
+            }, {} as Record<string, number>);
+        
+            // Calculate total completed tasks
+            const totalCompletedTasks = (Object.values(finalCategoryCounts) as number[]).reduce(
+              (sum: number, count: number) => sum + count,
+              0
+            );
+            return res.status(200).json({
+              student,
+              totalCompletedTasks,
+              categoryCounts: finalCategoryCounts,
+            });
+      }
+      
+      catch (error) {
+        console.error("Error in appearStudentInDetails:", error);
+        return res.status(500).json({ message: "Internal server error" });
+      }
+    }
+    const parentLeaderboard = async (req: Request, res: Response) => {
+      try {
+        const user = (req as Request & { user?: JwtPayload }).user;
+        if (!user) return res.status(401).json({ message: "Unauthorized" });
+    
+        const parent = await Parent.findOne({ where: { userId: user.id } });
+        if (!parent) {
+          return res.status(403).json({ message: "Access denied. Only for parents." });
+        }
+    
+        const { gender } = req.query;
+    
+        const userFilters: any = {};
+        if (gender) {
+          if (typeof gender !== "string" || !["Male", "Female"].includes(gender)) {
+            return res.status(400).json({ message: "Invalid gender filter" });
+          }
+          userFilters.gender = gender;
+        }
+    
+        const students = await Student.findAll({
+          where: {
+            organizationId: null, 
+          },
+          include: [
+            {
+              model: User,
+              as: "user",
+              where: userFilters,
+              attributes: ["firstName", "lastName", "email", "profileImg", "gender"],
+            },
+          ],
+          order: [["xp", "DESC"]],
+        });
+    
+        return res.status(200).json({ students });
+      } catch (error) {
+        console.error("Error in parentLeaderboard:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+      }
+    };
+    
+    
+export { parentData, updateDataTeacherParent, deleteData, searchStuentByCode, connectStudentToParent, appearStudentbyparent, addPros,parentLeaderboard };

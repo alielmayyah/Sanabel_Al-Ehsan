@@ -26,6 +26,7 @@ import { authenticateToken } from "../middleware/auth";
 import { checkstudent } from "../middleware/checkrole";
 import multer from "multer";
 import { processStudentMiddleware } from "../middleware/processExcelfile";
+import { appearClassCategory, getClassesByCategory } from "../controllers/teacherController";
 const upload = multer({ dest: "uploads/" });
 
 const router = require("express").Router();
@@ -1077,6 +1078,75 @@ router.delete("/delete", authenticateToken, checkstudent, deleteData);
  *         description: Internal Server Error
  */
 router.patch("/update-profile-image", authenticateToken, checkstudent, updateProfileImage);
+/**
+ * @swagger
+ * /students/class-categories:
+ *   get:
+ *     summary: Retrieve unique class categories for the authenticated teacher's organization
+ *     tags: [Students]
+ *     security:
+ *       - bearerAuth: []  # Requires JWT token
+ *     responses:
+ *       200:
+ *         description: List of class categories
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 categories:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                     example: "Science"
+ *       404:
+ *         description: User or Teacher not found
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/class-categories",  authenticateToken, checkstudent,appearClassCategory);
 
+/**
+ * @swagger
+ * /students/classes-by-category:
+ *   get:
+ *     summary: Get classes under a specific category for the authenticated teacher's organization
+ *     tags: [Students]
+ *     security:
+ *       - bearerAuth: []  # Requires JWT token
+ *     parameters:
+ *       - in: body
+ *         name: category
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The class category to filter by
+ *     responses:
+ *       200:
+ *         description: List of classes in the specified category
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 classes:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 5
+ *                       name:
+ *                         type: string
+ *                         example: "Physics 101"
+ *       400:
+ *         description: Missing or invalid category query parameter
+ *       404:
+ *         description: User or Teacher not found
+ *       500:
+ *         description: Internal server error
+ */
 
+router.get("/classes-by-category" ,authenticateToken, checkstudent, getClassesByCategory);
 module.exports = router;

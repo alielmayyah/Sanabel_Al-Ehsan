@@ -9,8 +9,9 @@
 /coverage
 
 # production
-
-
+/uploads
+/output/*
+/output_teacher/*
 # misc
 .DS_Store
 .env

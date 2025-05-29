@@ -865,52 +865,78 @@ const appearChallangesPrimaire = async (req: Request, res: Response) => {
   }
 };
 // GET /leaderboard?grade=5&gender=Female
-
-
 const appearLeaderboard = async (req: Request, res: Response) => {
   try {
-    const user = (req as Request & { user: JwtPayload | undefined }).user;
-    if (!user) {
-      return res.status(404).json({ message: "User data not found in request" });
+    const user = (req as Request & { user?: JwtPayload }).user;
+    if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+    const { className, category, gender } = req.query;
+    if (className || !category) {
+      return res.status(400).json({
+        message: "If 'className' is provided, 'category' must also be included.",
+      });
     }
 
-    // Optional filters from query
-    const { classId, grade, gender } = req.query;
 
-    const student = await Student.findOne({ where: { userId: user.id } });
+    const currentUser = await User.findByPk(user.id);
     const teacher = await Teacher.findOne({ where: { userId: user.id } });
-    const parent = await Parent.findOne({ where: { userId: user.id } });
+    const student = await Student.findOne({ where: { userId: user.id } });
 
-    if (!student && !teacher && !parent) {
-      return res.status(404).json({ message: "Student data not found in request" });
+    if (!teacher && !student) {
+      return res.status(403).json({ message: "Access denied. Not a teacher or student." });
     }
 
-    const studentFilters: any = {};
     const userFilters: any = {};
+    const classFilters: any = {};
+    const studentFilters: any = {};
 
-    if (classId) studentFilters.classId = classId;
-    if (grade) studentFilters.grade = grade;
     if (gender) userFilters.gender = gender;
+    if (className) classFilters.name = className;
+    if (category) classFilters.category = category;
+
+    if (teacher) {
+      // If teacher has no organizationId, return empty result
+      if (!teacher.organizationId) {
+        return res.status(200).json({ students: [] });
+      }
+      studentFilters.organizationId = teacher.organizationId;
+    } else if (student) {
+      // For student: if organizationId is null, filter students with organizationId null,
+      // else filter by student's organizationId
+      if (!student.organizationId) {
+        studentFilters.organizationId = null;
+      } else {
+        studentFilters.organizationId = student.organizationId;
+      }
+    }
 
     const students = await Student.findAll({
       where: studentFilters,
-      order: [["xp", "DESC"]],
       include: [
         {
           model: User,
           as: "user",
           where: userFilters,
-          attributes: ["firstName", "lastName", "email", "profileImg", "gender", "dateOfBirth"],
+          attributes: ["firstName", "lastName", "email", "profileImg", "gender"],
+        },
+        {
+          model: Class,
+          as: "class",
+          where: classFilters,
+          attributes: ["classname", "category"],
         },
       ],
+      order: [["xp", "DESC"]],
     });
 
-    res.json(students);
+    return res.status(200).json({ students });
   } catch (error) {
-    console.error("Error fetching leaderboard:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error("Error in appearLeaderboard:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+
 
 const buyWaterSeeder = async (req: Request, res: Response) => {
   try {

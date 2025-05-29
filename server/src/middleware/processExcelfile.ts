@@ -83,6 +83,7 @@ const processStudentMiddleware = (
   next: NextFunction
 ) => {
   try {
+    
     // Ensure a file has been uploaded
     if (!req.file) {
       return res.status(400).json({ error: "No file uploaded" });
@@ -134,4 +135,58 @@ const processStudentMiddleware = (
   }
 };
 
-export { schoolAndClassProcessMiddleware, processStudentMiddleware };
+const processTeacherMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No file uploaded",
+        error: "No file provided in the request",
+      });
+    }
+    console.log("welcome")
+    const filePath = req.file.path;
+    const workbook = XLSX.readFile(filePath);
+    const allSheetData: Record<string, any[]> = {};
+
+    workbook.SheetNames.forEach((sheetName) => {
+      const sheet = workbook.Sheets[sheetName];
+      const sheetData = XLSX.utils.sheet_to_json(sheet, { defval: null });
+
+      allSheetData[sheetName] = sheetData.map((row: any) => {
+        const formattedRow = { ...row };
+
+        // Normalize fields (e.g. trim whitespace, fix formatting)
+        formattedRow.FirstName = row.FirstName?.toString().trim() || null;
+        formattedRow.LastName = row.LastName?.toString().trim() || null;
+        formattedRow.Email = row.Email?.toString().trim() || null;
+        formattedRow.DateOfBirth = row.DateOfBirth || null;
+        formattedRow.Gender = row.Gender?.toString().trim() || null;
+        formattedRow.OrganizationName = row.OrganizationName?.toString().trim() || null;
+
+        return formattedRow;
+      });
+    });
+
+    req.processedData = allSheetData;
+    req.sheetNames = workbook.SheetNames;
+
+    next();
+  } catch (error) {
+    console.error("Error processing teacher file:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to process teacher file",
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+export {
+  schoolAndClassProcessMiddleware,
+  processStudentMiddleware,
+  processTeacherMiddleware,
+};

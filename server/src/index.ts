@@ -4,7 +4,7 @@ import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 require("dotenv").config();
 import {  connectToDb,  } from "./config/db_connection";
-
+import { Request,Response,NextFunction } from "express";
 // Define CORS options
 const corsOptions = {
   origin: (
@@ -72,6 +72,14 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error("Unhandled Error:", err);
+  res.status(500).json({
+    success: false,
+    message: "Internal server error",
+    error: err instanceof Error ? err.message : JSON.stringify(err),
+  });
+});
 
 // Start server
 app.listen(PORT, async () => {
