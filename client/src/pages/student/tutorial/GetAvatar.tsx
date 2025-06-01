@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import Boy1 from "../../../assets/avatars/Boys/Boy1";
 import Boy2 from "../../../assets/avatars/Boys/Boy2";
 import Boy3 from "../../../assets/avatars/Boys/Boy3";
@@ -29,17 +29,11 @@ const GetAvatar = ({ userAvatarData = {} }) => {
     tshirtColor: "",
   };
 
-  const [avatarData, setAvatarData] = useState({
+  // Compute avatarData directly from props
+  const avatarData = {
     ...defaultAvatarData,
     ...userAvatarData,
-  });
-
-  useEffect(() => {
-    setAvatarData({
-      ...defaultAvatarData,
-      ...userAvatarData,
-    });
-  }, [userAvatarData]);
+  };
 
   const avatarComponents = {
     boy: [Boy1, Boy2, Boy3, Boy4, Boy5, Boy6, Boy7, Boy8],
@@ -89,8 +83,6 @@ const GetAvatar = ({ userAvatarData = {} }) => {
 
   const AvatarComponent = getAvatarComponent();
 
-  // Remove the direct call to updatePhoto()
-  // Expose updatePhoto as a function that can be called by the parent component
   const updatePhoto = async (token: any) => {
     const authToken = token || localStorage.getItem("token");
     if (!authToken) {
@@ -137,7 +129,7 @@ const GetAvatar = ({ userAvatarData = {} }) => {
 
   return (
     <div
-      className="rounded-full overflow-hidden w-full h-full"
+      className="w-full h-full overflow-hidden rounded-full"
       style={{
         background:
           avatarData.bgPattern === "gradient"

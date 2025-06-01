@@ -1,447 +1,252 @@
-import { useState } from "react";
-import {
-  IoFilterOutline,
-  IoClose,
-  IoGridOutline,
-  IoListOutline,
-} from "react-icons/io5";
-import { TbChecks, TbEye } from "react-icons/tb";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
+import FilterIcon from "../../../icons/Leaderboards/FilterIcon";
 
-interface FilterOption {
-  id: string;
+interface FilterProps {
+  onFilterChange: (filters: FilterState) => void;
+  isVisible: boolean;
+  onClose: () => void;
+}
+
+interface FilterState {
+  category: string;
+  classId: string;
+  gender: string;
+}
+
+interface Category {
+  name: string;
   label: string;
 }
 
-interface FilterProps {
-  onApplyFilters: (filters: FilterState) => void;
-  onViewChange: (viewType: ViewType, itemsPerPage: number) => void;
+interface ClassItem {
+  id: number;
+  classname: string;
 }
 
-export type ViewType = "podium" | "list" | "grid";
-
-interface FilterState {
-  timePeriod: string;
-  studentGroup: string;
-  gradeLevel: string;
-  medalType: string;
-  sortBy: string;
-  connectCode: string;
-}
-
-interface ViewState {
-  type: ViewType;
-  itemsPerPage: number;
-}
-
-const LeaderboardFilter: React.FC<FilterProps> = ({
-  onApplyFilters,
-  onViewChange,
+const LeaderboardsFilterModal: React.FC<FilterProps> = ({
+  onFilterChange,
+  isVisible,
+  onClose,
 }) => {
   const { t } = useTranslation();
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isViewOpen, setIsViewOpen] = useState(false);
-
   const [filters, setFilters] = useState<FilterState>({
-    timePeriod: "weekly",
-    studentGroup: "students",
-    gradeLevel: "all",
-    medalType: "all",
-    sortBy: "xp",
-    connectCode: "all",
+    category: "",
+    classId: "",
+    gender: "",
   });
 
-  const [appliedFilters, setAppliedFilters] = useState<FilterState>({
-    timePeriod: "weekly",
-    studentGroup: "students",
-    gradeLevel: "all",
-    medalType: "all",
-    sortBy: "xp",
-    connectCode: "all",
-  });
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [classes, setClasses] = useState<ClassItem[]>([]);
+  const [loadingClasses, setLoadingClasses] = useState(false);
 
-  const [viewState, setViewState] = useState<ViewState>({
-    type: "podium",
-    itemsPerPage: 10,
-  });
-
-  // Filter Options
-  const timeOptions: FilterOption[] = [
-    { id: "daily", label: t("يومي") },
-    { id: "weekly", label: t("اسبوعي") },
-    { id: "monthly", label: t("شهري") },
-    { id: "allTime", label: t("كل الأوقات") },
+  const genderOptions = [
+    { value: "", label: "جميع الطلاب" },
+    { value: "male", label: "ذكور" },
+    { value: "female", label: "إناث" },
   ];
 
-  const groupOptions: FilterOption[] = [
-    { id: "students", label: t("طلاب") },
-    { id: "classes", label: t("فصول") },
-    { id: "teams", label: t("فرق") },
-    { id: "school", label: t("المدرسة") },
-  ];
+  // Memoize the fetch functions to prevent recreation on every render
+  const fetchCategories = useCallback(async () => {
+    try {
+      const authToken = localStorage.getItem("token");
+      if (!authToken) return;
 
-  const gradeOptions: FilterOption[] = [
-    { id: "all", label: t("جميع المراحل") },
-    { id: "KG", label: t("رياض الأطفال") },
-    { id: "FS", label: t("التمهيدي") },
-    { id: "G1-G5", label: t("الابتدائية (1-5)") },
-    { id: "G6-G9", label: t("الإعدادية (6-9)") },
-    { id: "G10-G12", label: t("الثانوية (10-12)") },
-  ];
+      const response = await axios.get<{ categories: string[] }>(
+        "http://localhost:3000/teachers/class-categories",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
 
-  const medalOptions: FilterOption[] = [
-    { id: "all", label: t("جميع الميداليات") },
-    { id: "1", label: t("ذهبية") },
-    { id: "2", label: t("فضية") },
-    { id: "3", label: t("برونزية") },
-  ];
+      if (response.status === 200 && response.data.categories) {
+        setCategories(
+          response.data.categories.map((cat) => ({
+            name: cat,
+            label: cat,
+          }))
+        );
+        console.log("Fetched categories:", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  }, []);
 
-  const sortOptions: FilterOption[] = [
-    { id: "xp", label: t("النقاط (XP)") },
-    { id: "level", label: t("المستوى") },
-    { id: "treeProgress", label: t("تقدم الشجرة") },
-    { id: "water", label: t("المياه") },
-    { id: "seeders", label: t("البذور") },
-  ];
+  const fetchClassesByCategory = useCallback(async (category: string) => {
+    setLoadingClasses(true);
+    try {
+      const authToken = localStorage.getItem("token");
+      if (!authToken) return;
 
-  // View Options
-  const viewTypes: { id: ViewType; label: string; icon: React.ReactNode }[] = [
-    {
-      id: "podium",
-      label: t("منصة التتويج"),
-      icon: <IoGridOutline size={16} />,
-    },
-    { id: "list", label: t("قائمة"), icon: <IoListOutline size={16} /> },
-    { id: "grid", label: t("شبكة"), icon: <IoGridOutline size={16} /> },
-  ];
+      const response = await axios.post<{ classes: ClassItem[] }>(
+        "http://localhost:3000/teachers/classes-by-category",
+        { category },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-  const itemsPerPageOptions = [10, 20, 50, 100];
+      if (response.status === 200 && response.data.classes) {
+        setClasses(response.data.classes);
+        console.log(
+          "Fetched classes for category:",
+          category,
+          response.data.classes
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching classes:", error);
+    } finally {
+      setLoadingClasses(false);
+    }
+  }, []);
 
-  const handleFilterChange = (category: keyof FilterState, value: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      [category]: value,
-    }));
-  };
+  // Fetch categories on component mount
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
-  const handleViewChange = (type: ViewType, itemsPerPage?: number) => {
-    const newViewState = {
-      type,
-      itemsPerPage: itemsPerPage || viewState.itemsPerPage,
-    };
-    setViewState(newViewState);
-    onViewChange(newViewState.type, newViewState.itemsPerPage);
+  // Fetch classes when category changes - use the specific value, not the whole object
+  useEffect(() => {
+    if (filters.category) {
+      fetchClassesByCategory(filters.category);
+    } else {
+      setClasses([]);
+    }
+  }, [filters.category, fetchClassesByCategory]); // Only depend on the category value
+
+  const handleFilterChange = (key: keyof FilterState, value: string) => {
+    setFilters((prevFilters) => {
+      const newFilters = { ...prevFilters, [key]: value };
+
+      // Reset class when category changes
+      if (key === "category") {
+        newFilters.classId = "";
+      }
+
+      return newFilters;
+    });
   };
 
   const applyFilters = () => {
-    setAppliedFilters(filters);
-    onApplyFilters(filters);
-    setIsFilterOpen(false);
+    onFilterChange(filters);
+    onClose();
   };
 
   const resetFilters = () => {
-    const defaultFilters: FilterState = {
-      timePeriod: "weekly",
-      studentGroup: "students",
-      gradeLevel: "all",
-      medalType: "all",
-      sortBy: "xp",
-      connectCode: "all",
+    const resetState = {
+      category: "",
+      classId: "",
+      gender: "",
     };
-    setFilters(defaultFilters);
-    setAppliedFilters(defaultFilters);
-    onApplyFilters(defaultFilters);
+    setFilters(resetState);
+    onFilterChange(resetState);
+    onClose();
   };
 
-  const removeFilter = (key: keyof FilterState) => {
-    const updatedFilters = { ...appliedFilters };
-    if (key === "timePeriod") updatedFilters.timePeriod = "weekly";
-    if (key === "studentGroup") updatedFilters.studentGroup = "students";
-    if (key === "gradeLevel") updatedFilters.gradeLevel = "all";
-    if (key === "medalType") updatedFilters.medalType = "all";
-    if (key === "sortBy") updatedFilters.sortBy = "xp";
-    if (key === "connectCode") updatedFilters.connectCode = "all";
-
-    setFilters(updatedFilters);
-    setAppliedFilters(updatedFilters);
-    onApplyFilters(updatedFilters);
-  };
-
-  const getFilterLabel = (
-    category: keyof FilterState,
-    value: string
-  ): string => {
-    const optionsMap = {
-      timePeriod: timeOptions,
-      studentGroup: groupOptions,
-      gradeLevel: gradeOptions,
-      medalType: medalOptions,
-      sortBy: sortOptions,
-      connectCode: [{ id: "all", label: t("جميع الفصول") }],
-    };
-
-    return (
-      optionsMap[category]?.find((option) => option.id === value)?.label || ""
-    );
-  };
-
-  const renderFilterOption = (
-    options: FilterOption[],
-    category: keyof FilterState
-  ) => {
-    return (
-      <div className="flex flex-wrap gap-2 mt-2">
-        {options.map((option) => (
-          <button
-            key={option.id}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-              filters[category] === option.id
-                ? "bg-blueprimary text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-            }`}
-            onClick={() => handleFilterChange(category, option.id)}
-          >
-            {option.label}
-          </button>
-        ))}
-      </div>
-    );
-  };
-
-  const hasActiveFilters = () => {
-    return (
-      appliedFilters.timePeriod !== "weekly" ||
-      appliedFilters.studentGroup !== "students" ||
-      appliedFilters.gradeLevel !== "all" ||
-      appliedFilters.medalType !== "all" ||
-      appliedFilters.sortBy !== "xp" ||
-      appliedFilters.connectCode !== "all"
-    );
-  };
-
-  const getActiveFilters = () => {
-    const active: { key: keyof FilterState; value: string }[] = [];
-
-    Object.entries(appliedFilters).forEach(([key, value]) => {
-      const defaultValues = {
-        timePeriod: "weekly",
-        studentGroup: "students",
-        gradeLevel: "all",
-        medalType: "all",
-        sortBy: "xp",
-        connectCode: "all",
-      };
-
-      if (value !== defaultValues[key as keyof FilterState]) {
-        active.push({ key: key as keyof FilterState, value });
-      }
-    });
-
-    return active;
-  };
+  if (!isVisible) return null;
 
   return (
-    <div className="relative flex items-center gap-2">
-      {/* View Options Button */}
-      <div className="relative">
-        <button
-          onClick={() => setIsViewOpen(!isViewOpen)}
-          className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full transition-all"
-        >
-          <TbEye size={18} className="text-blueprimary" />
-          <span className="text-gray-700 font-medium">{t("العرض")}</span>
-        </button>
-
-        <AnimatePresence>
-          {isViewOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="absolute z-50 right-0 mt-2 bg-white rounded-lg shadow-lg p-4 border border-gray-200"
-              style={{ width: "280px" }}
-            >
-              <div className="flex justify-between items-center mb-4">
-                <button
-                  onClick={() => setIsViewOpen(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  <IoClose size={20} className="text-blueprimary" />
-                </button>
-                <h3 className="text-lg font-bold">{t("خيارات العرض")}</h3>
-              </div>
-
-              {/* View Type Selection */}
-              <div className="mb-4 text-right">
-                <h4 className="font-medium text-gray-700 mb-2">
-                  {t("نوع العرض")}
-                </h4>
-                <div className="flex flex-col gap-2">
-                  {viewTypes.map((type) => (
-                    <button
-                      key={type.id}
-                      className={`flex items-center justify-between px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                        viewState.type === type.id
-                          ? "bg-blueprimary text-white"
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                      }`}
-                      onClick={() => handleViewChange(type.id)}
-                    >
-                      <span>{type.label}</span>
-                      {type.icon}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Items Per Page */}
-              {viewState.type !== "podium" && (
-                <div className="mb-4 text-right">
-                  <h4 className="font-medium text-gray-700 mb-2">
-                    {t("العناصر في الصفحة")}
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {itemsPerPageOptions.map((count) => (
-                      <button
-                        key={count}
-                        className={`px-3 py-1 rounded-full text-sm font-medium transition-all ${
-                          viewState.itemsPerPage === count
-                            ? "bg-blueprimary text-white"
-                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                        }`}
-                        onClick={() => handleViewChange(viewState.type, count)}
-                      >
-                        {count}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Filter Button */}
-      <button
-        onClick={() => setIsFilterOpen(!isFilterOpen)}
-        className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full transition-all"
-      >
-        <IoFilterOutline size={18} />
-        <span className="text-gray-700 font-medium">{t("فلترة")}</span>
-        {hasActiveFilters() && (
-          <span className="bg-blueprimary text-white text-xs px-2 py-1 rounded-full">
-            {getActiveFilters().length}
-          </span>
-        )}
-      </button>
-
-      {/* Display applied filters as tags */}
-      {getActiveFilters().map(({ key, value }) => (
-        <div
-          key={key}
-          className="flex items-center bg-blue-50 text-blueprimary px-3 py-1 rounded-full"
-        >
-          <span className="text-sm">{getFilterLabel(key, value)}</span>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white rounded-2xl p-6 m-4 w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-black">{t("تصفية النتائج")}</h2>
           <button
-            className="mr-2 text-blueprimary hover:text-blue-600"
-            onClick={() => removeFilter(key)}
+            onClick={onClose}
+            className="text-2xl text-gray-500 hover:text-gray-700"
           >
-            <IoClose size={16} />
+            ×
           </button>
         </div>
-      ))}
 
-      {/* Clear all filters button */}
-      {hasActiveFilters() && (
-        <button
-          onClick={resetFilters}
-          className="text-sm text-red-500 hover:text-red-600 underline"
-        >
-          {t("مسح الكل")}
-        </button>
-      )}
-
-      {/* Filter Dropdown */}
-      <AnimatePresence>
-        {isFilterOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute z-50 right-0 mt-2 bg-white rounded-lg shadow-lg p-4 border border-gray-200 max-h-96 overflow-y-auto"
-            style={{ width: "350px", top: "100%" }}
+        {/* Category Filter */}
+        <div className="mb-4">
+          <label className="block mb-2 text-sm font-medium text-right text-gray-700">
+            {t("المرحلة الدراسية")}
+          </label>
+          <select
+            value={filters.category}
+            onChange={(e) => handleFilterChange("category", e.target.value)}
+            className="w-full p-3 text-right border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            <div className="flex justify-between items-center mb-4">
-              <button
-                onClick={() => setIsFilterOpen(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <IoClose size={20} />
-              </button>
-              <h3 className="text-lg font-bold">{t("فلترة المتصدرين")}</h3>
-              <button
-                onClick={resetFilters}
-                className="text-xs text-blueprimary hover:text-blue-600"
-              >
-                {t("إعادة تعيين")}
-              </button>
-            </div>
+            <option value="">{t("جميع المراحل")}</option>
+            {categories.map((category) => (
+              <option key={category.name} value={category.name}>
+                {category.label}
+              </option>
+            ))}
+          </select>
+        </div>
 
-            {/* Time Period Filter */}
-            <div className="mb-4 text-right">
-              <h4 className="font-medium text-gray-700 mb-1">
-                {t("المدة الزمنية")}
-              </h4>
-              {renderFilterOption(timeOptions, "timePeriod")}
-            </div>
+        {/* Class Filter */}
+        <div className="mb-4">
+          <label className="block mb-2 text-sm font-medium text-right text-gray-700">
+            {t("الفصل الدراسي")}
+          </label>
+          <select
+            value={filters.classId}
+            onChange={(e) => handleFilterChange("classId", e.target.value)}
+            disabled={!filters.category || loadingClasses}
+            className="w-full p-3 text-right border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+          >
+            <option value="">{t("جميع الفصول")}</option>
+            {classes.map((classItem) => (
+              <option key={classItem.id} value={classItem.id.toString()}>
+                {classItem.classname}
+              </option>
+            ))}
+          </select>
+          {loadingClasses && (
+            <p className="mt-1 text-sm text-right text-gray-500">
+              <FilterIcon className="inline mr-1" />
+              {t("جارٍ تحميل الفصول...")}
+            </p>
+          )}
+        </div>
 
-            {/* Group Filter */}
-            <div className="mb-4 text-right">
-              <h4 className="font-medium text-gray-700 mb-1">
-                {t("نوع المجموعة")}
-              </h4>
-              {renderFilterOption(groupOptions, "studentGroup")}
-            </div>
+        {/* Gender Filter */}
+        <div className="mb-6">
+          <label className="block mb-2 text-sm font-medium text-right text-gray-700">
+            الجنس
+          </label>
+          <select
+            value={filters.gender}
+            onChange={(e) => handleFilterChange("gender", e.target.value)}
+            className="w-full p-3 text-right border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            {genderOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
 
-            {/* Grade Level Filter */}
-            <div className="mb-4 text-right">
-              <h4 className="font-medium text-gray-700 mb-1">
-                {t("المرحلة الدراسية")}
-              </h4>
-              {renderFilterOption(gradeOptions, "gradeLevel")}
-            </div>
-
-            {/* Medal Type Filter */}
-            <div className="mb-4 text-right">
-              <h4 className="font-medium text-gray-700 mb-1">
-                {t("نوع الميدالية")}
-              </h4>
-              {renderFilterOption(medalOptions, "medalType")}
-            </div>
-
-            {/* Sort By Filter */}
-            <div className="mb-6 text-right">
-              <h4 className="font-medium text-gray-700 mb-1">
-                {t("ترتيب حسب")}
-              </h4>
-              {renderFilterOption(sortOptions, "sortBy")}
-            </div>
-
-            {/* Apply Button */}
-            <button
-              onClick={applyFilters}
-              className="w-full bg-blueprimary hover:bg-blue-600 text-white py-2 rounded-lg flex items-center justify-center gap-2 transition-all"
-            >
-              <TbChecks size={18} />
-              <span>{t("تطبيق الفلترة")}</span>
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        {/* Action Buttons */}
+        <div className="flex gap-3">
+          <button
+            onClick={applyFilters}
+            className="flex-1 px-4 py-3 font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
+          >
+            {t("تطبيق التصفية")}
+          </button>
+          <button
+            onClick={resetFilters}
+            className="flex-1 px-4 py-3 font-medium text-gray-700 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300"
+          >
+            {t("إعادة تعيين")}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default LeaderboardFilter;
+export default LeaderboardsFilterModal;
