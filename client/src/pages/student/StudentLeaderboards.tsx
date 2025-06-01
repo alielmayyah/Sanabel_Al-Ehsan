@@ -49,7 +49,7 @@ const Leaderboards: React.FC = () => {
         // Determine the API endpoint based on the role
         userRole === "Teacher"
           ? "http://localhost:3000/teachers/leader-board"
-          : "http://localhost:3000/students/appear-Leaderboard",
+          : "http://localhost:3000/students/leader-board",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -142,9 +142,9 @@ const Leaderboards: React.FC = () => {
 
   return (
     <div className="w-full" id="page-height">
-      <div className="flex flex-col h-full w-full items-center justify-between p-4">
-        <div className="flex flex-col gap-2 justify-between items-center w-full">
-          <div className="flex justify-between items-center w-full">
+      <div className="flex flex-col items-center justify-between w-full h-full p-4">
+        <div className="flex flex-col items-center justify-between w-full gap-2">
+          <div className="flex items-center justify-between w-full">
             <LeaderboardsFilter
               onApplyFilters={(filters) => console.log(filters)}
               onViewChange={function (
@@ -154,7 +154,7 @@ const Leaderboards: React.FC = () => {
                 throw new Error("Function not implemented.");
               }}
             />
-            <h1 className="text-black font-bold text-2xl text-end ">
+            <h1 className="text-2xl font-bold text-black text-end ">
               {t("لوحة المتصدرين")}
             </h1>
           </div>
@@ -168,19 +168,19 @@ const Leaderboards: React.FC = () => {
           {/* Leaderboards for top 3 */}
           {sortedData.length > 0 && (
             <motion.div
-              className="flex justify-between items-end w-full"
+              className="flex items-end justify-between w-full"
               initial="hidden"
               animate="visible"
               variants={listVariants}
             >
               <motion.div
-                className="flex flex-col items-center  w-1/3"
+                className="flex flex-col items-center w-1/3"
                 variants={columnVariants}
               >
-                <div className="w-20 h-20 rounded-full relative border-2 border-blueprimary">
+                <div className="relative w-20 h-20 border-2 rounded-full border-blueprimary">
                   <GetAvatar userAvatarData={sortedData[0].user.profileImg} />
 
-                  <div className="flex-center absolute p-4 text-center transform -translate-x-1/2 -translate-y-1/2 top-0 left-1/2">
+                  <div className="absolute top-0 p-4 text-center transform -translate-x-1/2 -translate-y-1/2 flex-center left-1/2">
                     <LeaderboardsStar size={40} className="text-blueprimary" />
                   </div>
                 </div>
@@ -201,10 +201,10 @@ const Leaderboards: React.FC = () => {
                 <FirstPlaceColumn className="w-full" />
               </motion.div>
               <motion.div
-                className="flex flex-col items-center  w-1/3 -order-1"
+                className="flex flex-col items-center w-1/3 -order-1"
                 variants={columnVariants}
               >
-                <div className="h-20 w-20">
+                <div className="w-20 h-20">
                   <GetAvatar userAvatarData={sortedData[1].user.profileImg} />
                 </div>
                 <h1 className="text-black">
@@ -223,10 +223,10 @@ const Leaderboards: React.FC = () => {
                 <SecondPlaceColumn className="w-full" />
               </motion.div>
               <motion.div
-                className="flex flex-col items-center  w-1/3"
+                className="flex flex-col items-center w-1/3"
                 variants={columnVariants}
               >
-                <div className="h-20 w-20">
+                <div className="w-20 h-20">
                   <GetAvatar userAvatarData={sortedData[2].user.profileImg} />
                 </div>
                 <h1 className="text-black">
@@ -261,7 +261,7 @@ const Leaderboards: React.FC = () => {
               .map((item: LeaderboardItem, index: number) => (
                 <motion.div
                   key={index + 3}
-                  className="border-2 w-full flex justify-between items-center p-1 rounded-2xl"
+                  className="flex items-center justify-between w-full p-1 border-2 rounded-2xl"
                   variants={listItemVariants}
                 >
                   <div className="scale-90">
@@ -272,16 +272,16 @@ const Leaderboards: React.FC = () => {
                       size="w-16"
                     />
                   </div>
-                  <div className="flex-center gap-2">
+                  <div className="gap-2 flex-center">
                     <div className="flex flex-col text-end">
                       <h1 className="text-black">
                         {item.user.firstName + " " + item.user.lastName}
                       </h1>
-                      <p className="text-gray-500 font-medium">
+                      <p className="font-medium text-gray-500">
                         {ordinalNumbers[index + 3]}
                       </p>
                     </div>
-                    <div className="h-12 w-12">
+                    <div className="w-12 h-12">
                       <GetAvatar userAvatarData={item.user.profileImg} />
                     </div>
                   </div>

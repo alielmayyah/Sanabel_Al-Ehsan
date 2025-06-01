@@ -43,7 +43,14 @@ const studentData = async (req: Request, res: Response) => {
         {
           model: User,
           as: "user", // use the alias defined in the association
-          attributes: ["firstName", "lastName", "email","profileImg","gender","dateOfBirth"],
+          attributes: [
+            "firstName",
+            "lastName",
+            "email",
+            "profileImg",
+            "gender",
+            "dateOfBirth",
+          ],
         },
       ],
     });
@@ -103,7 +110,9 @@ const updateData = async (req: Request, res: Response) => {
     await student.update(studentUpdateData);
   }
 
-  res.status(200).json({ message: "User and Student data updated successfully" });
+  res
+    .status(200)
+    .json({ message: "User and Student data updated successfully" });
 };
 
 const deleteData = async (req: Request, res: Response) => {
@@ -358,7 +367,7 @@ const appearTrophySecondaireCompleted = async (req: Request, res: Response) => {
             "tasktype",
             "water",
             "seeder",
-            "taskCategory"
+            "taskCategory",
           ],
         },
       ],
@@ -412,9 +421,9 @@ const appearTrophySecondaireNotCompleted = async (
             "snabelRed",
             "snabelYellow",
             "tasktype",
-              "water",
-              "seeder",
-            "taskCategory"
+            "water",
+            "seeder",
+            "taskCategory",
           ],
         },
       ],
@@ -873,17 +882,19 @@ const appearLeaderboard = async (req: Request, res: Response) => {
     const { className, category, gender } = req.query;
     if (className || !category) {
       return res.status(400).json({
-        message: "If 'className' is provided, 'category' must also be included.",
+        message:
+          "If 'className' is provided, 'category' must also be included.",
       });
     }
-
 
     const currentUser = await User.findByPk(user.id);
     const teacher = await Teacher.findOne({ where: { userId: user.id } });
     const student = await Student.findOne({ where: { userId: user.id } });
 
     if (!teacher && !student) {
-      return res.status(403).json({ message: "Access denied. Not a teacher or student." });
+      return res
+        .status(403)
+        .json({ message: "Access denied. Not a teacher or student." });
     }
 
     const userFilters: any = {};
@@ -917,7 +928,13 @@ const appearLeaderboard = async (req: Request, res: Response) => {
           model: User,
           as: "user",
           where: userFilters,
-          attributes: ["firstName", "lastName", "email", "profileImg", "gender"],
+          attributes: [
+            "firstName",
+            "lastName",
+            "email",
+            "profileImg",
+            "gender",
+          ],
         },
         {
           model: Class,
@@ -935,8 +952,6 @@ const appearLeaderboard = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
-
 
 const buyWaterSeeder = async (req: Request, res: Response) => {
   try {
@@ -1230,7 +1245,6 @@ const addStudent = async (req: Request, res: Response) => {
             dateOfBirth: data.DateOfBirth,
             gender: data.Gender,
             isAccess: true,
-
           });
           const connectCode = await generateUniqueConnectCode();
           const new_student = await Student.create({
@@ -1343,13 +1357,16 @@ const updateProfileImage = async (req: Request, res: Response) => {
       await student.update({ profileImg });
     }
 
-    return res.status(200).json({ message: "Profile image updated successfully" });
+    return res
+      .status(200)
+      .json({ message: "Profile image updated successfully" });
   } catch (error) {
     console.error("Error updating profile image:", error);
-    return res.status(500).json({ message: "Failed to update profile image", error });
+    return res
+      .status(500)
+      .json({ message: "Failed to update profile image", error });
   }
 };
-
 
 export {
   addStudent,

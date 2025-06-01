@@ -78,6 +78,7 @@ import ForgotPassword from "./pages/common/login/ForgotPassword";
 import ChangePassword from "./pages/common/login/ChangePassword";
 
 import Leaderboards from "./pages/student/StudentLeaderboards";
+import ParentHome from "./pages/teacherorparent/ParentHome";
 
 setupIonicReact();
 
@@ -232,7 +233,7 @@ const App: React.FC = () => {
                 <Route exact path="/teacher/teamslist" component={TeamsList} />
 
                 {/* Parent */}
-                <Route exact path="/parent/home" component={ParentNavbar} />
+                <Route exact path="/parent/home" component={ParentHome} />
               </Switch>
             </div>
           </IonRouterOutlet>
