@@ -182,7 +182,6 @@ const appearTaskesType = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid category parameter" });
     }
 
-    console.log("Category:", categoryId);
     const task = await Task.findAll({ where: { categoryId } });
 
     if (!task || task.length === 0) {
@@ -871,7 +870,7 @@ const appearLeaderboard = async (req: Request, res: Response) => {
     if (!user) return res.status(401).json({ message: "Unauthorized" });
 
     const { className, category, gender } = req.query;
-    if (className || !category) {
+    if (className && !category ) {
       return res.status(400).json({
         message: "If 'className' is provided, 'category' must also be included.",
       });
@@ -891,7 +890,7 @@ const appearLeaderboard = async (req: Request, res: Response) => {
     const studentFilters: any = {};
 
     if (gender) userFilters.gender = gender;
-    if (className) classFilters.name = className;
+    if (className) classFilters.classname = className;
     if (category) classFilters.category = category;
 
     if (teacher) {
