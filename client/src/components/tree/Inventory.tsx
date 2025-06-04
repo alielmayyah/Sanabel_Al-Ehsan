@@ -61,7 +61,7 @@ const Inventory: React.FC<Props> = ({
     <div className="flex flex-col h-full w-full items-center justify-between">
       <div className="w-full flex flex-col gap-1">
         <h1 className="text-black text-end text-lg">
-          {t("الموارد الخاص بيك")}
+          {t("الموارد الخاصة بك")}
         </h1>
         <motion.div
           className="flex w-full justify-between"
