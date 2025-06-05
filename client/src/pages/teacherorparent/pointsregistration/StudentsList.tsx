@@ -20,6 +20,8 @@ import blueSanabel from "../../../assets/resources/سنبلة زرقاء.png";
 import redSanabel from "../../../assets/resources/سنبلة حمراء.png";
 import yellowSanabel from "../../../assets/resources/سنبلة صفراء.png";
 import xpIcon from "../../../assets/resources/اكس بي.png";
+import StudentNavbar from "../../../components/navbar/StudentNavbar";
+import ParentNavbar from "../../../components/navbar/ParentNavbar";
 
 // Define types for better type safety
 interface User {
@@ -204,11 +206,11 @@ const ConfirmationPopup = ({
         </div>
 
         {/* Selected Students */}
-        <div className="mb-5">
-          <h3 className="mb-2 font-medium text-right text-black">
+        <div className="mb-5 ">
+          <h3 className="mb-2 font-medium text-right text-black ">
             {t("الطلاب المختارين")}
           </h3>
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex justify-center gap-3 py-2 overflow-x-auto ">
             {selectedStudents.map((student: any) => (
               <div
                 key={student.id}
@@ -742,12 +744,15 @@ const StudentList = () => {
                   </h1>
 
                   <div className="flex justify-end text-blueprimary">
-                    <h1 className="capitalize text-end">
-                      {student.Class.classname}
+                    <h1 className="text-[#B3B3B3] capitalize">
+                      {" "}
+                      {student.Class?.classname}
                     </h1>
-                    <h1>-</h1>
-                    <h1 className="uppercase text-end">
-                      {student.Class.category}
+
+                    {student.Class && <h1>-</h1>}
+                    <h1 className="text-[#B3B3B3] capitalize">
+                      {" "}
+                      {student.Class?.category}
                     </h1>
                   </div>
                 </div>
@@ -910,7 +915,13 @@ const StudentList = () => {
       />
 
       {/* Navigation */}
-      <TeacherNavbar />
+      {role == "Student" ? (
+        <StudentNavbar />
+      ) : role == "Teacher" ? (
+        <TeacherNavbar />
+      ) : (
+        <ParentNavbar />
+      )}
     </div>
   );
 };

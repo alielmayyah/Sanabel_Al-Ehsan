@@ -26,6 +26,8 @@ import StudentProfileActivity from "../studentdetails/StudentProfileActivity";
 import StudentProfileOverview from "../studentdetails/StudentProfileOverview";
 
 import { avatars } from "../../../data/Avatars";
+import StudentNavbar from "../../../components/navbar/StudentNavbar";
+import ParentNavbar from "../../../components/navbar/ParentNavbar";
 
 // Define types for better type safety
 interface User {
@@ -191,7 +193,14 @@ const Profile: React.FC = () => {
           categoryCounts={categoryCounts}
         />
       )}
-      <TeacherNavbar />
+
+      {role == "Student" ? (
+        <StudentNavbar />
+      ) : role == "Teacher" ? (
+        <TeacherNavbar />
+      ) : (
+        <ParentNavbar />
+      )}
     </div>
   );
 };
