@@ -79,13 +79,17 @@ const Profile: React.FC = () => {
     fetchStudentData();
   }, [studentId]);
 
+  const role = localStorage.getItem("role");
+
   const fetchStudentData = async (token?: string) => {
     const authToken = token || localStorage.getItem("token");
     if (!authToken) return;
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/teachers/appear-student-deatiled/${studentId}`,
+        role === "Teacher"
+          ? `http://localhost:3000/teachers/appear-student-deatiled/${studentId}`
+          : `http://localhost:3000/parents/appear-student-deatiled/${studentId}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

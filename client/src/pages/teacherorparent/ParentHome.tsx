@@ -25,33 +25,33 @@ const ParentHome = () => {
     {
       title: "تسجيل الطلاب",
       description: "سجل إنجازات الطلاب الفردية وتقدمهم",
-      bgColor: "bg-gradient-to-br from-green-500 to-green-600",
-      hoverColor: "hover:from-green-600 hover:to-green-700",
-      icon: <FaUserGraduate className="text-green-600" size={28} />,
+      bgColor: "bg-gradient-to-br from-greenprimary to-greenprimary",
+      hoverColor: "hover:from-greenprimary hover:to-greenprimary/60",
+      icon: <FaUserGraduate className="text-greenprimary" size={28} />,
       onclick: () => history.push("/teacher/studentslist"),
     },
     {
       title: "دعوة الطلاب",
       description: "أرسل دعوات للطلاب للانضمام إلى فصولك",
-      bgColor: "bg-gradient-to-br from-purple-500 to-purple-600",
-      hoverColor: "hover:from-purple-600 hover:to-purple-700",
-      icon: <FaUserPlus className="text-purple-600" size={28} />,
+      bgColor: "bg-gradient-to-br from-blueprimary to-blueprimary",
+      hoverColor: "hover:from-blueprimary hover:to-blueprimary/60",
+      icon: <FaUserPlus className="text-blueprimary" size={28} />,
       onclick: () => history.push("/parent/invite"),
     },
     {
       title: "عرض الطلاب",
       description: "تصفح وأدر طلابك وفصولك",
-      bgColor: "bg-gradient-to-br from-red-500 to-red-600",
-      hoverColor: "hover:from-red-600 hover:to-red-700",
-      icon: <FaUserFriends className="text-red-600" size={28} />,
-      onclick: () => history.push("/teacher/view"),
+      bgColor: "bg-gradient-to-br from-redprimary to-redprimary",
+      hoverColor: "hover:from-redprimary hover:to-redprimary/60",
+      icon: <FaUserFriends className="text-redprimary" size={28} />,
+      onclick: () => history.push("/parent/view"),
     },
     {
       title: "عرض التحديات",
       description: "استكشف التحديات والأنشطة المتاحة",
-      bgColor: "bg-gradient-to-br from-yellow-500 to-yellow-600",
-      hoverColor: "hover:from-yellow-600 hover:to-yellow-700",
-      icon: <FaTrophy className="text-yellow-600" size={28} />,
+      bgColor: "bg-gradient-to-br from-yellowprimary to-yellowprimary",
+      hoverColor: "hover:from-yellowprimary hover:to-yellowprimary/60",
+      icon: <FaTrophy className="text-yellowprimary" size={28} />,
       onclick: () => history.push("/teacher/challenges"),
     },
     {
@@ -87,19 +87,17 @@ const ParentHome = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen gap-1 bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className="flex flex-col items-center justify-start min-h-screen gap-1 py-6 bg-gradient-to-br from-gray-50 to-blue-50">
       {/* Main Content */}
       <motion.div
-        className="grid w-full grid-cols-2 gap-2 px-4 "
+        className="grid w-full grid-cols-1 gap-2 px-4 "
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         {parentHomeButtons.map((button, index) => (
           <motion.div
-            className={`group flex-center flex-col gap-4 ${"h-40"} ${
-              button.bgColor
-            } ${button.hoverColor} 
+            className={` flex-center flex-col gap-4 h-32 ${button.bgColor} ${button.hoverColor} 
             rounded-2xl shadow-lg transform transition-all duration-300 
             hover:shadow-2xl cursor-pointer relative overflow-hidden`}
             key={index}

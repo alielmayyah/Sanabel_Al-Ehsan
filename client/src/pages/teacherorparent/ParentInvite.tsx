@@ -53,6 +53,8 @@ const TeacherView: React.FC = () => {
   const [student, setStudent] = useState(null as any);
   const [viewingStudent, setViewingStudent] = useState(false);
 
+  const [showPopup, setShowPopup] = useState(false);
+
   // Fetch students for each class (for avatars)
   const viewStudent = async () => {
     const authToken = localStorage.getItem("token");
@@ -94,10 +96,8 @@ const TeacherView: React.FC = () => {
       );
 
       if (response.ok) {
-        const data = await response.json();
-        setStudent(data);
-        setViewingStudent(true);
-        console.log("Student data:", data.data);
+        setShowPopup(true);
+        setViewingStudent(false);
       }
     } catch (error) {
       console.error("Error in viewing student:", error);
@@ -124,7 +124,7 @@ const TeacherView: React.FC = () => {
 
       {/* Content */}
       {!viewingStudent && (
-        <div className="flex flex-col w-full gap-4 p-2 bg-white rounded-lg shadow-md flex-center">
+        <div className="flex flex-col w-full gap-4 p-2 bg-white rounded-lg flex-center">
           {/* Instructions Card */}
           <div className="w-full p-6 border border-blue-200 rounded-lg shadow-sm bg-blue-50">
             <div className="flex items-center gap-3 mb-4">
@@ -156,7 +156,7 @@ const TeacherView: React.FC = () => {
 
           <motion.div
             whileHover={{ scale: 1.1 }}
-            className="flex items-center justify-center p-4 rounded-full shadow-lg bg-gradient-to-r from-blue-500 to-indigo-600"
+            className="flex items-center justify-center p-4 rounded-full shadow-lg bg-gradient-to-r from-blueprimary to-indigo-400"
           >
             <HiUsers className="text-6xl text-white" />
           </motion.div>
@@ -173,26 +173,27 @@ const TeacherView: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full p-4 font-semibold text-white transition duration-300 shadow-lg bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full p-4 font-semibold text-white transition duration-300 shadow-lg bg-gradient-to-r from-blueprimary to-indigo-400 rounded-xl hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={viewStudent}
             >
               {t("بحث")}
             </motion.button>
           </div>
+          <div className="h-12"></div>
         </div>
       )}
-      <div className="h-12"></div>
+
       {viewingStudent && (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="flex flex-col items-center justify-between w-full max-w-md gap-4 p-6 py-4 mx-auto bg-white shadow-lg rounded-2xl"
+          className="flex flex-col items-center justify-between w-full gap-1 py-1 mx-auto bg-white rounded-2xl"
         >
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2 }}
-            className="overflow-hidden border-4 border-blue-200 rounded-full shadow-lg w-28 h-28"
+            className="rounded-full shadow-lg w-28 h-28"
           >
             <GetAvatar userAvatarData={student.user.profileImg} />
           </motion.div>
@@ -206,7 +207,7 @@ const TeacherView: React.FC = () => {
             <h1 className="mb-1 text-2xl font-bold text-gray-800">
               {student.user.firstName} {student.user.lastName}
             </h1>
-            <h2 className="px-3 py-1 font-mono text-lg text-red-500 rounded-lg bg-red-50">
+            <h2 className="px-6 text-red-500 rounded-lg text-md bg-red-50">
               {student.connectCode}
             </h2>
           </motion.div>
@@ -228,19 +229,23 @@ const TeacherView: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="flex justify-between w-full gap-4"
+            className="w-full gap-3 flex-center"
           >
-            <div className="flex flex-1 gap-2">{renderResources(student)}</div>
+            <div className="flex gap-2">{renderResources(student)}</div>
             <div className="flex gap-2">
-              <div className="flex items-center p-2 bg-blue-50 rounded-xl">
-                <img src={waterImg} alt="Water" className="w-8 h-8" />
-                <span className="ml-1 font-semibold text-blue-700">
+              <div className="flex flex-col items-center p-2 px-3 shadow-md bg-blue-50 rounded-xl">
+                <img src={waterImg} alt="Water" className="w-auto h-6" />
+                <span className="ml-1 text-sm font-semibold text-blue-700">
                   {student.water}
                 </span>
               </div>
-              <div className="flex items-center p-2 bg-green-50 rounded-xl">
-                <img src={fertilizerImg} alt="Fertilizer" className="w-8 h-8" />
-                <span className="ml-1 font-semibold text-green-700">
+              <div className="flex flex-col items-center p-2 px-3 shadow-md bg-green-50 rounded-xl">
+                <img
+                  src={fertilizerImg}
+                  alt="Fertilizer"
+                  className="w-auto h-6"
+                />
+                <span className="ml-1 text-sm font-semibold text-green-700">
                   {student.seeders}
                 </span>
               </div>
@@ -259,7 +264,7 @@ const TeacherView: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.7 }}
               src={treeStages[student.treeProgress - 1]}
               alt="tree"
-              className="w-24 h-24 drop-shadow-lg"
+              className="h-auto w-[40vw]"
             />
           </motion.div>
 
@@ -272,7 +277,7 @@ const TeacherView: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full p-4 font-semibold text-white transition duration-300 shadow-lg bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full p-2 font-semibold text-white transition duration-300 shadow-lg bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleInvite}
             >
               {t("دعوة")}
@@ -281,6 +286,103 @@ const TeacherView: React.FC = () => {
         </motion.div>
       )}
 
+      {showPopup && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+        >
+          <motion.div
+            initial={{ scale: 0.7, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", damping: 25, stiffness: 500 }}
+            className="w-full max-w-sm p-8 mx-4 bg-white shadow-2xl rounded-2xl"
+          >
+            {/* Success Icon */}
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{
+                delay: 0.2,
+                type: "spring",
+                damping: 25,
+                stiffness: 500,
+              }}
+              className="flex justify-center mb-4"
+            >
+              <div className="flex items-center justify-center w-16 h-16 bg-green-100 rounded-full">
+                <svg
+                  className="w-8 h-8 text-green-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+            </motion.div>
+
+            {/* Student Avatar */}
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{
+                delay: 0.3,
+                type: "spring",
+                damping: 25,
+                stiffness: 500,
+              }}
+              className="flex justify-center mb-4"
+            >
+              <div className="w-20 h-20 overflow-hidden rounded-full shadow-lg">
+                <GetAvatar userAvatarData={student.user.profileImg} />
+              </div>
+            </motion.div>
+
+            {/* Congratulations Text */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="mb-6 text-center"
+            >
+              <h2 className="mb-2 text-2xl font-bold text-gray-800">
+                {t("تهانينا!")}
+              </h2>
+              <p className="mb-2 text-gray-600">
+                {t("لقد تمت دعوة الطالب بنجاح")}
+              </p>
+              <p className="text-lg font-semibold text-blue-600">
+                {student.user.firstName} {student.user.lastName}
+              </p>
+            </motion.div>
+
+            {/* Action Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full p-3 font-semibold text-white transition duration-300 shadow-lg bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl hover:shadow-xl"
+                onClick={() => {
+                  setShowPopup(false);
+                  history.push("/parent/home");
+                }}
+              >
+                {t("الذهاب إلى الصفحة الرئيسية")}
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      )}
       {/* Navigation */}
       {role == "Student" ? (
         <StudentNavbar />
