@@ -176,7 +176,7 @@ const appearStudentbyparent = async (req: Request, res: Response) => {
         if (!parent) {
             return res.status(404).json({ message: "Parent not found" });
         }
-        const student = await Student.findOne({
+        const student = await Student.findAll({
             where: {parentId: parent.id },
             include:[{
                 model:User,
