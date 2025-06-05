@@ -18,6 +18,7 @@ import TeacherNavbar from "../../components/navbar/TeacherNavbar";
 import LeaderboardsFilter from "./Leaderboards/LeaderboardsFilter";
 import GetAvatar from "./tutorial/GetAvatar";
 import { useUserContext } from "../../context/StudentUserProvider";
+import ParentNavbar from "../../components/navbar/ParentNavbar";
 
 interface LeaderboardItem {
   id: number;
@@ -68,7 +69,7 @@ const Leaderboards: React.FC = () => {
     gender: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-
+  const userRole = localStorage.getItem("role");
   const fetchUserData = async (filters?: FilterState) => {
     setIsLoading(true);
     const authToken = localStorage.getItem("token");
@@ -76,7 +77,6 @@ const Leaderboards: React.FC = () => {
       setIsLoading(false);
       return;
     }
-    const userRole = localStorage.getItem("role");
 
     try {
       // Build query parameters based on filters
@@ -85,7 +85,9 @@ const Leaderboards: React.FC = () => {
       if (filters?.classId) queryParams.append("classId", filters.classId);
       if (filters?.gender) queryParams.append("gender", filters.gender);
 
-      const queryString = "j1";
+      // Use the actual query parameters instead of hardcoded "j1"
+      const queryString = queryParams.toString();
+
       const url =
         userRole === "Teacher"
           ? `http://localhost:3000/teachers/leader-board${
@@ -115,7 +117,6 @@ const Leaderboards: React.FC = () => {
       setIsLoading(false);
     }
   };
-
   useEffect(() => {
     fetchUserData();
   }, []);
@@ -185,8 +186,6 @@ const Leaderboards: React.FC = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: 1 } },
   };
 
-  const role = localStorage.getItem("role");
-
   // Loading state
   if (isLoading) {
     return (
@@ -194,7 +193,13 @@ const Leaderboards: React.FC = () => {
         <div className="flex flex-col items-center justify-center w-full h-full p-2">
           <div className="w-12 h-12 border-b-2 border-blue-600 rounded-full animate-spin"></div>
           <p className="mt-4 text-gray-500">{t("جاري التحميل...")}</p>
-          {role === "Student" ? <StudentNavbar /> : <TeacherNavbar />}
+          {userRole === "Student" ? (
+            <StudentNavbar />
+          ) : userRole === "Teacher" ? (
+            <TeacherNavbar />
+          ) : (
+            <ParentNavbar />
+          )}
         </div>
       </div>
     );
@@ -218,10 +223,16 @@ const Leaderboards: React.FC = () => {
               onClick={clearAllFilters}
               className="px-6 py-2 mt-4 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
             >
-              مسح جميع المرشحات
+              {t("مسح الكل")}
             </button>
           )}
-          {role === "Student" ? <StudentNavbar /> : <TeacherNavbar />}
+          {userRole == "Student" ? (
+            <StudentNavbar />
+          ) : userRole == "Teacher" ? (
+            <TeacherNavbar />
+          ) : (
+            <ParentNavbar />
+          )}
         </div>
       </div>
     );
@@ -312,6 +323,12 @@ const Leaderboards: React.FC = () => {
                   " " +
                   sortedData[0].user.lastName}
               </h1>
+              <h1 className="text-[#999] uppercase text-xs text-center">
+                {sortedData[0].class.category}
+              </h1>
+              <h1 className="text-[#999] uppercase text-xs text-center">
+                {sortedData[0].class.classname}
+              </h1>
               <div className="scale-90">
                 <MedalAndLevel
                   level={sortedData[0].level}
@@ -338,6 +355,12 @@ const Leaderboards: React.FC = () => {
                   " " +
                   sortedData[1].user.lastName}
               </h1>
+              <h1 className="text-[#999] uppercase text-xs text-center">
+                {sortedData[1].class.category}
+              </h1>
+              <h1 className="text-[#999] uppercase text-xs text-center">
+                {sortedData[1].class.classname}
+              </h1>
               <div className="scale-90">
                 <MedalAndLevel
                   level={sortedData[1].level}
@@ -363,6 +386,12 @@ const Leaderboards: React.FC = () => {
                 {sortedData[2].user.firstName +
                   " " +
                   sortedData[2].user.lastName}
+              </h1>
+              <h1 className="text-[#999] uppercase text-xs text-center">
+                {sortedData[2].class.category}
+              </h1>
+              <h1 className="text-[#999] uppercase text-xs text-center">
+                {sortedData[2].class.classname}
               </h1>
               <div className="scale-90">
                 <MedalAndLevel
@@ -395,9 +424,17 @@ const Leaderboards: React.FC = () => {
                     <MedalAndLevel
                       level={item.level}
                       color="text-black"
-                      dir="horizontal"
+                      dir=""
                       size="w-16"
                     />
+                  </div>
+                  <div className="flex flex-col">
+                    <h1 className="text-[#999] uppercase text-xs text-center">
+                      {sortedData[0].class.category}
+                    </h1>
+                    <h1 className="text-[#999] uppercase text-xs text-center">
+                      {sortedData[0].class.classname}
+                    </h1>
                   </div>
                   <div className="gap-2 flex-center">
                     <div className="flex flex-col text-end">
@@ -408,6 +445,7 @@ const Leaderboards: React.FC = () => {
                         {ordinalNumbers[index + 3] || `المركز ${index + 4}`}
                       </p>
                     </div>
+
                     <div className="w-12 h-12">
                       <GetAvatar
                         userAvatarData={item.user.profileImg ?? undefined}
@@ -426,7 +464,13 @@ const Leaderboards: React.FC = () => {
           onFilterChange={handleFilterChange}
         />
 
-        {role === "Student" ? <StudentNavbar /> : <TeacherNavbar />}
+        {userRole == "Student" ? (
+          <StudentNavbar />
+        ) : userRole == "Teacher" ? (
+          <TeacherNavbar />
+        ) : (
+          <ParentNavbar />
+        )}
       </div>
     </div>
   );

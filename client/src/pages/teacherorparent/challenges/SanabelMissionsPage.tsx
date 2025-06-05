@@ -17,6 +17,8 @@ import redSanabel from "../../../assets/resources/سنبلة حمراء.png";
 import yellowSanabel from "../../../assets/resources/سنبلة صفراء.png";
 import xpIcon from "../../../assets/resources/اكس بي.png";
 
+const role = localStorage.getItem("role");
+
 // API service functions
 const fetchCategoryName = async (index: number) => {
   const authToken = localStorage.getItem("token");
@@ -28,7 +30,9 @@ const fetchCategoryName = async (index: number) => {
   try {
     console.log("Fetching category name...");
     const response = await axios.get(
-      "http://localhost:3000/teachers/tasks-category",
+      role === "Teacher"
+        ? "http://localhost:3000/teachers/tasks-category"
+        : "http://localhost:3000/parents/tasks-category",
       {
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -63,7 +67,9 @@ const fetchSanabelTypes = async (categoryId: number) => {
   try {
     console.log(`Fetching sanabel types for category ID ${categoryId}...`);
     const response = await axios.get(
-      `http://localhost:3000/teachers/appear-Taskes-Type/${categoryId}`,
+      role === "Teacher"
+        ? `http://localhost:3000/teachers/appear-Taskes-Type/${categoryId}`
+        : `http://localhost:3000/parents/appear-Taskes-Type/${categoryId}`,
       {
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -103,7 +109,9 @@ const fetchMissions = async (categoryId: number, sanabelType: string) => {
       `Fetching missions for category ${categoryId} and type ${sanabelType}...`
     );
     const response = await axios.get(
-      `http://localhost:3000/teachers/appear-Taskes-Type-Category/${categoryId}/${sanabelType}`,
+      role === "Teacher"
+        ? `http://localhost:3000/teachers/appear-Taskes-Type-Category/${categoryId}/${sanabelType}`
+        : `http://localhost:3000/parents/appear-Taskes-Type-Category/${categoryId}/${sanabelType}`,
       {
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -235,13 +243,13 @@ const SanabelMissionsPage: React.FC = () => {
           className="w-auto h-6"
           loading="lazy"
         />
-        <h1 className="text-black text-sm">{resource.value}</h1>
+        <h1 className="text-sm text-black">{resource.value}</h1>
       </div>
     ));
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex items-center justify-center h-screen">
         Loading...
       </div>
     );
@@ -249,7 +257,7 @@ const SanabelMissionsPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen text-red-500">
+      <div className="flex items-center justify-center h-screen text-red-500">
         {error}
       </div>
     );
@@ -258,10 +266,10 @@ const SanabelMissionsPage: React.FC = () => {
   const currentSanabelType = sanabel[subIndexAsNumber];
 
   return (
-    <div className="flex flex-col h-screen w-full items-center p-4 ">
-      <div className="flex items-center w-full justify-between">
+    <div className="flex flex-col items-center w-full h-screen p-4 ">
+      <div className="flex items-center justify-between w-full">
         <div className="opacity-0 w-[25px] h-25" />
-        <h1 className="text-black font-bold text-2xl self-center" dir="ltr">
+        <h1 className="self-center text-2xl font-bold text-black" dir="ltr">
           {currentSanabelType ? t(currentSanabelType) : ""}
         </h1>
         <GoBackButton />
@@ -274,12 +282,12 @@ const SanabelMissionsPage: React.FC = () => {
           <img
             src={sanabelImgs[indexAsNumber][subIndexAsNumber]}
             alt={currentSanabelType}
-            className="w-1/3 object-contain"
+            className="object-contain w-1/3 rounded-lg drop-shadow-[0_0_1px_rgba(75,75,75,1)]"
           />
         )}
 
         <div className="flex flex-col justify-between gap-3">
-          <h1 className="text-white font-bold text-xl text-center ">
+          <h1 className="text-xl font-bold text-center text-white ">
             <span>{t("تحديات")}</span>
             <br />
             {currentSanabelType ? t(currentSanabelType) : ""}
@@ -287,10 +295,10 @@ const SanabelMissionsPage: React.FC = () => {
 
           {indexAsNumber === 0 && subIndexAsNumber === 0 && (
             <div className="flex flex-col items-center w-full scale-90">
-              <div className="flex items-center gap-1 border-2 border-gray-300 rounded-lg p-1">
+              <div className="flex items-center gap-1 p-1 border-2 border-gray-300 rounded-lg">
                 <FaLocationArrow className="text-white" />
                 <select
-                  className="bg-transparent text-white border-none outline-none px-2 py-1 rounded-lg cursor-pointer"
+                  className="px-2 py-1 text-white bg-transparent border-none rounded-lg outline-none cursor-pointer"
                   value={location}
                   onChange={(e) => handleLocationChange(e.target.value)}
                 >
@@ -314,23 +322,23 @@ const SanabelMissionsPage: React.FC = () => {
         <PrayerTimes location={location} />
       )}
 
-      <div className="flex flex-col gap-5 items-center justify-start h-2/3 w-full mt-5 overflow-y-auto">
+      <div className="flex flex-col items-center justify-start w-full gap-5 mt-5 overflow-y-auto h-2/3">
         {missions.length > 0 ? (
           missions.map((mission: any, idx: number) => (
             <div
               key={idx}
               className={`flex w-full flex-col items-end justify-between sanabel-shadow-bottom h-max rounded-xl p-4 gap-2 border-t-2 ${colorBorderTop}`}
             >
-              <div className="flex justify-between items-center w-full">
+              <div className="flex items-center justify-between w-full">
                 <div className="flex gap-2">{renderResources(mission)}</div>
-                <h1 className="text-black text-end text-sm w-2/3">
+                <h1 className="w-2/3 text-sm text-black text-end">
                   {mission.title}
                 </h1>
               </div>
             </div>
           ))
         ) : (
-          <div className="text-center text-gray-500 py-8">
+          <div className="py-8 text-center text-gray-500">
             No missions found
           </div>
         )}

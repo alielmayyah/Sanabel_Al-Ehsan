@@ -51,10 +51,13 @@ const LeaderboardsFilterModal: React.FC<FilterProps> = ({
   const fetchCategories = useCallback(async () => {
     try {
       const authToken = localStorage.getItem("token");
+      const userRole = localStorage.getItem("role");
       if (!authToken) return;
 
       const response = await axios.get<{ categories: string[] }>(
-        "http://localhost:3000/teachers/class-categories",
+        userRole === "teacher"
+          ? "http://localhost:3000/teachers/class-categories"
+          : "http://localhost:3000/students/class-categories",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -214,7 +217,7 @@ const LeaderboardsFilterModal: React.FC<FilterProps> = ({
         {/* Gender Filter */}
         <div className="mb-6">
           <label className="block mb-2 text-sm font-medium text-right text-gray-700">
-            الجنس
+            {t("النوع")}
           </label>
           <select
             value={filters.gender}

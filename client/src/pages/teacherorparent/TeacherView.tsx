@@ -224,7 +224,7 @@ const TeacherView: React.FC = () => {
 
     if (students.length === 0) {
       return (
-        <div className="text-gray-400 text-xs italic">{t("لا يوجد طلاب")}</div>
+        <div className="text-xs italic text-gray-400">{t("لا يوجد طلاب")}</div>
       );
     }
 
@@ -233,14 +233,14 @@ const TeacherView: React.FC = () => {
         {students.map((student, index) => (
           <div
             key={student.id}
-            className="w-8 h-8 rounded-full border-2 border-white overflow-hidden relative z-10"
+            className="relative z-10 w-8 h-8 overflow-hidden border-2 border-white rounded-full"
             style={{ marginLeft: index > 0 ? "-0.75rem" : "0" }}
           >
             <GetAvatar userAvatarData={student.user.profileImg} />
           </div>
         ))}
         {classXpData[classId]?.studentCount > 10 && (
-          <div className="w-8 h-8 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center text-xs font-medium">
+          <div className="flex items-center justify-center w-8 h-8 text-xs font-medium bg-gray-200 border-2 border-white rounded-full">
             +{classXpData[classId]?.studentCount - 10}
           </div>
         )}
@@ -344,11 +344,11 @@ const TeacherView: React.FC = () => {
       id="page-height"
     >
       {/* Header */}
-      <div className="flex-center flex-col gap-3 w-full">
-        <div className="flex items-center w-full justify-between">
+      <div className="flex-col w-full gap-3 flex-center">
+        <div className="flex items-center justify-between w-full">
           <div className="w-16"></div>
-          <div className="flex items-center justify-center flex-col gap-2">
-            <h1 className="text-black font-bold text-2xl text-end">
+          <div className="flex flex-col items-center justify-center gap-2">
+            <h1 className="text-2xl font-bold text-black text-end">
               {t("استعرض الطلاب")}
             </h1>
           </div>
@@ -357,7 +357,7 @@ const TeacherView: React.FC = () => {
       </div>
 
       {/* View Type Selector */}
-      <div className="flex w-full bg-gray-200 rounded-3xl justify-between my-2 p-1">
+      <div className="flex justify-between w-full p-1 my-2 bg-gray-200 rounded-3xl">
         <div
           className={`w-full text-center py-1 rounded-3xl ${
             selectViewType === "students"
@@ -384,11 +384,11 @@ const TeacherView: React.FC = () => {
       {/* Search Bar and Layout Options */}
       <div className="w-full space-y-3">
         {/* Filter and Layout Options Row */}
-        <div className="flex justify-between items-center w-full">
+        <div className="flex items-center justify-between w-full">
           {/* Filter Menu */}
           <div className="relative">
             <div
-              className="flex items-center gap-2 bg-gray-200 px-4 py-2 rounded-xl "
+              className="flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-xl "
               onClick={() => setShowFilterDropdown(!showFilterDropdown)}
             >
               <FilterIcon />
@@ -404,7 +404,7 @@ const TeacherView: React.FC = () => {
 
             {/* Dropdown Menu */}
             {showFilterDropdown && (
-              <div className="absolute left-0 mt-2 bg-white text-black shadow-lg rounded-xl z-10 min-w-max border">
+              <div className="absolute left-0 z-10 mt-2 text-black bg-white border shadow-lg rounded-xl min-w-max">
                 {(selectViewType === "students"
                   ? filterOptions
                   : classFilterOptions
@@ -430,7 +430,7 @@ const TeacherView: React.FC = () => {
 
           {/* Layout Switcher - Only for Students View */}
           {selectViewType === "students" && (
-            <div className="flex items-center gap-2 bg-gray-200 rounded-xl overflow-hidden">
+            <div className="flex items-center gap-2 overflow-hidden bg-gray-200 rounded-xl">
               <div
                 className={`p-2 cursor-pointer ${
                   layoutType === "grid"
@@ -456,7 +456,7 @@ const TeacherView: React.FC = () => {
         </div>
 
         {/* Search bar */}
-        <div className="flex w-full justify-between items-center border-2 rounded-xl px-2 py-1">
+        <div className="flex items-center justify-between w-full px-2 py-1 border-2 rounded-xl">
           <div className="w-10 h-10 bg-blueprimary rounded-xl flex-center">
             <SearchIcon className="text-white" size={20} />
           </div>
@@ -467,7 +467,7 @@ const TeacherView: React.FC = () => {
                 ? t("ابحث عن طالب")
                 : t("ابحث عن فصل")
             )}
-            className="drop-shadow-sm py-3 w-full bg-transparent text-end text-black"
+            className="w-full py-3 text-black bg-transparent drop-shadow-sm text-end"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -475,23 +475,23 @@ const TeacherView: React.FC = () => {
       </div>
 
       {/* Content Area */}
-      <div className="w-full overflow-y-auto flex-1">
+      <div className="flex-1 w-full overflow-y-auto">
         {/* Classes View */}
         {selectViewType === "classes" && (
-          <div className="flex items-end flex-col gap-2 w-full">
-            <h1 className="text-black font-bold text-xl text-end">
+          <div className="flex flex-col items-end w-full gap-2">
+            <h1 className="text-xl font-bold text-black text-end">
               {t("الفصول")}
             </h1>
-            <div className="w-full flex flex-col gap-3">
+            <div className="flex flex-col w-full gap-3">
               {isLoading || isLoadingClassXp ? (
-                <div className="flex justify-center items-center w-full py-10">
+                <div className="flex items-center justify-center w-full py-10">
                   <p className="text-gray-500">{t("جاري التحميل...")}</p>
                 </div>
               ) : filteredClasses.length > 0 ? (
                 filteredClasses.map((item: any) => (
                   <div
                     key={item.classId}
-                    className="border-2 rounded-xl flex w-full p-4 justify-between hover:bg-gray-50 cursor-pointer"
+                    className="flex justify-between w-full p-4 border-2 cursor-pointer rounded-xl hover:bg-gray-50"
                     onClick={() => navigateToClassDetail(item.classId)}
                   >
                     <div className="flex items-center gap-2">
@@ -506,16 +506,16 @@ const TeacherView: React.FC = () => {
                         size={""}
                       />
                     </div>
-                    <div className="flex-col flex w-full text-end">
-                      <h1 className="text-black text-md capitalize">
+                    <div className="flex flex-col w-full text-end">
+                      <h1 className="text-black capitalize text-md">
                         {item.className}
                       </h1>
-                      <h1 className="text-gray-500 text-sm capitalize">
+                      <h1 className="text-sm text-gray-500 capitalize">
                         {item.organizationName}
                       </h1>
 
                       <div
-                        className="text-gray-800 font-medium px-3 py-1 rounded-lg"
+                        className="px-3 py-1 font-medium text-gray-800 rounded-lg"
                         dir="rtl"
                       >
                         {classXpData[item.classId]?.studentCount + " " || 0}
@@ -529,7 +529,7 @@ const TeacherView: React.FC = () => {
                   </div>
                 ))
               ) : (
-                <div className="flex justify-center items-center w-full py-10">
+                <div className="flex items-center justify-center w-full py-10">
                   <p className="text-gray-500">{t("لا يوجد فصول")}</p>
                 </div>
               )}
@@ -539,36 +539,36 @@ const TeacherView: React.FC = () => {
 
         {/* Students View - with Grid and Row layout options */}
         {selectViewType === "students" && (
-          <div className="flex items-end flex-col gap-2 w-full">
-            <h1 className="text-black font-bold text-xl text-end">
+          <div className="flex flex-col items-end w-full gap-2">
+            <h1 className="text-xl font-bold text-black text-end">
               {t("الطلاب")}
             </h1>
 
             {isLoading ? (
-              <div className="flex justify-center items-center w-full py-10">
+              <div className="flex items-center justify-center w-full py-10">
                 <p className="text-gray-500">{t("جاري التحميل...")}</p>
               </div>
             ) : filteredStudents.length > 0 ? (
               layoutType === "grid" ? (
                 // Grid View
-                <div className="grid grid-cols-3 w-full gap-2 mt-2">
+                <div className="grid w-full grid-cols-3 gap-2 mt-2">
                   {filteredStudents.map((student: any) => (
                     <div
                       key={student.id}
-                      className="flex flex-col items-center p-2 gap-1 border-2 rounded-xl hover:bg-gray-50 cursor-pointer"
+                      className="flex flex-col items-center gap-1 p-2 border-2 cursor-pointer rounded-xl hover:bg-gray-50"
                       onClick={() => navigateToStudentDetail(student.id)}
                     >
-                      <div className="w-12 h-12 rounded-full  mb-1">
+                      <div className="w-12 h-12 mb-1 rounded-full">
                         <GetAvatar userAvatarData={student.user.profileImg} />
                       </div>
-                      <h1 className="text-black text-center font-medium">
+                      <h1 className="font-medium text-center text-black">
                         {`${student.user.firstName}`}
                       </h1>
-                      <div className="flex-center flex-col">
-                        <span className="text-gray-500 text-sm capitalize">
+                      <div className="flex-col flex-center">
+                        <span className="text-sm text-gray-500 capitalize">
                           {student.Class.classname || t("لا يوجد فصل")}
                         </span>
-                        <span className="text-gray-500 text-sm uppercase">
+                        <span className="text-sm text-gray-500 uppercase">
                           {student.Class.category || t("لا يوجد فصل")}
                         </span>
                       </div>
@@ -587,7 +587,7 @@ const TeacherView: React.FC = () => {
                   {filteredStudents.map((student: any) => (
                     <div
                       key={student.id}
-                      className="flex w-full items-center justify-between p-1 border-2 rounded-xl "
+                      className="flex items-center justify-between w-full p-1 border-2 rounded-xl "
                       onClick={() => navigateToStudentDetail(student.id)}
                     >
                       <MedalAndLevel
@@ -597,19 +597,19 @@ const TeacherView: React.FC = () => {
                         size={"w-12"}
                       />
 
-                      <div className="flex-center flex-col">
-                        <span className="text-gray-500 text-sm capitalize">
+                      <div className="flex-col flex-center">
+                        <span className="text-sm text-gray-500 capitalize">
                           {student.Class.classname || t("لا يوجد فصل")}
                         </span>
-                        <span className="text-gray-500 text-sm uppercase">
+                        <span className="text-sm text-gray-500 uppercase">
                           {student.Class.category || t("لا يوجد فصل")}
                         </span>
                       </div>
-                      <div className="flex flex-col items-center  w-full">
-                        <div className="w-10 h-10 rounded-full overflow-hidden">
+                      <div className="flex flex-col items-center w-full">
+                        <div className="w-10 h-10 overflow-hidden rounded-full">
                           <GetAvatar userAvatarData={student.user.profileImg} />
                         </div>
-                        <h1 className="text-black font-medium">
+                        <h1 className="font-medium text-black">
                           {`${student.user.firstName} ${student.user.lastName}`}
                         </h1>
                       </div>
@@ -618,7 +618,7 @@ const TeacherView: React.FC = () => {
                 </div>
               )
             ) : (
-              <div className="flex justify-center items-center w-full py-10">
+              <div className="flex items-center justify-center w-full py-10">
                 <p className="text-gray-500">{t("لا يوجد طلاب")}</p>
               </div>
             )}

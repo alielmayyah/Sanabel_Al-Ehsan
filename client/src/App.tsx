@@ -79,6 +79,8 @@ import ChangePassword from "./pages/common/login/ChangePassword";
 
 import Leaderboards from "./pages/student/StudentLeaderboards";
 import ParentHome from "./pages/teacherorparent/ParentHome";
+import ParentInvite from "./pages/teacherorparent/ParentInvite";
+import ParentView from "./pages/teacherorparent/ParentView";
 
 setupIonicReact();
 
@@ -234,6 +236,8 @@ const App: React.FC = () => {
 
                 {/* Parent */}
                 <Route exact path="/parent/home" component={ParentHome} />
+                <Route exact path="/parent/invite" component={ParentInvite} />
+                <Route exact path="/parent/view" component={ParentView} />
               </Switch>
             </div>
           </IonRouterOutlet>

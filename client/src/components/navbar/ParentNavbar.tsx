@@ -15,35 +15,35 @@ import {
 import HomeIcon from "../../icons/navbar/HomeIcon";
 import ChallengesIcon from "../../icons/navbar/ChallengesIcon";
 import LeaderboardsIcon from "../../icons/navbar/LeaderboardsIcon";
-import ProgressIcon from "../../icons/navbar/ProgressIcon";
+import ViewIcon from "../../icons/TeacherHome/ApplyTeam";
 import ProfileIcon from "../../icons/navbar/ProfileIcon";
-
+import { IoIosSettings } from "react-icons/io";
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
 
 import { useLocation } from "react-router-dom";
 
 const navList = [
-  { title: "الرئيسية", icon: <HomeIcon size={30} />, to: "/home" },
+  { title: "الرئيسية", icon: <HomeIcon size={30} />, to: "/parent/home" },
   {
     title: "التحديات",
     icon: <ChallengesIcon size={30} />,
-    to: "/challenges",
+    to: "/teacher/challenges",
   },
   {
     title: "المتصدرين",
     icon: <LeaderboardsIcon size={30} />,
-    to: "/leaderboards",
+    to: "/teacher/leaderboards",
   },
   {
-    title: "التقدم",
-    icon: <ProgressIcon size={30} />,
-    to: "/progress",
+    title: "استعراض",
+    icon: <ViewIcon size={30} />,
+    to: "/parent/view",
   },
   {
-    title: "البروفايل",
-    icon: <ProfileIcon size={30} />,
-    to: "/profile",
+    title: "الاعدادات",
+    icon: <IoIosSettings size={30} />,
+    to: "/teacher/profile",
   },
 ];
 
@@ -54,13 +54,13 @@ function Navbar() {
 
   return (
     <div
-      className={`flex h-20 bg-white dark:bg-[#121212] absolute bottom-0 ${
+      className={`flex h-20 bg-black dark:bg-[#121212] absolute bottom-0 ${
         currentLanguage === "ar" ? "flex-row-reverse" : "flex-row"
       } justify-around w-full p-3`}
     >
       {navList.map((item, key) => (
         <IonRouterLink routerLink={item.to}>
-          <div className="flex flex-col gap-1 items-center ">
+          <div className="flex flex-col items-center gap-1 ">
             <div
               className={` flex items-center justify-end ${
                 location.pathname === item.to
