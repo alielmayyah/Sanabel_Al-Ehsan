@@ -135,17 +135,17 @@ const FilterSortDropdown = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
       dir="rtl"
     >
-      <div className="bg-white rounded-xl p-5 w-11/12 max-w-md max-h-90vh overflow-y-auto ">
-        <h2 className="text-black font-bold text-xl mb-4 text-center">
+      <div className="w-11/12 max-w-md p-5 overflow-y-auto bg-white rounded-xl max-h-90vh ">
+        <h2 className="mb-4 text-xl font-bold text-center text-black">
           {t("تصفية وترتيب")}
         </h2>
 
         {/* Filter Section */}
         <div className="mb-4">
-          <h3 className="text-black font-semibold mb-2">{t("تصفية حسب")}</h3>
+          <h3 className="mb-2 font-semibold text-black">{t("تصفية حسب")}</h3>
           <div className="space-y-2">
             {filters.map((filter) => (
               <label
@@ -168,7 +168,7 @@ const FilterSortDropdown = ({
 
         {/* Sort Section */}
         <div className="mb-5">
-          <h3 className="text-black font-semibold mb-2">{t("ترتيب حسب")}</h3>
+          <h3 className="mb-2 font-semibold text-black">{t("ترتيب حسب")}</h3>
           <div className="space-y-2">
             {sorts.map((sort) => (
               <label
@@ -189,7 +189,7 @@ const FilterSortDropdown = ({
           </div>
         </div>
 
-        <div className="flex gap-3 w-full">
+        <div className="flex w-full gap-3">
           <PrimaryButton
             style="bg-gray-300 text-black flex-1"
             text={t("إلغاء")}
@@ -236,33 +236,33 @@ const DuplicateTaskPopup = ({
     .filter(Boolean) as StudentData[];
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-5 w-11/12 max-w-md max-h-90vh overflow-y-auto">
-        <h2 className="text-black font-bold text-xl mb-4 text-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="w-11/12 max-w-md p-5 overflow-y-auto bg-white rounded-xl max-h-90vh">
+        <h2 className="mb-4 text-xl font-bold text-center text-black">
           {t("مهمة مكررة!")}
         </h2>
 
-        <p className="text-gray-600 mb-4 text-center">
+        <p className="mb-4 text-center text-gray-600">
           {t("بعض الطلاب أكملوا هذه المهمة بالفعل اليوم")}
         </p>
 
         <div className="mb-5">
-          <div className="flex flex-wrap gap-3 justify-center">
+          <div className="flex flex-wrap justify-center gap-3">
             {existingStudents.map((student) => (
               <div
                 key={student.id}
-                className="flex flex-col items-center relative"
+                className="relative flex flex-col items-center"
               >
                 <div
-                  className="absolute -top-1 -right-1 bg-red-500 rounded-full w-5 h-5 flex items-center justify-center cursor-pointer z-10"
+                  className="absolute z-10 flex items-center justify-center w-5 h-5 bg-red-500 rounded-full cursor-pointer -top-1 -right-1"
                   onClick={() => onDeselectStudent(student.id)}
                 >
-                  <FaTimes className="text-white text-xs" />
+                  <FaTimes className="text-xs text-white" />
                 </div>
-                <div className="w-16 h-16 rounded-full overflow-hidden">
+                <div className="w-16 h-16 overflow-hidden rounded-full">
                   <GetAvatar userAvatarData={student.user.profileImg} />
                 </div>
-                <span className="text-xs text-center mt-1 font-medium text-black">
+                <span className="mt-1 text-xs font-medium text-center text-black">
                   {`${student.user.firstName}`}
                 </span>
               </div>
@@ -270,7 +270,7 @@ const DuplicateTaskPopup = ({
           </div>
         </div>
 
-        <div className="flex gap-3 w-full">
+        <div className="flex w-full gap-3">
           <PrimaryButton
             style="bg-gray-300 text-black flex-1"
             text={t("إلغاء")}
@@ -327,53 +327,53 @@ const ConfirmationPopup = ({
           className="w-auto h-5"
           loading="lazy"
         />
-        <h1 className="text-black text-sm">{resource.value}</h1>
+        <h1 className="text-sm text-black">{resource.value}</h1>
       </div>
     ));
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-5 w-11/12  max-w-md max-h-90vh overflow-y-auto">
-        <h2 className="text-black font-bold text-xl mb-4 text-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="w-11/12 max-w-md p-5 overflow-y-auto bg-white rounded-xl max-h-90vh">
+        <h2 className="mb-4 text-xl font-bold text-center text-black">
           {t("تأكيد تسجيل المهمة")}
         </h2>
 
-        <div className="mb-5 border-2 rounded-xl p-3 flex-center flex-col justify-center w-full">
-          <h3 className="text-black font-bold text-lg text-center mb-2">
+        <div className="flex-col justify-center w-full p-3 mb-5 border-2 rounded-xl flex-center">
+          <h3 className="mb-2 text-lg font-bold text-center text-black">
             {selectedTask.title}
           </h3>
           <div className="flex justify-center mb-3">
             <img
               src={getTaskTypeImage(selectedTask?.type ?? "")}
               alt={selectedTask?.type}
-              className="w-16 h-16 object-contain"
+              className="object-contain w-16 h-16"
             />
           </div>
-          <div className="flex justify-end items-center gap-3 mb-2">
+          <div className="flex items-center justify-end gap-3 mb-2">
             <div className="flex gap-2">{renderResources(selectedTask)}</div>
           </div>
         </div>
 
         <div className="mb-5">
-          <h3 className="text-black font-medium text-right mb-2">
+          <h3 className="mb-2 font-medium text-right text-black">
             {t("الطلاب المختارين")}
           </h3>
-          <div className="flex flex-wrap gap-3 justify-center">
+          <div className="flex justify-start gap-3 px-4 py-2 overflow-x-auto ">
             {selectedStudents.map((student: any) => (
               <div
                 key={student.id}
-                className="flex flex-col items-center relative"
+                className="relative flex flex-col items-center"
               >
                 <div
-                  className="absolute -top-1 -right-1 bg-red-500 rounded-full w-5 h-5 flex items-center justify-center cursor-pointer z-10"
+                  className="absolute z-10 flex items-center justify-center w-5 h-5 bg-red-500 rounded-full cursor-pointer -top-1 -right-1"
                   onClick={() => onRemoveStudent(student.id)}
                 >
-                  <FaTimes className="text-white text-xs" />
+                  <FaTimes className="text-xs text-white" />
                 </div>
-                <div className="w-14 h-14 rounded-full overflow-hidden">
+                <div className="overflow-hidden rounded-full w-14 h-14">
                   <GetAvatar userAvatarData={student.user.profileImg} />
                 </div>
-                <span className="text-xs text-center mt-1 font-medium text-black">
+                <span className="mt-1 text-xs font-medium text-center text-black">
                   {`${student.user.firstName}`}
                 </span>
               </div>
@@ -381,7 +381,7 @@ const ConfirmationPopup = ({
           </div>
         </div>
 
-        <div className="flex gap-3 w-full">
+        <div className="flex w-full gap-3">
           <PrimaryButton
             style="bg-gray-300 text-black flex-1"
             text={t("إلغاء")}
@@ -421,23 +421,23 @@ const CongratsPopup = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-5 w-11/12 max-w-md text-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="w-11/12 max-w-md p-5 text-center bg-white rounded-xl">
         <div className="flex justify-center mb-2">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-            <FaCheck className="text-green-500 text-3xl" />
+          <div className="flex items-center justify-center w-16 h-16 bg-green-100 rounded-full">
+            <FaCheck className="text-3xl text-green-500" />
           </div>
         </div>
-        <div className="flex-center flex-col w-full justify-center mb-3">
-          <h2 className="text-black font-bold text-xl mb-2">
+        <div className="flex-col justify-center w-full mb-3 flex-center">
+          <h2 className="mb-2 text-xl font-bold text-black">
             {t("تم تسجيل المهمة بنجاح")}
           </h2>
-          <p className="text-gray-600 mb-2">
+          <p className="mb-2 text-gray-600">
             <span className="font-bold">
               {selectedTask?.title || "المحددة"}
             </span>
           </p>
-          <p className="text-gray-600 mb-4">
+          <p className="mb-4 text-gray-600">
             {t("لعدد")}{" "}
             <span className="font-bold text-blueprimary">
               {selectedStudents.length}
@@ -447,7 +447,7 @@ const CongratsPopup = ({
           <img
             src={getTaskTypeImage(selectedTask?.type ?? "")}
             alt={selectedTask?.type}
-            className="w-16 h-16 object-contain"
+            className="object-contain w-16 h-16"
           />
         </div>
         {selectedTask && (
@@ -465,7 +465,7 @@ const CongratsPopup = ({
                   className="w-auto h-6"
                   loading="lazy"
                 />
-                <h1 className="text-black text-sm font-bold">
+                <h1 className="text-sm font-bold text-black">
                   +{resource.value}
                 </h1>
               </div>
@@ -688,7 +688,7 @@ const ClassList: React.FC = () => {
 
     if (students.length === 0) {
       return (
-        <div className="text-gray-400 text-xs italic">{t("لا يوجد طلاب")}</div>
+        <div className="text-xs italic text-gray-400">{t("لا يوجد طلاب")}</div>
       );
     }
 
@@ -697,14 +697,14 @@ const ClassList: React.FC = () => {
         {students.map((student, index) => (
           <div
             key={student.id}
-            className="w-8 h-8 rounded-full border-2 border-white overflow-hidden relative z-10"
+            className="relative z-10 w-8 h-8 overflow-hidden border-2 border-white rounded-full"
             style={{ marginLeft: index > 0 ? "-0.75rem" : "0" }}
           >
             <GetAvatar userAvatarData={student.user.profileImg} />
           </div>
         ))}
         {classXpData[classId]?.studentCount > 10 && (
-          <div className="w-8 h-8 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center text-xs font-medium">
+          <div className="flex items-center justify-center w-8 h-8 text-xs font-medium bg-gray-200 border-2 border-white rounded-full">
             +{classXpData[classId]?.studentCount - 10}
           </div>
         )}
@@ -1043,7 +1043,7 @@ const ClassList: React.FC = () => {
           className="w-auto h-4"
           loading="lazy"
         />
-        <h1 className="text-black text-sm">{resource.value}</h1>
+        <h1 className="text-sm text-black">{resource.value}</h1>
       </div>
     ));
 
@@ -1089,17 +1089,17 @@ const ClassList: React.FC = () => {
       id="page-height"
     >
       {/* Header and Search */}
-      <div className="flex-center flex-col gap-3 w-full">
-        <div className="flex items-center w-full justify-between">
+      <div className="flex-col w-full gap-3 flex-center">
+        <div className="flex items-center justify-between w-full">
           <div className="w-16 h-16"></div>
-          <h1 className="text-black font-bold text-2xl" dir="ltr">
+          <h1 className="text-2xl font-bold text-black" dir="ltr">
             {getCurrentStepTitle()}
           </h1>
           <GoBackButton />
         </div>
         {(!isClassSelected || !isStudentsSelected) && (
-          <div className="flex w-full justify-between items-center gap-2">
-            <div className="flex w-full justify-between items-center border-2 rounded-xl px-2 py-1">
+          <div className="flex items-center justify-between w-full gap-2">
+            <div className="flex items-center justify-between w-full px-2 py-1 border-2 rounded-xl">
               <div className="w-10 h-10 bg-blueprimary rounded-xl flex-center">
                 <SearchIcon className="text-white" size={20} />
               </div>
@@ -1108,14 +1108,14 @@ const ClassList: React.FC = () => {
                 placeholder={t(
                   !isClassSelected ? "ابحث عن فصل" : "ابحث عن طالب"
                 )}
-                className="drop-shadow-sm py-3 w-full bg-transparent text-end text-black"
+                className="w-full py-3 text-black bg-transparent drop-shadow-sm text-end"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
             {/* Filter/Sort Button */}
             <div
-              className="w-12 h-12 bg-gray-200 rounded-xl flex-center cursor-pointer hover:bg-gray-300"
+              className="w-12 h-12 bg-gray-200 cursor-pointer rounded-xl flex-center hover:bg-gray-300"
               onClick={() => setShowFilterSort(true)}
             >
               <FaFilter className="text-gray-600" size={16} />
@@ -1128,26 +1128,26 @@ const ClassList: React.FC = () => {
       {isStudentsSelected && (
         <div className="w-full ">
           {/* Selected Students Row */}
-          <div className="w-full overflow-x-auto flex flex-row gap-3 p-2">
+          <div className="flex flex-row w-full gap-3 p-2 overflow-x-auto">
             {selectedStudents.map((student) => (
               <div
                 key={student.id}
-                className="flex flex-col items-center relative"
+                className="relative flex flex-col items-center"
               >
                 <div
-                  className="absolute -top-1 -right-1 bg-red-500 rounded-full w-5 h-5 flex items-center justify-center cursor-pointer z-10"
+                  className="absolute z-10 flex items-center justify-center w-5 h-5 bg-red-500 rounded-full cursor-pointer -top-1 -right-1"
                   onClick={() =>
                     removeSelectedStudent(
                       studentsData.findIndex((s) => s.id === student.id)
                     )
                   }
                 >
-                  <FaTimes className="text-white text-xs" />
+                  <FaTimes className="text-xs text-white" />
                 </div>
-                <div className="w-14 h-14 rounded-full overflow-hidden">
+                <div className="overflow-hidden rounded-full w-14 h-14">
                   <GetAvatar userAvatarData={student.user.profileImg} />
                 </div>
-                <span className="text-xs text-center mt-1 font-medium text-black">
+                <span className="mt-1 text-xs font-medium text-center text-black">
                   {`${student.user.firstName}`}
                 </span>
               </div>
@@ -1156,8 +1156,8 @@ const ClassList: React.FC = () => {
 
           {/* Step Indicator - Show only when in task selection mode */}
           {isStudentsSelected && (
-            <div className="w-full flex justify-between items-center px-2">
-              <div className="flex items-center w-full justify-between">
+            <div className="flex items-center justify-between w-full px-2">
+              <div className="flex items-center justify-between w-full">
                 <div
                   className={`w-4 h-4 rounded-full flex items-center justify-center ${
                     getCurrentStep() >= 3
@@ -1198,16 +1198,16 @@ const ClassList: React.FC = () => {
       {/* Main Content Area */}
       {!isClassSelected ? (
         // Class List View
-        <div className="flex flex-col gap-2 justify-start overflow-y-auto w-full h-full">
+        <div className="flex flex-col justify-start w-full h-full gap-2 overflow-y-auto">
           {isLoading ? (
-            <div className="flex justify-center items-center w-full py-10">
+            <div className="flex items-center justify-center w-full py-10">
               <p className="text-gray-500">{t("جاري التحميل...")}</p>
             </div>
           ) : filteredClasses.length > 0 ? (
             filteredClasses.map((classItem) => (
               <div
                 key={classItem.classId}
-                className="border-2 rounded-xl flex w-full p-4 justify-between hover:bg-gray-50 cursor-pointer"
+                className="flex justify-between w-full p-4 border-2 cursor-pointer rounded-xl hover:bg-gray-50"
                 onClick={() => handleClassSelection(classItem)}
               >
                 <div className="flex items-center gap-2">
@@ -1222,15 +1222,15 @@ const ClassList: React.FC = () => {
                     size={""}
                   />
                 </div>
-                <div className="flex-col flex w-full text-end">
-                  <h1 className="text-black text-md capitalize">
+                <div className="flex flex-col w-full text-end">
+                  <h1 className="text-black capitalize text-md">
                     {classItem.className}
                   </h1>
-                  <h1 className="text-gray-500 text-sm capitalize">
+                  <h1 className="text-sm text-gray-500 capitalize">
                     {classItem.organizationName}
                   </h1>
                   <div
-                    className="text-gray-800 font-medium px-3 py-1 rounded-lg"
+                    className="px-3 py-1 font-medium text-gray-800 rounded-lg"
                     dir="rtl"
                   >
                     {classXpData[classItem.classId]?.studentCount || 0}{" "}
@@ -1244,19 +1244,19 @@ const ClassList: React.FC = () => {
               </div>
             ))
           ) : (
-            <div className="flex justify-center items-center w-full py-10">
+            <div className="flex items-center justify-center w-full py-10">
               <p className="text-gray-500">{t("لا يوجد فصول")}</p>
             </div>
           )}
         </div>
       ) : !isStudentsSelected ? (
         // Student List View
-        <div className="flex flex-col gap-2 justify-start overflow-y-auto w-full h-full">
-          <div className="flex-center gap-2 mb-2 p-2 bg-blueprimary rounded-xl text-center">
-            <h2 className="text-white font-bold text-lg capitalize">
+        <div className="flex flex-col justify-start w-full h-full gap-2 overflow-y-auto">
+          <div className="gap-2 p-2 mb-2 text-center flex-center bg-blueprimary rounded-xl">
+            <h2 className="text-lg font-bold text-white capitalize">
               {selectedClass?.className}
             </h2>
-            <p className="text-white text-sm opacity-90" dir="rtl">
+            <p className="text-sm text-white opacity-90" dir="rtl">
               {classXpData[selectedClass?.classId || 0]?.studentCount || 0}{" "}
               {t("طلاب")}
             </p>
@@ -1265,13 +1265,13 @@ const ClassList: React.FC = () => {
           {/* Select All/Deselect All Buttons */}
           <div className="flex gap-2 mb-2">
             <button
-              className="flex-1 bg-blueprimary text-white py-2 px-4 rounded-lg text-sm font-medium"
+              className="flex-1 px-4 py-2 text-sm font-medium text-white rounded-lg bg-blueprimary"
               onClick={selectAllStudents}
             >
               {t("تحديد الكل")}
             </button>
             <button
-              className="flex-1 bg-gray-300 text-black py-2 px-4 rounded-lg text-sm font-medium"
+              className="flex-1 px-4 py-2 text-sm font-medium text-black bg-gray-300 rounded-lg"
               onClick={deselectAllStudents}
             >
               {t("إلغاء تحديد الكل")}
@@ -1279,7 +1279,7 @@ const ClassList: React.FC = () => {
           </div>
 
           {isLoading ? (
-            <div className="flex justify-center items-center w-full py-10">
+            <div className="flex items-center justify-center w-full py-10">
               <p className="text-gray-500">{t("جاري التحميل...")}</p>
             </div>
           ) : filteredStudents.length > 0 ? (
@@ -1309,14 +1309,14 @@ const ClassList: React.FC = () => {
                     />
                   </div>
                   <div className="gap-3 flex-center">
-                    <div className="flex-center gap-0">
+                    <div className="gap-0 flex-center">
                       <MedalAndLevel
                         level={calculateLevel(student.xp).level}
                         color="text-blueprimary text-sm"
                         dir=""
                         size={"w-8"}
                       />
-                      <h1 className="text-black text-nowrap mx-2">
+                      <h1 className="mx-2 text-black text-nowrap">
                         {`${student.user.firstName} ${student.user.lastName}`}
                       </h1>
                     </div>
@@ -1328,14 +1328,14 @@ const ClassList: React.FC = () => {
               );
             })
           ) : (
-            <div className="flex justify-center items-center w-full py-10">
+            <div className="flex items-center justify-center w-full py-10">
               <p className="text-gray-500">{t("لا يوجد طلاب")}</p>
             </div>
           )}
         </div>
       ) : (
         // Task Selection Views
-        <div className="w-full overflow-y-auto h-full">
+        <div className="w-full h-full overflow-y-auto">
           {selectedCategoryId === null ? (
             // Category Selection View
             <div className="w-full">
@@ -1343,13 +1343,13 @@ const ClassList: React.FC = () => {
                 {taskCategories.map((category, index) => (
                   <div
                     key={category.id}
-                    className="flex flex-col items-center border-2 rounded-xl p-3 cursor-pointer"
+                    className="flex flex-col items-center p-3 border-2 cursor-pointer rounded-xl"
                     onClick={() => setSelectedCategoryId(category.id)}
                   >
                     <img
                       src={sanabelTypeImg[index]}
                       alt={category.title}
-                      className="w-16 h-16 object-contain"
+                      className="object-contain w-16 h-16"
                     />
                     <h3
                       className={`${colors[index]} font-bold text-center mt-2`}
@@ -1362,20 +1362,20 @@ const ClassList: React.FC = () => {
             </div>
           ) : selectedType === null ? (
             // Type Selection View
-            <div className="w-full overflow-y-auto h-full">
+            <div className="w-full h-full overflow-y-auto">
               <div className="grid grid-cols-2 gap-3">
                 {availableTypes.map((type, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-center border-2 rounded-xl p-3 cursor-pointer"
+                    className="flex flex-col items-center p-3 border-2 cursor-pointer rounded-xl"
                     onClick={() => setSelectedType(type)}
                   >
                     <img
                       src={getTaskTypeImage(type)}
                       alt={type}
-                      className="w-16 h-16 object-contain"
+                      className="object-contain w-16 h-16"
                     />
-                    <h3 className="text-black font-bold text-center mt-2">
+                    <h3 className="mt-2 font-bold text-center text-black">
                       {type}
                     </h3>
                   </div>
@@ -1384,7 +1384,7 @@ const ClassList: React.FC = () => {
             </div>
           ) : (
             // Task Selection View
-            <div className="w-full overflow-y-auto h-full">
+            <div className="w-full h-full overflow-y-auto">
               <div className="flex flex-col gap-3">
                 {filteredTasks.map((task, index) => (
                   <div
@@ -1394,11 +1394,11 @@ const ClassList: React.FC = () => {
                     }`}
                     onClick={() => setSelectedTaskId(index)}
                   >
-                    <div className="flex justify-between items-center w-full">
-                      <div className="flex gap-2 w-20">
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex w-20 gap-2">
                         {renderResources(task)}
                       </div>
-                      <h3 className="text-black text-md text-right">
+                      <h3 className="text-right text-black text-md">
                         {task.title}
                       </h3>
                     </div>
@@ -1422,7 +1422,7 @@ const ClassList: React.FC = () => {
         )}
 
       {isStudentsSelected && (
-        <div className="flex gap-3 w-full">
+        <div className="flex w-full gap-3">
           <PrimaryButton
             style="bg-gray-300 text-black flex-1"
             text={t("رجوع")}
