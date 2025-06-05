@@ -17,6 +17,16 @@ class StudentTeacher extends Model {
       }
     );
   }
+  static associate(models: any) {
+    StudentTeacher.belongsTo(models.Student, {
+      foreignKey: { name: "studentId", allowNull: false },
+      as: "Student"
+    });
+    StudentTeacher.belongsTo(models.Teacher, {
+      foreignKey: { name: "teacherId", allowNull: false },
+      as: "Teacher"
+    });
+  }
 }
 
 export default StudentTeacher;

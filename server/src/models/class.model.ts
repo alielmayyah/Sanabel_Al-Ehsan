@@ -9,7 +9,13 @@ class Class extends Model {
   declare organizationId: CreationOptional<number>; // Reference to the Organization
   declare classdescrption: CreationOptional<String>; // Description of the class
   declare category: CreationOptional<String>; // Category of the class
-
+  static associate(models: any) {
+    Class.belongsTo(models.Teacher, { foreignKey: "teacherId", as: "Teachers" });
+    Class.belongsTo(models.Organization, { foreignKey: "organizationId", as: "Organization" });
+  
+    Class.hasMany(models.Student, { foreignKey: "classId", as: "Students" });
+  }
+  
   static initModel(sequelize: Sequelize) {
     Class.init(
       {

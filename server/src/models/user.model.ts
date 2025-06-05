@@ -7,6 +7,10 @@ import {
   InferCreationAttributes,
   CreationOptional,
 } from "@sequelize/core";
+import Student from "./student.model";
+import Teacher from "./teacher.model";
+import Parent from "./parent.model";
+import Representative from "./representative.model";
 
 export enum UserRole {
   Parent = "Parent",
@@ -35,6 +39,13 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare dateOfBirth: CreationOptional<Date>;
   declare profileImg: CreationOptional<Record<string, any> | null>;
   declare isAccess: CreationOptional<Boolean>;
+  static associate(models: any) {
+    User.hasMany(Student, { foreignKey: "userId", as: "Students" });
+    User.hasMany(Teacher, { foreignKey: "userId", as: "Teachers" });
+    User.hasMany(Parent, { foreignKey: "userId", as: "Parents" });
+    User.hasMany(Representative, { foreignKey: "userId", as: "Representatives" });
+  }
+  
   static initModel(sequelize: Sequelize) {
     User.init(
       {

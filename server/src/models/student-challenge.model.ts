@@ -18,16 +18,43 @@ class StudentChallenge extends Model {
   declare date: CreationOptional<Date>;
   declare pointOfStudent: number;
   declare challenge: Challenge; // Optional association with Task model
-
+  static associate(models: any) {
+    StudentChallenge.belongsTo(Student, {
+      foreignKey: "studentId",
+      as: "Student",
+    });
+  
+    StudentChallenge.belongsTo(Challenge, {
+      foreignKey: "challengeId",
+      as: "Challenge",
+    });
+  }
   static initModel(sequelize: Sequelize) {
     StudentChallenge.init(
       {
+        studentId: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          references: {
+            model: Student,
+            key: "id",
+          },
+        },
+        challengeId: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          references: {
+            model: Challenge,
+            key: "id",
+          },
+        },
         completionStatus: {
-          type: DataTypes.ENUM(...Object.values(CompletionStatus)), // ✅ Use ENUM
+          type: DataTypes.ENUM(...Object.values(CompletionStatus)),
           allowNull: false,
           defaultValue: CompletionStatus.NotCompleted,
         },
-
         comment: {
           type: DataTypes.STRING,
           allowNull: true,
@@ -49,9 +76,10 @@ class StudentChallenge extends Model {
         sequelize,
         modelName: "StudentChallenge",
         timestamps: true,
+        // ❌ REMOVE noPrimaryKey: true
       }
     );
   }
-}
+  }
 
 export default StudentChallenge;

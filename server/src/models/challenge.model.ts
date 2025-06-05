@@ -1,5 +1,6 @@
 import { Sequelize, DataTypes, Model, CreationOptional } from "@sequelize/core";
 import Task from "./task.model"; // Import Task model
+import StudentChallenge from "./student-challenge.model";
 export enum TaskCategory {
   snabelBlue = "snabelBlue",
   snabelRed = "snabelRed",
@@ -132,6 +133,10 @@ class Challenge extends Model {
     Challenge.belongsTo(Task, {
       foreignKey: "taskId",
       as: "task",
+    });
+    Challenge.hasMany(StudentChallenge, {
+      foreignKey: "challengeId",
+      as: "ChallengeStudents",
     });
   }
 }

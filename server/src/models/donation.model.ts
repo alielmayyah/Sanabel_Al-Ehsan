@@ -35,6 +35,9 @@ class Donation extends Model {
       }
     );
   }
+  static associate(models: any) {
+    Donation.belongsTo(models.Student, { foreignKey: "studentId", as: "Student" });
+  }
 }
 
 export default Donation;

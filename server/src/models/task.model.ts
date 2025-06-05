@@ -1,6 +1,8 @@
 // models/task.model.ts
 import { Sequelize, DataTypes, Model, CreationOptional } from "@sequelize/core";
 import TaskCategory from "./task-category.model"; // ✅ Import the actual model
+import Student from "./student.model";
+import StudentTask from "./student-task.model";
 
 class Task extends Model {
   declare id: CreationOptional<number>;
@@ -100,6 +102,11 @@ class Task extends Model {
       foreignKey: "categoryId",
       as: "category",
     });
+    Task.belongsToMany(Student, {
+      through: StudentTask,
+      foreignKey: "taskId",
+      as: "Students",
+    });  
   }
 }
 

@@ -33,6 +33,9 @@ class Groupe extends Model {
       }
     );
   }
+  static associate(models: any) {
+    Groupe.belongsTo(models.Organization, { foreignKey: "organizationId", as: "Organization" });
+  }
 }
 
 export default Groupe;

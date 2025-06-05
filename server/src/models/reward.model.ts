@@ -1,5 +1,6 @@
 // models/reward.model.ts
 import { Sequelize, DataTypes, Model, CreationOptional } from "@sequelize/core";
+import Student from "./student.model";
 
 export enum RewardType {
   Virtual = "Virtual",
@@ -13,7 +14,13 @@ class Reward extends Model {
   declare description: string;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
-
+  static associate(models: any) {
+    Reward.belongsTo(Student, {
+      foreignKey: "studentId",
+      as: "Student",
+    });
+  }
+  
   static initModel(sequelize: Sequelize) {
     Reward.init(
       {

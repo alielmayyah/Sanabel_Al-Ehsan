@@ -3,6 +3,12 @@ import User from "./user.model";
 import Parent from "./parent.model";
 import Organization from "./oraganization.model";
 import Class from "./class.model";
+import StudentTask from "./student-task.model";
+import Task from "./task.model";
+import Tree from "./tree.model";
+import Groupe from "./groupe.model";
+import StudentChallenge from "./student-challenge.model";
+import Reward from "./reward.model";
 
 export enum Grade {
   primary = "primary",
@@ -29,6 +35,32 @@ class Student extends Model {
   declare snabelBlue: CreationOptional<number>;
   declare snabelYellow: CreationOptional<number>;
   declare treeProgress: CreationOptional<number>;
+  static associate(models: any) {
+    Student.belongsTo(User, { foreignKey: "userId", as: "User" });
+    Student.belongsTo(Parent, { foreignKey: "ParentId", as: "Parent" });
+    Student.belongsTo(Organization, { foreignKey: "organizationId", as: "Organization" });
+    Student.belongsTo(Class, { foreignKey: "classId", as: "Class" });
+    Student.belongsTo(Tree, { foreignKey: "treeProgress", as: "Tree" });
+    Student.belongsTo(Groupe, { foreignKey: "groupeId", as: "Groupe" });
+ 
+  
+    Student.belongsToMany(Task, {
+      through: StudentTask,
+      foreignKey: "studentId",
+      as: "Tasks",
+    });
+  
+    Student.hasMany(StudentChallenge, {
+      foreignKey: "studentId",
+      as: "challengeStudent",
+    });
+  
+    Student.hasMany(Reward, {
+      foreignKey: "studentId",
+      as: "Rewards",
+    });
+  }
+  
   static initModel(sequelize: Sequelize) {
     Student.init(
       {

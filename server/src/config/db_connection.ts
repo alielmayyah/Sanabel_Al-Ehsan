@@ -14,7 +14,6 @@ import Challenge from "../models/challenge.model";
 import Reward from "../models/reward.model";
 import Task from "../models/task.model";
 import Class from "../models/class.model";
-import StudentTeacher from "../models/studentTeacher.model";
 import StudentTask from "../models/student-task.model";
 import StudentChallenge from "../models/student-challenge.model";
 import Groupe from "../models/groupe.model";
@@ -38,238 +37,40 @@ const sequelize = new Sequelize({
   host: process.env.MYSQL_DB_HOST,
   port: Number(process.env.MYSQL_DB_PORT),
 });
-
 const rundb = async () => {
-  // Initialize models
-  User.initModel(sequelize);
-  Tree.initModel(sequelize);
-  Organization.initModel(sequelize);
-  Parent.initModel(sequelize);
-  Class.initModel(sequelize);
-  Student.initModel(sequelize);
-  Groupe.initModel(sequelize);
-  Teacher.initModel(sequelize);
-  Representative.initModel(sequelize);
-  Donation.initModel(sequelize);
-  TaskCategory.initModel(sequelize);
-  Task.initModel(sequelize);
-  Challenge.initModel(sequelize);
-  Reward.initModel(sequelize);
-  StudentTeacher.initModel(sequelize);
-  StudentTask.initModel(sequelize);
-  StudentChallenge.initModel(sequelize);
-  Challenge.associate();
+  const models = {
+    User,
+    Parent,
+    Student,
+    Teacher,
+    Organization,
+    Representative,
+    Donation,
+    Challenge,
+    Reward,
+    TaskCategory,
+    Task,
+    Class,
+    StudentTask,
+    StudentChallenge,
+    Groupe,
 
-  // Define associations
-  User.hasMany(Student, {
-    foreignKey: "userId",
-    sourceKey: "id",
-    as: "Students",
-  });
-  Student.belongsTo(User, {
-    foreignKey: "userId",
-    targetKey: "id",
-    as: "User",
-  });
-
-  User.hasMany(Teacher, {
-    foreignKey: "userId",
-    sourceKey: "id",
-    as: "Teachers",
-  });
-  Teacher.belongsTo(User, {
-    foreignKey: "userId",
-    targetKey: "id",
-    as: "User",
-  });
-
-  User.hasMany(Representative, {
-    foreignKey: "userId",
-    sourceKey: "id",
-    as: "Representatives",
-  });
-  Representative.belongsTo(User, {
-    foreignKey: "userId",
-    targetKey: "id",
-    as: "User",
-  });
-
-  User.hasMany(Parent, {
-    foreignKey: "userId",
-    sourceKey: "id",
-    as: "Parents",
-  });
-  Parent.belongsTo(User, {
-    foreignKey: "userId",
-    targetKey: "id",
-    as: "User",
-  });
-
-  Student.belongsTo(Parent, {
-    foreignKey: "ParentId",
-    targetKey: "id",
-    as: "Parent",
-  });
-  Parent.hasMany(Student, {
-    foreignKey: "ParentId",
-    sourceKey: "id",
-    as: "Students",
-  });
-
-  // Student and Teacher Relationships (Many-to-Many through StudentTeacher)
-  Student.belongsToMany(Teacher, {
-    through: StudentTeacher,
-    foreignKey: "studentId",
-    as: "Teachers",
-  });
-
-  Teacher.belongsToMany(Student, {
-    through: StudentTeacher,
-    foreignKey: "teacherId",
-    as: "Students",
-  });
-
-  Challenge.belongsToMany(Student, {
-    through: StudentChallenge,
-    foreignKey: "challengeId",
-    otherKey: "studentId",
-    as: "Students",
-  });
-
-  // Student and Organization Relationships
-  Student.belongsTo(Organization, {
-    foreignKey: "organizationId",
-    targetKey: "id",
-    as: "Organization",
-  });
-  Organization.hasMany(Student, {
-    foreignKey: "organizationId",
-    sourceKey: "id",
-    as: "Students",
-  });
-
-  // Teacher and Organization Relationships
-  Teacher.belongsTo(Organization, {
-    foreignKey: "organizationId",
-    targetKey: "id",
-    as: "Organization",
-  });
-  Organization.hasMany(Teacher, {
-    foreignKey: "organizationId",
-    sourceKey: "id",
-    as: "Teachers",
-  });
-
-  Class.belongsTo(Teacher, {
-    foreignKey: "teacherId",
-    targetKey: "id",
-    as: "Teachers",
-  });
-  Teacher.hasMany(Class, {
-    foreignKey: "teacherId",
-    sourceKey: "id",
-    as: "Classes",
-  });
-
-  // Class and Organization Relationships
-  Class.belongsTo(Organization, {
-    foreignKey: "organizationId",
-    targetKey: "id",
-    as: "Organization",
-  });
-  Organization.hasMany(Class, {
-    foreignKey: "organizationId",
-    sourceKey: "id",
-    as: "Classes",
-  });
-
-  Representative.belongsTo(Organization, {
-    foreignKey: "organizationId",
-    targetKey: "id",
-    as: "Organization",
-  });
-  Organization.hasMany(Representative, {
-    foreignKey: "organizationId",
-    sourceKey: "id",
-    as: "Representatives",
-  });
-
-
-  // Reward and Student Relationships
-  Reward.belongsTo(Student, {
-    foreignKey: "studentId",
-    targetKey: "id",
-    as: "Student",
-  });
-  Student.hasMany(Reward, {
-    foreignKey: "studentId",
-    sourceKey: "id",
-    as: "Rewards",
-  });
-
-  Groupe.belongsTo(Organization, {
-    foreignKey: "organizationId",
-    targetKey: "id",
-    as: "Organization",
-  });
-  Organization.hasMany(Groupe, {
-    foreignKey: "organizationId",
-    sourceKey: "id",
-    as: "Groupes",
-  });
-
-  Student.belongsTo(Class, {
-    foreignKey: "classId",
-    targetKey: "id",
-    as: "Class",
-  });
-
-  Class.hasMany(Student, {
-    foreignKey: "classId",
-    sourceKey: "id",
-    as: "Students",
-  });
-
-  Student.belongsTo(Tree, {
-    foreignKey: "treeProgress",
-    targetKey: "id",
-    as: "Tree",
-  });
-
-  Tree.hasMany(Student, {
-    foreignKey: "treeProgress",
-    sourceKey: "id",
-    as: "Students",
-  });
-
-  Groupe.hasMany(Student, {
-    foreignKey: "groupeId",
-    sourceKey: "id",
-    as: "Students",
-  });
-
-  Student.belongsTo(Groupe, {
-    foreignKey: "groupeId",
-    targetKey: "id",
-    as: "Groupe",
-  });
-
-  Student.belongsToMany(Task, {
-    through: StudentTask,
-    foreignKey: "studentId",
-    otherKey: "taskId",
-    as: "Tasks",
+    Tree,
+  };
+  Object.values(models).forEach(model => {
+    model.initModel(sequelize);
   });
   
-  Task.belongsToMany(Student, {
-    through: StudentTask,
-    foreignKey: "taskId",
-    otherKey: "studentId",
-    as: "Students",
+  // Instead of assigning to sequelize.models (readonly), keep your own:
+  const registeredModels = { ...models };
+  
+  // Call associate with registeredModels
+  Object.values(registeredModels).forEach(model => {
+    if (typeof model.associate === 'function') {
+      model.associate(registeredModels);
+    }
   });
   
-  TaskCategory.associate();
-  Task.associate();
   try {
     await sequelize.sync({ alter: true });
     console.log("Database & models table created/updated!");
@@ -277,6 +78,7 @@ const rundb = async () => {
     console.error("Unable to connect to the database:", error);
   }
 };
+
 
 const connectToDb = async (): Promise<void> => {
   try {

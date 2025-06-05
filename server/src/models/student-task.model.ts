@@ -22,6 +22,26 @@ class StudentTask extends Model {
   declare parentId: number | null;
   declare teacherId: number | null;
 
+  static associate(models: any) {
+    StudentTask.belongsTo(models.Student, {
+      foreignKey: { name: "studentId", allowNull: false },
+      as: "Student"
+    });
+    StudentTask.belongsTo(models.Task, {
+      foreignKey: { name: "taskId", allowNull: false },
+      as: "Task"
+    });
+    StudentTask.belongsTo(models.Parent, {
+      foreignKey: { name: "parentId", allowNull: true },
+      as: "Parent"
+    });
+    StudentTask.belongsTo(models.Teacher, {
+      foreignKey: { name: "teacherId", allowNull: true },
+      as: "Teacher"
+    });
+    
+  }
+
   static initModel(sequelize: Sequelize) {
     StudentTask.init(
       {

@@ -7,6 +7,7 @@ import {
   InferCreationAttributes,
   CreationOptional,
 } from "@sequelize/core";
+import Student from "./student.model";
 
 class Tree extends Model<InferAttributes<Tree>, InferCreationAttributes<Tree>> {
   declare id: CreationOptional<number>;
@@ -15,7 +16,10 @@ class Tree extends Model<InferAttributes<Tree>, InferCreationAttributes<Tree>> {
   declare seeders: CreationOptional<number>;
   declare stage: CreationOptional<number>;
   declare treeProgress: CreationOptional<number>;
-
+  static associate(models: any) {
+    Tree.hasMany(Student, { foreignKey: "treeProgress", as: "Students" });
+  }
+  
   static initModel(sequelize: Sequelize) {
     Tree.init(
       {

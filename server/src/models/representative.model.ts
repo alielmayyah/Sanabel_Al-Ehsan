@@ -6,6 +6,11 @@ class Representative extends Model {
   declare organizationId: number;
   declare id: CreationOptional<number>;
   declare user: User | undefined;
+  static associate(models: any) {
+    Representative.belongsTo(models.User, { foreignKey: "userId", as: "User" });
+    Representative.belongsTo(models.Organization, { foreignKey: "organizationId", as: "Organization" });
+  }
+  
   static initModel(sequelize: Sequelize) {
     Representative.init(
       {
