@@ -180,7 +180,7 @@ const StudentHome: React.FC = () => {
         </h1>
         <div className="flex-center gap-3">
           <h1 className="text-white font-bold text-end text-sm" dir="ltr">
-            {t("التحديات تم إنجازها اليوم")}
+            {t("التحديات التي تم إنجازها اليوم")}
           </h1>
           <img src={missionsDoneImg} alt="" className="w-8" />
         </div>

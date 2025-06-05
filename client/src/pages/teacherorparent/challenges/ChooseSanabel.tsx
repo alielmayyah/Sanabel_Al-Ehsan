@@ -66,13 +66,17 @@ const SanabelType: React.FC = () => {
     sanabelType4Img,
   ];
 
+  const role = localStorage.getItem("role");
+
   const fetchSanabelTypes = async (token?: string) => {
     const authToken = token || localStorage.getItem("token");
     if (!authToken) return;
 
     try {
       const response = await axios.get(
-        "http://localhost:3000/teachers/tasks-category",
+        role == "Teacher"
+          ? "http://localhost:3000/teachers/tasks-category"
+          : "http://localhost:3000/parents/tasks-category",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -100,7 +104,10 @@ const SanabelType: React.FC = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/teachers/appear-Taskes-Type/${APIIndex}`,
+        role == "Teacher"
+          ? `http://localhost:3000/teachers/appear-Taskes-Type/${APIIndex}`
+          : `http://localhost:3000/parents/appear-Taskes-Type/${APIIndex}`,
+
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -132,14 +139,14 @@ const SanabelType: React.FC = () => {
 
   return (
     <motion.div
-      className="flex flex-col h-screen w-full items-center p-3"
+      className="flex flex-col items-center w-full h-screen p-3"
       initial={{ opacity: 0, y: 50 }} // Start hidden and slightly below
       animate={{ opacity: 1, y: 0 }} // Animate to visible and original position
       exit={{ opacity: 0, y: -50 }} // Exit animation (if applicable)
       transition={{ duration: 0.6, ease: "easeInOut" }}
     >
       <motion.div
-        className="flex items-center w-full justify-between"
+        className="flex items-center justify-between w-full"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
@@ -170,7 +177,7 @@ const SanabelType: React.FC = () => {
 
       {/* Grid with stagger animation */}
       <motion.div
-        className="grid grid-cols-2 content-start w-full h-full gap-2 align-top overflow-y-auto p-2"
+        className="grid content-start w-full h-full grid-cols-2 gap-2 p-2 overflow-y-auto align-top"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -190,7 +197,7 @@ const SanabelType: React.FC = () => {
               className="w-2/5"
               loading="lazy"
             />
-            <h1 className="text-black font-bold text-sm text-center">{item}</h1>
+            <h1 className="text-sm font-bold text-center text-black">{item}</h1>
           </motion.div>
         ))}
       </motion.div>

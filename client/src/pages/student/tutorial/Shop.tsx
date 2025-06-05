@@ -298,7 +298,7 @@ const Shop: React.FC<{
       {/* Inventory Section */}
       <div className="w-full flex flex-col gap-1 p-4">
         <h1 className="text-black text-end text-md">
-          {t("الموارد الخاص بيك")}
+          {t("الموارد الخاصة بك")}
         </h1>
         <motion.div
           className="flex w-full justify-between rounded-2xl shadow-md p-2 bg-gray-50"

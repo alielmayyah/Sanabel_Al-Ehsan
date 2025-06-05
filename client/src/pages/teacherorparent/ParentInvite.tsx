@@ -1,0 +1,296 @@
+import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
+import TeacherNavbar from "../../components/navbar/TeacherNavbar";
+import GoBackButton from "../../components/GoBackButton";
+
+import StudentNavbar from "../../components/navbar/StudentNavbar";
+import ParentNavbar from "../../components/navbar/ParentNavbar";
+import { HiUsers } from "react-icons/hi";
+import GetAvatar from "../student/tutorial/GetAvatar";
+import MedalAndLevel from "../../components/MedalAndLevel";
+
+import blueSanabel from "../../assets/resources/سنبلة زرقاء.png";
+import redSanabel from "../../assets/resources/سنبلة حمراء.png";
+import yellowSanabel from "../../assets/resources/سنبلة صفراء.png";
+import xpIcon from "../../assets/resources/اكس بي.png";
+
+import waterImg from "../../assets/resources/ماء.png";
+import fertilizerImg from "../../assets/resources/سماد.png";
+import { treeStages } from "../../data/Tree";
+import { motion } from "framer-motion";
+import PrimaryButton from "../../components/PrimaryButton";
+// Define types for better type safety
+
+const renderResources = (items: any) =>
+  [
+    { icon: blueSanabel, value: items.snabelBlue },
+    { icon: redSanabel, value: items.snabelRed },
+    { icon: yellowSanabel, value: items.snabelYellow },
+    { icon: xpIcon, value: items.xp },
+  ].map((resource, index) => (
+    <div
+      key={index}
+      className="flex flex-col items-center p-2 bg-white rounded-lg shadow-md"
+    >
+      <img
+        src={resource.icon}
+        alt="icon"
+        className="w-auto h-6"
+        loading="lazy"
+      />
+      <h1 className="text-sm text-black">{resource.value}</h1>
+    </div>
+  ));
+
+const TeacherView: React.FC = () => {
+  const history = useHistory();
+  const { t } = useTranslation();
+
+  const role = localStorage.getItem("role") || "Student"; // Default to Student if role is not set
+
+  const [code, setCode] = useState("CHPRH6UH0G");
+  const [student, setStudent] = useState(null as any);
+  const [viewingStudent, setViewingStudent] = useState(false);
+
+  // Fetch students for each class (for avatars)
+  const viewStudent = async () => {
+    const authToken = localStorage.getItem("token");
+    if (!authToken) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/parents/search-student-by-code/${code}`,
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setStudent(data.data);
+        setViewingStudent(true);
+        console.log("Student data:", data.data);
+      }
+    } catch (error) {
+      console.error("Error in viewing student:", error);
+    }
+  };
+  const handleInvite = async () => {
+    const authToken = localStorage.getItem("token");
+    if (!authToken) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/parents/connect-student-to-parent`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({ code: code }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setStudent(data);
+        setViewingStudent(true);
+        console.log("Student data:", data.data);
+      }
+    } catch (error) {
+      console.error("Error in viewing student:", error);
+    }
+  };
+
+  return (
+    <div
+      className="flex flex-col items-center justify-between gap-5 p-4"
+      id="page-height"
+    >
+      {/* Header */}
+      <div className="flex-col w-full gap-3 flex-center">
+        <div className="flex items-center justify-between w-full">
+          <div className="w-16"></div>
+          <div className="flex flex-col items-center justify-center gap-2">
+            <h1 className="text-2xl font-bold text-black text-end">
+              {t("دعوة الطلاب")}
+            </h1>
+          </div>
+          <GoBackButton />
+        </div>
+      </div>
+
+      {/* Content */}
+      {!viewingStudent && (
+        <div className="flex flex-col w-full gap-4 p-2 bg-white rounded-lg shadow-md flex-center">
+          {/* Instructions Card */}
+          <div className="w-full p-6 border border-blue-200 rounded-lg shadow-sm bg-blue-50">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-blue-100 rounded-full">
+                <svg
+                  className="w-6 h-6 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <h2 className="text-lg font-semibold text-blue-800">
+                {t("كيفية العثور على كود الطالب")}
+              </h2>
+            </div>
+            <p className="leading-relaxed text-blue-700">
+              {t(
+                "يمكن للطالب العثور على الكود الخاص به من خلال الدخول إلى حسابه والذهاب إلى صفحة الملف الشخصي. سيجد الكود مُعرَّض بوضوح في قسم معلومات الحساب"
+              )}
+            </p>
+          </div>
+
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            className="flex items-center justify-center p-4 rounded-full shadow-lg bg-gradient-to-r from-blue-500 to-indigo-600"
+          >
+            <HiUsers className="text-6xl text-white" />
+          </motion.div>
+          <div className="w-full space-y-4">
+            <input
+              type="text"
+              placeholder={t("ادخل كود دعوة الطالب")}
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              className="w-full p-4 font-medium text-center text-gray-700 transition duration-200 bg-white border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              onKeyPress={(e) => e.key === "Enter" && viewStudent()}
+            />
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full p-4 font-semibold text-white transition duration-300 shadow-lg bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={viewStudent}
+            >
+              {t("بحث")}
+            </motion.button>
+          </div>
+        </div>
+      )}
+      <div className="h-12"></div>
+      {viewingStudent && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex flex-col items-center justify-between w-full max-w-md gap-4 p-6 py-4 mx-auto bg-white shadow-lg rounded-2xl"
+        >
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="overflow-hidden border-4 border-blue-200 rounded-full shadow-lg w-28 h-28"
+          >
+            <GetAvatar userAvatarData={student.user.profileImg} />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-center"
+          >
+            <h1 className="mb-1 text-2xl font-bold text-gray-800">
+              {student.user.firstName} {student.user.lastName}
+            </h1>
+            <h2 className="px-3 py-1 font-mono text-lg text-red-500 rounded-lg bg-red-50">
+              {student.connectCode}
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <MedalAndLevel
+              level={student.level}
+              color="text-[#DBB42C]"
+              dir=""
+              size="w-20"
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="flex justify-between w-full gap-4"
+          >
+            <div className="flex flex-1 gap-2">{renderResources(student)}</div>
+            <div className="flex gap-2">
+              <div className="flex items-center p-2 bg-blue-50 rounded-xl">
+                <img src={waterImg} alt="Water" className="w-8 h-8" />
+                <span className="ml-1 font-semibold text-blue-700">
+                  {student.water}
+                </span>
+              </div>
+              <div className="flex items-center p-2 bg-green-50 rounded-xl">
+                <img src={fertilizerImg} alt="Fertilizer" className="w-8 h-8" />
+                <span className="ml-1 font-semibold text-green-700">
+                  {student.seeders}
+                </span>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.6 }}
+            className="flex flex-col items-center justify-center gap-2 my-4"
+          >
+            <motion.img
+              initial={{ opacity: 0, rotate: -10 }}
+              animate={{ opacity: 1, rotate: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              src={treeStages[student.treeProgress - 1]}
+              alt="tree"
+              className="w-24 h-24 drop-shadow-lg"
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="w-full"
+          >
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full p-4 font-semibold text-white transition duration-300 shadow-lg bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleInvite}
+            >
+              {t("دعوة")}
+            </motion.button>
+          </motion.div>
+        </motion.div>
+      )}
+
+      {/* Navigation */}
+      {role == "Student" ? (
+        <StudentNavbar />
+      ) : role == "Teacher" ? (
+        <TeacherNavbar />
+      ) : (
+        <ParentNavbar />
+      )}
+    </div>
+  );
+};
+
+export default TeacherView;

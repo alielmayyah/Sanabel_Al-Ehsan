@@ -18,6 +18,7 @@ import { useUserContext } from "../../context/StudentUserProvider";
 import CheckmarkAnimation from "../../assets/checkmarkAnimation";
 import { treeStages } from "../../data/Tree";
 import axios from "axios";
+
 const Shop: React.FC = () => {
   const { t } = useTranslation();
   const { user, refreshUserData } = useUserContext();
@@ -156,56 +157,56 @@ const Shop: React.FC = () => {
   };
 
   return (
-    <div className="flex-center flex-col w-full h-full">
+    <div className="flex-col w-full h-full flex-center">
       {isProgressReady == false ? (
-        <div className="flex flex-col gap-1 w-full h-full">
-          <h1 className="text-black text-end text-lg">{t("المتجر")}</h1>
+        <div className="flex flex-col w-full h-full gap-1">
+          <h1 className="text-lg text-black text-end">{t("المتجر")}</h1>
 
           <div className="flex-col gap-2 bg-[#FFF8E5] rounded-xl w-full flex justify-between p-2">
-            <div className="flex  justify-between">
+            <div className="flex justify-between">
               <div className="flex-center">
-                <div className="flex-center gap-1 p-1 rounded-3xl bg-white">
+                <div className="gap-1 p-1 bg-white flex-center rounded-3xl">
                   {" "}
                   <div
-                    className="w-6 h-6 flex-center bg-blueprimary rounded-full"
+                    className="w-6 h-6 rounded-full flex-center bg-blueprimary"
                     onClick={() => changeBuyFertilzerCount("-")}
                   >
                     <h1 className="text-white"> -</h1>
                   </div>
                   <h1 className="text-black"> x{buyFertilizerCount}</h1>
                   <div
-                    className="w-6 h-6 flex-center bg-blueprimary rounded-full"
+                    className="w-6 h-6 rounded-full flex-center bg-blueprimary"
                     onClick={() => changeBuyFertilzerCount("+")}
                   >
                     <h1 className="text-white"> +</h1>
                   </div>
                 </div>
-                <img src={fertilizerImg} alt="" className="h-8 w-auto" />
+                <img src={fertilizerImg} alt="" className="w-auto h-8" />
               </div>
               <div className="flex-center">
-                <div className="flex-center gap-1 p-1 rounded-3xl bg-white">
+                <div className="gap-1 p-1 bg-white flex-center rounded-3xl">
                   {" "}
                   <div
-                    className="w-6 h-6 flex-center bg-blueprimary rounded-full"
+                    className="w-6 h-6 rounded-full flex-center bg-blueprimary"
                     onClick={() => changeBuyWaterCount("-")}
                   >
                     <h1 className="text-white"> -</h1>
                   </div>
                   <h1 className="text-black"> x{buyWaterCount}</h1>
                   <div
-                    className="w-6 h-6 flex-center bg-blueprimary rounded-full"
+                    className="w-6 h-6 rounded-full flex-center bg-blueprimary"
                     onClick={() => changeBuyWaterCount("+")}
                   >
                     <h1 className="text-white"> +</h1>
                   </div>
                 </div>
-                <img src={waterImg} alt="" className="h-8 w-auto" />
+                <img src={waterImg} alt="" className="w-auto h-8" />
               </div>
             </div>
             {(buyWaterCount > 0 || buyFertilizerCount > 0) && (
               <div className="flex flex-col w-full gap-1">
-                <div className="flex w-full justify-between items-center  gap-2 bg-white border-2 rounded-3xl p-3">
-                  <div className="flex-center gap-2">
+                <div className="flex items-center justify-between w-full gap-2 p-3 bg-white border-2 rounded-3xl">
+                  <div className="gap-2 flex-center">
                     {shop.map((item) => (
                       <div className="gap-1 flex-center">
                         <img
@@ -213,7 +214,7 @@ const Shop: React.FC = () => {
                           alt="icon"
                           className="w-auto h-8"
                         />
-                        <h1 className="text-black text-sm">
+                        <h1 className="text-sm text-black">
                           x
                           {buyFertilizerCount * fertilizerCost +
                             buyWaterCount * waterCost}
@@ -221,7 +222,7 @@ const Shop: React.FC = () => {
                       </div>
                     ))}
                   </div>
-                  <h1 className=" text-black text-center font-bold py-1  text-sm">
+                  <h1 className="py-1 text-sm font-bold text-center text-black ">
                     {t("الاجمالي")}
                   </h1>
                 </div>
@@ -231,7 +232,7 @@ const Shop: React.FC = () => {
                 >
                   <div className="w-1/3 ">
                     {" "}
-                    <h1 className="bg-blueprimary rounded-3xl text-center py-2  text-sm">
+                    <h1 className="py-2 text-sm text-center bg-blueprimary rounded-3xl">
                       {t("شراء")}
                     </h1>
                   </div>
@@ -239,53 +240,53 @@ const Shop: React.FC = () => {
               </div>
             )}
             {isPopupVisible && (
-              <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-70 flex-center z-50">
+              <div className="fixed top-0 left-0 z-50 w-full h-full bg-black bg-opacity-70 flex-center">
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="bg-white rounded-2xl p-6 w-4/5 max-w-md text-center shadow-xl"
+                  className="w-4/5 max-w-md p-6 text-center bg-white shadow-xl rounded-2xl"
                 >
-                  <h1 className="text-black text-xl font-bold mb-4">
+                  <h1 className="mb-4 text-xl font-bold text-black">
                     {t("تأكيد الشراء")}
                   </h1>
 
                   <div className="bg-[#FFF8E5] rounded-xl p-4 ">
-                    <div className="flex justify-center items-center gap-8 my-3">
+                    <div className="flex items-center justify-center gap-8 my-3">
                       <div className="flex flex-col items-center">
-                        <h2 className="text-black text-md mb-2">{t("ماء")}</h2>
-                        <div className="bg-blue-100 p-3 rounded-full mb-2 shadow-md">
+                        <h2 className="mb-2 text-black text-md">{t("ماء")}</h2>
+                        <div className="p-3 mb-2 bg-blue-100 rounded-full shadow-md">
                           <img
                             src={waterImg}
                             alt=""
-                            className="w-14 h-14 object-contain"
+                            className="object-contain w-14 h-14"
                           />
                         </div>
-                        <div className="bg-blue-500 text-white px-3 py-1 rounded-full">
+                        <div className="px-3 py-1 text-white bg-blue-500 rounded-full">
                           <h2 className="font-bold">x{buyWaterCount}</h2>
                         </div>
                       </div>
 
                       <div className="flex flex-col items-center">
-                        <h2 className="text-black text-md mb-2">{t("سماد")}</h2>
-                        <div className="bg-green-100 p-3 rounded-full mb-2 shadow-md">
+                        <h2 className="mb-2 text-black text-md">{t("سماد")}</h2>
+                        <div className="p-3 mb-2 bg-green-100 rounded-full shadow-md">
                           <img
                             src={fertilizerImg}
                             alt=""
-                            className="w-14 h-14 object-contain"
+                            className="object-contain w-14 h-14"
                           />
                         </div>
-                        <div className="bg-green-500 text-white px-3 py-1 rounded-full">
+                        <div className="px-3 py-1 text-white bg-green-500 rounded-full">
                           <h2 className="font-bold">x{buyFertilizerCount}</h2>
                         </div>
                       </div>
                     </div>
 
-                    <div className="bg-gray-100/25 flex flex-col w-full justify-between items-center  gap-2  rounded-2xl p-2">
-                      <h1 className=" text-black text-center font-bold text-md">
+                    <div className="flex flex-col items-center justify-between w-full gap-2 p-2 bg-gray-100/25 rounded-2xl">
+                      <h1 className="font-bold text-center text-black  text-md">
                         {t("الاجمالي")}
                       </h1>
 
-                      <div className="flex-center gap-4 p-5 rounded-xl">
+                      <div className="gap-4 p-5 flex-center rounded-xl">
                         {shop.map((item) => (
                           <div className="gap-1 flex-center">
                             <img
@@ -293,7 +294,7 @@ const Shop: React.FC = () => {
                               alt="icon"
                               className="w-auto h-8"
                             />
-                            <h1 className="text-black text-sm">
+                            <h1 className="text-sm text-black">
                               x
                               {buyFertilizerCount * fertilizerCost +
                                 buyWaterCount * waterCost}
@@ -306,13 +307,13 @@ const Shop: React.FC = () => {
 
                   <div className="flex justify-center gap-4 mt-4">
                     <button
-                      className="bg-blueprimary text-white px-6 py-3 rounded-xl font-bold shadow-md transition-transform transform hover:scale-105 active:scale-95 flex-1"
+                      className="flex-1 px-6 py-3 font-bold text-white transition-transform transform shadow-md bg-blueprimary rounded-xl hover:scale-105 active:scale-95"
                       onClick={buyShop}
                     >
                       {t("تأكيد الشراء")}
                     </button>
                     <button
-                      className="bg-white border-2 border-gray-300 text-gray-700 px-4 py-3 rounded-xl font-bold shadow-sm transition-transform transform hover:scale-105 active:scale-95"
+                      className="px-4 py-3 font-bold text-gray-700 transition-transform transform bg-white border-2 border-gray-300 shadow-sm rounded-xl hover:scale-105 active:scale-95"
                       onClick={() => setIsPopupVisible(false)}
                     >
                       {t("إلغاء")}
@@ -323,15 +324,15 @@ const Shop: React.FC = () => {
             )}
             {/* // Add another popup to show after confirmation */}
             {isPurchaseConfirmed && (
-              <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex-center z-50 ">
-                <div className="bg-white rounded-xl p-4 w-2/3 text-center">
+              <div className="fixed top-0 left-0 z-50 w-full h-full bg-black bg-opacity-50 flex-center ">
+                <div className="w-2/3 p-4 text-center bg-white rounded-xl">
                   <CheckmarkAnimation />
 
-                  <h1 className="text-black text-lg">
+                  <h1 className="text-lg text-black">
                     {t("تمت عملية الشراء بنجاح")}
                   </h1>
                   <button
-                    className="mt-4 bg-blueprimary text-white px-4 py-2 rounded-xl"
+                    className="px-4 py-2 mt-4 text-white bg-blueprimary rounded-xl"
                     onClick={() => setIsPurchaseConfirmed(false)}
                   >
                     {t("إغلاق")}
@@ -345,7 +346,7 @@ const Shop: React.FC = () => {
         <div className="w-2/3">
           {treeProgress < 51 && (
             <motion.button
-              className="flex-center gap-2 w-full px-6 py-3 bg-gradient-to-r from-blueprimary to-blue-400 text-white font-bold rounded-full shadow-lg"
+              className="w-full gap-2 px-6 py-3 font-bold text-white rounded-full shadow-lg flex-center bg-gradient-to-r from-blueprimary to-blue-400"
               initial={{ scale: 1 }}
               animate={{
                 y: [0, -5, 0],
@@ -365,7 +366,7 @@ const Shop: React.FC = () => {
           {/* Celebration Popup */}
 
           {isCelebrationVisible && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="fixed inset-0 z-50 flex items-center justify-center">
               {/* Backdrop with blur effect */}
               <motion.div
                 className="absolute inset-0 bg-black bg-opacity-60 backdrop-blur-sm"
@@ -376,13 +377,13 @@ const Shop: React.FC = () => {
 
               {/* Celebration popup content */}
               <motion.div
-                className="relative bg-gradient-to-b from-white to-blue-50 rounded-2xl shadow-2xl p-6 mx-4 max-w-md w-full z-10 overflow-hidden"
+                className="relative z-10 w-full max-w-md p-6 mx-4 overflow-hidden shadow-2xl bg-gradient-to-b from-white to-blue-50 rounded-2xl"
                 initial={{ scale: 0.8, opacity: 0, y: 20 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 transition={{ type: "spring", damping: 12 }}
               >
                 {/* Confetti particles */}
-                <div className="absolute opacity-25 inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute inset-0 overflow-hidden opacity-25 pointer-events-none">
                   {[...Array(20)].map((_, i) => (
                     <motion.div
                       key={i}
@@ -455,7 +456,7 @@ const Shop: React.FC = () => {
                 {/* Congratulatory message */}
                 <div className="text-center">
                   <motion.h2
-                    className="text-xl font-bold text-green-700 mb-3"
+                    className="mb-3 text-xl font-bold text-green-700"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
@@ -464,7 +465,7 @@ const Shop: React.FC = () => {
                   </motion.h2>
 
                   <motion.p
-                    className="text-green-600 mb-6"
+                    className="mb-6 text-green-600"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7 }}
@@ -475,7 +476,7 @@ const Shop: React.FC = () => {
 
                 {/* Call to action button */}
                 <motion.button
-                  className="w-full py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold rounded-xl shadow-md"
+                  className="w-full py-3 font-bold text-white shadow-md bg-gradient-to-r from-green-500 to-blue-500 rounded-xl"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                   initial={{ opacity: 0, y: 10 }}

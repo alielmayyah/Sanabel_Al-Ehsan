@@ -15,26 +15,13 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
+import ParentNavbar from "../../components/navbar/ParentNavbar";
+
 const ParentHome = () => {
   const history = useHistory();
   const { t } = useTranslation();
 
-  // Mock data for stats - replace with real data
-  const stats = {
-    totalStudents: 45,
-    totalClasses: 8,
-    completedChallenges: 23,
-  };
-
   const parentHomeButtons = [
-    {
-      title: "تسجيل الفصول",
-      description: "سجل إنجازات وتابع تقدم الطلاب في فصلك الدراسي",
-      bgColor: "bg-gradient-to-br from-blue-500 to-blue-600",
-      hoverColor: "hover:from-blue-600 hover:to-blue-700",
-      icon: <FaChalkboardTeacher className="text-blue-600" size={28} />,
-      onclick: () => history.push("/teacher/classlist"),
-    },
     {
       title: "تسجيل الطلاب",
       description: "سجل إنجازات الطلاب الفردية وتقدمهم",
@@ -49,10 +36,10 @@ const ParentHome = () => {
       bgColor: "bg-gradient-to-br from-purple-500 to-purple-600",
       hoverColor: "hover:from-purple-600 hover:to-purple-700",
       icon: <FaUserPlus className="text-purple-600" size={28} />,
-      onclick: () => history.push("/teacher/invite-students"),
+      onclick: () => history.push("/parent/invite"),
     },
     {
-      title: "عرض الطلاب والفصول",
+      title: "عرض الطلاب",
       description: "تصفح وأدر طلابك وفصولك",
       bgColor: "bg-gradient-to-br from-red-500 to-red-600",
       hoverColor: "hover:from-red-600 hover:to-red-700",
@@ -101,82 +88,6 @@ const ParentHome = () => {
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen gap-1 bg-gradient-to-br from-gray-50 to-blue-50">
-      {/* Header Section */}
-      <motion.div
-        className="relative flex flex-col items-center justify-between w-full p-5 overflow-hidden text-white bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700"
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute w-32 h-32 bg-white rounded-full top-4 right-4"></div>
-          <div className="absolute w-24 h-24 bg-white rounded-full bottom-4 left-4"></div>
-          <div className="absolute w-40 h-40 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full top-1/2 left-1/2"></div>
-        </div>
-
-        <div className="relative z-10 text-center">
-          <motion.h1
-            className="mb-2 text-3xl font-extrabold"
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.5, type: "spring" }}
-          >
-            {t("مرحباً أستاذ")}
-          </motion.h1>
-          <motion.p
-            className="text-lg text-blue-100"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
-          >
-            {t("إدارة فصولك وطلابك بسهولة")}
-          </motion.p>
-        </div>
-
-        {/* Quick Stats */}
-        <motion.div
-          className="relative z-10 grid w-full max-w-4xl grid-cols-3 gap-1 mt-2"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.div
-            variants={itemVariants}
-            className="p-3 text-center rounded-lg bg-white/20 backdrop-blur-sm"
-          >
-            <FaUserGraduate className="mx-auto mb-1 text-white" size={20} />
-            <div className="text-xl font-bold text-white">
-              {stats.totalStudents}
-            </div>
-            <div className="text-xs text-blue-100">طالب</div>
-          </motion.div>
-          <motion.div
-            variants={itemVariants}
-            className="p-3 text-center rounded-lg bg-white/20 backdrop-blur-sm"
-          >
-            <FaChalkboardTeacher
-              className="mx-auto mb-1 text-white"
-              size={20}
-            />
-            <div className="text-xl font-bold text-white">
-              {stats.totalClasses}
-            </div>
-            <div className="text-xs text-blue-100">فصل</div>
-          </motion.div>
-          <motion.div
-            variants={itemVariants}
-            className="p-3 text-center rounded-lg bg-white/20 backdrop-blur-sm"
-          >
-            <FaTrophy className="mx-auto mb-1 text-white" size={20} />
-            <div className="text-xl font-bold text-white">
-              {stats.completedChallenges}
-            </div>
-            <div className="text-xs text-blue-100">تحدي</div>
-          </motion.div>
-        </motion.div>
-      </motion.div>
-
       {/* Main Content */}
       <motion.div
         className="grid w-full grid-cols-2 gap-2 px-4 "
@@ -226,7 +137,7 @@ const ParentHome = () => {
         ))}
       </motion.div>
 
-      <Navbar />
+      <ParentNavbar />
     </div>
   );
 };

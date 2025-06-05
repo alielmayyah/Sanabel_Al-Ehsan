@@ -145,15 +145,15 @@ const SanabelMissionsPage: React.FC = () => {
           className="w-auto h-6"
           loading="lazy"
         />
-        <h1 className="text-black text-sm">{resource.value}</h1>
+        <h1 className="text-sm text-black">{resource.value}</h1>
       </div>
     ));
 
   return (
-    <div className="flex flex-col h-screen w-full items-center p-4 ">
-      <div className="flex items-center w-full justify-between">
+    <div className="flex flex-col items-center w-full h-screen p-4 ">
+      <div className="flex items-center justify-between w-full">
         <div className="opacity-0 w-[25px] h-25" />
-        <h1 className="text-black font-bold text-2xl self-center" dir="ltr">
+        <h1 className="self-center text-2xl font-bold text-black" dir="ltr">
           {t(sanabel[subIndex])}
         </h1>
         <GoBackButton />
@@ -164,21 +164,21 @@ const SanabelMissionsPage: React.FC = () => {
         <img
           src={sanabelImgs[sanabelIndex][subIndex]}
           alt={sanabel[subIndex]}
-          className="w-1/3 object-contain"
+          className="w-1/3 object-contain drop-shadow-[0_0_1px_rgba(75,75,75,1)]"
         />
 
         <div className="flex flex-col justify-between gap-3">
-          <h1 className="text-white font-bold text-xl text-center ">
+          <h1 className="text-xl font-bold text-center text-white ">
             <span>{t("تحديات")}</span>
             <br></br>
             {t(sanabel[subIndex])}
           </h1>
           {index == 0 && subIndex == 0 && (
             <div className="flex flex-col items-center w-full scale-90">
-              <div className="flex items-center gap-1 border-2 border-gray-300 rounded-lg p-1">
+              <div className="flex items-center gap-1 p-1 border-2 border-gray-300 rounded-lg">
                 <FaLocationArrow className="text-white" />
                 <select
-                  className="bg-transparent text-white border-none outline-none px-2 py-1 rounded-lg cursor-pointer "
+                  className="px-2 py-1 text-white bg-transparent border-none rounded-lg outline-none cursor-pointer "
                   value={location}
                   onChange={(e) => handleLocationChange(e.target.value)}
                 >
@@ -200,7 +200,7 @@ const SanabelMissionsPage: React.FC = () => {
 
       {index == 0 && subIndex == 0 && <PrayerTimes location={location} />}
 
-      <div className="flex flex-col gap-5 items-center justify-start h-2/3 w-full mt-5 overflow-y-auto">
+      <div className="flex flex-col items-center justify-start w-full gap-5 mt-5 overflow-y-auto h-2/3">
         {missions.map((mission: any, index: number) => (
           <div
             key={index}
@@ -211,9 +211,9 @@ const SanabelMissionsPage: React.FC = () => {
             }`}
           >
             {mission.completionStatus === "Completed" && (
-              <div className="flex w-full justify-between">
-                <div className="flex w-full justify-between ">
-                  <h1 className="text-gray-400 text-sm">
+              <div className="flex justify-between w-full">
+                <div className="flex justify-between w-full ">
+                  <h1 className="text-sm text-gray-400">
                     {t("اكتمل منذ دقتين")}
                   </h1>
 
@@ -225,7 +225,7 @@ const SanabelMissionsPage: React.FC = () => {
               </div>
             )}
 
-            <div className="flex justify-between items-center w-full">
+            <div className="flex items-center justify-between w-full">
               <div
                 className={`flex gap-2 ${
                   mission.completionStatus !== "Completed" && "opacity-50"
@@ -234,7 +234,7 @@ const SanabelMissionsPage: React.FC = () => {
                 {renderResources(mission)}
               </div>
 
-              <h1 className="text-black text-end text-sm w-2/3">
+              <h1 className="w-2/3 text-sm text-black text-end">
                 {mission.title}
               </h1>
             </div>
