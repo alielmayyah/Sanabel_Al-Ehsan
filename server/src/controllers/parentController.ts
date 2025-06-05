@@ -178,12 +178,56 @@ const appearStudentbyparent = async (req: Request, res: Response) => {
         }
         const student = await Student.findAll({
             where: {parentId: parent.id },
-            include:[{
-                model:User,
-                as:"user",
-                attributes: ["firstName", "lastName","profileImg","gender","dateOfBirth"]
-            }]
-        });
+            include: [{
+              model: User,
+              as: "user", // use the alias defined in the association
+              attributes: ["firstName", "lastName", "email","profileImg","gender","dateOfBirth"],
+            },
+            {model: Class,
+              as: "class",
+              attributes: ["id", "classname",'category'],
+            }
+            ,{model: Organization,
+              as: "organization",
+              attributes: ["id", "name"],
+            },
+            
+            {
+              model: StudentChallenge,
+              as: "challengeStudent",
+              attributes: [ "challengeId", "CompletionStatus", "updatedAt"],
+              where: {
+                CompletionStatus: CompletionStatus.Completed,
+              },
+              required: false,
+              include: [{
+                model: Challenge,
+                as: "challenge",
+                attributes: ["id", "title", "description", "category", "point", "xp", "snabelRed", "snabelBlue", "snabelYellow", "water","seeder","point","taskCategory","tasktype"],
+              }],
+            },
+            {
+              model: StudentTask,
+              as: "TasksStudents",
+              attributes: ["id", "taskId", "CompletionStatus", "updatedAt"],
+              where: {
+                CompletionStatus: CompletionStatus.Completed,
+              },
+              required: false,
+              include: [{
+                model: Task,
+                as: "task",
+                attributes: ["id", "title", "type", "description", "xp", "snabelRed", "snabelBlue", "snabelYellow"],
+                include: [{
+                  model: TaskCategory,
+                  as: "taskCategory",
+                  attributes: ["id", "title"],
+                }],
+              }],
+            },
+      
+          ],}
+          );
         if (!student) {
             return res.status(404).json({ message: "Student not found" });
         }
