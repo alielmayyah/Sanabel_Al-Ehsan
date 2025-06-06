@@ -101,7 +101,7 @@ const Profile: React.FC = () => {
 
       if (response.status === 200) {
         setStudentData(response.data);
-        console.log("Student data profile:", studentData);
+        console.log("Student data profile DETAILS:", studentData);
         setLoading(false);
       }
     } catch (error) {
@@ -184,7 +184,9 @@ const Profile: React.FC = () => {
           treeProgress={student.treeProgress}
         />
       )}
-      {/* {show == profileNav[2] && <StudentProfileTrophies />} */}
+      {show === profileNav[2] && (
+        <StudentProfileTrophies trophies={student.challengeStudent} />
+      )}
       {show == profileNav[3] && (
         <StudentProfileActivity
           recentActivity={student.TasksStudents}

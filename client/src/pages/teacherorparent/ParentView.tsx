@@ -240,10 +240,10 @@ const ParentView: React.FC = () => {
                     </h1>
                     <div className="flex-col flex-center">
                       <span className="text-sm text-gray-500 capitalize">
-                        {student.Class?.classname || t("لا يوجد فصل")}
+                        {student.Class?.classname || null}
                       </span>
                       <span className="text-sm text-gray-500 uppercase">
-                        {student.Class?.category || t("لا يوجد فصل")}
+                        {student.Class?.category || null}
                       </span>
                     </div>
                     <MedalAndLevel

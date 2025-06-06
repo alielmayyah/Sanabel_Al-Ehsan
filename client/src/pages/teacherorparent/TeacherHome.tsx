@@ -14,16 +14,76 @@ import {
   FaChartLine,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 const TeacherHome = () => {
   const history = useHistory();
   const { t } = useTranslation();
 
-  // Mock data for stats - replace with real data
-  const stats = {
-    totalStudents: 45,
-    totalClasses: 8,
-    completedChallenges: 23,
+  // State to store the actual counts
+  const [stats, setStats] = useState({
+    totalStudents: 0,
+    totalClasses: 0,
+    completedChallenges: 23, // Keep this as mock data or fetch from API
+  });
+
+  // Fetch students data on component mount
+  useEffect(() => {
+    fetchStudentsData();
+    fetchClassesData();
+  }, []);
+
+  const fetchStudentsData = async () => {
+    const authToken = localStorage.getItem("token");
+    if (!authToken) {
+      return;
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/teachers/appear-student`,
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Students data:", data.data);
+
+        // Update the students count
+        setStats((prevStats) => ({
+          ...prevStats,
+          totalStudents: data.data ? data.data.length : 0,
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching students:", error);
+    }
+  };
+
+  const fetchClassesData = async () => {
+    const authToken = localStorage.getItem("token");
+    if (!authToken) {
+      return;
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/teachers/appear-class`,
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+
+        // Update the classes count
+        setStats((prevStats) => ({
+          ...prevStats,
+          totalClasses: data.data ? data.data.length : 0,
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching classes:", error);
+    }
   };
 
   const teacherHomeButtons = [
