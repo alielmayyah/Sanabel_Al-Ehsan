@@ -77,7 +77,7 @@ const Signup: React.FC = () => {
       }
     } catch (error) {
       console.error("Error", error);
-      toast.error(t("Error"));
+
     }
   };
 

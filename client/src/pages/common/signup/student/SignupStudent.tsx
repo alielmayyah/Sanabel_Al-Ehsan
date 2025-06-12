@@ -52,17 +52,17 @@ const Signup: React.FC = () => {
       setName={setName}
     />,
     <Step2
-      onContinue={() => setStepIndex(stepIndex + 1)}
+      onContinue={() => handleSubmit()}
       onBack={() => setStepIndex(stepIndex - 1)}
       gender={gender}
       setGender={setGender}
     />,
-    <Step3
-      onContinue={() => handleSubmit()}
-      onBack={() => setStepIndex(stepIndex - 1)}
-      birthdate={birthdate}
-      setBirthdate={setBirthdate}
-    />,
+    // <Step3
+    //   onContinue={() => handleSubmit()}
+    //   onBack={() => setStepIndex(stepIndex - 1)}
+    //   birthdate={birthdate}
+    //   setBirthdate={setBirthdate}
+    // />,
     // <Step4
     //   onContinue={() => setStepIndex(stepIndex + 1)}
     //   onBack={() => setStepIndex(stepIndex - 1)}
@@ -103,7 +103,7 @@ const Signup: React.FC = () => {
       email,
       password,
       gender: gender,
-      dateOfBirth: formattedBirthdate,
+
       grade: gradeYear,
       role: "Student",
       profileImg: "",
