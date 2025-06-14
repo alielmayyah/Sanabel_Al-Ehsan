@@ -102,21 +102,6 @@ const StudentProfileTrophies: React.FC<StudentProfileTrophiesProps> = ({
     return Array.from(trophyMap.values());
   };
 
-  // Function to get milestone display text
-  const getMilestoneText = (trophy: ChallengeStudent) => {
-    if (trophy.challenge.title === "Tree Stage") {
-      return `${t(trophy.challenge.title)} ${trophy.challenge.point}`;
-    } else if (trophy.challenge.point > 1) {
-      // For other trophies with milestone/levels
-      return `${t(trophy.challenge.title)} - ${t("Level")} ${
-        trophy.challenge.point
-      }`;
-    } else {
-      // For trophies without levels
-      return t(trophy.challenge.title);
-    }
-  };
-
   return (
     <div
       className="z-10 flex flex-col items-center justify-between w-full h-full p-4 overflow-y-auto"
@@ -152,14 +137,13 @@ const StudentProfileTrophies: React.FC<StudentProfileTrophiesProps> = ({
                     ]
                   }
                   alt={trophy.challenge.title}
-                  className="object-contain w-12 h-12"
+                  className="object-contain w-16 h-16"
                 />
-
+                <h1 className="text-xs text-center text-black">
+                  {t(trophy.challenge.title)}
+                </h1>
                 <h1 className="text-xs text-center text-black">
                   {trophy.challenge.point}
-                </h1>
-                <h1 className="h-8 text-xs text-center text-black" dir="rtl">
-                  {getMilestoneText(trophy)}
                 </h1>
               </motion.div>
             ))
