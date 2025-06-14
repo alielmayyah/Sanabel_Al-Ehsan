@@ -447,6 +447,7 @@ const StudentList = () => {
   const addProgress = async () => {
     if (!selectedStudentIds.length || selectedTaskId === null) return;
     const authToken = localStorage.getItem("token");
+    console.log(selectedStudentIds);
     if (!authToken) return;
     try {
       // Find selected task from filteredTasks array
@@ -473,7 +474,7 @@ const StudentList = () => {
                   task.type === selectedTask.type &&
                   task.title === selectedTask.title
               ) + 1,
-            studentIds: selectedStudentIds.map((id) => id + 1),
+            studentIds: selectedStudentIds.map((id) => id),
             comment: "Great job!",
             time: getCurrentTime(),
           }),
@@ -482,6 +483,7 @@ const StudentList = () => {
 
       if (response.ok) {
         console.log("Progress added successfully");
+        console.log(selectedStudentIds);
         setShowConfirmation(false);
         setShowCongrats(true);
       } else {
@@ -729,11 +731,11 @@ const StudentList = () => {
             >
               <div
                 className={`w-10 h-10 flex-center rounded-xl ${
-                  selectedStudentIds.includes(index)
+                  selectedStudentIds.includes(student.id)
                     ? "bg-blueprimary border-0"
                     : "bg-transparent border-2"
                 }`}
-                onClick={() => toggleStudentSelection(index)}
+                onClick={() => toggleStudentSelection(student.id)}
               >
                 <FaCheck />
               </div>
