@@ -341,7 +341,7 @@ const Step1 = () => {
           <AnimatePresence mode="wait">
             {/* Gender Toggle */}
             <motion.div
-              className="flex gap-4  p-2 rounded-full mb-3 justify-center"
+              className="flex justify-center gap-4 p-2 mb-3 rounded-full"
               whileHover={{ scale: 1.02 }}
             >
               <button
@@ -398,7 +398,7 @@ const Step1 = () => {
                     }}
                   >
                     <div
-                      className="w-full h-full rounded-full overflow-hidden"
+                      className="w-full h-full overflow-hidden rounded-full"
                       style={{
                         backgroundColor:
                           gender === "boy"
@@ -414,7 +414,7 @@ const Step1 = () => {
                     </div>
                     {selectedAvatar.id === avatar.id && (
                       <motion.div
-                        className="absolute -top-1 -right-1 bg-green-500 rounded-full w-6 h-6 flex items-center justify-center text-white text-xs"
+                        className="absolute flex items-center justify-center w-6 h-6 text-xs text-white bg-green-500 rounded-full -top-1 -right-1"
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ type: "spring" }}
@@ -458,7 +458,7 @@ const Step1 = () => {
                   }
                 >
                   <FaTshirt
-                    className="w-full h-full p-1 stroke-black stroke-2"
+                    className="w-full h-full p-1 stroke-2 stroke-black"
                     style={{ color: colorOption.color }}
                   />
 
@@ -466,7 +466,7 @@ const Step1 = () => {
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="absolute text-white bg-blue-500 rounded-full p-1"
+                      className="absolute p-1 text-white bg-blue-500 rounded-full"
                     >
                       <IoCheckmarkCircle size={16} />
                     </motion.div>
@@ -487,8 +487,8 @@ const Step1 = () => {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
         >
-          <h3 className="text-lg font-bold mb-3 text-blueprimary">
-            نمط الخلفية
+          <h3 className="mb-3 text-lg font-bold text-blueprimary">
+            {t("نمط الخلفية")}
           </h3>
           <div className="grid grid-cols-4 gap-3 mb-5">
             {backgroundPatterns.map((pattern) => (
@@ -504,7 +504,7 @@ const Step1 = () => {
                 onClick={() => updateAvatarProperty("bgPattern", pattern.id)}
               >
                 <div
-                  className="w-10 h-10 rounded-md mb-1 overflow-hidden"
+                  className="w-10 h-10 mb-1 overflow-hidden rounded-md"
                   style={{
                     background:
                       pattern.id === "gradient"
@@ -533,8 +533,8 @@ const Step1 = () => {
             ))}
           </div>
 
-          <h3 className="text-lg font-bold mb-3 text-blueprimary">
-            لون الخلفية
+          <h3 className="mb-3 text-lg font-bold text-blueprimary">
+            {t("لون الخلفية")}
           </h3>
           <div className="grid grid-cols-4 gap-3">
             {backgrounds.map((bgOption, index) => (
@@ -576,7 +576,7 @@ const Step1 = () => {
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="absolute text-white bg-blue-500 rounded-full p-1"
+                      className="absolute p-1 text-white bg-blue-500 rounded-full"
                     >
                       <IoCheckmarkCircle size={16} />
                     </motion.div>
@@ -597,7 +597,9 @@ const Step1 = () => {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
         >
-          <h3 className="text-lg font-bold mb-3 text-blueprimary">لون الشعر</h3>
+          <h3 className="mb-3 text-lg font-bold text-blueprimary">
+            {t("لون الشعر")}
+          </h3>
           <div className="grid grid-cols-4 gap-3">
             {hairColors.map((colorOption, index) => (
               <motion.div
@@ -642,8 +644,8 @@ const Step1 = () => {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
         >
-          <h3 className="text-lg font-bold mb-3 text-blueprimary">
-            لون البشرة
+          <h3 className="mb-3 text-lg font-bold text-blueprimary">
+            {t("لون البشرة")}
           </h3>
           <div className="grid grid-cols-4 gap-3">
             {skinColor.map((colorOption, index) => (
@@ -724,13 +726,13 @@ const Step1 = () => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full items-center gap-3 justify-between p-4">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-3 p-4">
       {/* Main Content */}
 
       {/* Header Section */}
       <div className="flex flex-row-reverse items-center w-full gap-3">
         <GoBackButton />
-        <h1 className="text-black font-bold text-2xl text-end" dir="rtl">
+        <h1 className="text-2xl font-bold text-black text-end" dir="rtl">
           {t("تعديل الملف الشخصي")}
         </h1>
       </div>
@@ -746,7 +748,7 @@ const Step1 = () => {
           <h2 className="text-2xl font-bold text-blueprimary">
             {t("!اختر شخصيتك")}
           </h2>
-          <p className="text-gray-500 text-sm">
+          <p className="text-sm text-gray-500">
             {t("صمم الشخصية المثالية للمغامرة")}
           </p>
         </motion.div>
@@ -760,12 +762,12 @@ const Step1 = () => {
           }
           transition={{ duration: 0.5 }}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-400 rounded-full transform -rotate-3 shadow-lg"></div>
-          <div className="absolute inset-2 bg-white rounded-full shadow-inner"></div>
+          <div className="absolute inset-0 transform rounded-full shadow-lg bg-gradient-to-br from-yellow-300 to-orange-400 -rotate-3"></div>
+          <div className="absolute bg-white rounded-full shadow-inner inset-2"></div>
           {/* Avatar rendering with background color and pattern */}
 
           <div
-            className="absolute inset-3 rounded-full overflow-hidden"
+            className="absolute overflow-hidden rounded-full inset-3"
             style={{
               background:
                 avatarState.bgPattern === "gradient"
@@ -816,8 +818,8 @@ const Step1 = () => {
         </motion.div>
 
         {/* Tab Navigation */}
-        <div className="flex w-full bg-white rounded-t-xl shadow-md p-2">
-          <div className="grid grid-cols-5 grid-reversse gap-1 w-full">
+        <div className="flex w-full p-2 bg-white shadow-md rounded-t-xl">
+          <div className="grid w-full grid-cols-5 gap-1 grid-reversse">
             {tabs.map((tab) => (
               <motion.button
                 key={tab.id}
@@ -830,7 +832,7 @@ const Step1 = () => {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setCurrentTab(tab.id)}
               >
-                <div className="text-xl mb-1">{tab.icon}</div>
+                <div className="mb-1 text-xl">{tab.icon}</div>
                 <div className="text-xs font-medium">{tab.title}</div>
               </motion.button>
             ))}
@@ -841,7 +843,7 @@ const Step1 = () => {
         <AnimatePresence mode="wait">{renderTabContent()}</AnimatePresence>
         {/* Action Buttons */}
         <motion.div
-          className="w-full flex flex-col gap-3"
+          className="flex flex-col w-full gap-3"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.5 }}

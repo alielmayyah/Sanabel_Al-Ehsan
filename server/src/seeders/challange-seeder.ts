@@ -51,8 +51,10 @@ const generateChallenges = (
     );
     const snabelRed = Math.ceil(config.red * config.redMultiplier * milestone);
     const xp = Math.ceil(config.xp * config.xpMultiplier * milestone);
-    const water = config.water ? Math.ceil((config.water * milestone)/10) : 0;
-    const seeder = config.seeder ? Math.ceil((config.seeder * milestone)/10) : 0;
+    const water = config.water ? Math.ceil((config.water * milestone) / 10) : 0;
+    const seeder = config.seeder
+      ? Math.ceil((config.seeder * milestone) / 10)
+      : 0;
     challenges.push({
       id: globalIdCounter++, // 🔥 Use global counter instead of resetting each time
       title: `${missionName}`,

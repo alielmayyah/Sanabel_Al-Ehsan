@@ -18,8 +18,8 @@ const Greeting: React.FC<GreetingProps> = ({ name, text, hello }) => {
   const avatar = user?.profileImg;
 
   return (
-    <div className="flex-center p-0 gap-3">
-      <div className="flex-center gap-3">
+    <div className="gap-3 p-0 flex-center">
+      <div className="gap-3 flex-center">
         <div className="flex flex-col text-end">
           <h1 className="text-[#040415] dark:text-white">
             {hello === "yes" && t("مرحباً")} {name}

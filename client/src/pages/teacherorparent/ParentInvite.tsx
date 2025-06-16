@@ -49,7 +49,7 @@ const TeacherView: React.FC = () => {
 
   const role = localStorage.getItem("role") || "Student"; // Default to Student if role is not set
 
-  const [code, setCode] = useState("CHPRH6UH0G");
+  const [code, setCode] = useState("");
   const [student, setStudent] = useState(null as any);
   const [viewingStudent, setViewingStudent] = useState(false);
 

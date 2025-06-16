@@ -27,7 +27,6 @@ const TeacherHome = () => {
     totalStudents: 0,
     totalClasses: 0,
     totalMissions: 0, // Added missions count
-    completedChallenges: 23, // Keep this as mock data or fetch from API
   });
 
   // Fetch all data on component mount
@@ -196,14 +195,14 @@ const TeacherHome = () => {
       icon: <FaUserGraduate className="text-green-600" size={28} />,
       onclick: () => history.push("/teacher/studentslist"),
     },
-    {
-      title: "دعوة الطلاب",
-      description: "أرسل دعوات للطلاب للانضمام إلى فصولك",
-      bgColor: "bg-gradient-to-br from-purple-500 to-purple-600",
-      hoverColor: "hover:from-purple-600 hover:to-purple-700",
-      icon: <FaUserPlus className="text-purple-600" size={28} />,
-      onclick: () => history.push("/teacher/invite-students"),
-    },
+    // {
+    //   title: "دعوة الطلاب",
+    //   description: "أرسل دعوات للطلاب للانضمام إلى فصولك",
+    //   bgColor: "bg-gradient-to-br from-purple-500 to-purple-600",
+    //   hoverColor: "hover:from-purple-600 hover:to-purple-700",
+    //   icon: <FaUserPlus className="text-purple-600" size={28} />,
+    //   onclick: () => history.push("/teacher/invite-students"),
+    // },
     {
       title: "عرض الطلاب والفصول",
       description: "تصفح وأدر طلابك وفصولك",

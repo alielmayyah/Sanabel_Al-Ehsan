@@ -89,7 +89,7 @@ const Signup: React.FC = () => {
           onClick={() => setStepIndex(stepIndex - 1)}
           className="back-button"
         >
-          Back
+         {t("الرجوع")}
         </button>
       )}
     </div>

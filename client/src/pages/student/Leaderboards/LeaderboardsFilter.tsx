@@ -55,7 +55,7 @@ const LeaderboardsFilterModal: React.FC<FilterProps> = ({
       if (!authToken) return;
 
       const response = await axios.get<{ categories: string[] }>(
-        userRole === "teacher"
+        userRole === "Teacher"
           ? "http://localhost:3000/teachers/class-categories"
           : "http://localhost:3000/students/class-categories",
         {
@@ -87,7 +87,7 @@ const LeaderboardsFilterModal: React.FC<FilterProps> = ({
 
       const response = await axios.post<{ classes: ClassItem[] }>(
         "http://localhost:3000/teachers/classes-by-category",
-        { category },
+        { category: category },
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -155,6 +155,45 @@ const LeaderboardsFilterModal: React.FC<FilterProps> = ({
   };
 
   if (!isVisible) return null;
+
+  // Add this temporary function to test
+  const testFetchClasses = async () => {
+    const authToken = localStorage.getItem("token");
+
+    if (!authToken) {
+      console.error("No token found");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:3000/teachers/classes-by-category",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ category: "j1" }), // Use the exact value from Postman
+        }
+      );
+
+      console.log("Response status:", response.status);
+
+      if (!response.ok) {
+        console.error("Response not ok:", response.statusText);
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Response data:", data);
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
+
+  console.log(testFetchClasses());
+  // Call this function from browser console or add a button to trigger it
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">

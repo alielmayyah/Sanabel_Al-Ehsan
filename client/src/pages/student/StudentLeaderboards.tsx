@@ -58,11 +58,24 @@ const Leaderboards: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
 
-  const [leaderboardsData, setLeaderboardsData] = useState<LeaderboardItem[]>(
-    []
-  );
+  const [leaderboardsData, setLeaderboardsData] = useState<LeaderboardItem[]>([
+    {
+      id: 0,
+      level: 1,
+      user: {
+        firstName: "",
+        lastName: "",
+      },
+      xp: 0,
+      class: {
+        classname: "",
+        category: "",
+      },
+    },
+  ]);
   const [filteredData, setFilteredData] = useState<LeaderboardItem[]>([]);
   const [showFilterModal, setShowFilterModal] = useState(false);
+
   const [activeFilters, setActiveFilters] = useState<FilterState>({
     category: "",
     classId: "",
@@ -88,14 +101,20 @@ const Leaderboards: React.FC = () => {
       // Use the actual query parameters instead of hardcoded "j1"
       const queryString = queryParams.toString();
 
-      const url =
-        userRole === "Teacher"
-          ? `http://localhost:3000/teachers/leader-board${
-              queryString ? `?${queryString}` : ""
-            }`
-          : `http://localhost:3000/students/appear-Leaderboard${
-              queryString ? `?${queryString}` : ""
-            }`;
+      let url = "";
+      if (userRole === "Teacher") {
+        url = `http://localhost:3000/teachers/leader-board${
+          queryString ? `?${queryString}` : ""
+        }`;
+      } else if (userRole === "Parent") {
+        url = `http://localhost:3000/parents/appear-leaderboard${
+          queryString ? `?${queryString}` : ""
+        }`;
+      } else {
+        url = `http://localhost:3000/students/appear-Leaderboard${
+          queryString ? `?${queryString}` : ""
+        }`;
+      }
 
       const response = await axios.get<ApiResponse>(url, {
         headers: {
@@ -242,7 +261,7 @@ const Leaderboards: React.FC = () => {
     <div className="w-full" id="page-height">
       <div className="flex flex-col items-center justify-between w-full h-full p-2">
         <div className="flex flex-col items-center justify-between w-full gap-2">
-          <div className="flex items-center justify-between w-full">
+          <div className="flex items-center justify-between w-full gap-1">
             {/* Filter Button */}
             <button
               onClick={() => setShowFilterModal(true)}
@@ -253,7 +272,22 @@ const Leaderboards: React.FC = () => {
               }`}
             >
               <FilterIcon size={20} />
-              <span className="text-sm font-medium">تصفية</span>
+              <span className="text-sm font-medium">{t("تصفية")}</span>
+              {hasActiveFilters() && (
+                <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+              )}
+            </button>
+            {/* Search Button */}
+            <button
+              onClick={() => setShowFilterModal(true)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 transition-colors ${
+                hasActiveFilters()
+                  ? "border-blue-600 bg-blue-50 text-blue-600"
+                  : "border-gray-300 bg-white text-gray-600 hover:border-gray-400"
+              }`}
+            >
+              <FilterIcon size={20} />
+              <span className="text-sm font-medium">{t("بحث")}</span>
               {hasActiveFilters() && (
                 <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
               )}
@@ -269,25 +303,23 @@ const Leaderboards: React.FC = () => {
             <div className="flex flex-wrap justify-end w-full gap-2">
               {activeFilters.category && (
                 <span className="px-3 py-1 text-sm text-blue-800 bg-blue-100 rounded-full">
-                  المرحلة: {activeFilters.category}
+                  {activeFilters.category}
                 </span>
               )}
               {activeFilters.classId && (
                 <span className="px-3 py-1 text-sm text-green-800 bg-green-100 rounded-full">
-                  الفصل: {activeFilters.classId}
+                  {activeFilters.classId}
                 </span>
               )}
               {activeFilters.gender && (
                 <span className="px-3 py-1 text-sm text-purple-800 bg-purple-100 rounded-full">
-                  الجنس: {activeFilters.gender === "male" ? "ذكور" : "إناث"}
+                  {activeFilters.gender === "male" ? "ذكور" : "إناث"}
                 </span>
               )}
               <button
                 onClick={clearAllFilters}
                 className="px-3 py-1 text-sm text-red-800 transition-colors bg-red-100 rounded-full hover:bg-red-200"
-              >
-                مسح الكل
-              </button>
+              ></button>
             </div>
           )}
 
@@ -413,7 +445,7 @@ const Leaderboards: React.FC = () => {
             variants={listVariants}
           >
             {sortedData
-              .slice(3, Math.min(10, sortedData.length))
+              .slice(3, Math.min(sortedData.length, sortedData.length))
               .map((item: LeaderboardItem, index: number) => (
                 <motion.div
                   key={item.id}
@@ -442,7 +474,7 @@ const Leaderboards: React.FC = () => {
                         {item.user.firstName + " " + item.user.lastName}
                       </h1>
                       <p className="text-sm font-medium text-gray-500">
-                        {ordinalNumbers[index + 3] || `المركز ${index + 4}`}
+                        {`المركز ${t(`${index + 4}`)}`}
                       </p>
                     </div>
 
