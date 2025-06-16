@@ -12,18 +12,171 @@ import {
   FaUserPlus,
   FaStar,
   FaChartLine,
+  FaTasks, // Added for missions icon
 } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const TeacherHome = () => {
   const history = useHistory();
   const { t } = useTranslation();
 
-  // Mock data for stats - replace with real data
-  const stats = {
-    totalStudents: 45,
-    totalClasses: 8,
-    completedChallenges: 23,
+  // State to store the actual counts
+  const [stats, setStats] = useState({
+    totalStudents: 0,
+    totalClasses: 0,
+    totalMissions: 0, // Added missions count
+    completedChallenges: 23, // Keep this as mock data or fetch from API
+  });
+
+  // Fetch all data on component mount
+  useEffect(() => {
+    fetchStudentsData();
+    fetchClassesData();
+    fetchMissionsCount(); // Added missions fetch
+  }, []);
+
+  const fetchStudentsData = async () => {
+    const authToken = localStorage.getItem("token");
+    if (!authToken) {
+      return;
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/teachers/appear-student`,
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Students data:", data.data);
+
+        // Update the students count
+        setStats((prevStats) => ({
+          ...prevStats,
+          totalStudents: data.data ? data.data.length : 0,
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching students:", error);
+    }
+  };
+
+  const fetchClassesData = async () => {
+    const authToken = localStorage.getItem("token");
+    if (!authToken) {
+      return;
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/teachers/appear-class`,
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+
+        // Update the classes count
+        setStats((prevStats) => ({
+          ...prevStats,
+          totalClasses: data.data ? data.data.length : 0,
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching classes:", error);
+    }
+  };
+
+  // New function to fetch missions count
+  const fetchMissionsCount = async () => {
+    const authToken = localStorage.getItem("token");
+    if (!authToken) {
+      return;
+    }
+
+    try {
+      // First, get all categories
+      const categoriesResponse = await axios.get(
+        "http://localhost:3000/teachers/tasks-category",
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+
+      if (categoriesResponse.status === 200) {
+        const categories = categoriesResponse.data.data;
+        let totalMissions = 0;
+
+        // For each category, get all sanabel types and their missions
+        for (let i = 0; i < categories.length; i++) {
+          const categoryId = i + 1; // API uses 1-based indexing
+
+          try {
+            // Get sanabel types for this category
+            const typesResponse = await axios.get(
+              `http://localhost:3000/teachers/appear-Taskes-Type/${categoryId}`,
+              {
+                headers: { Authorization: `Bearer ${authToken}` },
+              }
+            );
+
+            if (typesResponse.status === 200) {
+              const data = typesResponse.data.data;
+
+              // Extract unique types
+              const uniqueTypes: string[] = [];
+              data.forEach((task: { type: string }) => {
+                if (!uniqueTypes.includes(task.type)) {
+                  uniqueTypes.push(task.type);
+                }
+              });
+
+              // For each unique type, get missions count
+              for (const type of uniqueTypes) {
+                try {
+                  const missionsResponse = await axios.get(
+                    `http://localhost:3000/teachers/appear-Taskes-Type-Category/${categoryId}/${type}`,
+                    {
+                      headers: { Authorization: `Bearer ${authToken}` },
+                    }
+                  );
+
+                  if (missionsResponse.status === 200) {
+                    const missions = missionsResponse.data.data;
+                    if (Array.isArray(missions)) {
+                      totalMissions += missions.length;
+                    }
+                  }
+                } catch (error) {
+                  console.error(
+                    `Error fetching missions for category ${categoryId}, type ${type}:`,
+                    error
+                  );
+                }
+              }
+            }
+          } catch (error) {
+            console.error(
+              `Error fetching types for category ${categoryId}:`,
+              error
+            );
+          }
+        }
+
+        // Update the missions count
+        setStats((prevStats) => ({
+          ...prevStats,
+          totalMissions: totalMissions,
+        }));
+
+        console.log("Total missions count:", totalMissions);
+      }
+    } catch (error) {
+      console.error("Error fetching missions count:", error);
+    }
   };
 
   const teacherHomeButtons = [
@@ -134,7 +287,7 @@ const TeacherHome = () => {
           </motion.p>
         </div>
 
-        {/* Quick Stats */}
+        {/* Quick Stats - Updated to 4 columns */}
         <motion.div
           className="relative z-10 grid w-full max-w-4xl grid-cols-3 gap-1 mt-2"
           variants={containerVariants}
@@ -164,15 +317,16 @@ const TeacherHome = () => {
             </div>
             <div className="text-xs text-blue-100">فصل</div>
           </motion.div>
+
           <motion.div
             variants={itemVariants}
             className="p-3 text-center rounded-lg bg-white/20 backdrop-blur-sm"
           >
             <FaTrophy className="mx-auto mb-1 text-white" size={20} />
             <div className="text-xl font-bold text-white">
-              {stats.completedChallenges}
+              {stats.totalMissions}
             </div>
-            <div className="text-xs text-blue-100">تحدي</div>
+            <div className="text-xs text-blue-100">{t("تحديات")}</div>
           </motion.div>
         </motion.div>
       </motion.div>

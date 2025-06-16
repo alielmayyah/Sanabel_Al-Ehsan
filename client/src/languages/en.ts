@@ -93,7 +93,7 @@ const en = {
     اسمك: "Your name",
     "اسمك الأول": "First name",
     "اسم والدك": "Father's name",
-    "اختار جنسك (بنت - ولد)": "Select your gender (Boy - Girl)",
+    "اختار النوع (بنت - ولد)": "Select your gender (Boy - Girl)",
     ولد: "Boy",
     بنت: "Girl",
     "ادخل تاريخ عيد ميلادك 🎂": "Enter your birthday 🎂",

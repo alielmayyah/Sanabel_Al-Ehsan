@@ -16,11 +16,41 @@ import treestage3 from "../../../assets/trophies/Other Trophies/مرحلة - 3.p
 import treestage4 from "../../../assets/trophies/Other Trophies/مرحلة - 4.png";
 import treestage5 from "../../../assets/trophies/Other Trophies/مرحلة - 5.png";
 
-const Profile: React.FC = () => {
+interface Challenge {
+  id: number;
+  title: string;
+  description: string;
+  point: number;
+  category: string;
+  taskCategory: string;
+  xp: number;
+  snabelBlue: number;
+  snabelRed: number;
+  snabelYellow: number;
+  water: number;
+  seeder: number;
+  tasktype: string | null;
+}
+
+interface ChallengeStudent {
+  challengeId: number;
+  CompletionStatus: string;
+  updatedAt: string;
+  challenge: Challenge;
+}
+
+interface StudentProfileTrophiesProps {
+  trophies: ChallengeStudent | ChallengeStudent[];
+}
+
+const StudentProfileTrophies: React.FC<StudentProfileTrophiesProps> = ({
+  trophies,
+}) => {
   const { darkMode, toggleDarkMode } = useTheme();
   const history = useHistory();
   const { t } = useTranslation();
   const { user } = useUserContext();
+
   const treeStagesImg = [
     treestage1,
     treestage2,
@@ -28,11 +58,33 @@ const Profile: React.FC = () => {
     treestage4,
     treestage5,
   ];
-  const [allTrophies, setAllTrophies] = useState<any[]>([]);
+
+  const [allTrophies, setAllTrophies] = useState<ChallengeStudent[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  useEffect(() => {
+    if (trophies) {
+      // Convert single trophy or array of trophies to array
+      const trophyArray = Array.isArray(trophies) ? trophies : [trophies];
+
+      // Filter only completed challenges
+      const completedTrophies = trophyArray.filter(
+        (trophy) => trophy.CompletionStatus === "Completed"
+      );
+
+      // Process to get highest point trophies for each title
+      const processedTrophies = processHighestTrophies(completedTrophies);
+
+      setAllTrophies(processedTrophies);
+      setIsLoading(false);
+    } else {
+      setAllTrophies([]);
+      setIsLoading(false);
+    }
+  }, [trophies]);
+
   // Function to process trophies and keep only the highest point value for each title
-  const processHighestTrophies = (trophies: any[]) => {
+  const processHighestTrophies = (trophies: ChallengeStudent[]) => {
     const trophyMap = new Map();
 
     trophies.forEach((trophy) => {
@@ -48,72 +100,6 @@ const Profile: React.FC = () => {
     });
 
     return Array.from(trophyMap.values());
-  };
-
-  const fetchAllTrophies = async () => {
-    const authToken = localStorage.getItem("token");
-    if (!authToken) {
-      setIsLoading(false);
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      // Fetch Sanabel trophies
-      const sanabelResponse = await axios.get(
-        "http://localhost:3000/students/student-trophy-primaire-completed",
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
-
-      // Fetch Other trophies (using the same endpoint in your example, but you might want to change this)
-      const otherResponse = await axios.get(
-        "http://localhost:3000/students/student-trophy-secondaire-completed",
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
-
-      if (sanabelResponse.status === 200 && otherResponse.status === 200) {
-        // Combine and process all trophies
-        const combinedTrophies = [
-          ...sanabelResponse.data.data,
-          ...otherResponse.data.data,
-        ];
-
-        const highestTrophies = processHighestTrophies(combinedTrophies);
-        setAllTrophies(highestTrophies);
-        console.log("All processed trophies:", highestTrophies);
-      }
-    } catch (error) {
-      console.error("Error fetching trophies:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAllTrophies();
-  }, []);
-
-  // Function to get milestone display text
-  const getMilestoneText = (trophy: any) => {
-    if (trophy.challenge.title === "Tree Stage") {
-      return `${t(trophy.challenge.title)} ${trophy.challenge.point}`;
-    } else if (trophy.challenge.point > 1) {
-      // For other trophies with milestone/levels
-      return `${t(trophy.challenge.title)} - ${t("Level")} ${
-        trophy.challenge.point
-      }`;
-    } else {
-      // For trophies without levels
-      return t(trophy.challenge.title);
-    }
   };
 
   return (
@@ -133,9 +119,9 @@ const Profile: React.FC = () => {
           className="grid justify-between w-full grid-cols-4 gap-1"
         >
           {allTrophies.length > 0 ? (
-            allTrophies.map((trophy: any, index: number) => (
+            allTrophies.map((trophy: ChallengeStudent, index: number) => (
               <motion.div
-                key={`${trophy.challenge.title}-${index}`}
+                key={`${trophy.challenge.title}-${trophy.challengeId}-${index}`}
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
@@ -151,13 +137,13 @@ const Profile: React.FC = () => {
                     ]
                   }
                   alt={trophy.challenge.title}
+                  className="object-contain w-16 h-16"
                 />
-
-                <h1 className="text-xs text-center text-black ">
-                  {trophy.challenge.point}
+                <h1 className="text-xs text-center text-black">
+                  {t(trophy.challenge.title)}
                 </h1>
-                <h1 className="h-8 text-xs text-center text-black" dir="rtl">
-                  {t(trophy.challenge.title).split(" ").slice(0, 4).join(" ")}
+                <h1 className="text-xs text-center text-black">
+                  {trophy.challenge.point}
                 </h1>
               </motion.div>
             ))
@@ -172,4 +158,4 @@ const Profile: React.FC = () => {
   );
 };
 
-export default Profile;
+export default StudentProfileTrophies;
