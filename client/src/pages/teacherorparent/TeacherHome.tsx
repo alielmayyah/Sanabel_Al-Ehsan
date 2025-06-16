@@ -301,7 +301,7 @@ const TeacherHome = () => {
             <div className="text-xl font-bold text-white">
               {stats.totalStudents}
             </div>
-            <div className="text-xs text-blue-100">طالب</div>
+            <div className="text-xs text-blue-100">{t("طالب")}</div>
           </motion.div>
           <motion.div
             variants={itemVariants}
@@ -314,7 +314,7 @@ const TeacherHome = () => {
             <div className="text-xl font-bold text-white">
               {stats.totalClasses}
             </div>
-            <div className="text-xs text-blue-100">فصل</div>
+            <div className="text-xs text-blue-100">{t("فصل")}</div>
           </motion.div>
 
           <motion.div
@@ -369,7 +369,7 @@ const TeacherHome = () => {
                 {button.icon}
               </motion.div>
               <h2 className="px-2 text-lg font-bold text-center text-white">
-                {button.title}
+                {t(button.title)}
               </h2>
             </div>
 

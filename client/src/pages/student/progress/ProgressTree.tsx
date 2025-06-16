@@ -15,7 +15,7 @@ const Progress: React.FC = () => {
   const { user } = useUserContext();
 
   return (
-    <div className="flex flex-col gap-0 w-full h-3/4 overflow-y-scroll ">
+    <div className="flex flex-col w-full gap-1 overflow-y-scroll h-3/4 ">
       <Inventory
         waterCount={Number(user?.water)}
         fertilizerCount={Number(user?.fertilizer)}

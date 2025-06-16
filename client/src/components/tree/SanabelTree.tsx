@@ -31,11 +31,11 @@ const SanabelTree = () => {
   const isFinalStage = treeProgress >= 51;
 
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between  ">
+    <div className="flex flex-col h-full w-full items-center justify-between shadow-md p-2 border-[1px] border-[#33333325] rounded-xl ">
       {/* Tree */}
 
-      <div className="w-full flex flex-col gap-1 ">
-        <h1 className="text-black text-end text-lg">
+      <div className="flex flex-col w-full gap-1 ">
+        <h1 className="text-lg text-black text-end">
           {t("شجرة سنابل الإحسان")}
         </h1>
 
@@ -46,9 +46,9 @@ const SanabelTree = () => {
         >
           {/* Water Indicator */}
           {!isFinalStage && (
-            <div className="flex items-center flex-col w-max gap-1">
+            <div className="flex flex-col items-center gap-1 w-max">
               <img src={waterImg} alt="Water Icon" className="w-8" />
-              <h1 className="text-black text-sm">
+              <h1 className="text-sm text-black">
                 {currentWater} / {waterNeeded}{" "}
               </h1>
               <div className="relative w-full h-full rounded-2xl bg-[#D1E2EA] overflow-hidden">
@@ -62,19 +62,19 @@ const SanabelTree = () => {
             </div>
           )}
           {/* Tree */}
-          <div className="flex-center flex-col w-7/12  h-auto">
+          <div className="flex-col w-7/12 h-auto flex-center">
             <img
               src={treeStages[treeProgress + 2]}
-              className="h-full w-full"
+              className="w-full h-full"
               alt=""
             />
           </div>
 
           {/* Fertilizer */}
           {!isFinalStage && (
-            <div className="flex items-center flex-col w-max gap-1">
+            <div className="flex flex-col items-center gap-1 w-max">
               <img src={fertilizerImg} alt="fertilizerImg" className="w-8" />
-              <h1 className="text-black text-sm">
+              <h1 className="text-sm text-black">
                 {" "}
                 {currentFertilizer} / {fertilizerNeeded}{" "}
               </h1>

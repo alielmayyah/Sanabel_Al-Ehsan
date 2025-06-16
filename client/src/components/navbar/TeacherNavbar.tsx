@@ -11,7 +11,6 @@ import {
   IonIcon,
   IonRouterLink,
 } from "@ionic/react";
-
 import HomeIcon from "../../icons/navbar/HomeIcon";
 import ChallengesIcon from "../../icons/navbar/ChallengesIcon";
 import LeaderboardsIcon from "../../icons/navbar/LeaderboardsIcon";
@@ -20,7 +19,6 @@ import ProfileIcon from "../../icons/navbar/ProfileIcon";
 import { IoIosSettings } from "react-icons/io";
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
-
 import { useLocation } from "react-router-dom";
 
 const navList = [
@@ -49,18 +47,22 @@ const navList = [
 
 function Navbar() {
   const { t } = useTranslation();
-  const currentLanguage = i18n.language;
+  const currentLanguage = i18n.language; // Use i18n.language instead of localStorage
   const location = useLocation();
 
+  // Reverse the array for Arabic (RTL) layout - check for Arabic language
+  const displayNavList =
+    currentLanguage === "ar" || currentLanguage.startsWith("ar")
+      ? [...navList].reverse()
+      : navList;
+
+  console.log(currentLanguage);
+
   return (
-    <div
-      className={`flex h-20 bg-white dark:bg-[#121212] absolute bottom-0 ${
-        currentLanguage === "ar" ? "flex-row-reverse" : "flex-row"
-      } justify-around w-full p-3`}
-    >
-      {navList.map((item, key) => (
-        <IonRouterLink routerLink={item.to}>
-          <div className="flex flex-col gap-1 items-center ">
+    <div className="flex h-20 bg-white dark:bg-[#121212] absolute bottom-0 justify-around w-full p-3">
+      {displayNavList.map((item, key) => (
+        <IonRouterLink key={key} routerLink={item.to}>
+          <div className="flex flex-col items-center gap-1 ">
             <div
               className={` flex items-center justify-end ${
                 location.pathname === item.to
@@ -70,7 +72,6 @@ function Navbar() {
             >
               {item.icon}
             </div>
-
             <h1
               className={`text-md  ${
                 location.pathname === item.to
@@ -86,4 +87,5 @@ function Navbar() {
     </div>
   );
 }
+
 export default Navbar;

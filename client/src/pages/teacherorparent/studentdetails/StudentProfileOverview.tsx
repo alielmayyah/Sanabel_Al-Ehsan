@@ -88,7 +88,7 @@ const StudentProfileOverview: React.FC<ProfileProps> = ({
 
   return (
     <div
-      className="flex flex-col h-full w-full items-start justify-around z-10 p-4 overflow-y-auto"
+      className="z-10 flex flex-col items-start justify-around w-full h-full p-4 overflow-y-auto"
       id="page-height"
     >
       <MedalAndLevel
@@ -106,7 +106,7 @@ const StudentProfileOverview: React.FC<ProfileProps> = ({
           animate="visible"
         >
           <motion.h1
-            className="text-white font-bold"
+            className="font-bold text-white"
             dir="ltr"
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -116,7 +116,7 @@ const StudentProfileOverview: React.FC<ProfileProps> = ({
           </motion.h1>
 
           <motion.h1
-            className="text-white font-bold"
+            className="font-bold text-white"
             dir="ltr"
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -135,7 +135,7 @@ const StudentProfileOverview: React.FC<ProfileProps> = ({
           />
         </motion.div>
         <motion.div
-          className="grid grid-cols-2 w-full gap-2"
+          className="grid w-full grid-cols-2 gap-2"
           initial="hidden"
           animate="visible"
         >
@@ -146,14 +146,14 @@ const StudentProfileOverview: React.FC<ProfileProps> = ({
               variants={gridItemVariants}
               custom={index}
             >
-              <div className="flex justify-between items-center w-full">
+              <div className="flex items-center justify-between w-full">
                 <h1 className="text-[#E14E54] font-bold text-xl">
                   {items.value}
                 </h1>
                 <img src={items.img} alt="sanabel" className="w-1/3" />
               </div>
-              <h1 className="text-black font-bold text-end text-sm">
-                {items.name}
+              <h1 className="text-sm font-bold text-black text-end">
+                {t(items.name)}
               </h1>
             </motion.div>
           ))}

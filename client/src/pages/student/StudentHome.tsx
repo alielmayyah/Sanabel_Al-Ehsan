@@ -67,8 +67,8 @@ const StudentHome: React.FC = () => {
 
   const { level, remainingXp, xpForNextLevel } = calculateLevel(xp);
 
-  const currentXp = remainingXp; // XP within the current level
-  const neededXp = xpForNextLevel; // XP required to reach the next level
+  const currentXp = remainingXp;
+  const neededXp = xpForNextLevel;
 
   const inventory = [
     { name: "سنبلة", img: blueImg },
@@ -104,11 +104,11 @@ const StudentHome: React.FC = () => {
 
   return (
     <div
-      className="flex flex-col h-full w-full items-center justify-between p-4  gap-3 overflow-y-auto"
+      className="flex flex-col items-center justify-between w-full h-full gap-3 p-2 overflow-y-auto"
       id="page-height"
     >
-      <div className="flex flex-row-reverse justify-between w-full items-center">
-        {/* <Notification /> */}
+      <div className="flex flex-row items-center justify-between w-full">
+        <Notification />
         <Greeting
           name={`مرحباً ${user?.firstName}`}
           text={"!هيا بنا نصنع الخير معًا"}
@@ -117,9 +117,9 @@ const StudentHome: React.FC = () => {
 
       <div className="flex flex-col gap-1 rounded-xl w-full shadow-md p-2 relative border-[1px] border-[#33333325]">
         {/* Medal and Level */}
-        <div className="flex-center gap-3 w-full">
+        <div className="w-full gap-3 flex-center">
           <div className="flex flex-col items-end w-full ">
-            <div className="flex-center font-bold text-black text-lg">
+            <div className="text-lg font-bold text-black flex-center">
               <p className="text-lg font-bold text-black">
                 {t("المستوى")} {level}
               </p>
@@ -131,7 +131,7 @@ const StudentHome: React.FC = () => {
             </div>
           </div>
           <img
-            className="h-16 w-auto "
+            className="w-auto h-16 "
             src={medalsData[medalImgTracker].img}
           ></img>
         </div>
@@ -158,7 +158,7 @@ const StudentHome: React.FC = () => {
           ></motion.div>
         </div>
 
-        <div className="w-full  flex justify-between items-center text-sm">
+        <div className="flex items-center justify-between w-full text-sm">
           <h1 className="text-[#999999]">{t("المستوي التالي")}</h1>
           <h1 className="text-[#999999]">
             {t("تم إنجاز")} {currentXp} {t("نقطة")}
@@ -175,11 +175,11 @@ const StudentHome: React.FC = () => {
       />
 
       <div className="w-full bg-[#4AAAD6] flex justify-between items-center p-1 px-2 rounded-xl ">
-        <h1 className="text-white font-bold text-lg text-end " dir="ltr">
+        <h1 className="text-lg font-bold text-white text-end " dir="ltr">
           {missionsDoneToday}
         </h1>
-        <div className="flex-center gap-3">
-          <h1 className="text-white font-bold text-end text-sm" dir="ltr">
+        <div className="gap-3 flex-center">
+          <h1 className="text-sm font-bold text-white text-end" dir="ltr">
             {t("التحديات التي تم إنجازها اليوم")}
           </h1>
           <img src={missionsDoneImg} alt="" className="w-8" />

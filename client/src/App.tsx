@@ -48,6 +48,8 @@ import TeacherProfile from "./pages/teacherorparent/profile/Profile";
 import TeacherChooseSanabelType from "./pages/teacherorparent/challenges/ChooseSanabelType";
 import TeacherChooseSanabel from "./pages/teacherorparent/challenges/ChooseSanabel";
 import TeacherSanabelMissionsPage from "./pages/teacherorparent/challenges/SanabelMissionsPage";
+import SanabelTest from "./pages/teacherorparent/challenges/SanabelTest";
+
 import TeacherView from "./pages/teacherorparent/TeacherView";
 
 // Teacher View Details
@@ -219,6 +221,7 @@ const App: React.FC = () => {
                   path="/teacher/classes/:classId"
                   component={ClassDetails}
                 />
+                <Route exact path="/sanabeltest" component={SanabelTest} />
 
                 <Route
                   exact

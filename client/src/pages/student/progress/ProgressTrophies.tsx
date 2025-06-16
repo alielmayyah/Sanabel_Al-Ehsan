@@ -160,7 +160,7 @@ const Progress: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-3 w-full h-3/4 overflow-y-auto">
+    <div className="flex flex-col w-full gap-3 overflow-y-auto h-3/4">
       <div className="flex w-full rounded-2xl bg-[#e6e6e6]">
         <h1
           className={`text-[#999] text-sm p-2 rounded-2xl w-1/2 flex-center ${
@@ -188,7 +188,7 @@ const Progress: React.FC = () => {
         key={trophyType} // Add key to reset animation when trophy type changes
       >
         <motion.h1
-          className="text-white font-bold"
+          className="font-bold text-white"
           dir="ltr"
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -198,7 +198,7 @@ const Progress: React.FC = () => {
         </motion.h1>
 
         <motion.h1
-          className="text-white font-bold"
+          className="font-bold text-white"
           dir="ltr"
           initial={{ x: 50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -244,19 +244,19 @@ const Progress: React.FC = () => {
               className="w-full flex flex-col justify-between items-center shadow-sm p-3 rounded-xl border-[1px] gap-2"
               key={`${trophyType}-${title}`}
             >
-              <div className="w-full flex justify-between items-center">
+              <div className="flex items-center justify-between w-full">
                 <div className="flex gap-2">
                   {getTrophyRewards(representativeTrophy).map((item, idx) => (
                     <div className="flex-col flex-center" key={idx}>
                       <img src={item.icon} alt="icon" className="w-auto h-6" />
-                      <h1 className="text-black text-sm">{item.value}</h1>
+                      <h1 className="text-sm text-black">{item.value}</h1>
                     </div>
                   ))}
                 </div>
-                <div className="flex flex-center flex-col gap-1">
+                <div className="flex flex-col items-end gap-1">
                   <img src={trophyImage} alt="trophy" className="w-16" />
                   <h1
-                    className="text-black font-bold text-end w-full"
+                    className="w-full font-bold text-black text-end"
                     dir="rtl"
                   >
                     {"جائزة" + " " + t(title)}
@@ -264,7 +264,7 @@ const Progress: React.FC = () => {
                 </div>
               </div>
 
-              <p className="text-black text-sm text-end w-full">
+              <p className="w-full text-sm text-black text-end">
                 {t(representativeTrophy.challenge.description)}
               </p>
 
@@ -284,7 +284,7 @@ const Progress: React.FC = () => {
                 ></motion.div>
               </div>
 
-              <div className="w-full flex justify-center items-center flex-wrap gap-1 mt-2">
+              <div className="flex flex-wrap items-center justify-center w-full gap-1 mt-2">
                 {trophyMilestones.map((milestone, idx) => (
                   <div
                     key={idx}
@@ -294,7 +294,7 @@ const Progress: React.FC = () => {
                         : "bg-[#FFF8E5]"
                     }`}
                   >
-                    <h1 className="text-xs text-black font-bold " dir="rtl">
+                    <h1 className="text-xs font-bold text-black " dir="rtl">
                       {formatMilestone(milestone, i18n.language === "ar")}
                     </h1>
                   </div>
