@@ -904,7 +904,7 @@ const appearClassCategory =  async (req: Request, res: Response) => {
 const getClassesByCategory = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user?: JwtPayload }).user;
-    const { category } = req.body;
+    const { category } = req.params;
 
     if (!user) {
       return res.status(404).json({ message: "User data not found in request" });
