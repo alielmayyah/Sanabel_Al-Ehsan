@@ -54,7 +54,7 @@ const SanabelOnboarding: React.FC = () => {
   };
 
   return (
-    <div className="flex-center gap-4 flex-col w-full ">
+    <div className="flex-col w-full gap-4 flex-center ">
       <motion.div
         className="flex flex-col items-center justify-center w-full h-full"
         variants={containerVariants}
@@ -63,7 +63,7 @@ const SanabelOnboarding: React.FC = () => {
         exit="exit"
       >
         <motion.h2
-          className="text-3xl font-medium mb-8 text-center text-black"
+          className="mb-8 text-3xl font-medium text-center text-black"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
@@ -71,7 +71,7 @@ const SanabelOnboarding: React.FC = () => {
           {t("انواع السنابل")}
         </motion.h2>
         <motion.div
-          className="grid grid-cols-2 gap-2 w-full"
+          className="grid w-full grid-cols-2 gap-2"
           initial="hidden"
           animate="visible"
           variants={{
@@ -95,19 +95,19 @@ const SanabelOnboarding: React.FC = () => {
                 transition: { delay: type.id * 0.2, duration: 0.5 },
               }}
             >
-              <div className="w-24 h-24 mb-4 rounded-full bg-white/90 p-2 flex items-center justify-center">
+              <div className="flex items-center justify-center w-24 h-24 p-2 mb-4 rounded-full bg-white/90">
                 <img
                   src={type.img}
                   alt={type.title}
-                  className="w-20 h-20 object-contain"
+                  className="object-contain w-20 h-20"
                 />
               </div>
-              <motion.div className="text-center w-full">
-                <h3 className="text-md text-white/60 mb-1">
+              <motion.div className="w-full text-center">
+                <h3 className="mb-1 text-md text-white/60">
                   {t("سنابل الإحسان")}
                 </h3>
                 <h1 className="text-md text-white/60">{t("في العلاقة مع")}</h1>
-                <h1 className="text-lg font-bold my-1">{type.title}</h1>
+                <h1 className="my-1 text-lg font-bold">{t(type.title)}</h1>
               </motion.div>
             </motion.div>
           ))}

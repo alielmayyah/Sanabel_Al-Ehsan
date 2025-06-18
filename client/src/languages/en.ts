@@ -123,14 +123,16 @@ const en = {
     "نحن نعمل بجد لتوفير تجربة مظلمة مريحة للعينين ترقبوا":
       "We are working hard to provide a comfortable dark experience for the eyes Stay tuned",
     "حسناً، سأنتظر": "Okay, I'll wait",
+
     "️اختر عددًا من التحديات اليومية والأسبوعية بحسب وقتك وظروفك":
       "Choose a number of daily and weekly challenges according to your time and circumstances",
-    "️اجعل الهدف الرئيسي هو الإحسان في كل عمل تقوم به لتترك أثرًا إيجابيًا في نفسك ومحيطك":
-      "Make the main goal kindness in every action you do to leave a positive impact on yourself and your surroundings",
-    "️الحرص على التوازن بين العلاقات وعدم إهمال أي جانب":
-      "Be careful to balance relationships and not neglect any aspect",
-    "️التدرج في الأهداف وتجنب إرهاق النفس في بداية التحدي":
-      "Gradual goals and avoid exhausting yourself at the beginning of the challenge",
+    "اجعل الهدف الرئيسي هو الإحسان في كل عمل تقوم به لتترك أثرًا إيجابيًا في نفسك ومحيطك":
+      "Make the main goal practicing excellence in every action you take to leave a positive impact on yourself and your surroundings",
+    "الحرص على التوازن بين العلاقات وعدم إهمال أي جانب":
+      "Strive for balance in relationships and don't neglect any aspect",
+    "التدرج في الأهداف وتجنب إرهاق النفس في بداية التحدي":
+      "Progress gradually in goals and avoid overwhelming yourself at the beginning of the challenge",
+
     "توصيات عامة": "General Recommendations",
     أبدا: "Start",
     "سنابل الإحسان": "Sanabel Al Ehsan",
@@ -175,7 +177,7 @@ const en = {
     "لون الخلفية": "Background Color",
     "لون الشعر": "Hair Color",
     "لون البشرة": "Skin Color",
-    "!اختر شخصيتك": "Choose your character!",
+    "اختر شخصيتك": "Choose your character",
     "صمم الشخصية المثالية للمغامرة":
       "Design the perfect character for adventure",
     "العلاقة مع الله": "Relationship with God",
@@ -200,13 +202,16 @@ const en = {
     "تفعيل الوضع الداكن": "Enable Dark Mode",
     "تسجيل الخروج": "Logout",
     "المستوى التالي": "Next Level",
+    "المستوي التالي": "Next Level",
+    المستوى: "Level",
     "تم إنجاز ": "Completed ",
-    نقطة: "Point",
+    نقطة: "Points",
+    "تم إنجاز": "",
     الميداليات: "Medals",
-    "إجمالي السنابل": "Total Grains",
+    "إجمالي السنابل": "Total Sanabel",
     "جوائز أخري": "Other Rewards",
-    جائزة: "Award",
-    "!هيا بنا نصنع الخير معًا": "Let's create goodness together!",
+    جائزة: "Trophy",
+    "هيا بنا نصنع الخير معًا": "Let's create goodness together",
     "نقطة خبرة للوصول إلى المستوى التالي":
       "experience points to reach the next level",
     "التحديات التي تم إنجازها اليوم": "Challenges completed today",
@@ -784,6 +789,140 @@ const en = {
       "You have reached the maximum required amount of fertilizer",
     "ليس لديك سنابل كافية لإتمام الشراء":
       "You don't have enough Sanabel to complete the purchase",
+
+    email_example: "Example: amrahmed@gmail.com",
+
+    في: "In",
+
+    "التحديات اليومية": "Daily Challenges",
+    "خطوات بسيطة لتعلم العطاء ومساعدة الآخرين":
+      "Simple steps to learn giving and helping others",
+    "نظام النقاط": "Point System",
+    "تتبع تقدمك والمنافسة مع الأصدقاء":
+      "Track your progress and compete with friends",
+    "الألعاب التعليمية": "Educational Games",
+    "تعلم العطاء عبر ألعاب مسلية": "Learn giving through entertaining games",
+    "تصميم تفاعلي": "Interactive Design",
+    "رسومات كرتونية وأنيميشن جذابة":
+      "Cartoonish graphics and engaging animations",
+    "إرشادات الوالدين": "Parental Guidance",
+    "خطوات عملية لتعزيز دور الأهل":
+      "Practical steps to enhance the role of parents",
+    "المكافآت والجوائز": "Rewards and Prizes",
+    "اجمع النقاط واستبدلها بمفاجآت رائعة":
+      "Collect points and exchange them for great surprises",
+    "تتبع التقدم": "Progress Tracking",
+    "راقب تطورك وانمِ مهاراتك بشكل مستمر":
+      "Monitor your growth and develop your skills continuously",
+    "لوحات المتصدرين": "Leaderboards",
+    "تنافس مع أصدقائك واحتل المراكز الأولى":
+      "Compete with your friends and climb to the top spots",
+
+    "انواع السنابل": "Sanabel Types",
+    "في العلاقة مع": "In relation with",
+    "مع الله": "God",
+    النفس: "The Self",
+    "الاسرة والمجتمع": "Family and Society",
+    "الارض والكون": "Earth and the Cosmos",
+    "اكتشف سنابل الإحسان": "Discover Sanabel",
+    "احرص على أداء الصلوات الخمس في وقتها":
+      "Be keen on performing the five daily prayers on time",
+
+    "أعظم أركان الإسلام بعد الشهادتين":
+      "The greatest pillar of Islam after the two testimonies",
+
+    "خصص وقتاً لصلاة الضحى": "Allocate time for the Duha prayer",
+
+    "صل ركعتين قيام ليل": "Pray two Rak'ahs of night prayer (Qiyam al-Layl)",
+
+    "جوائز السنابل": "Sanabel Rewards",
+    "جوائز أخرى": "Other Rewards",
+    "هذه الجوائز المميزة تكسبها عند إكمال مهام سنابل":
+      "These special rewards are earned by completing Sanabel tasks",
+    "هذه الجوائز تكسبها من خلال إنجازات متنوعة أخرى":
+      "These rewards are earned through various other achievements",
+
+    "اجمع نقاط الخبرة لترتفع في المستوى!":
+      "Collect experience points to level up!",
+    "كلما لعبت أكثر، زادت مكافآتك":
+      "The more you play, the greater your rewards",
+    "سنبلة زرقاء": "Blue Sanabel",
+    "سنبلة حمراء": "Red Sanabel",
+    "سنبلة صفراء": "Yellow Sanabel",
+    "نقاط خبرة": "Experience Points",
+    "مكافآت إكمال المهمة": "Task Completion Rewards",
+    "عند إكمال المهام، ستحصل على المكافآت الرائعة!":
+      "When you complete tasks, you will receive amazing rewards!",
+
+    مياه: "Water",
+
+    "قم بشراء المياه والسماد": "Buy water and fertilizer",
+
+    "احصل على مياه لري السنابل الخاصة بك":
+      "Get water to irrigate your wheat spikes",
+    "عزز نمو وإنتاجية سنابلك":
+      "Enhance the growth and productivity of your wheat spikes",
+    اشتري: "Buy",
+    "تم الشراء": "Purchased",
+    أحسنت: "Well Done",
+    "تم الشراء بنجاح": "Purchase completed successfully",
+
+    "كبر شجرتك": "Grow Your Tree",
+    "هذه شجرتك الآن، أحسنت": "This is your tree now, well done",
+    ابدأ: "Start",
+    "ازرع شجرتك": "Plant Your Tree",
+
+    مبتدئ: "Beginner",
+    مستجد: "Newbie",
+    موهوب: "Talented",
+    ماهر: "Skilled",
+    بارع: "Skillful",
+    متمرس: "Seasoned",
+    متقدم: "Advanced",
+    متقن: "Master",
+    خبير: "Expert",
+
+    "احصل على ميداليات": "Earn Medals",
+
+    "نافس أصدقاءك واظهر اسمك في قائمة الأفضل":
+      "Compete with your friends and show your name on the leaderboard",
+
+    "احمد جمال": "Ahmed Gamal",
+    "عمر شريف": "Omar Sherif",
+    "سارة حسن": "Sara Hassan",
+
+    "ابدأ رحلتك": "Start your Journey",
+    مرحباً: "Hello",
+
+    "تقدمك نحو الخير": "Your Progress Towards Good",
+    "تابع إنجازاتك وازرع سنابل الخير كل يوم":
+      "Track your achievements and plant seeds of good every day",
+
+    "مجموع اكس بي": "Total XP",
+
+    "تعديل الملف الشخصي": "Edit Profile",
+
+    "Missions Finished": "Missions Finished",
+    "Total Blue Points": "Total Blue Points",
+
+    "Total Yellow Points": "Total Yellow Points",
+    "Total Red Points": "Total Red Points",
+    "Total Mixed Points": "Total Mixed Points",
+    "Total XP": "Total XP",
+    "Total Water Bought": "Total Water Bought",
+    "Total Fertilizer Bought": "Total Fertilizer Bought",
+    "Tree Stage": "Tree Stage",
+    "Progress Tree": "Progress Tree",
+
+    "مرحلة الشجرة": "Tree Stage",
+    "المهام المكتملة": "Completed Tasks",
+    "شجرة التقدم": "Progress Tree",
+    "السنبلة الزرقاء": "Blue Wheat Spike",
+    "السنبلة الصفراء": "Yellow Wheat Spike",
+    "السنبلة الحمراء": "Red Wheat Spike",
+
+    "الـ XP": "XP",
+    الماء: "Water",
   },
 };
 

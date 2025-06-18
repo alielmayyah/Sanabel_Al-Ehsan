@@ -106,22 +106,22 @@ const ProgressMissions: React.FC = () => {
 
   const sanabelType = [
     {
-      name: "العلاقة مع الله",
+      name: t("العلاقة مع الله"),
       img: sanabelType4Img,
       value: Object.values(categoryCounts)[0],
     },
     {
-      name: "العلاقة مع النفس",
+      name: t("العلاقة مع النفس"),
       img: sanabelType2Img,
       value: Object.values(categoryCounts)[1],
     },
     {
-      name: "العلاقة مع الأسرة والمجتمع",
+      name: t("العلاقة مع الأسرة والمجتمع"),
       img: sanabelType1Img,
       value: Object.values(categoryCounts)[2],
     },
     {
-      name: "العلاقة مع الأرض والكون",
+      name: t("العلاقة مع الأرض والكون"),
       img: sanabelType3Img,
       value: Object.values(categoryCounts)[3],
     },
@@ -154,7 +154,7 @@ const ProgressMissions: React.FC = () => {
   ];
   const totalSanabel = sanabelColor.reduce((acc, item) => acc + item.value, 0);
   return (
-    <div className="flex flex-col gap-3 w-full h-3/4 overflow-y-auto ">
+    <div className="flex flex-col w-full gap-3 overflow-y-auto h-3/4 ">
       <motion.div
         className="w-full bg-[#E14E54] flex-center justify-between items-center p-2 gap-3 rounded-xl text-lg"
         variants={containerVariants}
@@ -162,7 +162,7 @@ const ProgressMissions: React.FC = () => {
         animate="visible"
       >
         <motion.h1
-          className="text-white font-bold"
+          className="font-bold text-white"
           dir="ltr"
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -172,7 +172,7 @@ const ProgressMissions: React.FC = () => {
         </motion.h1>
 
         <motion.h1
-          className="text-white font-bold"
+          className="font-bold text-white"
           dir="ltr"
           initial={{ x: 50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -192,7 +192,7 @@ const ProgressMissions: React.FC = () => {
       </motion.div>
 
       <motion.div
-        className="grid grid-cols-2 w-full gap-2"
+        className="grid w-full grid-cols-2 gap-2"
         initial="hidden"
         animate="visible"
       >
@@ -203,18 +203,18 @@ const ProgressMissions: React.FC = () => {
             variants={gridItemVariants}
             custom={index}
           >
-            <div className="flex justify-between items-center w-full">
+            <div className="flex items-center justify-between w-full">
               <h1 className="text-[#E14E54] font-bold text-xl">
                 {items.value}
               </h1>
               <img src={items.img} alt="sanabel" className="w-1/3" />
             </div>
-            <h1 className="text-black font-bold text-end">{items.name}</h1>
+            <h1 className="font-bold text-black text-end">{t(items.name)}</h1>
           </motion.div>
         ))}
       </motion.div>
 
-      <div className="flex justify-center items-center w-full relative my-4">
+      <div className="relative flex items-center justify-center w-full my-4">
         <PieChart width={window.innerWidth} height={350}>
           <Pie
             data={sanabelType}
@@ -245,7 +245,7 @@ const ProgressMissions: React.FC = () => {
         <img
           src={missionsDoneImg}
           alt=""
-          className="w-1/4 absolute top-1/2 left-2/4 transform -translate-x-1/2 -translate-y-3/4"
+          className="absolute w-1/4 transform -translate-x-1/2 top-1/2 left-2/4 -translate-y-3/4"
         />
       </div>
 
@@ -256,13 +256,13 @@ const ProgressMissions: React.FC = () => {
         <h1>x{sanabelColor[1].value}</h1>
         <img src={redSanabel} className="h-6" alt="" />
         <h1>x{sanabelColor[2].value}</h1>
-        <h1 className="text-white font-bold text-md " dir="ltr">
+        <h1 className="font-bold text-white text-md " dir="ltr">
           {t("إجمالي السنابل")}
         </h1>
         <img src={mixedSanabel} alt="" className="w-8" />
       </div>
 
-      <div className="flex justify-center items-center w-full relative">
+      <div className="relative flex items-center justify-center w-full">
         <PieChart width={window.innerWidth} height={350}>
           <Pie
             data={sanabelColor}
@@ -292,7 +292,7 @@ const ProgressMissions: React.FC = () => {
         <img
           src={mixedSanabel}
           alt=""
-          className="w-1/4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          className="absolute w-1/4 transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
         />
       </div>
     </div>

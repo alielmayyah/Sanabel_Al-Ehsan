@@ -68,20 +68,20 @@ const Progress: React.FC = () => {
 
   return (
     <motion.div
-      className="flex flex-col gap-2 w-full h-3/4 "
+      className="flex flex-col w-full gap-2 h-3/4 "
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <motion.div
-        className="flex flex-col gap-1 rounded-xl w-full  relative"
+        className="relative flex flex-col w-full gap-1 rounded-xl"
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.8, type: "spring" }}
       >
         {/* Medal and Level */}
         <motion.div
-          className="flex-center flex-col gap-1 w-full"
+          className="flex-col w-full gap-1 flex-center"
           key={level}
           initial={{ rotate: -15, scale: 0.5 }}
           animate={{ rotate: 0, scale: 1 }}
@@ -119,7 +119,7 @@ const Progress: React.FC = () => {
           ></motion.div>
         </div>
 
-        <div className="w-full flex justify-between items-center text-sm">
+        <div className="flex items-center justify-between w-full text-sm">
           <h1 className="text-[#999999]">{t("المستوي التالي")}</h1>
           <h1 className="text-[#999999] ">
             {t("تم إنجاز ")}{" "}
@@ -129,9 +129,9 @@ const Progress: React.FC = () => {
         </div>
       </motion.div>
 
-      <div className="w-full flex justify-between items-center rounded-xl bg-greenprimary p-3">
+      <div className="flex items-center justify-between w-full p-3 rounded-xl bg-greenprimary">
         <motion.h1
-          className="text-white font-bold text-sm"
+          className="text-sm font-bold text-white"
           animate={{ scale: 1.1 }}
           transition={{ repeat: Infinity, duration: 1, repeatType: "reverse" }}
         >
@@ -139,25 +139,28 @@ const Progress: React.FC = () => {
         </motion.h1>
 
         <div className="flex gap-3">
-          <h1 className="text-white font-bold text-sm">{t("مجموع اكس بي")}</h1>
+          <h1 className="text-sm font-bold text-white">{t("مجموع اكس بي")}</h1>
           <img src={xpIcon} alt="xp" className="w-auto h-6" />
         </div>
       </div>
 
       <motion.div
-        className="flex w-full justify-end"
+        className="flex justify-end w-full"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.3 }}
       >
-        <h1 className="text-redprimary">
+        <h1
+          className="text-redprimary"
+          dir={i18n.language === "ar" ? "rtl" : "ltr"}
+        >
           ({achievedMedals} / {medalsData.length})
         </h1>
         &ensp;
-        <h1 className=" text-black">{t("الميداليات")}</h1>
+        <h1 className="text-black ">{t("الميداليات")}</h1>
       </motion.div>
       <motion.div
-        className="grid grid-cols-2 gap-2 h-3/4 overflow-y-auto"
+        className="grid grid-cols-2 gap-2 overflow-y-auto h-3/4"
         initial="hidden"
         animate="visible"
         variants={{
@@ -180,9 +183,9 @@ const Progress: React.FC = () => {
             }}
           >
             {xp < calculateXpForLevel(item.level) && (
-              <div className="flex w-full  items-center justify-between">
-                <div className="flex-center gap-2 w-full  bg-yellowprimary rounded-xl p-1 ">
-                  <h1 className="flex-center  text-white text-sm font-bold ">
+              <div className="flex items-center justify-between w-full">
+                <div className="w-full gap-2 p-1 flex-center bg-yellowprimary rounded-xl ">
+                  <h1 className="text-sm font-bold text-white flex-center ">
                     {calculateXpForLevel(item.level)}
                   </h1>
                   <img src={xpIcon} alt="xp" className="h-5" />
@@ -197,7 +200,7 @@ const Progress: React.FC = () => {
               }`}
             >
               <img src={item.img} alt="" className="w-1/2" />
-              <h1 className="text-black font-bold text-xl">{t(item.title)}</h1>
+              <h1 className="text-xl font-bold text-black">{t(item.title)}</h1>
               <h1 className="text-blueprimary">
                 {t(item.level)} {t("المستوي")}
               </h1>

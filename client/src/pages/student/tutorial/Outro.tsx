@@ -81,9 +81,9 @@ const StartJourney: React.FC = () => {
         preload="auto"
         aria-label="Intro animation"
       />
-      <motion.div className="flex flex-col items-center w-full py-4 px-8 rounded-2xl shadow-lg transition-all bg-blueprimary">
+      <motion.div className="flex flex-col items-center w-full px-8 py-4 transition-all shadow-lg rounded-2xl bg-blueprimary">
         <h1
-          className="text-white text-xl font-bold cursor-pointer"
+          className="text-xl font-bold text-white cursor-pointer"
           onClick={navigateHome}
         >
           {t("ابدأ رحلتك")}

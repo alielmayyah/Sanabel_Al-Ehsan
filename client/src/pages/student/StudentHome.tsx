@@ -110,8 +110,8 @@ const StudentHome: React.FC = () => {
       <div className="flex flex-row items-center justify-between w-full">
         <Notification />
         <Greeting
-          name={`مرحباً ${user?.firstName}`}
-          text={"!هيا بنا نصنع الخير معًا"}
+          name={`${t("مرحباً")} ${user?.firstName}`}
+          text={"هيا بنا نصنع الخير معًا"}
         />
       </div>
 
@@ -158,9 +158,15 @@ const StudentHome: React.FC = () => {
           ></motion.div>
         </div>
 
-        <div className="flex items-center justify-between w-full text-sm">
+        <div
+          className="flex items-center justify-between w-full text-sm"
+          dir={i18n.language === "ar" ? "ltr" : "rtl"}
+        >
           <h1 className="text-[#999999]">{t("المستوي التالي")}</h1>
-          <h1 className="text-[#999999]">
+          <h1
+            className="text-[#999999]"
+            dir={i18n.language === "en" ? "ltr" : "rtl"}
+          >
             {t("تم إنجاز")} {currentXp} {t("نقطة")}
           </h1>
         </div>

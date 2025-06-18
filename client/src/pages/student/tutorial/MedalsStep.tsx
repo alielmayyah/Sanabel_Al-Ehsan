@@ -11,6 +11,7 @@ import { medalsData } from "../../../data/MedalsData";
 const StudentTutorial: React.FC = () => {
   const { t } = useTranslation();
 
+  const currentLanguage = localStorage.getItem("language");
   // Keep track of visible locks for each medal individually
   const [visibleLocks, setVisibleLocks] = useState<boolean[]>(
     Array(medalsData.length).fill(true)
@@ -32,9 +33,9 @@ const StudentTutorial: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex-center gap-4 flex-col w-full items-center justify-center">
+    <div className="flex-col items-center justify-center w-full gap-4 flex-center">
       <motion.h1
-        className="text-2xl font-bold text-black mb-2"
+        className="mb-2 text-2xl font-bold text-black"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -43,7 +44,7 @@ const StudentTutorial: React.FC = () => {
       </motion.h1>
 
       <motion.div
-        className="grid grid-cols-3 w-full gap-2"
+        className={`grid w-full grid-cols-3 gap-2 `}
         initial="hidden"
         animate="visible"
         variants={{
@@ -55,6 +56,7 @@ const StudentTutorial: React.FC = () => {
             },
           },
         }}
+        dir={currentLanguage === "en" ? "ltr" : "rtl"}
       >
         {medalsData.map((item, index) => (
           <motion.div
@@ -73,7 +75,7 @@ const StudentTutorial: React.FC = () => {
               },
             }}
           >
-            <div className="relative w-full flex justify-center">
+            <div className="relative flex justify-center w-full">
               <img
                 src={item.img}
                 alt={item.title}
@@ -83,7 +85,7 @@ const StudentTutorial: React.FC = () => {
                 <motion.img
                   src={lock}
                   alt="lock"
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6"
+                  className="absolute w-6 h-6 transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                   initial={{ opacity: 1, scale: 1 }}
                   animate={{
                     opacity: 1,
@@ -97,7 +99,9 @@ const StudentTutorial: React.FC = () => {
                 />
               )}
             </div>
-            <p className="text-xs font-medium mt-1 text-center">{item.title}</p>
+            <p className="mt-1 text-xs font-medium text-center">
+              {t(item.title)}
+            </p>
             <p className="text-xs text-gray-500">
               {" "}
               {t("المستوي")} {item.level}

@@ -54,9 +54,10 @@ function Navbar() {
 
   return (
     <div
-      className={`flex h-20 bg-black dark:bg-[#121212] absolute bottom-0 ${
+      className={`flex h-20 bg-white dark:bg-[#121212] absolute bottom-0 ${
         currentLanguage === "ar" ? "flex-row-reverse" : "flex-row"
       } justify-around w-full p-3`}
+      dir="ltr"
     >
       {navList.map((item, key) => (
         <IonRouterLink routerLink={item.to}>

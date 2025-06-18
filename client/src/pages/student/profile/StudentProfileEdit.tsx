@@ -207,8 +207,9 @@ const skinColor = [
 ];
 
 const Step1 = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useUserContext();
+  const currentLanguage = i18n.language;
 
   const oldAvatar: any = user?.profileImg;
   console.log(oldAvatar);
@@ -343,6 +344,7 @@ const Step1 = () => {
             <motion.div
               className="flex justify-center gap-4 p-2 mb-3 rounded-full"
               whileHover={{ scale: 1.02 }}
+              dir={currentLanguage === "en" ? "ltr" : "rtl"}
             >
               <button
                 onClick={toggleGender}
@@ -374,7 +376,10 @@ const Step1 = () => {
               exit={{ opacity: 0, x: gender === "boy" ? 20 : -20 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="grid grid-cols-4 gap-4">
+              <div
+                className="grid grid-cols-4 gap-4"
+                dir={currentLanguage === "en" ? "ltr" : "rtl"}
+              >
                 {currentAvatarList.map((avatar) => (
                   <motion.div
                     key={avatar.id}
@@ -746,7 +751,7 @@ const Step1 = () => {
           transition={{ duration: 0.4 }}
         >
           <h2 className="text-2xl font-bold text-blueprimary">
-            {t("!اختر شخصيتك")}
+            {t("اختر شخصيتك")}
           </h2>
           <p className="text-sm text-gray-500">
             {t("صمم الشخصية المثالية للمغامرة")}
@@ -818,8 +823,11 @@ const Step1 = () => {
         </motion.div>
 
         {/* Tab Navigation */}
-        <div className="flex w-full p-2 bg-white shadow-md rounded-t-xl">
-          <div className="grid w-full grid-cols-5 gap-1 grid-reversse">
+        <div
+          className="flex w-full p-2 bg-white shadow-md rounded-t-xl"
+          dir={currentLanguage === "en" ? "ltr" : "rtl"}
+        >
+          <div className="grid w-full grid-cols-5 gap-1 grid-reverse">
             {tabs.map((tab) => (
               <motion.button
                 key={tab.id}
@@ -833,7 +841,7 @@ const Step1 = () => {
                 onClick={() => setCurrentTab(tab.id)}
               >
                 <div className="mb-1 text-xl">{tab.icon}</div>
-                <div className="text-xs font-medium">{tab.title}</div>
+                <div className="text-xs font-medium">{t(tab.title)}</div>
               </motion.button>
             ))}
           </div>

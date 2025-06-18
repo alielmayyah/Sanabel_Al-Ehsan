@@ -48,7 +48,7 @@ const SanabelTree = () => {
           {!isFinalStage && (
             <div className="flex flex-col items-center gap-1 w-max">
               <img src={waterImg} alt="Water Icon" className="w-8" />
-              <h1 className="text-sm text-black">
+              <h1 className="text-sm text-black" dir="ltr">
                 {currentWater} / {waterNeeded}{" "}
               </h1>
               <div className="relative w-full h-full rounded-2xl bg-[#D1E2EA] overflow-hidden">
@@ -74,7 +74,7 @@ const SanabelTree = () => {
           {!isFinalStage && (
             <div className="flex flex-col items-center gap-1 w-max">
               <img src={fertilizerImg} alt="fertilizerImg" className="w-8" />
-              <h1 className="text-sm text-black">
+              <h1 className="text-sm text-black" dir="ltr">
                 {" "}
                 {currentFertilizer} / {fertilizerNeeded}{" "}
               </h1>

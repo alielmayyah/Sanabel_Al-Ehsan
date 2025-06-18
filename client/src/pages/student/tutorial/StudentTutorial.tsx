@@ -119,8 +119,8 @@ const StudentTutorial: React.FC = () => {
   }, [stepCount, currentTypeIndex, typeColors]);
 
   const navigationButton = (
-    <div className="flex items-center gap-2 w-full">
-      <div className="flex-1 border-2 rounded-2xl border-white">
+    <div className="flex items-center w-full gap-2">
+      <div className="flex-1 border-2 border-white rounded-2xl">
         <PrimaryButton
           style="fill"
           text={stepCount === steps.length - 1 ? t("ابدأ الآن") : t("متابعة")}

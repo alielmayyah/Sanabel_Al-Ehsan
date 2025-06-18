@@ -77,10 +77,10 @@ const SanabelType: React.FC = () => {
   };
 
   const reminderData = [
-    "️اختر عددًا من التحديات اليومية والأسبوعية بحسب وقتك وظروفك.",
-    "️اجعل الهدف الرئيسي هو الإحسان في كل عمل تقوم به لتترك أثرًا إيجابيًا في نفسك ومحيطك.",
-    "️الحرص على التوازن بين العلاقات وعدم إهمال أي جانب.",
-    "️التدرج في الأهداف وتجنب إرهاق النفس في بداية التحدي.",
+    "️اختر عددًا من التحديات اليومية والأسبوعية بحسب وقتك وظروفك",
+    "اجعل الهدف الرئيسي هو الإحسان في كل عمل تقوم به لتترك أثرًا إيجابيًا في نفسك ومحيطك",
+    "الحرص على التوازن بين العلاقات وعدم إهمال أي جانب",
+    "التدرج في الأهداف وتجنب إرهاق النفس في بداية التحدي",
   ];
 
   const popupVariants = {
@@ -107,9 +107,10 @@ const SanabelType: React.FC = () => {
     }),
   };
 
+  const currentLanguage = localStorage.getItem("language");
   return (
     <motion.div
-      className="flex flex-col h-full w-full items-center justify-between p-4 px-3 overflow-y-auto  "
+      className="flex flex-col items-center justify-between w-full h-full p-4 px-3 overflow-y-auto "
       id="page-height"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -141,7 +142,7 @@ const SanabelType: React.FC = () => {
           />
           {/* Title */}
           <motion.h1
-            className="font-bold text-2xl text-black"
+            className="text-2xl font-bold text-black"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5 }}
@@ -149,7 +150,7 @@ const SanabelType: React.FC = () => {
             {t("توصيات عامة")}
           </motion.h1>
           {/* List Items */}
-          <div className="flex flex-col gap-2 items-end">
+          <div className="flex flex-col items-end gap-2">
             {reminderData.map((item, index) => (
               <motion.div
                 key={index}
@@ -167,7 +168,7 @@ const SanabelType: React.FC = () => {
 
           {/* Button */}
           <motion.div
-            className="w-full bg-blueprimary rounded-2xl flex-center text-white p-3"
+            className="w-full p-3 text-white bg-blueprimary rounded-2xl flex-center"
             onClick={handleStartClick}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -179,9 +180,9 @@ const SanabelType: React.FC = () => {
       )}
       {/* Popup */}
 
-      <div className="w-full flex justify-between items-center mb-4">
+      <div className="flex items-center justify-between w-full mb-4">
         <motion.div
-          className="text-black font-bold  text-end"
+          className="font-bold text-black text-end"
           initial={{ x: 50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.7 }}
@@ -190,9 +191,9 @@ const SanabelType: React.FC = () => {
           <FaCircleQuestion className="text-[#333] text-3xl" />
         </motion.div>
 
-        <div className="flex flex-col gap-2 justify-center items-end w-full">
+        <div className="flex flex-col items-end justify-center w-full gap-2">
           <motion.h1
-            className="text-black font-bold text-2xl text-end"
+            className="text-2xl font-bold text-black text-end"
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.7 }}
@@ -211,7 +212,7 @@ const SanabelType: React.FC = () => {
         </div>
       </div>
       <motion.div
-        className="flex flex-col justify-center gap-4 items-center w-full h-full"
+        className="flex flex-col items-center justify-center w-full h-full gap-4"
         initial="hidden"
         animate="visible"
         variants={{
@@ -271,7 +272,7 @@ const SanabelType: React.FC = () => {
               transition={{ duration: 1 }}
               onClick={() => history.push(`/student/sanabel/${index}`)}
             >
-              <div className="flex w-full justify-between items-center">
+              <div className="flex items-center justify-between w-full">
                 <div className="flex gap-2">
                   {resources.map((resource, resourceIndex) => (
                     <div
@@ -284,20 +285,24 @@ const SanabelType: React.FC = () => {
                         className="w-auto h-6"
                         loading="lazy"
                       />
-                      <h1 className="text-black text-sm">{resource.value}</h1>
+                      <h1 className="text-sm text-black">{resource.value}</h1>
                     </div>
                   ))}
                 </div>
                 <img
                   src={sanabelTypeImg[index]}
                   alt=""
-                  className="h-auto w-1/4"
+                  className="w-1/4 h-auto"
                   loading="lazy"
                 />
               </div>
-              <div className="w-full flex flex-col items-end">
-                <div className="flex-center gap-2">
-                  <SanabelArrow className={`${colorClass}`} />
+              <div className="flex flex-col items-end w-full">
+                <div className="gap-2 flex-center">
+                  <SanabelArrow
+                    className={`${colorClass} ${
+                      currentLanguage == "en" && "rotate-180"
+                    }`}
+                  />
                   <h1 className={`${colorClass} text-end text-sm font-bold`}>
                     {t(items.title)}
                   </h1>

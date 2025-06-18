@@ -257,9 +257,9 @@ const Progress: React.FC = () => {
                   <img src={trophyImage} alt="trophy" className="w-16" />
                   <h1
                     className="w-full font-bold text-black text-end"
-                    dir="rtl"
+                    dir="ltr"
                   >
-                    {"جائزة" + " " + t(title)}
+                    {t("جائزة") + " " + t(title)}
                   </h1>
                 </div>
               </div>

@@ -61,22 +61,22 @@ const Intro: React.FC<IntroProps> = ({ name }) => {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center space-y-6 p-6 text-center"
+      className="flex flex-col items-center justify-center p-6 space-y-6 text-center"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       <motion.div className="flex flex-col gap-7" variants={itemVariants}>
-        <div className="flex gap-3 flex-center text-4xl font-bold">
+        <div className="flex gap-3 text-4xl font-bold flex-center">
           <motion.h1 className=" text-blueprimary" variants={itemVariants}>
             {name}
           </motion.h1>
-          <motion.h1 className=" text-gray-800" variants={itemVariants}>
-            {t("مرحبًا")}
+          <motion.h1 className="text-gray-800 " variants={itemVariants}>
+            {t("مرحبا")}
           </motion.h1>
         </div>
         <motion.div
-          className="flex-center flex-col w-full gap-2"
+          className="flex-col w-full gap-2 flex-center"
           variants={itemVariants}
         >
           <motion.div className="w-44 h-44 rounded-full overflow-hidden border-[1px] shadow-lg">
@@ -91,13 +91,13 @@ const Intro: React.FC<IntroProps> = ({ name }) => {
         </motion.h1>
       </motion.div>
       <motion.div
-        className="w-56 h-56 flex items-center justify-center"
+        className="flex items-center justify-center w-56 h-56"
         variants={itemVariants}
       >
         <img
           src={sanabelAlEhsanLogo}
           alt="Sanabel Al Ehsan Logo"
-          className="w-full h-full object-cover"
+          className="object-cover w-full h-full"
         />
       </motion.div>
     </motion.div>

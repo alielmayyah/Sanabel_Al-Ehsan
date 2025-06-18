@@ -50,17 +50,14 @@ function Navbar() {
   const currentLanguage = i18n.language; // Use i18n.language instead of localStorage
   const location = useLocation();
 
-  // Reverse the array for Arabic (RTL) layout - check for Arabic language
-  const displayNavList =
-    currentLanguage === "ar" || currentLanguage.startsWith("ar")
-      ? [...navList].reverse()
-      : navList;
-
-  console.log(currentLanguage);
-
   return (
-    <div className="flex h-20 bg-white dark:bg-[#121212] absolute bottom-0 justify-around w-full p-3">
-      {displayNavList.map((item, key) => (
+    <div
+      className={`flex h-20 bg-white dark:bg-[#121212] absolute bottom-0 ${
+        currentLanguage === "ar" ? "flex-row-reverse" : "flex-row"
+      } justify-around w-full p-3`}
+      dir="ltr"
+    >
+      {navList.map((item, key) => (
         <IonRouterLink key={key} routerLink={item.to}>
           <div className="flex flex-col items-center gap-1 ">
             <div

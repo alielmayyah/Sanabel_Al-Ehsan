@@ -59,13 +59,13 @@ const Trophies: React.FC<{
   ];
 
   return (
-    <div className="flex flex-col items-center justify-between h-3/4 w-full p-1 gap-6 ">
+    <div className="flex flex-col items-center justify-between w-full gap-6 p-1 h-3/4 ">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.5 }}
-        className="w-full flex-center flex-col text-black mb-7"
+        className="flex-col w-full text-black flex-center mb-7"
       >
         <img src={trophyImg} alt="" className="w-1/3" />
         <h1 className="text-3xl font-bold">{t("الجوائز")}</h1>
@@ -75,7 +75,7 @@ const Trophies: React.FC<{
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1 }}
-        className="w-full flex flex-row-reverse gap-2 flex-center text-lg "
+        className="flex flex-row-reverse w-full gap-2 text-lg flex-center "
       >
         {buttons.map((button, idx) => (
           <div
@@ -92,16 +92,16 @@ const Trophies: React.FC<{
             <img
               src={button.imgSrc}
               alt=""
-              className="h-8 p-1 bg-white/20 rounded-full"
+              className="h-8 p-1 rounded-full bg-white/20"
             />
-            <h2 className="font-bold text-end">{button.label}</h2>
+            <h2 className="text-sm font-bold text-end">{button.label}</h2>
           </div>
         ))}
       </motion.div>
 
-      <div className="w-full flex flex-col gap-2">
-        <div className="w-full flex justify-center items-center  rounded-lg p-4">
-          <div className="flex flex-center items-center">
+      <div className="flex flex-col w-full gap-2">
+        <div className="flex items-center justify-center w-full p-4 rounded-lg">
+          <div className="flex items-center flex-center">
             <AnimatePresence mode="wait">
               <motion.img
                 key={`current-${activeSanabel}`}
@@ -115,13 +115,13 @@ const Trophies: React.FC<{
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="w-2/3 h-2/3 object-contain mx-4"
+                className="object-contain w-2/3 mx-4 h-2/3"
               />
             </AnimatePresence>
           </div>
         </div>
 
-        <p className="text-lg font-bold text-gray-700 text-center w-4/5 mx-auto">
+        <p className="w-4/5 mx-auto text-lg font-bold text-center text-gray-700">
           {trophyIndex == 0
             ? t("هذه الجوائز المميزة تكسبها عند إكمال مهام سنابل")
             : t("هذه الجوائز تكسبها من خلال إنجازات متنوعة أخرى")}
