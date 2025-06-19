@@ -114,8 +114,12 @@ const Leaderboards: React.FC = () => {
     visible: { transition: { staggerChildren: 0.2 } },
   };
 
+  const currentLanguage = localStorage.getItem("language");
   return (
-    <div className="flex flex-col h-full w-full items-center justify-center gap-2">
+    <div
+      className="flex flex-col items-center justify-center w-full h-full gap-2"
+      dir={currentLanguage === "en" ? "ltr" : "rtl"}
+    >
       <motion.h1
         className="text-2xl font-bold text-center text-black"
         initial={{ opacity: 0, y: -20 }}
@@ -133,29 +137,29 @@ const Leaderboards: React.FC = () => {
         {t("نافس أصدقاءك واظهر اسمك في قائمة الأفضل")}
       </motion.h1>
       {/* leaderboards places */}
-      <div className="flex flex-col gap-2  w-full  py-5 px-1 ">
+      <div className="flex flex-col w-full gap-2 px-1 py-5 ">
         {/* Leaderboards for top 3 */}
         <motion.div
-          className="flex justify-between items-end w-full"
+          className="flex items-end justify-between w-full"
           initial="hidden"
           animate="visible"
           variants={listVariants}
           transition={{ duration: 1, ease: "easeOut", delay: 2 }}
         >
           <motion.div
-            className="flex flex-col items-center  w-1/3"
+            className="flex flex-col items-center w-1/3"
             variants={columnVariants}
           >
-            <div className="w-20 h-20 rounded-full relative border-2 border-blueprimary">
+            <div className="relative w-20 h-20 border-2 rounded-full border-blueprimary">
               <img
                 className="w-[75px] h-[75px] rounded-full absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 bg-blueprimary/80"
                 src={sortedData[0].avatar}
               />
-              <div className="flex-center absolute p-4 text-center transform -translate-x-1/2 -translate-y-1/2 top-0 left-1/2">
+              <div className="absolute top-0 p-4 text-center transform -translate-x-1/2 -translate-y-1/2 flex-center left-1/2">
                 <LeaderboardsStar size={40} className="text-blueprimary" />
               </div>
             </div>
-            <h1 className="text-black">{sortedData[0].name}</h1>
+            <h1 className="text-black">{t(sortedData[0].name)}</h1>
             <div className="scale-90">
               <MedalAndLevel
                 level={sortedData[0].level}
@@ -168,14 +172,14 @@ const Leaderboards: React.FC = () => {
             <FirstPlaceColumn className="w-full" />
           </motion.div>
           <motion.div
-            className="flex flex-col items-center  w-1/3 -order-1"
+            className="flex flex-col items-center w-1/3 -order-1"
             variants={columnVariants}
           >
             <img
               className="w-20 h-20 rounded-full bg-redprimary/80"
               src={sortedData[1].avatar}
             />
-            <h1 className="text-black">{sortedData[1].name}</h1>
+            <h1 className="text-black">{t(sortedData[1].name)}</h1>
             <div className="scale-90">
               <MedalAndLevel
                 level={sortedData[1].level}
@@ -187,14 +191,14 @@ const Leaderboards: React.FC = () => {
             <SecondPlaceColumn className="w-full" />
           </motion.div>
           <motion.div
-            className="flex flex-col items-center  w-1/3"
+            className="flex flex-col items-center w-1/3"
             variants={columnVariants}
           >
             <img
               className="w-20 h-20 rounded-full bg-yellowprimary/80"
               src={sortedData[2].avatar}
             />
-            <h1 className="text-black">{sortedData[2].name}</h1>
+            <h1 className="text-black">{t(sortedData[2].name)}</h1>
             <div className="scale-90">
               <MedalAndLevel
                 level={sortedData[2].level}

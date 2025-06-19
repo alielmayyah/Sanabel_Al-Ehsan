@@ -212,7 +212,7 @@ const Profile: React.FC = () => {
           variants={buttonVariants}
           animate={activeFilter === "all" ? "active" : "inactive"}
           onClick={() => setActiveFilter("all")}
-          className="flex-1 py-2 rounded-lg text-sm font-medium shadow-sm"
+          className="flex-1 py-2 text-sm font-medium rounded-lg shadow-sm"
         >
           {t("الكل")}
         </motion.button>
@@ -220,7 +220,7 @@ const Profile: React.FC = () => {
           variants={buttonVariants}
           animate={activeFilter === "today" ? "active" : "inactive"}
           onClick={() => setActiveFilter("today")}
-          className="flex-1 py-2 rounded-lg text-sm font-medium shadow-sm"
+          className="flex-1 py-2 text-sm font-medium rounded-lg shadow-sm"
         >
           {t("اليوم")}
         </motion.button>
@@ -228,7 +228,7 @@ const Profile: React.FC = () => {
           variants={buttonVariants}
           animate={activeFilter === "week" ? "active" : "inactive"}
           onClick={() => setActiveFilter("week")}
-          className="flex-1 py-2 rounded-lg text-sm font-medium shadow-sm"
+          className="flex-1 py-2 text-sm font-medium rounded-lg shadow-sm"
         >
           {t("الأسبوع")}
         </motion.button>
@@ -236,7 +236,7 @@ const Profile: React.FC = () => {
           variants={buttonVariants}
           animate={activeFilter === "month" ? "active" : "inactive"}
           onClick={() => setActiveFilter("month")}
-          className="flex-1 py-2 rounded-lg text-sm font-medium shadow-sm"
+          className="flex-1 py-2 text-sm font-medium rounded-lg shadow-sm"
         >
           {t("الشهر")}
         </motion.button>
@@ -247,7 +247,7 @@ const Profile: React.FC = () => {
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-            className="w-8 h-8 border-4 border-blueprimary border-t-blue-600 rounded-full mb-4"
+            className="w-8 h-8 mb-4 border-4 rounded-full border-blueprimary border-t-blue-600"
           />
           <p className="text-gray-500">{t("جاري تحميل النشاطات...")}</p>
         </div>
@@ -270,7 +270,7 @@ const Profile: React.FC = () => {
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-gray-400 mb-4"
+            className="mb-4 text-gray-400"
           >
             <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
             <line x1="16" x2="16" y1="2" y2="6"></line>
@@ -286,7 +286,7 @@ const Profile: React.FC = () => {
           <p className={`text-lg font-medium ${"text-gray-700"}`}>
             {t("لا توجد نشاطات")}
           </p>
-          <p className="text-gray-500 text-center mt-2">
+          <p className="mt-2 text-center text-gray-500">
             {activeFilter === "all"
               ? t("لم تقم بإكمال أي مهام بعد")
               : t("لا توجد نشاطات في هذه الفترة")}
@@ -347,7 +347,7 @@ const Profile: React.FC = () => {
                   {/* Activity Details */}
                   <div className="flex-1 mr-4 text-right">
                     <h3 className={`font-medium ${"text-blueprimary"}`}>
-                      {t("سنبلة" + " " + activity.type)}
+                      {t(t("سنبلة") + " " + t(activity.type))}
                     </h3>
                     <p className={`text-sm ${"text-gray-700"}`}>
                       {t(activity.title)}

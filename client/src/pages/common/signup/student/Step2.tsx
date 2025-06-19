@@ -51,14 +51,14 @@ const Step2: React.FC<Step2Props> = ({
 
   function handleGenderStep() {
     if (!gender) {
-      toast.error(t("اختار جنسك (بنت - ولد)"));
+      toast.error(t("اختار النوع (بنت - ولد)"));
     } else {
       onContinue();
     }
     console.log(gender);
   }
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10">
       <div className="absolute">
         <Toaster />
       </div>
@@ -67,9 +67,9 @@ const Step2: React.FC<Step2Props> = ({
 
         <ProgressBar filledBars={2} />
 
-        <div className="flex flex-col gap-2 self-end">
-          <h1 className="text-black font-bold text-2xl text-end " dir="ltr">
-            {t("اختار جنسك (بنت - ولد)")}
+        <div className="flex flex-col self-end gap-2">
+          <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
+            {t("اختار النوع (بنت - ولد)")}
           </h1>
 
           <p className="text-[#B3B3B3] text-sm text-end">
@@ -78,8 +78,8 @@ const Step2: React.FC<Step2Props> = ({
         </div>
       </div>
 
-      <div className="flex w-full gap-3 justify-center items-center">
-        <div className="flex-center gap-4 flex-col w-full">
+      <div className="flex items-center justify-center w-full gap-3">
+        <div className="flex-col w-full gap-4 flex-center">
           {" "}
           <motion.div
             initial={{ scale: 1 }}
@@ -103,7 +103,7 @@ const Step2: React.FC<Step2Props> = ({
           </h1>
         </div>
 
-        <div className="flex-center gap-4 flex-col w-full">
+        <div className="flex-col w-full gap-4 flex-center">
           <motion.div
             initial={{ scale: 1 }}
             animate={{ scale: gender === "girl" ? 1.1 : 1 }}

@@ -77,7 +77,7 @@ const Signup: React.FC = () => {
       }
     } catch (error) {
       console.error("Error", error);
-      toast.error(t("Error"));
+
     }
   };
 
@@ -89,7 +89,7 @@ const Signup: React.FC = () => {
           onClick={() => setStepIndex(stepIndex - 1)}
           className="back-button"
         >
-          Back
+         {t("الرجوع")}
         </button>
       )}
     </div>

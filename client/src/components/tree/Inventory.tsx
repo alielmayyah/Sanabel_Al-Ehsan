@@ -58,13 +58,13 @@ const Inventory: React.FC<Props> = ({
   };
 
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between">
-      <div className="w-full flex flex-col gap-1">
-        <h1 className="text-black text-end text-lg">
+    <div className="flex flex-col h-full w-full items-center justify-between shadow-md p-2 relative border-[1px] border-[#33333325] rounded-xl">
+      <div className="flex flex-col w-full gap-1">
+        <h1 className="text-lg text-black text-end">
           {t("الموارد الخاصة بك")}
         </h1>
         <motion.div
-          className="flex w-full justify-between"
+          className="flex justify-between w-full"
           variants={parentVariants}
           initial="hidden"
           animate="visible"

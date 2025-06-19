@@ -78,10 +78,11 @@ const StudentTutorial: React.FC = () => {
   const getNextMedalIndex = () => {
     return medalImgTracker >= medalsData.length - 1 ? 0 : medalImgTracker + 1;
   };
-
+  const currentLanguage = localStorage.getItem("language");
   return (
     <motion.div
-      className="flex-center gap-6 flex-col w-full flex items-center justify-center"
+      className="flex flex-col items-center justify-center w-full gap-6 flex-center"
+      dir={currentLanguage === "en" ? "ltr" : "rtl"}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: -30, transition: { duration: 0.4 } }}
     >
@@ -116,7 +117,7 @@ const StudentTutorial: React.FC = () => {
           key={medalImgTracker}
         >
           <motion.div
-            className="text-center mx-4"
+            className="mx-4 text-center"
             animate={
               isLevelUpAnimating
                 ? { scale: [1, 1.2, 1], transition: { duration: 0.5 } }
@@ -128,20 +129,22 @@ const StudentTutorial: React.FC = () => {
               alt="Current Medal"
               className="w-24 h-24 mx-auto"
             />
-            <p className="text-lg font-medium mt-2 text-black">
-              {medalsData[medalImgTracker].title}
+            <p className="mt-2 text-lg font-medium text-black">
+              {t(medalsData[medalImgTracker].title)}
             </p>
           </motion.div>
 
           {level < 200 && (
             <motion.div
-              className="flex items-center justify-center bg-yellow-100 p-2 rounded-full"
+              className={`flex items-center justify-center p-2 bg-yellow-100 rounded-full `}
               initial={{ x: -10, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.6 }}
             >
               <svg
-                className="w-8 h-8 text-yellow-500"
+                className={`w-8 h-8 text-yellow-500  ${
+                  currentLanguage == "ar" ? "rotate-180" : ""
+                }`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -154,7 +157,7 @@ const StudentTutorial: React.FC = () => {
             </motion.div>
           )}
           {level < 200 && (
-            <div className="text-center mx-4">
+            <div className="mx-4 text-center">
               <div className="relative">
                 <img
                   src={medalsData[getNextMedalIndex()].img}
@@ -164,11 +167,11 @@ const StudentTutorial: React.FC = () => {
                 <img
                   src={lock}
                   alt="lock"
-                  className="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10"
+                  className="absolute w-10 h-10 transform -translate-x-1/2 -translate-y-1/2 top-1/4 left-1/4"
                 />
               </div>
-              <p className="text-lg font-medium mt-2 text-gray-500">
-                {medalsData[getNextMedalIndex()].title}
+              <p className="mt-2 text-lg font-medium text-gray-500">
+                {t(medalsData[getNextMedalIndex()].title)}
               </p>
               <p className="text-xs text-gray-400">
                 {t("المستوي")} {medalsData[getNextMedalIndex()].level}

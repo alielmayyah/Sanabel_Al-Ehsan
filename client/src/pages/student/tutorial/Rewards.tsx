@@ -69,68 +69,70 @@ const Rewards: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex-center gap-6 flex-col w-full   h-full py-4">
+    <div className="flex-col w-full h-full gap-6 py-4 flex-center">
       <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="text-center flex-center gap-4 flex-col w-full"
+        className="flex-col w-full gap-4 text-center flex-center"
       >
         <motion.img
           src={missionImg}
           alt="Mission Target"
-          className="h-24 w-24 object-contain mb-4 animate-pulse"
+          className="object-contain w-24 h-24 mb-4 animate-pulse"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5 }}
         />
 
         <motion.h1
-          className="text-3xl text-black font-boldtext-amber-800   mb-3"
+          className="mb-3 text-3xl text-black font-boldtext-amber-800"
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 1, duration: 0.5 }}
         >
           {t("مكافآت إكمال المهمة")}
         </motion.h1>
-        <p className="text-gray-600 mb-4 w-5/6 text-center">
+        <p className="w-5/6 mb-4 text-center text-gray-600" dir="ltr">
           {t("عند إكمال المهام، ستحصل على المكافآت الرائعة!")}
         </p>
       </motion.div>
 
       <motion.div
-        className="flex-center flex-col gap-4 w-full"
+        className="flex-col w-full gap-4 flex-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <motion.div
-          className="p-1 bg-gradient-to-br w-full flex-center flex-col gap-3 rounded-2xl shadow-sm "
+          className="flex-col w-full gap-3 p-1 shadow-sm bg-gradient-to-br flex-center rounded-2xl "
           variants={itemVariants}
         >
           <div className="flex justify-between w-full gap-2">
             {resources.map((resource, index) => (
               <motion.div
                 key={index}
-                className={`flex-1 bg-white rounded-xl p-3 text-center shadow-sm border hover:shadow-md transition-all duration-300 ${resource.borderColor}`}
+                className={`flex-1 bg-white rounded-xl p-2 text-center shadow-sm border hover:shadow-md transition-all duration-300 ${resource.borderColor}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <div className="h-16 flex items-center justify-center mb-2">
+                <div className="flex items-center justify-center h-16 mb-2">
                   <img
                     src={resource.icon}
                     alt={resource.name}
-                    className="h-12 w-12 object-contain"
+                    className="object-contain w-12 h-12"
                   />
                 </div>
-                <p className="text-xs text-gray-600 mb-2">{t(resource.name)}</p>
+                <p className="w-full mb-2 text-xs text-gray-600">
+                  {t(resource.name)}
+                </p>
                 <div
                   className={`
                   w-10 h-10 mx-auto rounded-full flex items-center justify-center 
                   ${resource.color} ${resource.borderColor} border-2
                 `}
                 >
-                  <p className={`font-bold ${resource.textColor}`}>
+                  <p className={`font-bold ${resource.textColor}`} dir="ltr">
                     +{resource.value}
                   </p>
                 </div>
@@ -148,16 +150,18 @@ const Rewards: React.FC = () => {
                 ${xpResource.color} ${xpResource.borderColor} border-2
                 `}
             >
-              <p className={`font-bold ${xpResource.textColor}`}>
+              <p className={`font-bold ${xpResource.textColor}`} dir="ltr">
                 +{xpResource.value}
               </p>
             </div>
-            <div className="flex items-center space-x-4">
-              <p className="text-sm text-gray-700">{t(xpResource.name)}</p>
+            <div className="flex items-center justify-between space-x-4 justi">
+              <p className="w-full text-sm text-gray-700">
+                {t(xpResource.name)}
+              </p>
               <img
                 src={xpResource.icon}
                 alt={xpResource.name}
-                className="h-12 w-12 object-contain"
+                className="object-contain w-12 h-12"
               />
               <div></div>
             </div>

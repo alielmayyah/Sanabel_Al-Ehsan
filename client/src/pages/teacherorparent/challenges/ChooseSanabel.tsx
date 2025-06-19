@@ -197,7 +197,9 @@ const SanabelType: React.FC = () => {
               className="w-2/5"
               loading="lazy"
             />
-            <h1 className="text-sm font-bold text-center text-black">{item}</h1>
+            <h1 className="text-sm font-bold text-center text-black">
+              {t(item)}
+            </h1>
           </motion.div>
         ))}
       </motion.div>

@@ -207,7 +207,7 @@ const Shop: React.FC<{
 
   return (
     <motion.div
-      className="w-full flex flex-col items-center justify-between gap-5 h-full relative"
+      className="relative flex flex-col items-center justify-between w-full h-full gap-5"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -216,7 +216,7 @@ const Shop: React.FC<{
       <AnimatePresence>
         {showPurchaseEffect && (
           <motion.div
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
+            className="absolute z-10 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none top-1/2 left-1/2"
             initial="initial"
             animate="animate"
             exit={{ opacity: 0 }}
@@ -232,7 +232,7 @@ const Shop: React.FC<{
                     ? fertilizerImg
                     : blueSanabel
                 }
-                className="h-16 w-auto"
+                className="w-auto h-16"
                 alt="Purchase effect"
               />
               <div
@@ -252,7 +252,7 @@ const Shop: React.FC<{
 
       {/* Header Section */}
       <motion.div
-        className="text-center w-full"
+        className="w-full text-center"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -260,7 +260,7 @@ const Shop: React.FC<{
         <motion.img
           src={shopping}
           alt="Shop"
-          className="mx-auto h-24 w-24 mb-4"
+          className="w-24 h-24 mx-auto mb-4"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{
             scale: [1, 1.05, 1],
@@ -273,7 +273,7 @@ const Shop: React.FC<{
             repeatType: "reverse",
           }}
         />
-        <h1 className="text-3xl font-bold text-black/80 mb-4">{t("المتجر")}</h1>
+        <h1 className="mb-4 text-3xl font-bold text-black/80">{t("المتجر")}</h1>
         {!isShopDone && (
           <motion.p
             initial={{ opacity: 1, scale: 0.95, y: -1 }}
@@ -288,20 +288,20 @@ const Shop: React.FC<{
               repeat: Infinity,
               repeatType: "reverse",
             }}
-            className="text-blueprimary text-xl font-bold mx-auto"
+            className="mx-auto text-xl font-bold text-blueprimary"
           >
-            {t("قم بشراء المياه والسماد ")}
+            {t("قم بشراء المياه والسماد")}
           </motion.p>
         )}
       </motion.div>
 
       {/* Inventory Section */}
-      <div className="w-full flex flex-col gap-1 p-4">
+      <div className="flex flex-col w-full gap-1 p-4">
         <h1 className="text-black text-end text-md">
           {t("الموارد الخاصة بك")}
         </h1>
         <motion.div
-          className="flex w-full justify-between rounded-2xl shadow-md p-2 bg-gray-50"
+          className="flex justify-between w-full p-2 shadow-md rounded-2xl bg-gray-50"
           variants={parentVariants}
           initial="hidden"
           animate="visible"
@@ -357,12 +357,12 @@ const Shop: React.FC<{
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.5 }}
-        className="grid grid-cols-2 gap-4 px-4 w-screen"
+        className="grid w-screen grid-cols-2 gap-4 px-4"
       >
         {purchaseOptions.map((option, index) => (
           <motion.div
             key={index}
-            className="rounded-2xl p-4 gap-2 flex flex-col items-center text-center shadow-md border border-gray-100"
+            className="flex flex-col items-center gap-2 p-4 text-center border border-gray-100 shadow-md rounded-2xl"
             whileHover={
               !option.isBought
                 ? {
@@ -376,7 +376,7 @@ const Shop: React.FC<{
             <motion.img
               src={option.icon}
               alt={option.name}
-              className="h-16 w-auto"
+              className="w-auto h-16"
               animate={
                 !option.isBought
                   ? {
@@ -396,7 +396,7 @@ const Shop: React.FC<{
                 index === 0 ? "text-blue-600" : "text-amber-700"
               }`}
             >
-              {option.name}
+              {t(option.name)}
             </h3>
 
             {/* Cost visualization */}
@@ -404,18 +404,18 @@ const Shop: React.FC<{
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
-              className="grid grid-cols-3 gap-2 w-full bg-gray-50 p-2 rounded-lg"
+              className="grid w-full grid-cols-3 gap-2 p-2 rounded-lg bg-gray-50"
             >
               {inventory.slice(0, 3).map((resource, idx) => (
                 <motion.div
                   key={idx}
-                  className="rounded-md p-1 flex flex-col items-center text-center"
+                  className="flex flex-col items-center p-1 text-center rounded-md"
                   whileHover={{ scale: 1.05 }}
                 >
                   <img
                     src={resource.icon}
                     alt={resource.name}
-                    className="h-8 w-auto mb-1"
+                    className="w-auto h-8 mb-1"
                   />
                   <h1 className="text-[#666] text-xs font-medium">
                     {index === 0 ? "20" : "30"}
@@ -470,7 +470,7 @@ const Shop: React.FC<{
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
+                    className="w-5 h-5"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -495,10 +495,10 @@ const Shop: React.FC<{
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            className="fixed inset-0 flex items-center justify-center z-20 pointer-events-none top-1/3 px-3 bg-white/20"
+            className="fixed inset-0 z-20 flex items-center justify-center px-3 pointer-events-none top-1/3 bg-white/20"
           >
             <motion.div
-              className="bg-green-50 border-2 border-green-500 p-4 w-full  h-1/3 flex-center gap-2 flex-col  rounded-xl shadow-xl text-center"
+              className="flex-col w-full gap-2 p-4 text-center border-2 border-green-500 shadow-xl bg-green-50 h-1/3 flex-center rounded-xl"
               animate={{
                 scale: [1, 1.05, 1],
                 boxShadow: [
@@ -510,7 +510,7 @@ const Shop: React.FC<{
               transition={{ duration: 2, repeat: Infinity }}
             >
               <motion.div
-                className="text-green-600 text-4xl mx-auto mb-2"
+                className="mx-auto mb-2 text-4xl text-green-600"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1, rotate: [0, 359] }}
                 transition={{ type: "spring", duration: 1 }}

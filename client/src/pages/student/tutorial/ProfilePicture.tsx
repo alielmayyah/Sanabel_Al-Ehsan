@@ -322,6 +322,8 @@ const Step1 = () => {
     );
   };
 
+  const currentLanguage = localStorage.getItem("language");
+
   // Render content based on current tab
   const renderTabContent = () => {
     // Common style for all tab content containers
@@ -341,8 +343,9 @@ const Step1 = () => {
           <AnimatePresence mode="wait">
             {/* Gender Toggle */}
             <motion.div
-              className="flex gap-4  p-2 rounded-full mb-3 justify-center"
+              className="flex justify-center gap-4 p-2 mb-3 rounded-full"
               whileHover={{ scale: 1.02 }}
+              dir={currentLanguage === "en" ? "ltr" : "rtl"}
             >
               <button
                 onClick={toggleGender}
@@ -374,7 +377,10 @@ const Step1 = () => {
               exit={{ opacity: 0, x: gender === "boy" ? 20 : -20 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="grid grid-cols-4 gap-4">
+              <div
+                className="grid grid-cols-4 gap-4"
+                dir={currentLanguage === "en" ? "ltr" : "rtl"}
+              >
                 {currentAvatarList.map((avatar) => (
                   <motion.div
                     key={avatar.id}
@@ -398,7 +404,7 @@ const Step1 = () => {
                     }}
                   >
                     <div
-                      className="w-full h-full rounded-full overflow-hidden"
+                      className="w-full h-full overflow-hidden rounded-full"
                       style={{ backgroundColor: avatarState.bgColor }}
                     >
                       <avatar.Component
@@ -409,7 +415,7 @@ const Step1 = () => {
                     </div>
                     {selectedAvatar.id === avatar.id && (
                       <motion.div
-                        className="absolute -top-1 -right-1 bg-green-500 rounded-full w-6 h-6 flex items-center justify-center text-white text-xs"
+                        className="absolute flex items-center justify-center w-6 h-6 text-xs text-white bg-green-500 rounded-full -top-1 -right-1"
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ type: "spring" }}
@@ -453,7 +459,7 @@ const Step1 = () => {
                   }
                 >
                   <FaTshirt
-                    className="w-full h-full p-1 stroke-black stroke-2"
+                    className="w-full h-full p-1 stroke-2 stroke-black"
                     style={{ color: colorOption.color }}
                   />
 
@@ -461,7 +467,7 @@ const Step1 = () => {
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="absolute text-white bg-blue-500 rounded-full p-1"
+                      className="absolute p-1 text-white bg-blue-500 rounded-full"
                     >
                       <IoCheckmarkCircle size={16} />
                     </motion.div>
@@ -482,7 +488,7 @@ const Step1 = () => {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
         >
-          <h3 className="text-lg font-bold mb-3 text-blueprimary">
+          <h3 className="mb-3 text-lg font-bold text-blueprimary">
             نمط الخلفية
           </h3>
           <div className="grid grid-cols-4 gap-3 mb-5">
@@ -499,7 +505,7 @@ const Step1 = () => {
                 onClick={() => updateAvatarProperty("bgPattern", pattern.id)}
               >
                 <div
-                  className="w-10 h-10 rounded-md mb-1 overflow-hidden"
+                  className="w-10 h-10 mb-1 overflow-hidden rounded-md"
                   style={{
                     background:
                       pattern.id === "gradient"
@@ -528,7 +534,7 @@ const Step1 = () => {
             ))}
           </div>
 
-          <h3 className="text-lg font-bold mb-3 text-blueprimary">
+          <h3 className="mb-3 text-lg font-bold text-blueprimary">
             لون الخلفية
           </h3>
           <div className="grid grid-cols-4 gap-3">
@@ -571,7 +577,7 @@ const Step1 = () => {
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="absolute text-white bg-blue-500 rounded-full p-1"
+                      className="absolute p-1 text-white bg-blue-500 rounded-full"
                     >
                       <IoCheckmarkCircle size={16} />
                     </motion.div>
@@ -592,7 +598,7 @@ const Step1 = () => {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
         >
-          <h3 className="text-lg font-bold mb-3 text-blueprimary">لون الشعر</h3>
+          <h3 className="mb-3 text-lg font-bold text-blueprimary">لون الشعر</h3>
           <div className="grid grid-cols-4 gap-3">
             {hairColors.map((colorOption, index) => (
               <motion.div
@@ -637,7 +643,7 @@ const Step1 = () => {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
         >
-          <h3 className="text-lg font-bold mb-3 text-blueprimary">
+          <h3 className="mb-3 text-lg font-bold text-blueprimary">
             لون البشرة
           </h3>
           <div className="grid grid-cols-4 gap-3">
@@ -678,7 +684,7 @@ const Step1 = () => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full items-center gap-3 justify-between p-1">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-3 p-1">
       {/* Main Content */}
       <div className="flex flex-col items-center w-full gap-4 mx-auto">
         {/* Header */}
@@ -688,10 +694,10 @@ const Step1 = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <h2 className="text-2xl font-bold text-blueprimary">
+          <h2 className="text-2xl font-bold text-blueprimary" dir="ltr">
             {t("!اختر شخصيتك")}
           </h2>
-          <p className="text-gray-500 text-sm">
+          <p className="text-sm text-gray-500">
             {t("صمم الشخصية المثالية للمغامرة")}
           </p>
         </motion.div>
@@ -705,12 +711,12 @@ const Step1 = () => {
           }
           transition={{ duration: 0.5 }}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-400 rounded-full transform -rotate-3 shadow-lg"></div>
-          <div className="absolute inset-2 bg-white rounded-full shadow-inner"></div>
+          <div className="absolute inset-0 transform rounded-full shadow-lg bg-gradient-to-br from-yellow-300 to-orange-400 -rotate-3"></div>
+          <div className="absolute bg-white rounded-full shadow-inner inset-2"></div>
           {/* Avatar rendering with background color and pattern */}
 
           <div
-            className="absolute inset-3 rounded-full overflow-hidden"
+            className="absolute overflow-hidden rounded-full inset-3"
             style={{
               background:
                 avatarState.bgPattern === "gradient"
@@ -761,8 +767,11 @@ const Step1 = () => {
         </motion.div>
 
         {/* Tab Navigation */}
-        <div className="flex w-full bg-white rounded-t-xl shadow-md p-2">
-          <div className="grid grid-cols-5 grid-reversse gap-1 w-full">
+        <div
+          className="flex w-full p-2 bg-white shadow-md rounded-t-xl"
+          dir={currentLanguage === "en" ? "ltr" : "rtl"}
+        >
+          <div className="grid w-full grid-cols-5 gap-1 grid-reversse">
             {tabs.map((tab) => (
               <motion.button
                 key={tab.id}
@@ -775,8 +784,8 @@ const Step1 = () => {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setCurrentTab(tab.id)}
               >
-                <div className="text-xl mb-1">{tab.icon}</div>
-                <div className="text-xs font-medium">{tab.title}</div>
+                <div className="mb-1 text-xl">{tab.icon}</div>
+                <div className="text-xs font-medium">{t(tab.title)}</div>
               </motion.button>
             ))}
           </div>

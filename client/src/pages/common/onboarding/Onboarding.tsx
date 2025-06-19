@@ -62,11 +62,11 @@ const OnBoarding: React.FC = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col w-full h-full items-center justify-between gap-2 p-3 pb-10 pt-5"
+      className="flex flex-col items-center justify-between w-full h-full gap-2 p-3 pt-5 pb-10"
     >
-      <div className="flex w-full items-center justify-between">
+      <div className="flex items-center justify-between w-full">
         <div
-          className="p-3 px-5 border-2 rounded-3xl text-blueprimary cursor-pointer"
+          className="p-3 px-5 border-2 cursor-pointer rounded-3xl text-blueprimary"
           onClick={skipOnboarding}
         >
           {t("تخطي")}
@@ -89,7 +89,7 @@ const OnBoarding: React.FC = () => {
 
       {/* Progress indicators */}
       <motion.div
-        className="flex-center flex-row-reverse w-full gap-3"
+        className="flex-row-reverse w-full gap-3 flex-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
@@ -127,10 +127,14 @@ const OnBoarding: React.FC = () => {
 
         {/* Button with Scale Animation */}
 
-        <div className="flex w-screen items-center gap-2 px-4">
+        <div className="flex items-center w-screen gap-2 px-4">
           <div onClick={changeStepIncrement} className="w-full">
             {" "}
-            <PrimaryButton style="fill" text={t("متابعة")} arrow={`left`} />
+            <PrimaryButton
+              style="fill"
+              text={t("متابعة")}
+              arrow={i18n.language === "en" ? "right" : "left"}
+            />
           </div>
 
           {stepCount !== 0 && (

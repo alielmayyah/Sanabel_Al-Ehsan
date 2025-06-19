@@ -269,7 +269,7 @@ const SanabelMissionsPage: React.FC = () => {
     <div className="flex flex-col items-center w-full h-screen p-4 ">
       <div className="flex items-center justify-between w-full">
         <div className="opacity-0 w-[25px] h-25" />
-        <h1 className="self-center text-2xl font-bold text-black" dir="ltr">
+        <h1 className="self-center text-xl font-bold text-black" dir="ltr">
           {currentSanabelType ? t(currentSanabelType) : ""}
         </h1>
         <GoBackButton />
@@ -287,7 +287,7 @@ const SanabelMissionsPage: React.FC = () => {
         )}
 
         <div className="flex flex-col justify-between gap-3">
-          <h1 className="text-xl font-bold text-center text-white ">
+          <h1 className="text-lg font-bold text-center text-white ">
             <span>{t("تحديات")}</span>
             <br />
             {currentSanabelType ? t(currentSanabelType) : ""}
@@ -332,7 +332,7 @@ const SanabelMissionsPage: React.FC = () => {
               <div className="flex items-center justify-between w-full">
                 <div className="flex gap-2">{renderResources(mission)}</div>
                 <h1 className="w-2/3 text-sm text-black text-end">
-                  {mission.title}
+                  {t(mission.title)}
                 </h1>
               </div>
             </div>

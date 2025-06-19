@@ -46,7 +46,7 @@ const Profile: React.FC = () => {
   const parentCode = user?.connectCode;
   return (
     <div
-      className="flex flex-col h-full w-full items-center justify-between z-10"
+      className="z-10 flex flex-col items-center justify-between w-full h-full"
       id="page-height"
     >
       <div className="flex items-center justify-between bg-yellowprimary py-7 w-full  p-4 rounded-b-[50px] ">
@@ -56,7 +56,7 @@ const Profile: React.FC = () => {
             className="flex-center gap-3 p-2 bg-[#E6E6E6] rounded-2xl"
             onClick={() => history.push("/student/settings")}
           >
-            <IoMdSettings className="text-blueprimary w-5 h-5" />
+            <IoMdSettings className="w-5 h-5 text-blueprimary" />
           </div>
           <IonRouterLink routerLink="/student/profile/edit">
             <div className="flex items-center gap-3 p-2 bg-[#E6E6E6] rounded-2xl">
@@ -66,20 +66,20 @@ const Profile: React.FC = () => {
           </IonRouterLink>
         </div>
         {/* Settings Button */}
-        <h1 className="text-2xl text-black font-bold">{t("الملف الشخصي")}</h1>
+        <h1 className="text-2xl font-bold text-black">{t("الملف الشخصي")}</h1>
       </div>
 
-      <div className="flex flex-col items-center gap-0 justify-between">
-        <div className="w-32 h-32 rounded-full -mt-8 border-4 border-white">
+      <div className="flex flex-col items-center justify-between gap-0">
+        <div className="w-32 h-32 -mt-8 border-4 border-white rounded-full">
           <GetAvatar userAvatarData={avatar} />
         </div>
         <h1 className="text-black">
           {user?.firstName} {user?.lastName}
         </h1>
         <h1 className="text-[#B3B3B3]"> {t("طالب")}</h1>
-        <h1 className="text-[#B3B3B3]"> المرحلة الاعدادية - فصل 4/8</h1>
+        <h1 className="text-[#B3B3B3]"> {user?.grade}</h1>
 
-        <div className="flex-center w-full gap-1">
+        <div className="w-full gap-1 flex-center">
           <MdContentCopy
             className="text-[#B3B3B3] cursor-pointer"
             onClick={() => handleCopy(`${parentCode}`)}
@@ -87,7 +87,7 @@ const Profile: React.FC = () => {
           <h1 className="text-[#B3B3B3]">{parentCode}</h1>
 
           {copySuccess && (
-            <span className="text-green-500 text-sm ml-2">
+            <span className="ml-2 text-sm text-green-500">
               {t("تم النسخ بنجاح")}
             </span>
           )}
@@ -95,8 +95,8 @@ const Profile: React.FC = () => {
       </div>
 
       {/* Navbar */}
-      <div className="flex justify-between flex-col  w-full gap-3 p-4">
-        <div className="flex flex-row-reverse  gap-1 items-center w-full">
+      <div className="flex flex-col justify-between w-full gap-3 p-4">
+        <div className="flex flex-row-reverse items-center w-full gap-1">
           {profileNav.map((item) => (
             <div
               className={`${

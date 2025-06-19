@@ -12,6 +12,7 @@ interface FilterProps {
 interface FilterState {
   category: string;
   classId: string;
+  className?: string; // Add this optional field
   gender: string;
 }
 
@@ -55,9 +56,11 @@ const LeaderboardsFilterModal: React.FC<FilterProps> = ({
       if (!authToken) return;
 
       const response = await axios.get<{ categories: string[] }>(
-        userRole === "teacher"
+        userRole === "Teacher"
           ? "http://localhost:3000/teachers/class-categories"
-          : "http://localhost:3000/students/class-categories",
+          : userRole === "Student"
+          ? "http://localhost:3000/students/class-categories"
+          : "http://localhost:3000/parents/class-categories",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -83,11 +86,16 @@ const LeaderboardsFilterModal: React.FC<FilterProps> = ({
     setLoadingClasses(true);
     try {
       const authToken = localStorage.getItem("token");
+      const userRole = localStorage.getItem("role");
       if (!authToken) return;
 
-      const response = await axios.post<{ classes: ClassItem[] }>(
-        "http://localhost:3000/teachers/classes-by-category",
-        { category },
+      const response = await axios.get<{ classes: ClassItem[] }>(
+        userRole === "Teacher"
+          ? `http://localhost:3000/teachers/classes-by-category?category=${category}`
+          : userRole === "Student"
+          ? `http://localhost:3000/students/classes-by-category?category=${category}`
+          : `http://localhost:3000/parents/classes-by-category?category=${category}`,
+
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -139,7 +147,14 @@ const LeaderboardsFilterModal: React.FC<FilterProps> = ({
   };
 
   const applyFilters = () => {
-    onFilterChange(filters);
+    const selectedClass = classes.find(
+      (cls) => cls.id.toString() === filters.classId
+    );
+    const filtersWithClassName = {
+      ...filters,
+      className: selectedClass ? selectedClass.classname : undefined,
+    };
+    onFilterChange(filtersWithClassName);
     onClose();
   };
 
@@ -177,11 +192,15 @@ const LeaderboardsFilterModal: React.FC<FilterProps> = ({
           <select
             value={filters.category}
             onChange={(e) => handleFilterChange("category", e.target.value)}
-            className="w-full p-3 text-right border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full p-3 text-right capitalize border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">{t("جميع المراحل")}</option>
             {categories.map((category) => (
-              <option key={category.name} value={category.name}>
+              <option
+                key={category.name}
+                value={category.name}
+                className="capitalize"
+              >
                 {category.label}
               </option>
             ))}
@@ -197,11 +216,15 @@ const LeaderboardsFilterModal: React.FC<FilterProps> = ({
             value={filters.classId}
             onChange={(e) => handleFilterChange("classId", e.target.value)}
             disabled={!filters.category || loadingClasses}
-            className="w-full p-3 text-right border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            className="w-full p-3 text-right capitalize border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
           >
             <option value="">{t("جميع الفصول")}</option>
             {classes.map((classItem) => (
-              <option key={classItem.id} value={classItem.id.toString()}>
+              <option
+                key={classItem.id}
+                value={classItem.id.toString()}
+                className="capitalize"
+              >
                 {classItem.classname}
               </option>
             ))}
@@ -215,7 +238,7 @@ const LeaderboardsFilterModal: React.FC<FilterProps> = ({
         </div>
 
         {/* Gender Filter */}
-        <div className="mb-6">
+        {/* <div className="mb-6">
           <label className="block mb-2 text-sm font-medium text-right text-gray-700">
             {t("النوع")}
           </label>
@@ -230,7 +253,7 @@ const LeaderboardsFilterModal: React.FC<FilterProps> = ({
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
 
         {/* Action Buttons */}
         <div className="flex gap-3">

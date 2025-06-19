@@ -16,10 +16,10 @@ const SanabelType: React.FC = () => {
   );
 
   const reminderData = [
-    "️اختر عددًا من التحديات اليومية والأسبوعية بحسب وقتك وظروفك.",
-    "️اجعل الهدف الرئيسي هو الإحسان في كل عمل تقوم به لتترك أثرًا إيجابيًا في نفسك ومحيطك.",
-    "️الحرص على التوازن بين العلاقات وعدم إهمال أي جانب.",
-    "️التدرج في الأهداف وتجنب إرهاق النفس في بداية التحدي.",
+    "️اختر عددًا من التحديات اليومية والأسبوعية بحسب وقتك وظروفك",
+    "اجعل الهدف الرئيسي هو الإحسان في كل عمل تقوم به لتترك أثرًا إيجابيًا في نفسك ومحيطك",
+    "الحرص على التوازن بين العلاقات وعدم إهمال أي جانب",
+    "التدرج في الأهداف وتجنب إرهاق النفس في بداية التحدي",
   ];
 
   const handleStartClick = () => {
@@ -53,7 +53,7 @@ const SanabelType: React.FC = () => {
 
   return (
     <div
-      className="flex flex-col h-full w-full items-center justify-between p-4 px-3 "
+      className="flex flex-col items-center justify-between w-full h-full p-4 px-3 "
       id="page-height"
     >
       {/* Popup */}
@@ -82,7 +82,7 @@ const SanabelType: React.FC = () => {
 
           {/* Title */}
           <motion.h1
-            className="font-bold text-2xl text-black"
+            className="text-2xl font-bold text-black"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5 }}
@@ -91,7 +91,7 @@ const SanabelType: React.FC = () => {
           </motion.h1>
 
           {/* List Items */}
-          <div className="flex flex-col gap-2 items-end">
+          <div className="flex flex-col items-end gap-2">
             {reminderData.map((item, index) => (
               <motion.div
                 key={index}
@@ -109,7 +109,7 @@ const SanabelType: React.FC = () => {
 
           {/* Button */}
           <motion.div
-            className="w-full bg-blueprimary rounded-2xl flex-center text-white p-3"
+            className="w-full p-3 text-white bg-blueprimary rounded-2xl flex-center"
             onClick={handleStartClick}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}

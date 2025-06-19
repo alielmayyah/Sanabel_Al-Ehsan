@@ -51,8 +51,10 @@ const generateChallenges = (
     );
     const snabelRed = Math.ceil(config.red * config.redMultiplier * milestone);
     const xp = Math.ceil(config.xp * config.xpMultiplier * milestone);
-    const water = config.water ? Math.ceil((config.water * milestone)/10) : 0;
-    const seeder = config.seeder ? Math.ceil((config.seeder * milestone)/10) : 0;
+    const water = config.water ? Math.ceil((config.water * milestone) / 10) : 0;
+    const seeder = config.seeder
+      ? Math.ceil((config.seeder * milestone) / 10)
+      : 0;
     challenges.push({
       id: globalIdCounter++, // 🔥 Use global counter instead of resetting each time
       title: `${missionName}`,
@@ -267,9 +269,9 @@ const challengeData: ChallengeData[] = [
       xp: 0,
       trophyMilestones: milestones.totalMixedPoints,
       xpMultiplier: 1,
-      blueMultiplier: 1,
-      yellowMultiplier: 1,
-      redMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.3 * 0.5,
+      redMultiplier: 0.6 * 0.5,
     },
     TaskCategory.snabelMixed,
     "Total Mixed Points Milestones"
@@ -284,9 +286,9 @@ const challengeData: ChallengeData[] = [
       xp: 20,
       trophyMilestones: milestones.totalXP,
       xpMultiplier: 1,
-      blueMultiplier: 1,
-      yellowMultiplier: 1,
-      redMultiplier: 1,
+      blueMultiplier: 0.3 * 0.5,
+      yellowMultiplier: 0.3 * 0.5,
+      redMultiplier: 0.6 * 0.5,
     },
     TaskCategory.xp,
     "Total XP Milestones"

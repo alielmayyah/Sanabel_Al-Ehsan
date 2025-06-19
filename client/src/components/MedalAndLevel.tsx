@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { medalsImgs } from "../data/Medals";
+import { useTranslation } from "react-i18next";
 // Define the props type
 interface MedalAndLevelProps {
   level: number;
@@ -38,6 +39,7 @@ const MedalAndLevel: React.FC<MedalAndLevelProps> = ({
       setMedalImgTracker(8);
     }
   }, [level]);
+  const { t } = useTranslation();
 
   return (
     <div
@@ -50,7 +52,9 @@ const MedalAndLevel: React.FC<MedalAndLevelProps> = ({
         alt={`${level}`}
         className={`${size}`}
       />
-      <h1 className={`text-md ${color}`}>المستوي {level}</h1>
+      <h1 className={`text-md ${color}`}>
+        {t("المستوي")} {level}
+      </h1>
     </div>
   );
 };

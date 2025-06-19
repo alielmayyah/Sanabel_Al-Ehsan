@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import trophy from "../../../assets/trophy.png";
+import { ToastContainer, toast } from "react-toastify";
 
 // Inventory Assets
 
@@ -18,6 +19,21 @@ import { useUserContext } from "../../context/StudentUserProvider";
 import CheckmarkAnimation from "../../assets/checkmarkAnimation";
 import { treeStages } from "../../data/Tree";
 import axios from "axios";
+
+const Toaster = () => (
+  <ToastContainer
+    position="top-center"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="light"
+  />
+);
 
 const Shop: React.FC = () => {
   const { t } = useTranslation();
@@ -71,18 +87,26 @@ const Shop: React.FC = () => {
   function changeBuyWaterCount(operation: any) {
     if (operation === "-" && buyWaterCount !== 0) {
       setBuyWaterCount(buyWaterCount - 1);
-    }
-    if (operation === "+" && buyWaterCount !== remainingWaterNeeded) {
+    } else if (operation === "+" && buyWaterCount !== remainingWaterNeeded) {
       setBuyWaterCount(buyWaterCount + 1);
+    } else if (operation === "+" && buyWaterCount === remainingWaterNeeded) {
+      toast.warning(t("لقد وصلت إلى الحد الأقصى المطلوب من الماء"));
     }
   }
 
-  function changeBuyFertilzerCount(operation: any) {
+  function changeBuyFertilizerCount(operation: any) {
     if (operation === "-" && buyFertilizerCount !== 0) {
       setBuyFertilizerCount(buyFertilizerCount - 1);
-    }
-    if (operation === "+" && buyFertilizerCount !== remainingFertilizerNeeded) {
+    } else if (
+      operation === "+" &&
+      buyFertilizerCount !== remainingFertilizerNeeded
+    ) {
       setBuyFertilizerCount(buyFertilizerCount + 1);
+    } else if (
+      operation === "+" &&
+      buyFertilizerCount === remainingFertilizerNeeded
+    ) {
+      toast.warning(t("لقد وصلت إلى الحد الأقصى المطلوب من السماد"));
     }
   }
 
@@ -128,6 +152,8 @@ const Shop: React.FC = () => {
         }, 2000);
       }
     } catch (error) {
+      toast.error(t("ليس لديك سنابل كافية لإتمام الشراء"));
+
       console.error("Error purchasing items:", error);
     }
   };
@@ -157,7 +183,10 @@ const Shop: React.FC = () => {
   };
 
   return (
-    <div className="flex-col w-full h-full flex-center">
+    <div className="flex-col w-full h-full flex-center shadow-md p-2 border-[1px] border-[#33333325] rounded-xl">
+      <div className="absolute">
+        <Toaster />
+      </div>
       {isProgressReady == false ? (
         <div className="flex flex-col w-full h-full gap-1">
           <h1 className="text-lg text-black text-end">{t("المتجر")}</h1>
@@ -169,14 +198,14 @@ const Shop: React.FC = () => {
                   {" "}
                   <div
                     className="w-6 h-6 rounded-full flex-center bg-blueprimary"
-                    onClick={() => changeBuyFertilzerCount("-")}
+                    onClick={() => changeBuyFertilizerCount("-")}
                   >
                     <h1 className="text-white"> -</h1>
                   </div>
                   <h1 className="text-black"> x{buyFertilizerCount}</h1>
                   <div
                     className="w-6 h-6 rounded-full flex-center bg-blueprimary"
-                    onClick={() => changeBuyFertilzerCount("+")}
+                    onClick={() => changeBuyFertilizerCount("+")}
                   >
                     <h1 className="text-white"> +</h1>
                   </div>
@@ -282,7 +311,7 @@ const Shop: React.FC = () => {
                     </div>
 
                     <div className="flex flex-col items-center justify-between w-full gap-2 p-2 bg-gray-100/25 rounded-2xl">
-                      <h1 className="font-bold text-center text-black  text-md">
+                      <h1 className="font-bold text-center text-black text-md">
                         {t("الاجمالي")}
                       </h1>
 

@@ -13,9 +13,9 @@ const DarkModeComingSoon: React.FC<DarkModeComingSoonProps> = ({
   const { t } = useTranslation();
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
       <div
-        className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm w-full relative overflow-hidden"
+        className="relative w-full max-w-sm p-6 overflow-hidden bg-white rounded-lg dark:bg-gray-800"
         style={{ direction: "rtl" }}
       >
         {/* Animation elements */}
@@ -30,26 +30,26 @@ const DarkModeComingSoon: React.FC<DarkModeComingSoonProps> = ({
         </div>
 
         {/* Moon animation */}
-        <div className="w-full flex justify-center mb-4">
+        <div className="flex justify-center w-full mb-4">
           <div className="animate-bounce">
-            <FaMoon className="text-purple-600 text-4xl" />
+            <FaMoon className="text-4xl text-purple-600" />
           </div>
         </div>
 
-        <h2 className="text-xl font-bold text-center text-gray-800 dark:text-white mb-3">
+        <h2 className="mb-3 text-xl font-bold text-center text-gray-800 dark:text-white">
           {t("الوضع الليلي قادم قريباً")}
         </h2>
 
-        <p className="text-gray-600 dark:text-gray-300 text-center mb-6">
+        <p className="mb-6 text-center text-gray-600 dark:text-gray-300">
           {t("نحن نعمل بجد لتوفير تجربة مظلمة مريحة للعينين. ترقبوا")}
         </p>
 
         <div className="flex justify-center">
           <button
             onClick={onClose}
-            className="bg-blueprimary text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+            className="px-6 py-2 text-white transition-colors rounded-lg bg-blueprimary hover:bg-blue-600"
           >
-            {"حسناً، سأنتظر"}
+            {t("حسناً، سأنتظر")}
           </button>
         </div>
       </div>

@@ -184,7 +184,9 @@ const Login: React.FC = () => {
           />
           <div className="flex items-center justify-between">
             <IonRouterLink routerLink="/forgotpassword">
-              <h1 className="text-blueprimary">{t("هل نسيت كلمة السر؟")}</h1>
+              <h1 className="text-blueprimary" dir="ltr">
+                {t("هل نسيت كلمة السر؟")}
+              </h1>
             </IonRouterLink>
           </div>
         </div>

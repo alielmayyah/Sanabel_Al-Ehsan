@@ -163,7 +163,7 @@ const Profile: React.FC = () => {
             ))
           ) : (
             <div className="col-span-4 text-center">
-              <p>No trophies found. Complete challenges to earn trophies!</p>
+              <p>{t("No trophies found. Complete challenges to earn trophies!")}</p>
             </div>
           )}
         </motion.div>

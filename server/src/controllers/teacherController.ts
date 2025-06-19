@@ -904,14 +904,14 @@ const appearClassCategory =  async (req: Request, res: Response) => {
 const getClassesByCategory = async (req: Request, res: Response) => {
   try {
     const user = (req as Request & { user?: JwtPayload }).user;
-    const { category } = req.body;
+    const { category } = req.query;
 
     if (!user) {
       return res.status(404).json({ message: "User data not found in request" });
     }
 
     if (!category || typeof category !== "string") {
-      return res.status(400).json({ message: "Missing or invalid 'category' in body" });
+      return res.status(400).json({ message: "Missing or invalid 'category' in URL parameters" });
     }
 
     const teacher = await Teacher.findOne({ where: { userId: user.id } });
@@ -920,10 +920,13 @@ const getClassesByCategory = async (req: Request, res: Response) => {
     if (!teacher && !student) {
       return res.status(403).json({ message: "Access denied. Not a teacher or student." });
     }
-
+    const organizationId = teacher?.organizationId ?? student?.organizationId;
+    if (!organizationId) {
+      return res.status(400).json({ message: "Organization ID not found for user" });
+    }
     const classes = await Class.findAll({
       where: {
-        organizationId: teacher?.organizationId || student?.organizationId,
+        organizationId,
         category,
       },
       attributes: ["id", "classname"],

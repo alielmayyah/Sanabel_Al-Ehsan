@@ -50,7 +50,6 @@ const Step1: React.FC<Step1Props> = ({
 }) => {
   const { darkMode } = useTheme();
   const { t } = useTranslation();
-  const [showAvatarSelection, setShowAvatarSelection] = useState(false);
 
   const handleNameChange = (key: string, value: string) => {
     setName({ ...name, [key]: value });
@@ -65,8 +64,6 @@ const Step1: React.FC<Step1Props> = ({
       toast.error(t("noNumbersOrSymbols"));
     } else if (!role) {
       toast.error(t("pleaseSelectRole"));
-    } else if (!showAvatarSelection) {
-      toast.error(t("pleaseSelectAvatar"));
     } else {
       onComplete();
     }
@@ -74,25 +71,20 @@ const Step1: React.FC<Step1Props> = ({
 
   const handleRoleSelection = (selectedRole: string) => {
     setRole(selectedRole);
-    setShowAvatarSelection(true);
+
     console.log(role);
   };
 
-  const handleAvatarSelection = (avatar: string) => {
-    setAvatar(avatar);
-    console.log(avatar);
-  };
-
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10">
       <div className="absolute">
         <Toaster />
       </div>
       <div className="flex flex-col w-full gap-3">
         <GoBackButton onClick={onBack} />
 
-        <div className="flex flex-col gap-2 self-end">
-          <h1 className="text-black font-bold text-2xl text-end " dir="ltr">
+        <div className="flex flex-col self-end gap-2">
+          <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
             {t("انشاء حساب جديد")}
           </h1>
           <p className="text-[#B3B3B3] text-sm text-end">
@@ -101,16 +93,12 @@ const Step1: React.FC<Step1Props> = ({
         </div>
       </div>
 
-      <div className="w-full flex flex-col gap-5">
-        <div
-          className={`flex flex-col gap-5 transition-all duration-300 ${
-            showAvatarSelection ? "scale-75 mt-[-60px]" : "scale-100 mt-0"
-          }`}
-        >
+      <div className="flex flex-col w-full gap-5">
+        <div className={`flex flex-col gap-5 transition-all duration-300 `}>
           <div className="flex justify-center gap-5">
             <div
               className={`flex flex-col items-center gap-2 p-4 rounded-lg cursor-pointer transition-colors ${
-                role === "parent"
+                role === "Parent"
                   ? "bg-blueprimary text-white"
                   : "bg-gray-100 text-black"
               }`}
@@ -119,13 +107,13 @@ const Step1: React.FC<Step1Props> = ({
               <img
                 src={parentFemaleImg}
                 alt="Parent"
-                className="h-24 w-24 rounded-full"
+                className="w-24 h-24 rounded-full"
               />
-              <p className="text-center text-xl font-semibold">{t("Parent")}</p>
+              <p className="text-xl font-semibold text-center">{t("Parent")}</p>
             </div>
             <div
               className={`flex flex-col items-center gap-2 p-4 rounded-lg cursor-pointer transition-colors ${
-                role === "teacher"
+                role === "Teacher"
                   ? "bg-blueprimary text-white"
                   : "bg-gray-100 text-black"
               }`}
@@ -134,80 +122,16 @@ const Step1: React.FC<Step1Props> = ({
               <img
                 src={teacherFemaleImg}
                 alt="Teacher"
-                className="h-24 w-24 rounded-full"
+                className="w-24 h-24 rounded-full"
               />
-              <p className="text-center text-xl font-semibold">
+              <p className="text-xl font-semibold text-center">
                 {t("Teacher")}
               </p>
             </div>
           </div>
         </div>
 
-        {showAvatarSelection && (
-          <div className="flex justify-center gap-5 mt-4">
-            {role === "Parent" ? (
-              <>
-                <div
-                  className="flex flex-col items-center gap-2 p-4 rounded-lg cursor-pointer transition-colors bg-gray-100 hover:bg-blueprimary hover:text-white"
-                  onClick={() => handleAvatarSelection(parentMaleImg)}
-                >
-                  <img
-                    src={parentMaleImg}
-                    alt="Parent Male"
-                    className="h-32 w-32 rounded-full"
-                  />
-                  <p className="text-center text-xl font-semibold">
-                    {t("Male")}
-                  </p>
-                </div>
-                <div
-                  className="flex flex-col items-center gap-2 p-4 rounded-lg cursor-pointer transition-colors bg-gray-100 hover:bg-blueprimary hover:text-white"
-                  onClick={() => handleAvatarSelection(parentFemaleImg)}
-                >
-                  <img
-                    src={parentFemaleImg}
-                    alt="Parent Female"
-                    className="h-32 w-32 rounded-full"
-                  />
-                  <p className="text-center text-xl font-semibold">
-                    {t("Female")}
-                  </p>
-                </div>
-              </>
-            ) : (
-              <>
-                <div
-                  className="flex flex-col items-center gap-2 p-4 rounded-lg cursor-pointer transition-colors bg-gray-100 hover:bg-blueprimary hover:text-white"
-                  onClick={() => handleAvatarSelection(teacherMaleImg)}
-                >
-                  <img
-                    src={teacherMaleImg}
-                    alt="Teacher Male"
-                    className="h-32 w-32 rounded-full"
-                  />
-                  <p className="text-center text-xl font-semibold">
-                    {t("Male")}
-                  </p>
-                </div>
-                <div
-                  className="flex flex-col items-center gap-2 p-4 rounded-lg cursor-pointer transition-colors bg-gray-100 hover:bg-blueprimary hover:text-white"
-                  onClick={() => handleAvatarSelection(teacherFemaleImg)}
-                >
-                  <img
-                    src={teacherFemaleImg}
-                    alt="Teacher Female"
-                    className="h-32 w-32 rounded-full"
-                  />
-                  <p className="text-center text-xl font-semibold">
-                    {t("Female")}
-                  </p>
-                </div>
-              </>
-            )}
-          </div>
-        )}
-
-        <div className="w-full flex flex-col gap-10">
+        <div className="flex flex-col w-full gap-10">
           <div className="flex gap-3">
             <GenericInput
               type="text"

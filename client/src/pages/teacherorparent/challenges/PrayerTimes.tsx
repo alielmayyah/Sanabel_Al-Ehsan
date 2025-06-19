@@ -148,7 +148,7 @@ const SanabelPrayer: React.FC<PrayerTimesProps> = ({ location }) => {
   }
 
   return (
-    <div className="flex flex-row-reverse gap-1 items-center justify-between w-full p-2 ">
+    <div className="flex flex-row-reverse items-center justify-between w-full gap-1 p-2 ">
       {SanabelPrayerData.map((prayer, index) => (
         <div
           key={index}
@@ -166,7 +166,7 @@ const SanabelPrayer: React.FC<PrayerTimesProps> = ({ location }) => {
                 : "text-blueprimary"
             }`}
           >
-            {prayer.title}
+            {t(prayer.title)}
           </h1>
 
           <div

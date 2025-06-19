@@ -89,8 +89,7 @@ const EmailOTP: React.FC<OTPProps> = ({
       }
     } catch (error) {
       console.error("Error sending OTP:", error);
-      // toast.error(t("invalidOTP"));
-      toast.error("ERROR");
+      toast.error(t("invalidOTP"));
     } finally {
       setIsLoading(false);
     }
@@ -105,7 +104,7 @@ const EmailOTP: React.FC<OTPProps> = ({
     }
 
     try {
-      const response = await axios.post(
+      const response = await axios.patch(
         "http://localhost:3000/users/verfication-auth",
         { email, otp: otpCode }
       );
@@ -119,9 +118,8 @@ const EmailOTP: React.FC<OTPProps> = ({
       toast.error(t("invalidOTP"));
     }
   };
-
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10">
       <div className="absolute">
         <Toaster />
       </div>
@@ -132,8 +130,8 @@ const EmailOTP: React.FC<OTPProps> = ({
           <div className="flex flex-col w-full gap-3">
             <GoBackButton />
 
-            <div className="flex flex-col gap-2 self-end">
-              <h1 className="text-black font-bold text-2xl text-end " dir="ltr">
+            <div className="flex flex-col self-end gap-2">
+              <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
                 {isOtpSent
                   ? t("التحقق من البريد الإلكتروني")
                   : t("انشاء حساب جديد")}
@@ -154,7 +152,7 @@ const EmailOTP: React.FC<OTPProps> = ({
             </div>
           </div>
 
-          <div className="w-full flex flex-col gap-7  ">
+          <div className="flex flex-col w-full gap-7 ">
             {isOtpSent ? (
               <div className="flex flex-col items-center gap-6">
                 <h1 className="self-end text-[#121212] ">{t("الرمز")}</h1>
@@ -183,12 +181,12 @@ const EmailOTP: React.FC<OTPProps> = ({
               </div>
             ) : (
               <div className="flex flex-col gap-3 ">
-                <div className="flex-center flex-col gap-4">
+                <div className="flex-col gap-4 flex-center">
                   <img
                     src={parentOrTeacherImg}
-                    className="rounded-full border-2 bg-yellowprimary w-1/3"
+                    className="w-1/3 border-2 rounded-full bg-yellowprimary"
                   />
-                  <h1 className="text-center text-bold text-xl text-gray-800">
+                  <h1 className="text-xl text-center text-gray-800 text-bold">
                     {t("ولي امر او  معلم")}
                   </h1>
                 </div>

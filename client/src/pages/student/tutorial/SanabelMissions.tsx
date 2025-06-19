@@ -125,11 +125,11 @@ const SanabelOnboarding: React.FC = () => {
         className="flex flex-row-reverse items-center gap-4 mb-2"
         variants={itemVariants}
       >
-        <div className="w-16 h-16 rounded-full bg-white/20 p-2 shadow-lg">
+        <div className="w-16 h-16 p-2 rounded-full shadow-lg bg-white/20">
           <img
             src={type.image}
             alt={type.title}
-            className="w-full h-full object-contain"
+            className="object-contain w-full h-full"
           />
         </div>
         <div className="w-3/4 text-end">
@@ -141,7 +141,7 @@ const SanabelOnboarding: React.FC = () => {
       <AnimatePresence mode="wait">
         <motion.div
           key={`${currentTypeIndex}-${currentSanabelIndex}`}
-          className="rounded-xl p-3  w-screen  flex-center "
+          className="w-screen p-3 rounded-xl flex-center "
           variants={itemVariants}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -150,33 +150,35 @@ const SanabelOnboarding: React.FC = () => {
         >
           <div className="flex flex-col h-full gap-4">
             {/* Sanabel header */}
-            <div className="flex flex-row-reverse text-end items-center gap-3">
-              <div className="w-14 h-14 rounded-full bg-white/20 p-2 flex-shrink-0 flex items-center justify-center">
+            <div className="flex flex-row-reverse items-center gap-3 text-end">
+              <div className="flex items-center justify-center flex-shrink-0 p-2 rounded-full w-14 h-14 bg-white/20">
                 {
                   <img
                     src={sanabel.image}
                     alt={sanabel.title}
-                    className="w-full h-full object-contain"
+                    className="object-contain w-full h-full"
                   />
                 }
               </div>
               <div>
-                <h3 className="text-xl font-bold">{sanabel.title}</h3>
-                <p className="text-sm text-white/80">{sanabel.description}</p>
+                <h3 className="text-xl font-bold">{t(sanabel.title)}</h3>
+                <p className="text-sm text-white/80">
+                  {t(sanabel.description)}
+                </p>
               </div>
             </div>
 
             {/* Missions */}
 
-            <h4 className="text-lg font-semibold my-2 flex  flex-row-reverse items-center gap-2">
+            <h4 className="flex flex-row-reverse items-center gap-2 my-2 text-lg font-semibold">
               <span>{t("تحديات")}</span>
-              <div className="h-px flex-1 bg-white/30"></div>
+              <div className="flex-1 h-px bg-white/30"></div>
             </h4>
             <div className="space-y-3 ">
               {sanabel.missions.map((mission, idx) => (
                 <motion.div
                   key={idx}
-                  className="flex flex-row-reverse text-end items-center gap-3 p-3 rounded-lg  transition-colors border-2 border-white/20"
+                  className="flex flex-row-reverse items-center gap-3 p-3 transition-colors border-2 rounded-lg text-end border-white/20"
                   initial={{ opacity: 0, x: 10 }}
                   animate={{
                     opacity: 1,
@@ -184,15 +186,15 @@ const SanabelOnboarding: React.FC = () => {
                     transition: { delay: idx * 0.2 + 0.3, duration: 0.4 },
                   }}
                 >
-                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 text-lg">
+                  <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 text-lg rounded-full bg-white/20">
                     {mission.icon}
                   </div>
-                  <span className="flex-1 text-sm">{mission.text}</span>
-                  <div className="flex gap-1 bg-white/10 p-2 rounded-2xl">
+                  <span className="flex-1 text-sm">{t(mission.text)}</span>
+                  <div className="flex gap-1 p-2 bg-white/10 rounded-2xl">
                     {resources.map((resource, index: number) => (
                       <div
                         key={index}
-                        className="flex gap-0 flex-col items-center"
+                        className="flex flex-col items-center gap-0"
                       >
                         <img
                           src={resource.icon}
@@ -200,7 +202,7 @@ const SanabelOnboarding: React.FC = () => {
                           className="w-auto h-6"
                           loading="lazy"
                         />
-                        <h1 className="text-white text-sm">{resource.value}</h1>
+                        <h1 className="text-sm text-white">{resource.value}</h1>
                       </div>
                     ))}
                   </div>

@@ -68,8 +68,9 @@ const SanabelType: React.FC = () => {
     fetchUserData();
   }, []);
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const history = useHistory();
+  const currentLanguage = i18n.language;
 
   const [reminderPopup, setReminderPopup] = useState(
     localStorage.getItem("sanabelReminder") === null
@@ -81,10 +82,10 @@ const SanabelType: React.FC = () => {
   };
 
   const reminderData = [
-    "️اختر عددًا من التحديات اليومية والأسبوعية بحسب وقتك وظروفك.",
-    "️اجعل الهدف الرئيسي هو الإحسان في كل عمل تقوم به لتترك أثرًا إيجابيًا في نفسك ومحيطك.",
-    "️الحرص على التوازن بين العلاقات وعدم إهمال أي جانب.",
-    "️التدرج في الأهداف وتجنب إرهاق النفس في بداية التحدي.",
+    "️اختر عددًا من التحديات اليومية والأسبوعية بحسب وقتك وظروفك",
+    "اجعل الهدف الرئيسي هو الإحسان في كل عمل تقوم به لتترك أثرًا إيجابيًا في نفسك ومحيطك",
+    "الحرص على التوازن بين العلاقات وعدم إهمال أي جانب",
+    "التدرج في الأهداف وتجنب إرهاق النفس في بداية التحدي",
   ];
 
   const popupVariants = {
@@ -302,13 +303,16 @@ const SanabelType: React.FC = () => {
                   loading="lazy"
                 />
               </div>
-              <div className="flex flex-col items-end w-full">
-                <div className="gap-2 flex-center">
-                  <SanabelArrow className={`${colorClass}`} />
-                  <h1 className={`${colorClass} text-end text-sm font-bold`}>
-                    {t(items.title)}
-                  </h1>
-                </div>
+
+              <div className="gap-2 flex-center">
+                <SanabelArrow
+                  className={`${colorClass} ${
+                    currentLanguage == "en" && "rotate-180"
+                  }`}
+                />
+                <h1 className={`${colorClass} text-end text-sm font-bold`}>
+                  {t(items.title)}
+                </h1>
               </div>
             </motion.div>
           );

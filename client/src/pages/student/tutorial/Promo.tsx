@@ -119,12 +119,12 @@ const SanabelFeaturesPage = () => {
         <img
           src={sanabelAlEhsanLogo}
           alt="Sanabel Al Ehsan Logo"
-          className="w-full h-full object-contain"
+          className="object-contain w-full h-full"
         />
       </motion.div>
 
-      <div className="w-full flex flex-col items-center justify-center ">
-        <div className="w-full h-3 flex flex-row-reverse justify-between gap-1">
+      <div className="flex flex-col items-center justify-center w-full ">
+        <div className="flex flex-row-reverse justify-between w-full h-3 gap-1">
           {features.map((_, i) => (
             <motion.div
               key={i}
@@ -178,7 +178,7 @@ const SanabelFeaturesPage = () => {
             className="rounded-2xl p-2 gap-2 flex-center flex-col items-center text-center w-[90vw]  py-10"
           >
             <motion.div
-              className="p-4 rounded-full mb-4"
+              className="p-4 mb-4 rounded-full"
               style={{
                 backgroundColor: features[index].color + "1A",
               }}
@@ -207,15 +207,15 @@ const SanabelFeaturesPage = () => {
               transition={{ delay: 0.2, duration: 0.5 }}
               style={{ color: features[index].color }}
             >
-              {features[index].title}
+              {t(features[index].title)}
             </motion.h3>
             <motion.h3
-              className="text-lg text-gray-600 h-10 w-full"
+              className="w-full h-10 text-lg text-gray-600"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.5 }}
             >
-              {features[index].description}
+              {t(features[index].description)}
             </motion.h3>
           </motion.div>
         </AnimatePresence>

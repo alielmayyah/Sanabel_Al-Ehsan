@@ -17,6 +17,7 @@ import blueSanabel from "../../../assets/resources/سنبلة زرقاء.png";
 import redSanabel from "../../../assets/resources/سنبلة حمراء.png";
 import yellowSanabel from "../../../assets/resources/سنبلة صفراء.png";
 import xpIcon from "../../../assets/resources/اكس بي.png";
+import { motion } from "framer-motion";
 
 const SanabelMissionsPage: React.FC = () => {
   const { index, subIndex } = useParams<{ index: any; subIndex: any }>();
@@ -118,7 +119,27 @@ const SanabelMissionsPage: React.FC = () => {
                 console.log(APIIndex);
                 console.log(sanabel);
                 console.log(sanabel[subIndex]);
-                setMissions(missionsResponse.data.tasks);
+
+                // Sort missions so completed ones appear first
+                const sortedMissions = missionsResponse.data.tasks.sort(
+                  (a: any, b: any) => {
+                    if (
+                      a.completionStatus === "Completed" &&
+                      b.completionStatus !== "Completed"
+                    ) {
+                      return -1; // a comes first
+                    }
+                    if (
+                      a.completionStatus !== "Completed" &&
+                      b.completionStatus === "Completed"
+                    ) {
+                      return 1; // b comes first
+                    }
+                    return 0; // maintain original order for items with same completion status
+                  }
+                );
+
+                setMissions(sortedMissions);
               }
             }
           }
@@ -153,7 +174,7 @@ const SanabelMissionsPage: React.FC = () => {
     <div className="flex flex-col items-center w-full h-screen p-4 ">
       <div className="flex items-center justify-between w-full">
         <div className="opacity-0 w-[25px] h-25" />
-        <h1 className="self-center text-2xl font-bold text-black" dir="ltr">
+        <h1 className="self-center text-xl font-bold text-black" dir="ltr">
           {t(sanabel[subIndex])}
         </h1>
         <GoBackButton />
@@ -168,7 +189,7 @@ const SanabelMissionsPage: React.FC = () => {
         />
 
         <div className="flex flex-col justify-between gap-3">
-          <h1 className="text-xl font-bold text-center text-white ">
+          <h1 className="text-lg font-bold text-center text-white ">
             <span>{t("تحديات")}</span>
             <br></br>
             {t(sanabel[subIndex])}
@@ -202,8 +223,18 @@ const SanabelMissionsPage: React.FC = () => {
 
       <div className="flex flex-col items-center justify-start w-full gap-5 mt-5 overflow-y-auto h-2/3">
         {missions.map((mission: any, index: number) => (
-          <div
+          <motion.div
             key={index}
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{
+              duration: 0.5,
+              delay: index * 0.1,
+              type: "spring",
+              stiffness: 100,
+            }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             className={`flex w-full flex-col items-end justify-between sanabel-shadow-bottom h-max rounded-xl p-4 gap-2 border-t-2  ${
               mission.completionStatus !== "Completed"
                 ? `${colorBorderTop}`
@@ -211,34 +242,38 @@ const SanabelMissionsPage: React.FC = () => {
             }`}
           >
             {mission.completionStatus === "Completed" && (
-              <div className="flex justify-between w-full">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 + 0.3 }}
+                className="flex justify-between w-full"
+              >
                 <div className="flex justify-between w-full ">
-                  <h1 className="text-sm text-gray-400">
-                    {t("اكتمل منذ دقتين")}
-                  </h1>
-
                   <div className={`flex-center  text-[#498200]`}>
                     <h1> {t("تمت")}</h1>
                     <Tickcircle />
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )}
 
             <div className="flex items-center justify-between w-full">
-              <div
-                className={`flex gap-2 ${
-                  mission.completionStatus !== "Completed" && "opacity-50"
-                }`}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: mission.completionStatus !== "Completed" ? 0.5 : 1,
+                }}
+                transition={{ delay: index * 0.1 + 0.2 }}
+                className={`flex gap-2`}
               >
                 {renderResources(mission)}
-              </div>
+              </motion.div>
 
               <h1 className="w-2/3 text-sm text-black text-end">
-                {mission.title}
+                {t(mission.title)}
               </h1>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

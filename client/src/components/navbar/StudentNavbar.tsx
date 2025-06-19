@@ -42,12 +42,15 @@ function Navbar() {
   const location = useLocation();
 
   return (
-    <div
-      className={`flex h-20 bg-white dark:bg-[#121212] absolute bottom-0 ${"flex-row-reverse"} justify-around w-full p-3`}
+   <div
+      className={`flex h-20 bg-white dark:bg-[#121212] absolute bottom-0 ${
+        currentLanguage === "ar" ? "flex-row-reverse" : "flex-row"
+      } justify-around w-full p-3`}
+      dir="ltr"
     >
       {navList.map((item, key) => (
         <IonRouterLink routerLink={item.to}>
-          <div className="flex flex-col gap-0 items-center ">
+          <div className="flex flex-col items-center gap-0 ">
             <div
               className={` flex items-center justify-end ${
                 location.pathname === item.to
