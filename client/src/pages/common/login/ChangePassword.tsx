@@ -33,7 +33,6 @@ const Toaster = () => (
 const ChangePassword: React.FC = () => {
   const { t } = useTranslation();
 
-
   const [password, setPassword] = useState("");
   const [isValid, setIsValid] = useState({
     minLength: false,
@@ -88,7 +87,7 @@ const ChangePassword: React.FC = () => {
     }
 
     try {
-      const response = await axios.post(
+      const response = await axios.patch(
         "http://localhost:3000/users/reset-password",
         {
           email: email,
@@ -107,15 +106,15 @@ const ChangePassword: React.FC = () => {
     }
   };
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10">
       <div className="absolute">
         <Toaster />
       </div>
       <div className="flex flex-col w-full gap-3">
         <GoBackButton />
 
-        <div className="flex flex-col gap-2 self-end">
-          <h1 className="text-black font-bold text-2xl text-end ">
+        <div className="flex flex-col self-end gap-2">
+          <h1 className="text-2xl font-bold text-black text-end ">
             {t("إعادة تعيين كلمة السر")}
           </h1>
           <p className="text-[#B3B3B3] text-sm  text-end ">
@@ -124,7 +123,7 @@ const ChangePassword: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-10 w-full">
+      <div className="flex flex-col w-full gap-10">
         <div className="flex flex-col gap-5">
           <GenericInput
             type="password"
@@ -134,16 +133,16 @@ const ChangePassword: React.FC = () => {
             onChange={handlePasswordChange}
           />
         </div>
-        <div className="flex w-full bg-gray-200 h-2 rounded-xl gap-0">
+        <div className="flex w-full h-2 gap-0 bg-gray-200 rounded-xl">
           <div
             className={`${progressColor} h-2 rounded-xl`}
             style={{ width: progressWidth }}
           ></div>
         </div>
-        {/* className="bg-redprimary w-1/3 h-2  rounded-xl" */}
-        <div className="flex flex-col gap-3 items-end self-end">
+        {/* className="w-1/3 h-2 bg-redprimary rounded-xl" */}
+        <div className="flex flex-col items-end self-end gap-3">
           {validationCircles.map((circle) => (
-            <div className="flex-center gap-3 ">
+            <div className="gap-3 flex-center ">
               <h1
                 className={classNames(
                   circle.condition ? "text-green-500" : "text-[#8E99A4]"
@@ -159,7 +158,7 @@ const ChangePassword: React.FC = () => {
                     : "border-2 border-[#c7cbd3]"
                 )}
               >
-                {circle.condition && <FaCheck className="text-white text-sm" />}
+                {circle.condition && <FaCheck className="text-sm text-white" />}
               </div>
             </div>
           ))}
@@ -191,20 +190,20 @@ const ChangePassword: React.FC = () => {
           initial={{ opacity: 1, y: 250 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="absolute  h-full  w-full rounded-lg bottom-0 border-2 bg-gradient-to-t"
+          className="absolute bottom-0 w-full h-full border-2 rounded-lg bg-gradient-to-t"
         >
-          <div className="h-1/3 bg-black opacity-10 w-full"></div>
-          <div className="h-2/3 w-full flex flex-col p-5  items-center justify-around bg-white">
-            <div className="w-64 h-64 bg-redprimary rounded-full"></div>
+          <div className="w-full bg-black h-1/3 opacity-10"></div>
+          <div className="flex flex-col items-center justify-around w-full p-5 bg-white h-2/3">
+            <div className="w-64 h-64 rounded-full bg-redprimary"></div>
             <div className="flex flex-col gap-2 text-center">
-              <h1 className="text-black font-bold text-2xl text-center ">
+              <h1 className="text-2xl font-bold text-center text-black ">
                 {t("تم تغير كلمة السر بنجاح")}
               </h1>
               <p className="text-[#B3B3B3] text-sm  text-center ">
                 {t("قم بتسجيل الدخول و ابدأ في جمع الحسنات")}
               </p>
             </div>
-            <IonRouterLink routerLink="/login" className="text-md w-full">
+            <IonRouterLink routerLink="/login" className="w-full text-md">
               <PrimaryButton
                 style={""}
                 text={t("تسجيل الدخول")}

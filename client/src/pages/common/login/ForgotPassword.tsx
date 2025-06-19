@@ -61,7 +61,7 @@ const ForgotPassword: React.FC = () => {
     }
 
     try {
-      const response = await axios.post(
+      const response = await axios.patch(
         "http://localhost:3000/users/send-otp",
         { email }
       );
@@ -85,7 +85,7 @@ const ForgotPassword: React.FC = () => {
     }
 
     try {
-      const response = await axios.post(
+      const response = await axios.patch(
         "http://localhost:3000/users/verify-otp",
         { email, otp: otpCode }
       );
@@ -104,15 +104,15 @@ const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10">
       <div className="absolute">
         <Toaster />
       </div>
       <div className="flex flex-col w-full gap-3">
         <GoBackButton />
 
-        <div className="flex flex-col gap-2 self-end">
-          <h1 className="text-black font-bold text-2xl text-end " dir="ltr">
+        <div className="flex flex-col self-end gap-2">
+          <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
             {isOtpSent
               ? t("التحقق من البريد الإلكتروني")
               : t("هل نسيت كلمة السر؟")}
@@ -131,7 +131,7 @@ const ForgotPassword: React.FC = () => {
         </div>
       </div>
 
-      <div className="w-full flex flex-col gap-7 ">
+      <div className="flex flex-col w-full gap-7 ">
         {isOtpSent ? (
           <div className="flex flex-col items-center gap-6">
             <h1 className="self-end text-[#121212] ">{t("الرمز")}</h1>
