@@ -177,7 +177,7 @@ const ForgotPassword: React.FC = () => {
         </h1>
       </div>
 
-      <IonRouterLink routerLink="/signup" className="text-md ">
+      <IonRouterLink routerLink="/choosesignmethod" className="text-md ">
         <h1 className="text-[#8E99A4] font-semibold">
           {t("ليس لديك حساب؟")}
 

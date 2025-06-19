@@ -78,7 +78,7 @@ const Profile: React.FC = () => {
     {
       title: "تغيير كلمة المرور",
       icon: <ChangePassword size={25} />,
-      to: "profilechangepassword",
+      to: "forgotpassword",
     },
     {
       title: "سياسة الخصوصية",
@@ -110,11 +110,11 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-4">
-      <div className="flex justify-between items-center w-full gap-3">
+    <div className="flex flex-col items-center justify-between w-full h-full p-4">
+      <div className="flex items-center justify-between w-full gap-3">
         <div className="opacity-0 w-[45px]" />
 
-        <h1 className="text-black font-bold text-2xl text-end " dir="ltr">
+        <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
           {t("الاعدادات")}
         </h1>
         <GoBackButton />
@@ -127,11 +127,11 @@ const Profile: React.FC = () => {
         <h1>{t("تعديل الملف الشخصي")}</h1>
       </IonRouterLink> */}
 
-      <div className="flex flex-col justify-around h-3/5 items-center w-full">
+      <div className="flex flex-col items-center justify-around w-full h-3/5">
         {profileButtons.map((item, index) => (
-          <div className="flex flex-col -mt-10 w-full" key={index}>
+          <div className="flex flex-col w-full -mt-10" key={index}>
             <div
-              className="flex w-full p-2 justify-between items-center"
+              className="flex items-center justify-between w-full p-2"
               onClick={() =>
                 item.function ? item.function() : redirectPage(item.to)
               }
@@ -162,7 +162,7 @@ const Profile: React.FC = () => {
                 <ProfileArrow size={25} />
               )}
 
-              <div className="flex-center gap-3">
+              <div className="gap-3 flex-center">
                 <h1
                   className={`${
                     index == 5 ? "text-[#E14E54]" : "text-black dark:text-white"
@@ -185,13 +185,13 @@ const Profile: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex flex-col -mt-10 w-full">
+      <div className="flex flex-col w-full -mt-10">
         <div
           className="flex w-full p-2 justify-between items-center  border-b-[#E14E54] border-b-[1px] rounded-lg"
           onClick={logout}
         >
           <ProfileArrow size={25} />
-          <div className="flex-center gap-3">
+          <div className="gap-3 flex-center">
             <h1 className={`${"text-[#E14E54] "}`}>{t("تسجيل الخروج")}</h1>
             <div className={`${"bg-[#e14e5349]"}  p-2 rounded-full`}>
               <Logout size={25} />

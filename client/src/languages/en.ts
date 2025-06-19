@@ -923,6 +923,21 @@ const en = {
 
     "الـ XP": "XP",
     الماء: "Water",
+
+    "تهانينا! حصلت على كأس جديد": "Congratulations! You earned a new trophy",
+    "عدد النتائج:": "Number of results:",
+    "لم تحصل على أي كؤوس حتى الآن": "You haven't earned any trophies yet",
+    "جرب تغيير الفترة الزمنية للبحث": "Try changing the search time period",
+    "لا يوجد إشعارات": "No notifications",
+    "لا يوجد إشعارات في هذه الفترة": "No notifications during this period",
+    "جاري التحميل...": "Loading...",
+    "الأحدث أولاً": "Newest first",
+    "الأقدم أولاً": "Oldest first",
+    "ترتيب النتائج": "Sort results",
+
+    "الفترة الزمنية": "Time period",
+    الإشعارات: "Notifications",
+    "منذ {{days}} أيام": "{{days}} days ago",
   },
 };
 
