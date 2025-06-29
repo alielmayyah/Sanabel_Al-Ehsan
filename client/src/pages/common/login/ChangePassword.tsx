@@ -14,6 +14,7 @@ import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { RiLockPasswordLine } from "react-icons/ri";
 
 const Toaster = () => (
   <ToastContainer
@@ -40,6 +41,7 @@ const ChangePassword: React.FC = () => {
     hasSpecialChar: false,
   });
 
+  const [isPasswordChanged, setIsPasswordChanged] = useState(false);
   const validatePassword = (password: string) => {
     setIsValid({
       minLength: password.length >= 8,
@@ -73,8 +75,6 @@ const ChangePassword: React.FC = () => {
       : validConditionsCount === 3
       ? "bg-green-500"
       : "bg-gray-200";
-
-  const [isPasswordChanged, setIsPasswordChanged] = useState(false);
 
   const location = useLocation<{ email: string }>();
   const email = location.state?.email || "";
@@ -194,7 +194,7 @@ const ChangePassword: React.FC = () => {
         >
           <div className="w-full bg-black h-1/3 opacity-10"></div>
           <div className="flex flex-col items-center justify-around w-full p-5 bg-white h-2/3">
-            <div className="w-64 h-64 rounded-full bg-redprimary"></div>
+            <RiLockPasswordLine className="text-9xl text-blueprimary" />
             <div className="flex flex-col gap-2 text-center">
               <h1 className="text-2xl font-bold text-center text-black ">
                 {t("تم تغير كلمة السر بنجاح")}

@@ -360,7 +360,7 @@ const StudentProfileActivity: React.FC<StudentProfileActivityProps> = ({
                   {/* Activity Details */}
                   <div className="flex-1 mr-4 text-right">
                     <h3 className={`font-medium ${"text-blueprimary"}`}>
-                      {t("سنبلة" + " " + activity.type)}
+                      {t(t("سنبلة") + " " + t(activity.type))}
                     </h3>
                     <p className={`text-sm ${"text-gray-700"}`}>
                       {t(activity.title)}

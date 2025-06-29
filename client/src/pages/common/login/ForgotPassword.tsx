@@ -27,7 +27,8 @@ const Toaster = () => (
 );
 
 const ForgotPassword: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === "ar"; // Assuming Arabic is RTL
 
   const [email, setEmail] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -104,20 +105,35 @@ const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10">
+    <div
+      className={`flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10 ${
+        isRTL ? "rtl" : "ltr"
+      }`}
+      dir={isRTL ? "rtl" : "ltr"}
+    >
       <div className="absolute">
         <Toaster />
       </div>
       <div className="flex flex-col w-full gap-3">
-        <GoBackButton />
-
-        <div className="flex flex-col self-end gap-2">
-          <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
+        <div className="self-start">
+          <GoBackButton />
+        </div>
+        <div className={`flex flex-col gap-2 ${isRTL ? "self-start" : ""}`}>
+          <h1
+            className={`text-2xl font-bold text-black ${
+              isRTL ? "text-end" : "text-start"
+            }`}
+            dir="ltr"
+          >
             {isOtpSent
               ? t("التحقق من البريد الإلكتروني")
               : t("هل نسيت كلمة السر؟")}
           </h1>
-          <p className="text-[#B3B3B3] text-sm text-end">
+          <p
+            className={`text-[#B3B3B3] text-sm ${
+              isRTL ? "text-end" : "text-start"
+            }`}
+          >
             {!isOtpSent ? (
               t("أدخل بريدك الالكتروني لإعادة تعيين كلمة السر")
             ) : (
@@ -134,8 +150,12 @@ const ForgotPassword: React.FC = () => {
       <div className="flex flex-col w-full gap-7 ">
         {isOtpSent ? (
           <div className="flex flex-col items-center gap-6">
-            <h1 className="self-end text-[#121212] ">{t("الرمز")}</h1>
-            <div className="flex gap-3">
+            <h1
+              className={`text-[#121212] ${isRTL ? "self-end" : "self-start"}`}
+            >
+              {t("الرمز")}
+            </h1>
+            <div className="flex gap-3" dir="ltr">
               {otp.map((digit, index) => (
                 <input
                   key={index}
@@ -150,6 +170,7 @@ const ForgotPassword: React.FC = () => {
                   }`}
                   maxLength={1}
                   inputMode="numeric"
+                  dir="ltr"
                 />
               ))}
             </div>
@@ -171,7 +192,10 @@ const ForgotPassword: React.FC = () => {
             arrow="none"
           />
         </div>
-        <h1 className="text-[#B3B3B3] text-center" onClick={handleSendOTP}>
+        <h1
+          className={`text-[#B3B3B3] ${isRTL ? "text-center" : "text-center"}`}
+          onClick={handleSendOTP}
+        >
           {t("لم تتلق رمز")} <span dir="ltr">OTP</span> {t("بعد؟")}{" "}
           <span className="text-blueprimary ">{t("إعادة الإرسال")}</span>
         </h1>

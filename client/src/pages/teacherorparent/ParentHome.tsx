@@ -125,7 +125,7 @@ const ParentHome = () => {
                 {button.icon}
               </motion.div>
               <h2 className="px-2 text-lg font-bold text-center text-white">
-                {button.title}
+                {t(button.title)}
               </h2>
             </div>
 

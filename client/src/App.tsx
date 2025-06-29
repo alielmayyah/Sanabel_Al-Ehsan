@@ -78,6 +78,7 @@ import { useTranslation } from "react-i18next";
 import "./i18n";
 import ForgotPassword from "./pages/common/login/ForgotPassword";
 import ChangePassword from "./pages/common/login/ChangePassword";
+import StudentProfilePassword from "./pages/student/profile/StudentProfilePassword";
 
 import Leaderboards from "./pages/student/StudentLeaderboards";
 import ParentHome from "./pages/teacherorparent/ParentHome";
@@ -138,6 +139,11 @@ const App: React.FC = () => {
                     exact
                     path="/changepassword"
                     component={ChangePassword}
+                  />
+                  <Route
+                    exact
+                    path="/changeprofilepassword"
+                    component={StudentProfilePassword}
                   />
                   {/* Notifications */}
                   <Route

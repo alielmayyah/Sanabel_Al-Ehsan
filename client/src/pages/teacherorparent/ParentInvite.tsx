@@ -126,7 +126,7 @@ const TeacherView: React.FC = () => {
       {!viewingStudent && (
         <div className="flex flex-col w-full gap-4 p-2 bg-white rounded-lg flex-center">
           {/* Instructions Card */}
-          <div className="w-full p-6 border border-blue-200 rounded-lg shadow-sm bg-blue-50">
+          <div className="w-full p-6 border border-blue-200 rounded-lg shadow-sm bg-blue-50 text-end">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2 bg-blue-100 rounded-full">
                 <svg

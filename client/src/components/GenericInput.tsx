@@ -30,7 +30,7 @@ function GenericInput({
   }
 
   return (
-    <div className="flex flex-col justify-end gap-2 w-full relative">
+    <div className="relative flex flex-col justify-end w-full gap-2">
       <h1 className="self-end text-[#121212] ">{title}</h1>
       <input
         type={type === "password" && showPassword ? "text" : type}
@@ -40,6 +40,7 @@ function GenericInput({
         } border-2 border-[#EAECF0] rounded-xl w-full p-3 placeholder:text-[#ccc] `}
         value={value}
         onChange={onChange}
+        dir="ltr"
       />
       <div
         onClick={handleShowPassword}

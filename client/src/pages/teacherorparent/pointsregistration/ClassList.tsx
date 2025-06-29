@@ -1354,7 +1354,7 @@ const ClassList: React.FC = () => {
                     <h3
                       className={`${colors[index]} font-bold text-center mt-2`}
                     >
-                      {category.title}
+                      {t(category.title)}
                     </h3>
                   </div>
                 ))}
@@ -1376,7 +1376,7 @@ const ClassList: React.FC = () => {
                       className="object-contain w-16 h-16"
                     />
                     <h3 className="mt-2 font-bold text-center text-black">
-                      {type}
+                      {t(type)}
                     </h3>
                   </div>
                 ))}
@@ -1399,7 +1399,7 @@ const ClassList: React.FC = () => {
                         {renderResources(task)}
                       </div>
                       <h3 className="text-right text-black text-md">
-                        {task.title}
+                        {t(task.title)}
                       </h3>
                     </div>
                   </div>

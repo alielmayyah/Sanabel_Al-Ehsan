@@ -938,6 +938,24 @@ const en = {
     "الفترة الزمنية": "Time period",
     الإشعارات: "Notifications",
     "منذ {{days}} أيام": "{{days}} days ago",
+    الرمز: "Code",
+    "مجموع الجوائز": "Total Trophies",
+    "يمكن للطالب العثور على الكود الخاص به من خلال الدخول إلى حسابه والذهاب إلى صفحة الملف الشخصي. سيجد الكود مُعرَّض بوضوح في قسم معلومات الحساب":
+      "The student can find their code by logging into their account and going to the profile page. The code will be clearly displayed in the account information section.",
+
+    رجوع: "Back",
+
+    تسجيل: "Register",
+
+    "تسجيل للباقي": "Register the rest",
+
+    تأكيد: "Confirm",
+    "تم تسجيل المهمة بنجاح": "Task registered successfully",
+
+    "نقاط الخبرة": "XP",
+
+    "تحديد الكل": "Select All",
+    "إلغاء تحديد الكل": "Deselect All",
   },
 };
 

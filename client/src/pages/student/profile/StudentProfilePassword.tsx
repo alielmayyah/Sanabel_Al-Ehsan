@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { IonRouterLink } from "@ionic/react";
+
 import PrimaryButton from "../../../components/PrimaryButton";
+import { IonRouterLink } from "@ionic/react";
 import GenericInput from "../../../components/GenericInput";
 import GoBackButton from "../../../components/GoBackButton";
-import { FaCheck } from "react-icons/fa";
-import classNames from "classnames";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useUserContext } from "../../../context/StudentUserProvider"; // Updated import
 
 const Toaster = () => (
   <ToastContainer
@@ -24,154 +27,209 @@ const Toaster = () => (
   />
 );
 
-const Password: React.FC = () => {
-  const { t } = useTranslation();
+const ForgotPassword: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === "ar"; // Assuming Arabic is RTL
 
-  const [password, setPassword] = useState("12345678*"); // Original password
-  const [tempOldPassword, setTempOldPassword] = useState(""); // Input for old password
-  const [newPassword, setNewPassword] = useState(""); // Input for new password
-  const [isValid, setIsValid] = useState({
-    minLength: false,
-    hasNumber: false,
-    hasSpecialChar: false,
-  });
+  const [email, setEmail] = useState("");
+  const [isOtpSent, setIsOtpSent] = useState(false);
 
-  // Validate only the new password
-  const validatePassword = (newPassword: string) => {
-    setIsValid({
-      minLength: newPassword.length >= 8,
-      hasNumber: /\d/.test(newPassword),
-      hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(newPassword),
-    });
+  const [otp, setOtp] = useState(["", "", "", ""]);
+
+  const history = useHistory();
+  const { user, isLoading } = useUserContext(); // Updated to use unified context
+
+  // Get email from user context, works for all roles
+  const emailaddress = user?.email || "";
+
+  const handleOtpChange = (value: string, index: number) => {
+    if (!/^\d*$/.test(value)) return; // Prevents entering non-numeric values
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+
+    // Automatically focus the next input
+    if (value && index < otp.length - 1) {
+      const nextInput = document.getElementById(`otp-${index + 1}`);
+      if (nextInput) nextInput.focus();
+    }
   };
 
-  const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const password = e.target.value;
-    setNewPassword(password);
-    validatePassword(password);
-  };
+  const handleSendOTP = async () => {
+    // Use email from user context if available, otherwise use manual input
+    const emailToUse = emailaddress || email;
 
-  const finishPasswordStep = () => {
-    // Check if the old password is correct
-    if (tempOldPassword !== password) {
-      toast.error(t("كلمة السر القديمة غير صحيحة")); // "Old password is incorrect"
+    if (!emailToUse) {
+      toast.error(t("fillEmailField"));
       return;
     }
 
-    // Check if the new password meets validation conditions
-    const validConditionsCount = Object.values(isValid).filter(Boolean).length;
-    if (validConditionsCount < 3) {
-      toast.error(t("كلمة السر الجديدة لا تلبي المتطلبات")); // "New password does not meet requirements"
-    } else {
-      // Process password change logic here
-      console.log("Old Password:", tempOldPassword);
-      console.log("New Password:", newPassword);
-      toast.success(t("تم تغيير كلمة السر بنجاح")); // "Password changed successfully"
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToUse)) {
+      toast.error(t("invalidEmailFormat"));
+      return;
+    }
+
+    try {
+      const response = await axios.patch(
+        "http://localhost:3000/users/send-otp",
+        { email: emailToUse }
+      );
+
+      if (response.status === 200) {
+        setIsOtpSent(true);
+        toast.success(t("otpSentSuccess"));
+      }
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      toast.error(t("invalidOTP"));
     }
   };
 
-  const validationCircles = [
-    { condition: isValid.minLength, text: t("8 أحرف كحد أدنى") },
-    { condition: isValid.hasNumber, text: t("رقم") },
-    { condition: isValid.hasSpecialChar, text: t("رمز") },
-  ];
+  const handleConfirmOTP = async () => {
+    const otpCode = otp.join("");
+    const emailToUse = emailaddress || email;
 
-  const validConditionsCount = Object.values(isValid).filter(Boolean).length;
-  const progressWidth = `${(validConditionsCount / 3) * 100}%`;
-  const progressColor =
-    validConditionsCount === 1
-      ? "bg-red-500"
-      : validConditionsCount === 2
-      ? "bg-yellow-500"
-      : validConditionsCount === 3
-      ? "bg-green-500"
-      : "bg-gray-200";
+    if (otpCode.length !== 4) {
+      toast.error(t("enter4DigitOTP"));
+      return;
+    }
+
+    try {
+      const response = await axios.patch(
+        "http://localhost:3000/users/verify-otp",
+        { email: emailToUse, otp: otpCode }
+      );
+
+      if (response.status === 200) {
+        toast.success(t("otpVerifySuccess"));
+        history.push({
+          pathname: "/changepassword",
+          state: { email: emailToUse },
+        });
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      toast.error(t("invalidOTP"));
+    }
+  };
+
+  // Show loading state while fetching user data
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center w-full h-full">
+        <div className="text-center">
+          <p>{t("loading") || "Loading..."}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
-      <Toaster />
-      <div className="flex flex-row-reverse items-center w-full gap-3">
-        <GoBackButton />
-        <h1 className="text-black font-bold text-2xl text-end ">
-          {t("تغيير كلمة السر")}
-        </h1>
+    <div
+      className={`flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10 ${
+        isRTL ? "rtl" : "ltr"
+      }`}
+      dir={isRTL ? "rtl" : "ltr"}
+    >
+      <div className="absolute">
+        <Toaster />
+      </div>
+      <div className="flex flex-col w-full gap-3">
+        <div className="self-start">
+          <GoBackButton />
+        </div>
+        <div className={`flex flex-col gap-2 ${isRTL ? "self-start" : ""}`}>
+          <h1
+            className={`text-2xl font-bold text-black ${
+              isRTL ? "text-end" : "text-start"
+            }`}
+            dir="ltr"
+          >
+            {isOtpSent
+              ? t("التحقق من البريد الإلكتروني")
+              : t("إعادة تعيين كلمة السر")}
+          </h1>
+          <p
+            className={`text-[#B3B3B3] text-sm ${
+              isRTL ? "text-end" : "text-start"
+            }`}
+          >
+            {!isOtpSent ? (
+              ""
+            ) : (
+              <span>
+                {t("لقد أرسلنا للتو الرمز المكون من 5 أرقام إلى")}{" "}
+                <span className="font-semibold text-blueprimary">
+                  {emailaddress || email}
+                </span>{" "}
+                {t("أدخله أدناه:")}
+              </span>
+            )}
+          </p>
+        </div>
       </div>
 
-      <div className="flex flex-col gap-10 w-full">
-        {/* Old Password */}
-        <div className="flex flex-col gap-5">
-          <GenericInput
-            type="password"
-            placeholder={t("كلمة السر القديمة")}
-            title={t("كلمة السر القديمة")}
-            value={tempOldPassword}
-            onChange={(e) => setTempOldPassword(e.target.value)} // Only update old password state
-          />
-        </div>
-
-        {/* New Password */}
-        <div className="flex flex-col gap-5">
-          <GenericInput
-            type="password"
-            placeholder={t("ادخل كلمة السر")}
-            title={t("كلمة السر الجديدة")}
-            value={newPassword}
-            onChange={handleNewPasswordChange} // Validate only the new password
-          />
-        </div>
-
-        {/* Progress Bar */}
-        <div className="flex w-full bg-gray-200 h-2 rounded-xl gap-0">
-          <div
-            className={`${progressColor} h-2 rounded-xl`}
-            style={{ width: progressWidth }}
-          ></div>
-        </div>
-
-        {/* Validation Circles */}
-        <div className="flex flex-col gap-3 items-end self-end">
-          {validationCircles.map((circle, index) => (
-            <div key={index} className="flex-center gap-3">
-              <h1
-                className={classNames(
-                  circle.condition ? "text-green-500" : "text-[#8E99A4]"
-                )}
-              >
-                {circle.text}
-              </h1>
-              <div
-                className={classNames(
-                  "rounded-full w-7 h-7 flex-center",
-                  circle.condition
-                    ? "bg-green-500"
-                    : "border-2 border-[#c7cbd3]"
-                )}
-              >
-                {circle.condition && <FaCheck className="text-white text-sm" />}
-              </div>
+      <div className="flex flex-col w-full gap-7 ">
+        {isOtpSent ? (
+          <div className="flex flex-col items-center gap-6">
+            <h1
+              className={`text-[#121212] ${isRTL ? "self-end" : "self-start"}`}
+            >
+              {t("الرمز")}
+            </h1>
+            <div className="flex gap-3" dir="ltr">
+              {otp.map((digit, index) => (
+                <input
+                  key={index}
+                  id={`otp-${index}`}
+                  type="text"
+                  value={digit}
+                  onChange={(e) => handleOtpChange(e.target.value, index)}
+                  className={`w-10 h-10 text-center font-bold rounded-full ${
+                    digit
+                      ? "bg-transparent text-2xl text-black"
+                      : "bg-blueprimary text-white opacity-50"
+                  }`}
+                  maxLength={1}
+                  inputMode="numeric"
+                  dir="ltr"
+                />
+              ))}
             </div>
-          ))}
+          </div>
+        ) : (
+          <>
+            {/* Show user email if available, otherwise show input field */}
+            {emailaddress && (
+              <h1 className="text-2xl text-center text-blueprimary">
+                {emailaddress}
+              </h1>
+            )}
+          </>
+        )}
+
+        <div onClick={isOtpSent ? handleConfirmOTP : handleSendOTP}>
+          <PrimaryButton
+            style="fill"
+            text={`${isOtpSent ? "تأكيد الرمز" : "ارسل الرمز"}`}
+            arrow="none"
+          />
         </div>
+        {isOtpSent && (
+          <h1
+            className={`text-[#B3B3B3] ${
+              isRTL ? "text-center" : "text-center"
+            }`}
+            onClick={handleSendOTP}
+          >
+            {t("لم تتلق رمز")} <span dir="ltr">OTP</span> {t("بعد؟")}{" "}
+            <span className="text-blueprimary ">{t("إعادة الإرسال")}</span>
+          </h1>
+        )}
       </div>
-
-      {/* Save Button */}
-      <div
-        className={`w-full ${
-          validConditionsCount === 3 ? "opacity-100" : "opacity-50"
-        }`}
-        onClick={finishPasswordStep}
-      >
-        <PrimaryButton style={""} text={t("حفظ")} arrow={"none"} />
-      </div>
-
-      <IonRouterLink routerLink="/login" className="text-md">
-        <h1 className="text-[#8E99A4] font-semibold">
-          {t("هل لديك حساب؟")}{" "}
-          <span className="text-blueprimary ">{t("تسجيل الدخول")}</span>
-        </h1>
-      </IonRouterLink>
+      <div></div>
     </div>
   );
 };
 
-export default Password;
+export default ForgotPassword;

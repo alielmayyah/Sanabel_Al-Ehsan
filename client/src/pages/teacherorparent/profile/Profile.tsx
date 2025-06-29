@@ -78,7 +78,7 @@ const Profile: React.FC = () => {
     {
       title: "تغيير كلمة المرور",
       icon: <ChangePassword size={25} />,
-      to: "forgotpassword",
+      to: "/changeprofilepassword",
     },
     {
       title: "سياسة الخصوصية",

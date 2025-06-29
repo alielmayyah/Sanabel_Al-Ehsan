@@ -121,7 +121,7 @@ const DuplicateTaskPopup = ({
         {/* Action Buttons */}
         <div className="flex w-full gap-3">
           <PrimaryButton
-            style="bg-gray-300 text-black flex-1"
+            style="stroke"
             text={t("إلغاء")}
             arrow="none"
             onClick={onClose}
@@ -191,7 +191,7 @@ const ConfirmationPopup = ({
         {/* Task Information */}
         <div className="flex-col justify-center w-full p-3 mb-5 border-2 rounded-xl flex-center">
           <h3 className="mb-2 text-lg font-bold text-center text-black">
-            {selectedTask.title}
+            {t(selectedTask.title)}
           </h3>
           <div className="flex justify-center mb-3">
             <img
@@ -236,7 +236,7 @@ const ConfirmationPopup = ({
         {/* Action Buttons */}
         <div className="flex w-full gap-3">
           <PrimaryButton
-            style="bg-gray-300 text-black flex-1"
+            style="stroke"
             text={t("إلغاء")}
             arrow="none"
             onClick={onClose}
@@ -290,9 +290,10 @@ const CongratsPopup = ({
           </h2>
           <p className="mb-2 text-gray-600">
             <span className="font-bold">
-              {selectedTask?.title || "المحددة"}
+              {t(selectedTask?.title ?? "المحددة")}
             </span>
           </p>
+
           <p className="mb-4 text-gray-600">
             {t("لعدد")}{" "}
             <span className="font-bold text-blueprimary">
@@ -555,7 +556,7 @@ const StudentList = () => {
 
   // Get selected student data
   const selectedStudents = selectedStudentIds
-    .map((id) => studentsData.find((student, index) => index === id))
+    .map((id) => studentsData.find((student, index) => index === id - 1))
     .filter(Boolean) as StudentData[];
 
   const handleContinueClick = () => {
@@ -623,6 +624,7 @@ const StudentList = () => {
     <div
       className="flex flex-col items-center justify-between gap-5 p-4"
       id="page-height"
+      dir="ltr"
     >
       {/* Header and Search */}
       <div className="flex-col w-full gap-3 flex-center">
@@ -786,7 +788,7 @@ const StudentList = () => {
                     <h3
                       className={`${colors[index]} font-bold text-center mt-2`}
                     >
-                      {category.title}
+                      {t(category.title)}
                     </h3>
                   </div>
                 ))}
@@ -808,7 +810,7 @@ const StudentList = () => {
                       className="object-contain w-16 h-16"
                     />
                     <h3 className="mt-2 font-bold text-center text-black">
-                      {type}
+                      {t(type)}
                     </h3>
                   </div>
                 ))}
@@ -831,7 +833,7 @@ const StudentList = () => {
                         {renderResources(task)}
                       </div>
                       <h3 className="text-right text-black text-md">
-                        {task.title}
+                        {t(task.title)}
                       </h3>
                     </div>
                   </div>
@@ -855,7 +857,7 @@ const StudentList = () => {
       {isStudentsSelected && (
         <div className="flex w-full gap-3">
           <PrimaryButton
-            style="bg-gray-300 text-black flex-1"
+            style="stroke"
             text={t("رجوع")}
             arrow="none"
             onClick={() => {
@@ -873,7 +875,7 @@ const StudentList = () => {
           {selectedTaskId !== null && (
             <PrimaryButton
               style="flex-1"
-              text={t("تسجيل ")}
+              text={t("تسجيل")}
               arrow="none"
               onClick={handleTaskRegister}
             />

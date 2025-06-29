@@ -89,34 +89,34 @@ const StudentList: React.FC = () => {
       className="flex flex-col items-center justify-between gap-10 p-4"
       id="page-height"
     >
-      <div className="flex-center flex-col gap-3 w-full">
-        <div className="flex items-center w-full justify-between">
-          <div className="w-16 h-16  "></div>
+      <div className="flex-col w-full gap-3 flex-center">
+        <div className="flex items-center justify-between w-full">
+          <div className="w-16 h-16 "></div>
 
-          <h1 className="text-black font-bold text-2xl self-center" dir="ltr">
+          <h1 className="self-center text-2xl font-bold text-black" dir="ltr">
             {t("الطلاب")}
           </h1>
 
           <GoBackButton />
         </div>
 
-        <div className="flex w-full justify-between items-center  border-2 rounded-xl px-2 py-1">
+        <div className="flex items-center justify-between w-full px-2 py-1 border-2 rounded-xl">
           <div className="w-10 h-10 bg-blueprimary rounded-xl flex-center">
             <SearchIcon className="text-white" size={20} />
           </div>
           <input
             type="text"
             placeholder={t("ابحث عن طالب")}
-            className=" drop-shadow-sm py-3 w-full bg-transparent  text-end  text-black"
+            className="w-full py-3 text-black bg-transparent drop-shadow-sm text-end"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </div>
-      <div className="flex flex-col gap-2 overflow-y-auto w-full h-">
+      <div className="flex flex-col w-full gap-2 overflow-y-auto h-">
         {filteredStudents.map((student, index) => (
           <div
-            className="w-full flex p-3  justify-between items-center border-2 rounded-xl "
+            className="flex items-center justify-between w-full p-3 border-2 rounded-xl "
             key={index}
           >
             <div
