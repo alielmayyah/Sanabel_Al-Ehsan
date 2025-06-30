@@ -296,7 +296,7 @@ const en = {
       "The student can find their code by logging into their account and going to the profile page They will find the code clearly displayed in the account information section",
     "ادخل كود دعوة الطالب": "Enter student invitation code",
     بحث: "Search",
-    "تهانينا!": "Congratulations!",
+    "تهانينا!": "Congratulations",
     "لقد تمت دعوة الطالب بنجاح": "Student has been successfully invited",
     "الذهاب إلى الصفحة الرئيسية": "Go to Home Page",
     "المستوى (الأعلى)": "Level (Highest)",
@@ -924,7 +924,7 @@ const en = {
     "الـ XP": "XP",
     الماء: "Water",
 
-    "تهانينا! حصلت على كأس جديد": "Congratulations! You earned a new trophy",
+    "تهانينا! حصلت على كأس جديد": "Congrats! You earned a new trophy",
     "عدد النتائج:": "Number of results:",
     "لم تحصل على أي كؤوس حتى الآن": "You haven't earned any trophies yet",
     "جرب تغيير الفترة الزمنية للبحث": "Try changing the search time period",
@@ -947,7 +947,7 @@ const en = {
 
     تسجيل: "Register",
 
-    "تسجيل للباقي": "Register the rest",
+    "تسجيل للباقي": "Register rest",
 
     تأكيد: "Confirm",
     "تم تسجيل المهمة بنجاح": "Task registered successfully",
@@ -956,6 +956,7 @@ const en = {
 
     "تحديد الكل": "Select All",
     "إلغاء تحديد الكل": "Deselect All",
+    "تفاصيل الفصل": "Class Details",
   },
 };
 

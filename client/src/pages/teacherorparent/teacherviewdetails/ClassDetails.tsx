@@ -119,40 +119,40 @@ const ClassDetails: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen w-full items-center justify-start gap-3 p-4">
+    <div className="flex flex-col items-center justify-start w-full h-screen gap-3 p-4">
       {/* Header */}
-      <div className="flex items-center w-full justify-between">
+      <div className="flex items-center justify-between w-full">
         <div className="opacity-0 w-[25px]" />
-        <h1 className="text-black font-bold text-2xl self-center">
+        <h1 className="self-center text-2xl font-bold text-black">
           {t("تفاصيل الفصل")}
         </h1>
         <GoBackButton />
       </div>
 
       {/* Class Info Card */}
-      <div className="w-full bg-redprimary h-16 rounded-xl flex items-center justify-center p-2 my-5">
-        <h1 className="text-xl text-white capitalize font-bold text-center">
-          {studentsData[0]?.class?.classname || t("لا يوجد فصل")}
+      <div className="flex items-center justify-center w-full h-16 p-2 my-5 bg-redprimary rounded-xl">
+        <h1 className="text-xl font-bold text-center text-white capitalize">
+          {studentsData[0]?.class?.classname}
         </h1>
       </div>
 
       {/* Student List Header and Search */}
-      <div className="flex items-end flex-col gap-2 w-full">
-        <div className="w-full justify-between flex">
+      <div className="flex flex-col items-end w-full gap-2">
+        <div className="flex justify-between w-full">
           <h1 className="text-[#999]">
             {filteredStudents.length} {t("طالب")}
           </h1>
-          <h1 className="text-black font-bold text-xl text-end">
+          <h1 className="text-xl font-bold text-black text-end">
             {t("الطلاب")}
           </h1>
         </div>
 
         {/* Filter and Layout Options Row */}
-        <div className="flex justify-between items-center w-full mb-3">
+        <div className="flex items-center justify-between w-full mb-3">
           {/* Filter Menu */}
           <div className="relative">
             <div
-              className="flex items-center gap-2 bg-gray-200 px-4 py-2 rounded-xl"
+              className="flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-xl"
               onClick={() => setShowFilterDropdown(!showFilterDropdown)}
             >
               <FilterIcon />
@@ -166,7 +166,7 @@ const ClassDetails: React.FC = () => {
 
             {/* Dropdown Menu */}
             {showFilterDropdown && (
-              <div className="absolute left-0 mt-2 bg-white text-black shadow-lg rounded-xl z-10 min-w-max border">
+              <div className="absolute left-0 z-10 mt-2 text-black bg-white border shadow-lg rounded-xl min-w-max">
                 {filterOptions.map((option) => (
                   <div
                     key={option.value}
@@ -188,7 +188,7 @@ const ClassDetails: React.FC = () => {
           </div>
 
           {/* Layout Switcher */}
-          <div className="flex items-center gap-2 bg-gray-200 rounded-xl overflow-hidden">
+          <div className="flex items-center gap-2 overflow-hidden bg-gray-200 rounded-xl">
             <div
               className={`p-2 cursor-pointer ${
                 layoutType === "grid"
@@ -213,14 +213,14 @@ const ClassDetails: React.FC = () => {
         </div>
 
         {/* Search bar */}
-        <div className="flex w-full justify-between items-center border-2 rounded-xl px-2 py-1">
+        <div className="flex items-center justify-between w-full px-2 py-1 border-2 rounded-xl">
           <div className="w-10 h-10 bg-blueprimary rounded-xl flex-center">
             <SearchIcon className="text-white" size={20} />
           </div>
           <input
             type="text"
             placeholder={t("ابحث عن طالب")}
-            className="drop-shadow-sm py-3 w-full bg-transparent text-end text-black"
+            className="w-full py-3 text-black bg-transparent drop-shadow-sm text-end"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -228,33 +228,33 @@ const ClassDetails: React.FC = () => {
       </div>
 
       {/* Students List */}
-      <div className="w-full overflow-y-auto flex-1 mt-3">
+      <div className="flex-1 w-full mt-3 overflow-y-auto">
         {isLoading ? (
-          <div className="flex justify-center items-center w-full py-10">
+          <div className="flex items-center justify-center w-full py-10">
             <p className="text-gray-500">{t("جاري التحميل...")}</p>
           </div>
         ) : filteredStudents.length > 0 ? (
           layoutType === "grid" ? (
             // Grid View
-            <div className="grid grid-cols-3 w-full gap-2 mt-2">
+            <div className="grid w-full grid-cols-3 gap-2 mt-2">
               {filteredStudents.map((student: any) => (
                 <div
                   key={student.id}
-                  className="flex flex-col items-center p-2 gap-1 border-2 rounded-xl hover:bg-gray-50 cursor-pointer"
+                  className="flex flex-col items-center gap-1 p-2 border-2 cursor-pointer rounded-xl hover:bg-gray-50"
                   onClick={() => navigateToStudentDetail(student.id)}
                 >
-                  <div className="w-12 h-12 rounded-full mb-1">
+                  <div className="w-12 h-12 mb-1 rounded-full">
                     <GetAvatar userAvatarData={student.user.profileImg} />
                   </div>
-                  <h1 className="text-black text-center font-medium">
+                  <h1 className="font-medium text-center text-black">
                     {`${student.user.firstName}`}
                   </h1>
-                  <div className="flex-center flex-col">
-                    <span className="text-gray-500 text-sm capitalize">
-                      {student.class?.classname || t("لا يوجد فصل")}
+                  <div className="flex-col flex-center">
+                    <span className="text-sm text-gray-500 capitalize">
+                      {student.class?.classname }
                     </span>
-                    <span className="text-gray-500 text-sm capitalize">
-                      {student.grade || t("لا يوجد فصل")}
+                    <span className="text-sm text-gray-500 capitalize">
+                      {student.grade}
                     </span>
                   </div>
                   <MedalAndLevel
@@ -272,7 +272,7 @@ const ClassDetails: React.FC = () => {
               {filteredStudents.map((student: any) => (
                 <div
                   key={student.id}
-                  className="flex items-center justify-between p-2 border-2 rounded-xl hover:bg-gray-50 cursor-pointer"
+                  className="flex items-center justify-between p-2 border-2 cursor-pointer rounded-xl hover:bg-gray-50"
                   onClick={() => navigateToStudentDetail(student.id)}
                 >
                   <div className="flex items-center gap-3">
@@ -282,21 +282,21 @@ const ClassDetails: React.FC = () => {
                       dir=""
                       size={"w-12"}
                     />
-                    <div className="flex-center flex-col">
-                      <span className="text-gray-500 text-sm capitalize">
-                        {student.class?.classname || t("لا يوجد فصل")}
+                    <div className="flex-col flex-center">
+                      <span className="text-sm text-gray-500 capitalize">
+                        {student.class?.classname }
                       </span>
-                      <span className="text-gray-500 text-sm capitalize">
-                        {student.grade || t("لا يوجد فصل")}
+                      <span className="text-sm text-gray-500 capitalize">
+                        {student.grade }
                       </span>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <h1 className="text-black font-medium">
+                    <h1 className="font-medium text-black">
                       {`${student.user.firstName} ${student.user.lastName}`}
                     </h1>
-                    <div className="w-10 h-10 rounded-full overflow-hidden">
+                    <div className="w-10 h-10 overflow-hidden rounded-full">
                       <GetAvatar userAvatarData={student.user.profileImg} />
                     </div>
                   </div>
@@ -305,7 +305,7 @@ const ClassDetails: React.FC = () => {
             </div>
           )
         ) : (
-          <div className="flex justify-center items-center w-full py-10">
+          <div className="flex items-center justify-center w-full py-10">
             <p className="text-gray-500">{t("لا يوجد طلاب")}</p>
           </div>
         )}

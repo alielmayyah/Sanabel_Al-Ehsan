@@ -340,7 +340,7 @@ const ConfirmationPopup = ({
 
         <div className="flex-col justify-center w-full p-3 mb-5 border-2 rounded-xl flex-center">
           <h3 className="mb-2 text-lg font-bold text-center text-black">
-            {selectedTask.title}
+            {t(selectedTask?.title || "")}
           </h3>
           <div className="flex justify-center mb-3">
             <img
@@ -433,9 +433,7 @@ const CongratsPopup = ({
             {t("تم تسجيل المهمة بنجاح")}
           </h2>
           <p className="mb-2 text-gray-600">
-            <span className="font-bold">
-              {selectedTask?.title || "المحددة"}
-            </span>
+            <span className="font-bold">{t(selectedTask?.title || "")}</span>
           </p>
           <p className="mb-4 text-gray-600">
             {t("لعدد")}{" "}
@@ -1442,7 +1440,7 @@ const ClassList: React.FC = () => {
           {selectedTaskId !== null && (
             <PrimaryButton
               style="flex-1"
-              text={t("تسجيل ")}
+              text={t("تسجيل")}
               arrow="none"
               onClick={handleTaskRegister}
             />

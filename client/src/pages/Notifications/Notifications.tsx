@@ -16,6 +16,13 @@ import treestage3 from "../../assets/trophies/Other Trophies/مرحلة - 3.png"
 import treestage4 from "../../assets/trophies/Other Trophies/مرحلة - 4.png";
 import treestage5 from "../../assets/trophies/Other Trophies/مرحلة - 5.png";
 
+import blueSanabel from "../../assets/resources/سنبلة زرقاء.png";
+import redSanabel from "../../assets/resources/سنبلة حمراء.png";
+import yellowSanabel from "../../assets/resources/سنبلة صفراء.png";
+import xpIcon from "../../assets/resources/اكس بي.png";
+import water from "../../assets/resources/ماء.png";
+import fertilizer from "../../assets/resources/سماد.png";
+
 interface FilterOptions {
   timeRange: "all" | "today" | "week" | "month";
   sortBy: "newest" | "oldest";
@@ -84,7 +91,7 @@ const Notifications: React.FC = () => {
     if (trophy.challenge.title === "Tree Stage") {
       return `${t(trophy.challenge.title)} ${trophy.challenge.point}`;
     } else if (trophy.challenge.point > 1) {
-      return `${t(t(trophy.challenge.title))} - المستوى ${
+      return `${t(t(trophy.challenge.title))} - ${t("المستوى")} ${
         trophy.challenge.point
       }`;
     } else {
@@ -196,6 +203,18 @@ const Notifications: React.FC = () => {
     fetchAllTrophies();
   }, []);
 
+  const getTrophyRewards = (trophy: any) => {
+    return [
+      { value: trophy.challenge.snabelBlue || 0, icon: blueSanabel },
+      { value: trophy.challenge.snabelRed || 0, icon: redSanabel },
+      { value: trophy.challenge.snabelYellow || 0, icon: yellowSanabel },
+      { value: trophy.challenge.xp || 0, icon: xpIcon },
+      { value: trophy.challenge.water || 0, icon: water },
+      { value: trophy.challenge.seeder || 0, icon: fertilizer },
+    ].filter((reward) => reward.value > 0);
+  };
+
+  console.log("Filtered Trophies:", filteredTrophies);
   return (
     <div className="flex flex-col w-full h-full bg-gray-50">
       {/* Header */}
@@ -347,7 +366,7 @@ const Notifications: React.FC = () => {
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center justify-between mb-1 text-center">
                         <h3 className="text-sm font-semibold text-gray-800">
                           {t("تهانينا! حصلت على كأس جديد")}
                         </h3>
@@ -356,6 +375,25 @@ const Notifications: React.FC = () => {
                       <p className="text-sm font-medium text-blue-600">
                         {t(getTrophyLevelText(trophy))}
                       </p>
+
+                      {/* Trophy Rewards */}
+                      <div className="flex items-center gap-2 mt-2 mb-2">
+                        {getTrophyRewards(trophy).map((reward, rewardIndex) => (
+                          <div
+                            key={rewardIndex}
+                            className="flex items-center gap-1 px-2 py-1 rounded-full bg-gray-50"
+                          >
+                            <img
+                              src={reward.icon}
+                              alt="reward"
+                              className="object-contain w-4 h-4"
+                            />
+                            <span className="text-xs font-medium text-gray-700">
+                              {reward.value}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
 
                       <div className="flex items-center gap-2 mt-2">
                         <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
