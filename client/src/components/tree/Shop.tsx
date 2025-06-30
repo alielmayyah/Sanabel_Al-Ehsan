@@ -499,7 +499,7 @@ const Shop: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7 }}
                   >
-                    {t("ثمار إحسانك تنمو لتضيء طريق الخير!")}
+                    {t("ثمار إحسانك تنمو لتضيء طريق الخير")}
                   </motion.p>
                 </div>
 
@@ -516,7 +516,7 @@ const Shop: React.FC = () => {
                     refreshUserData();
                   }}
                 >
-                  {t("رائع!")}
+                  {t("رائع")}
                 </motion.button>
               </motion.div>
             </div>

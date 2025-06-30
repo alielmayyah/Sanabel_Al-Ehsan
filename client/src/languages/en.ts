@@ -23,9 +23,10 @@ const en = {
     "كبر الشجرة": "Grow the Tree",
     "مبروك، شجرتك تزدهر وتثمر بنجاح":
       "Congratulations, your tree is flourishing and bearing fruit successfully",
-    "ثمار إحسانك تنمو لتضيء طريق الخير!":
-      "The fruits of your kindness grow to light the path of goodness!",
-    "رائع!": "Awesome!",
+
+    "ثمار إحسانك تنمو لتضيء طريق الخير":
+      "The fruits of your kindness grow to light the path of goodness",
+    رائع: "Awesome",
     مرحبا: "Hello",
     المستوي: "Level",
     "8 أحرف كحد أدنى": "8 characters minimum",
@@ -278,12 +279,19 @@ const en = {
     "ابحث عن فصل": "Search for class",
     "ابحث عن طالب": "Search for student",
     "لا يوجد فصول": "No classes",
+
+    "تسجيل الابناء": "Register Children",
+    "دعوة الابناء": "Invite Children",
+    "عرض الابناء": "View Children",
+
+    "دعوة الطلاب": "Invite Your Children",
     "تسجيل الطلاب": "Register Students",
     "سجل إنجازات الطلاب الفردية وتقدمهم":
       "Record individual student achievements and their progress",
-    "دعوة الطلاب": "invite Students",
-    "أرسل دعوات للطلاب للانضمام إلى فصولك":
-      "Send invitations to students to join your classes",
+   
+    "ادخل كود دعوة الطفل": "Enter child invitation code",
+    "أرسل دعوات للأبناء للانضمام إلى فصولك":
+      "Send invitations to children to join your classes",
     "عرض الطلاب": "View Students",
     "تصفح وأدر طلابك وفصولك": "Browse and manage your students and classes",
     "عرض التحديات": "View Challenges",
@@ -291,9 +299,9 @@ const en = {
       "Explore available challenges and activities",
     الإعدادات: "Settings",
     "إدارة إعدادات حسابك": "Manage your account settings",
-    "كيفية العثور على كود الطالب": "How to find student code",
+    "كيفية العثور على كود الطفل": "How to find your child's code",
     "يمكن للطالب العثور على الكود الخاص به من خلال الدخول إلى حسابه والذهاب إلى صفحة الملف الشخصي سيجد الكود مُعرَّض بوضوح في قسم معلومات الحساب":
-      "The student can find their code by logging into their account and going to the profile page They will find the code clearly displayed in the account information section",
+      "The kids can find their code by logging into their account and going to the profile page They will find the code clearly displayed in the account information section",
     "ادخل كود دعوة الطالب": "Enter student invitation code",
     بحث: "Search",
     "تهانينا!": "Congratulations",
@@ -940,8 +948,8 @@ const en = {
     "منذ {{days}} أيام": "{{days}} days ago",
     الرمز: "Code",
     "مجموع الجوائز": "Total Trophies",
-    "يمكن للطالب العثور على الكود الخاص به من خلال الدخول إلى حسابه والذهاب إلى صفحة الملف الشخصي. سيجد الكود مُعرَّض بوضوح في قسم معلومات الحساب":
-      "The student can find their code by logging into their account and going to the profile page. The code will be clearly displayed in the account information section.",
+    "يمكن للطفل العثور على الكود الخاص به من خلال الدخول إلى حسابه والذهاب إلى صفحة الملف الشخصي. سيجد الكود مُعرَّض بوضوح في قسم معلومات الحساب":
+      "The kids can find their code by logging into their account and going to the profile page. The code will be clearly displayed in the account information section.",
 
     رجوع: "Back",
 

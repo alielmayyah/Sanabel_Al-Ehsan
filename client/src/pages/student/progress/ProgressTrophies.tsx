@@ -264,9 +264,10 @@ const Progress: React.FC = () => {
                 </div>
               </div>
 
-              <p className="w-full text-sm text-black text-end">
+              {/* DUMMY */}
+              {/* <p className="w-full text-sm text-black text-end">
                 {t(representativeTrophy.challenge.description)}
-              </p>
+              </p> */}
 
               <div className="w-full bg-[#fab70050] rounded-3xl h-6 flex justify-end items-center relative overflow-hidden">
                 {/* Text displaying current and needed points (now shows next milestone instead of target) */}

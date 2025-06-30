@@ -23,7 +23,7 @@ const ParentHome = () => {
 
   const parentHomeButtons = [
     {
-      title: "تسجيل الطلاب",
+      title: "تسجيل الابناء",
       description: "سجل إنجازات الطلاب الفردية وتقدمهم",
       bgColor: "bg-gradient-to-br from-greenprimary to-greenprimary",
       hoverColor: "hover:from-greenprimary hover:to-greenprimary/60",
@@ -31,7 +31,7 @@ const ParentHome = () => {
       onclick: () => history.push("/teacher/studentslist"),
     },
     {
-      title: "دعوة الطلاب",
+      title: "دعوة الابناء",
       description: "أرسل دعوات للطلاب للانضمام إلى فصولك",
       bgColor: "bg-gradient-to-br from-blueprimary to-blueprimary",
       hoverColor: "hover:from-blueprimary hover:to-blueprimary/60",
@@ -39,7 +39,7 @@ const ParentHome = () => {
       onclick: () => history.push("/parent/invite"),
     },
     {
-      title: "عرض الطلاب",
+      title: "عرض الابناء",
       description: "تصفح وأدر طلابك وفصولك",
       bgColor: "bg-gradient-to-br from-redprimary to-redprimary",
       hoverColor: "hover:from-redprimary hover:to-redprimary/60",

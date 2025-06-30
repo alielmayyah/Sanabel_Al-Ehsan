@@ -115,7 +115,7 @@ const TeacherView: React.FC = () => {
           <div className="w-16"></div>
           <div className="flex flex-col items-center justify-center gap-2">
             <h1 className="text-2xl font-bold text-black text-end">
-              {t("دعوة الطلاب")}
+              {t("دعوة الابناء")}
             </h1>
           </div>
           <GoBackButton />
@@ -144,12 +144,12 @@ const TeacherView: React.FC = () => {
                 </svg>
               </div>
               <h2 className="text-lg font-semibold text-blue-800">
-                {t("كيفية العثور على كود الطالب")}
+                {t("كيفية العثور على كود الطفل")}
               </h2>
             </div>
             <p className="leading-relaxed text-blue-700">
               {t(
-                "يمكن للطالب العثور على الكود الخاص به من خلال الدخول إلى حسابه والذهاب إلى صفحة الملف الشخصي. سيجد الكود مُعرَّض بوضوح في قسم معلومات الحساب"
+                "يمكن للطفل العثور على الكود الخاص به من خلال الدخول إلى حسابه والذهاب إلى صفحة الملف الشخصي. سيجد الكود مُعرَّض بوضوح في قسم معلومات الحساب"
               )}
             </p>
           </div>
@@ -163,7 +163,7 @@ const TeacherView: React.FC = () => {
           <div className="w-full space-y-4">
             <input
               type="text"
-              placeholder={t("ادخل كود دعوة الطالب")}
+              placeholder={t("ادخل كود دعوة الطفل")}
               value={code}
               onChange={(e) => setCode(e.target.value)}
               className="w-full p-4 font-medium text-center text-gray-700 transition duration-200 bg-white border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
