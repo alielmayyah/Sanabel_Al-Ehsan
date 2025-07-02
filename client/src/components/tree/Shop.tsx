@@ -58,8 +58,9 @@ const Shop: React.FC = () => {
   const treeStage = Number(user?.treeStage);
   const treeProgress = Number(user?.treeProgress);
 
-  const waterCost = treeProgress === 1 ? 10 : 20;
-  const fertilizerCost = treeProgress === 1 ? 15 : 30;
+  const waterCost = treeProgress == 1 ? 10 : 20;
+  const fertilizerCost = treeProgress == 1 ? 15 : 30;
+
   const [buyWaterCount, setBuyWaterCount] = useState(0);
   const [buyFertilizerCount, setBuyFertilizerCount] = useState(0);
 
@@ -425,7 +426,7 @@ const Shop: React.FC = () => {
                   animate={{ scale: 1, opacity: 1 }}
                   className="w-4/5 max-w-md p-3 text-center bg-white shadow-xl rounded-2xl"
                 >
-                  <div className="p-2 mb-4 text-6xl text-red-600">!</div>
+                  <div className="mb-4 text-6xl text-red-600">!</div>
                   <h1 className="mb-4 text-xl font-bold text-red-600">
                     {t("رصيد غير كافي")}
                   </h1>

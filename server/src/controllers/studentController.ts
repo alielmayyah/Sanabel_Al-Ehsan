@@ -5,7 +5,9 @@ import User from "../models/user.model";
 import bcrypt from "bcryptjs";
 import StudentTask from "../models/student-task.model";
 import Task from "../models/task.model";
-import StudentChallenge, { CompletionStatus } from "../models/student-challenge.model";
+import StudentChallenge, {
+  CompletionStatus,
+} from "../models/student-challenge.model";
 import Challenge from "../models/challenge.model";
 import Organization from "../models/oraganization.model";
 import Class from "../models/class.model";
@@ -17,7 +19,7 @@ import fs from "fs";
 import Tree from "../models/tree.model";
 import { Sequelize, QueryTypes, where } from "sequelize";
 // studentController.ts
-declare module 'luxon';
+declare module "luxon";
 import { DateTime } from "luxon";
 import { Op, fn, col, literal } from "sequelize";
 import TaskCategory from "../models/task-category.model";
@@ -882,7 +884,7 @@ const appearLeaderboard = async (req: Request, res: Response) => {
     if (!user) return res.status(401).json({ message: "Unauthorized" });
 
     const { className, category, gender } = req.query;
-    if (className && !category ) {
+    if (className && !category) {
       return res.status(400).json({
         message:
           "If 'className' is provided, 'category' must also be included.",
@@ -971,7 +973,17 @@ const buyWaterSeeder = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Add some seeders or water first" });
     }
 
-    const totalRed = 20 * water + 30 * seeders;
+    let waterPrice, seederPrice;
+
+    if (student.treeProgress === 1) {
+      waterPrice = 10;
+      seederPrice = 15;
+    } else {
+      waterPrice = 20;
+      seederPrice = 30;
+    }
+
+    const totalRed = waterPrice * water + seederPrice * seeders;
     const totalBlue = totalRed;
     const totalYellow = totalRed;
 
@@ -1374,7 +1386,9 @@ const addPros = async (req: Request, res: Response) => {
     // Extract user
     const user = (req as Request & { user?: JwtPayload }).user;
     if (!user) {
-      return res.status(401).json({ message: "User data not found in request" });
+      return res
+        .status(401)
+        .json({ message: "User data not found in request" });
     }
 
     // Find student associated with the user
@@ -1418,7 +1432,20 @@ const addPros = async (req: Request, res: Response) => {
     // Get challenges that match either category, taskCategory, or tasktype
     const challengeFilter = {
       [Op.or]: [
-        { category: { [Op.in]: ["snabelBlue", "snabelRed", "snabelMixed", "snabelYellow", "xp", "alltask", "task", "tasktype"] } },
+        {
+          category: {
+            [Op.in]: [
+              "snabelBlue",
+              "snabelRed",
+              "snabelMixed",
+              "snabelYellow",
+              "xp",
+              "alltask",
+              "task",
+              "tasktype",
+            ],
+          },
+        },
         { taskCategory: task.taskCategory?.title || "" },
         { tasktype: task.type || "" },
       ],
@@ -1429,7 +1456,7 @@ const addPros = async (req: Request, res: Response) => {
     const studentChallenges = await StudentChallenge.findAll({
       where: {
         studentId: student.id,
-        challengeId: challenges.map(c => c.id),
+        challengeId: challenges.map((c) => c.id),
         completionStatus: "NotCompleted",
       },
       include: [{ model: Challenge, as: "challenge" }],
@@ -1474,7 +1501,8 @@ const addPros = async (req: Request, res: Response) => {
           studentChallenge.pointOfStudent += task.snabelYellow;
           break;
         case "snabelMixed":
-          studentChallenge.pointOfStudent += task.snabelRed + task.snabelBlue + task.snabelYellow;
+          studentChallenge.pointOfStudent +=
+            task.snabelRed + task.snabelBlue + task.snabelYellow;
           break;
         case "alltask":
           studentChallenge.pointOfStudent += 1;
@@ -1510,7 +1538,9 @@ const addPros = async (req: Request, res: Response) => {
 
     await student.save();
 
-    return res.status(201).json({ message: "Student task recorded successfully" });
+    return res
+      .status(201)
+      .json({ message: "Student task recorded successfully" });
   } catch (error) {
     console.error("Error in addPros:", error);
     return res.status(500).json({ error: "Internal Server Error" });

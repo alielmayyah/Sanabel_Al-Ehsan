@@ -1,7 +1,7 @@
 // utils/levelCalculator.ts
 export const calculateLevel = (totalXp: number) => {
   const baseXp = 10;
-  const increment = 15;
+  const increment = 3;
   let level = 1;
   let xpForNextLevel = baseXp;
 
