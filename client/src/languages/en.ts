@@ -977,7 +977,6 @@ const en = {
     "استمر في التقدم الرائع 💪": "Keep up the great progress 💪",
     "تم الإنجاز": " Mark as completed",
 
-  
     مقدمة: "Introduction",
     "المعلومات التي نجمعها": "Information We Collect",
     "كيفية استخدام المعلومات": "How We Use Information",
@@ -1050,6 +1049,18 @@ const en = {
       "You can send your inquiries via email or through the app.",
     "نحن ملتزمون بالرد على جميع الاستفسارات في أقرب وقت ممكن.":
       "We are committed to responding to all inquiries as soon as possible.",
+
+    "رصيد غير كافي": "Insufficient Balance",
+    "تحتاج إلى المزيد من السنابل لإتمام هذه العملية":
+      "You need more Sanabel to complete this action",
+    "السنابل المطلوبة": "Required Sanabel",
+    لديك: "You have",
+    تحتاج: "You need",
+    إضافية: "more",
+    فهمت: "Got it",
+    "!اختر شخصيتك": "Choose your character",
+
+    login_failed: "Email or password is incorrect. Please try again.",
   },
 };
 

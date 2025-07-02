@@ -11,7 +11,15 @@ import Boy5 from "../../../assets/avatars/Boys/Boy5";
 import Boy6 from "../../../assets/avatars/Boys/Boy6";
 import Boy7 from "../../../assets/avatars/Boys/Boy7";
 import Boy8 from "../../../assets/avatars/Boys/Boy8";
-import Boy9 from "../../../assets/avatars/Boys/Boy9";
+
+import Man1 from "../../../assets/avatars/Boys/Man1";
+import Man2 from "../../../assets/avatars/Boys/Man2";
+import Man3 from "../../../assets/avatars/Boys/Man3";
+import Man4 from "../../../assets/avatars/Boys/Man4";
+import Man5 from "../../../assets/avatars/Boys/Man5";
+import Man6 from "../../../assets/avatars/Boys/Man6";
+import Man7 from "../../../assets/avatars/Boys/Man7";
+import Man8 from "../../../assets/avatars/Boys/Man8";
 
 import Girl1 from "../../../assets/avatars/Girls/Girl1";
 import Girl2 from "../../../assets/avatars/Girls/Girl2";
@@ -21,6 +29,15 @@ import Girl5 from "../../../assets/avatars/Girls/Girl5";
 import Girl6 from "../../../assets/avatars/Girls/Girl6";
 import Girl7 from "../../../assets/avatars/Girls/Girl7";
 import Girl8 from "../../../assets/avatars/Girls/Girl8";
+
+import Woman1 from "../../../assets/avatars/Girls/Woman1";
+import Woman2 from "../../../assets/avatars/Girls/Woman2";
+import Woman3 from "../../../assets/avatars/Girls/Woman3";
+import Woman4 from "../../../assets/avatars/Girls/Woman4";
+import Woman5 from "../../../assets/avatars/Girls/Woman5";
+import Woman6 from "../../../assets/avatars/Girls/Woman6";
+import Woman7 from "../../../assets/avatars/Girls/Woman7";
+import Woman8 from "../../../assets/avatars/Girls/Woman8";
 
 import { IoSparkles } from "react-icons/io5";
 import { GiMale, GiFemale } from "react-icons/gi";
@@ -82,7 +99,35 @@ const boysAvatars: AvatarOption[] = [
   },
   {
     id: 8,
-    Component: Boy9,
+    Component: Man1,
+  },
+  {
+    id: 9,
+    Component: Man2,
+  },
+  {
+    id: 10,
+    Component: Man3,
+  },
+  {
+    id: 11,
+    Component: Man4,
+  },
+  {
+    id: 12,
+    Component: Man5,
+  },
+  {
+    id: 13,
+    Component: Man6,
+  },
+  {
+    id: 14,
+    Component: Man7,
+  },
+  {
+    id: 15,
+    Component: Man8,
   },
 ];
 
@@ -118,6 +163,38 @@ const girlsAvatars: AvatarOption[] = [
   {
     id: 7,
     Component: Girl8,
+  },
+  {
+    id: 8,
+    Component: Woman1,
+  },
+  {
+    id: 9,
+    Component: Woman2,
+  },
+  {
+    id: 10,
+    Component: Woman3,
+  },
+  {
+    id: 11,
+    Component: Woman4,
+  },
+  {
+    id: 12,
+    Component: Woman5,
+  },
+  {
+    id: 13,
+    Component: Woman6,
+  },
+  {
+    id: 14,
+    Component: Woman7,
+  },
+  {
+    id: 15,
+    Component: Woman8,
   },
 ];
 
@@ -333,7 +410,7 @@ const Step1 = () => {
   const renderTabContent = () => {
     // Common style for all tab content containers
     const contentContainerStyle =
-      "bg-white rounded-xl shadow-md p-4 w-full h-64 overflow-y-auto";
+      "bg-white rounded-xl shadow-md p-2 w-full h-64 overflow-y-auto";
 
     if (currentTab === "الشخصية") {
       return (
@@ -348,7 +425,7 @@ const Step1 = () => {
           <AnimatePresence mode="wait">
             {/* Gender Toggle */}
             <motion.div
-              className="flex justify-center gap-4 p-2 mb-3 rounded-full"
+              className="flex justify-center gap-4 p-2 mb-1 rounded-full"
               whileHover={{ scale: 1.02 }}
               dir={currentLanguage === "en" ? "ltr" : "rtl"}
             >

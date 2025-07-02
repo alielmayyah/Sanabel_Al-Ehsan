@@ -770,14 +770,12 @@ const ClassList: React.FC = () => {
   const deselectAllStudents = () => {
     setSelectedStudentIds([]);
   };
-
+  
   const getCurrentTime = () => {
     const now = new Date();
-    return `${now.getHours().toString().padStart(2, "0")}:${now
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}`;
+    return now.toISOString();
   };
+
 
   const addProgress = async () => {
     if (!selectedStudentIds.length || selectedTaskId === null) return;

@@ -5,7 +5,6 @@ import trophy from "../../../assets/trophy.png";
 import { ToastContainer, toast } from "react-toastify";
 
 // Inventory Assets
-
 import waterImg from "../../assets/resources/ماء.png";
 import fertilizerImg from "../../assets/resources/سماد.png";
 
@@ -23,7 +22,7 @@ import axios from "axios";
 const Toaster = () => (
   <ToastContainer
     position="top-center"
-    autoClose={5000}
+    autoClose={1000}
     hideProgressBar={false}
     newestOnTop={false}
     closeOnClick
@@ -60,11 +59,9 @@ const Shop: React.FC = () => {
 
   //  المرحلة
   const treeStage = Number(user?.treeStage);
-
   const treeProgress = Number(user?.treeProgress);
 
   const [buyWaterCount, setBuyWaterCount] = useState(0);
-
   const [buyFertilizerCount, setBuyFertilizerCount] = useState(0);
 
   // Calculate remaining needed resources
@@ -75,7 +72,6 @@ const Shop: React.FC = () => {
   );
 
   // Check if tree progress is ready
-
   const [isProgressReady, setIsProgressReady] = useState(false);
 
   useEffect(() => {
@@ -112,14 +108,76 @@ const Shop: React.FC = () => {
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isPurchaseConfirmed, setIsPurchaseConfirmed] = useState(false);
-
   const [isCelebrationVisible, setIsCelebrationVisible] = useState(false);
+  const [isInsufficientFundsVisible, setIsInsufficientFundsVisible] =
+    useState(false);
+  const [missingSanabel, setMissingSanabel] = useState<any[]>([]);
+
+  // Function to calculate missing sanabel
+  const calculateMissingSanabel = (totalCost: number) => {
+    const missing = [];
+    let remainingCost = totalCost;
+
+    // Check blue sanabel first (most valuable)
+    if (remainingCost > 0) {
+      const blueNeeded = Math.min(Math.ceil(remainingCost / 1), blueCount); // Assuming 1 blue = 1 unit
+      const blueShortage = Math.ceil(remainingCost / 1) - blueCount;
+      if (blueShortage > 0) {
+        missing.push({
+          type: "blue",
+          icon: blueSanabel,
+          name: t("سنبلة زرقاء"),
+          needed: blueShortage,
+          available: blueCount,
+        });
+        remainingCost -= blueCount * 1;
+      } else {
+        remainingCost = 0;
+      }
+    }
+
+    // Check red sanabel
+    if (remainingCost > 0) {
+      const redNeeded = Math.min(Math.ceil(remainingCost / 1), redCount);
+      const redShortage = Math.ceil(remainingCost / 1) - redCount;
+      if (redShortage > 0) {
+        missing.push({
+          type: "red",
+          icon: redSanabel,
+          name: t("سنبلة حمراء"),
+          needed: redShortage,
+          available: redCount,
+        });
+        remainingCost -= redCount * 1;
+      } else {
+        remainingCost = 0;
+      }
+    }
+
+    // Check yellow sanabel
+    if (remainingCost > 0) {
+      const yellowNeeded = Math.min(Math.ceil(remainingCost / 1), yellowCount);
+      const yellowShortage = Math.ceil(remainingCost / 1) - yellowCount;
+      if (yellowShortage > 0) {
+        missing.push({
+          type: "yellow",
+          icon: yellowSanabel,
+          name: t("سنبلة صفراء"),
+          needed: yellowShortage,
+          available: yellowCount,
+        });
+      }
+    }
+
+    return missing;
+  };
 
   // Buy Shop
-  // Function to handle purchase
   const buyShop = async () => {
     try {
       const token = localStorage.getItem("token");
+      const totalCost =
+        buyFertilizerCount * fertilizerCost + buyWaterCount * waterCost;
 
       const response = await axios.patch(
         "http://localhost:3000/students/buy-water-seeder",
@@ -152,7 +210,13 @@ const Shop: React.FC = () => {
         }, 2000);
       }
     } catch (error) {
-      toast.error(t("ليس لديك سنابل كافية لإتمام الشراء"));
+      const totalCost =
+        buyFertilizerCount * fertilizerCost + buyWaterCount * waterCost;
+      const missing = calculateMissingSanabel(totalCost);
+
+      setMissingSanabel(missing);
+      setIsPopupVisible(false);
+      setIsInsufficientFundsVisible(true);
 
       console.error("Error purchasing items:", error);
     }
@@ -268,6 +332,8 @@ const Shop: React.FC = () => {
                 </div>
               </div>
             )}
+
+            {/* Purchase Confirmation Popup */}
             {isPopupVisible && (
               <div className="fixed top-0 left-0 z-50 w-full h-full bg-black bg-opacity-70 flex-center">
                 <motion.div
@@ -351,7 +417,72 @@ const Shop: React.FC = () => {
                 </motion.div>
               </div>
             )}
-            {/* // Add another popup to show after confirmation */}
+
+            {/* Insufficient Funds Popup */}
+            {isInsufficientFundsVisible && (
+              <div className="fixed top-0 left-0 z-50 w-full h-full bg-black bg-opacity-70 flex-center">
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="w-4/5 max-w-md p-3 text-center bg-white shadow-xl rounded-2xl"
+                >
+                  <div className="p-2 mb-4 text-6xl text-red-600">!</div>
+                  <h1 className="mb-4 text-xl font-bold text-red-600">
+                    {t("رصيد غير كافي")}
+                  </h1>
+
+                  <p className="mb-4 text-gray-700">
+                    {t("تحتاج إلى المزيد من السنابل لإتمام هذه العملية")}
+                  </p>
+
+                  <div className="p-2 mb-4 bg-red-50 rounded-xl">
+                    <h3 className="mb-3 font-bold text-red-800">
+                      {t("السنابل المطلوبة")}
+                    </h3>
+
+                    <div className="space-y-1">
+                      {missingSanabel.map((sanabel, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm"
+                        >
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={sanabel.icon}
+                              alt={sanabel.name}
+                              className="w-6 h-auto"
+                            />
+                            <span className="font-medium text-gray-800">
+                              {sanabel.name}
+                            </span>
+                          </div>
+                          <div className="text-end">
+                            <div className="text-sm text-gray-600">
+                              {t("لديك")}: {sanabel.available}
+                            </div>
+                            <div className="text-sm font-bold text-red-600">
+                              {t("تحتاج")}: {sanabel.needed} {t("إضافية")}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button
+                    className="w-full px-6 py-3 font-bold text-white transition-transform transform bg-red-500 shadow-md rounded-xl hover:scale-105 active:scale-95"
+                    onClick={() => {
+                      setIsInsufficientFundsVisible(false);
+                      setMissingSanabel([]);
+                    }}
+                  >
+                    {t("فهمت")}
+                  </button>
+                </motion.div>
+              </div>
+            )}
+
+            {/* Purchase Success Popup */}
             {isPurchaseConfirmed && (
               <div className="fixed top-0 left-0 z-50 w-full h-full bg-black bg-opacity-50 flex-center ">
                 <div className="w-2/3 p-4 text-center bg-white rounded-xl">
@@ -393,7 +524,6 @@ const Shop: React.FC = () => {
           )}
 
           {/* Celebration Popup */}
-
           {isCelebrationVisible && (
             <div className="fixed inset-0 z-50 flex items-center justify-center">
               {/* Backdrop with blur effect */}
@@ -455,18 +585,16 @@ const Shop: React.FC = () => {
                 </div>
 
                 {/* Growing tree animation */}
-                {/* Popup Modal */}
-
                 <div className="relative h-[50vh] w-[70vw] flex-center items-center justify-center mx-auto">
                   <AnimatePresence>
                     <motion.img
-                      key={treeProgress - 1} // Trigger animation for the current frame
+                      key={treeProgress - 1}
                       src={treeStages[treeProgress - 1 + 3]}
                       alt={`Current tree stage ${treeProgress}`}
                       className="absolute w-full h-auto"
                     />
                     <motion.img
-                      key={treeProgress + 1} // Trigger animation for the next frame
+                      key={treeProgress + 1}
                       src={treeStages[treeProgress + 3]}
                       alt={`Next tree stage ${treeProgress + 1}`}
                       className="absolute w-full h-auto "
@@ -477,7 +605,7 @@ const Shop: React.FC = () => {
                         duration: 1,
                         repeat: Infinity,
                         repeatType: "reverse",
-                      }} // Loop animation
+                      }}
                     />
                   </AnimatePresence>
                 </div>

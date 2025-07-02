@@ -7,7 +7,15 @@ import Boy5 from "../../../assets/avatars/Boys/Boy5";
 import Boy6 from "../../../assets/avatars/Boys/Boy6";
 import Boy7 from "../../../assets/avatars/Boys/Boy7";
 import Boy8 from "../../../assets/avatars/Boys/Boy8";
-import Boy9 from "../../../assets/avatars/Boys/Asset 1@4x.png";
+
+import Man1 from "../../../assets/avatars/Boys/Man1";
+import Man2 from "../../../assets/avatars/Boys/Man2";
+import Man3 from "../../../assets/avatars/Boys/Man3";
+import Man4 from "../../../assets/avatars/Boys/Man4";
+import Man5 from "../../../assets/avatars/Boys/Man5";
+import Man6 from "../../../assets/avatars/Boys/Man6";
+import Man7 from "../../../assets/avatars/Boys/Man7";
+import Man8 from "../../../assets/avatars/Boys/Man8";
 
 import Girl1 from "../../../assets/avatars/Girls/Girl1";
 import Girl2 from "../../../assets/avatars/Girls/Girl2";
@@ -17,6 +25,16 @@ import Girl5 from "../../../assets/avatars/Girls/Girl5";
 import Girl6 from "../../../assets/avatars/Girls/Girl6";
 import Girl7 from "../../../assets/avatars/Girls/Girl7";
 import Girl8 from "../../../assets/avatars/Girls/Girl8";
+
+import Woman1 from "../../../assets/avatars/Girls/Woman1";
+import Woman2 from "../../../assets/avatars/Girls/Woman2";
+import Woman3 from "../../../assets/avatars/Girls/Woman3";
+import Woman4 from "../../../assets/avatars/Girls/Woman4";
+import Woman5 from "../../../assets/avatars/Girls/Woman5";
+import Woman6 from "../../../assets/avatars/Girls/Woman6";
+import Woman7 from "../../../assets/avatars/Girls/Woman7";
+import Woman8 from "../../../assets/avatars/Girls/Woman8";
+
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 
@@ -38,8 +56,42 @@ const GetAvatar = ({ userAvatarData = {} }) => {
   };
 
   const avatarComponents = {
-    boy: [Boy1, Boy2, Boy3, Boy4, Boy5, Boy6, Boy7, Boy8, Boy9],
-    girl: [Girl1, Girl2, Girl3, Girl4, Girl5, Girl6, Girl7, Girl8],
+    boy: [
+      Boy1,
+      Boy2,
+      Boy3,
+      Boy4,
+      Boy5,
+      Boy6,
+      Boy7,
+      Boy8,
+      Man1,
+      Man2,
+      Man3,
+      Man4,
+      Man5,
+      Man6,
+      Man7,
+      Man8,
+    ],
+    girl: [
+      Girl1,
+      Girl2,
+      Girl3,
+      Girl4,
+      Girl5,
+      Girl6,
+      Girl7,
+      Girl8,
+      Woman1,
+      Woman2,
+      Woman3,
+      Woman4,
+      Woman5,
+      Woman6,
+      Woman7,
+      Woman8,
+    ],
   };
 
   const { t } = useTranslation();

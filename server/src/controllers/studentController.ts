@@ -16,6 +16,8 @@ import path from "path";
 import fs from "fs";
 import Tree from "../models/tree.model";
 import { Sequelize, QueryTypes, where } from "sequelize";
+// studentController.ts
+declare module 'luxon';
 import { DateTime } from "luxon";
 import { Op, fn, col, literal } from "sequelize";
 import TaskCategory from "../models/task-category.model";

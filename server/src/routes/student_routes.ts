@@ -86,6 +86,8 @@ export const router = require("express").Router();
  *                           type: number
  *                         waterInTree:
  *                           type: number
+ * 
+ * 
  *       401:
  *         description: Unauthorized - User data not found in request
  *       404:

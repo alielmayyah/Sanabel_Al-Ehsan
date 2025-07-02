@@ -9,6 +9,7 @@ import React, {
 
 // Define the shape of the user data for different roles
 interface BaseUser {
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -29,6 +30,7 @@ interface BaseUser {
   treeStage: number;
   treeProgress: number;
   connectCode: string;
+  canAssignTask: boolean;
 }
 
 interface StudentUser extends BaseUser {
@@ -44,6 +46,7 @@ interface StudentUser extends BaseUser {
   treeStage: number;
   treeProgress: number;
   connectCode: string;
+  canAssignTask: boolean;
 }
 
 interface TeacherUser extends BaseUser {
@@ -111,6 +114,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         switch (role) {
           case "Student":
             setUser({
+              id: userData.student.id,
               firstName: userData.student.user.firstName,
               lastName: userData.student.user.lastName,
               email: userData.student.user.email,
@@ -123,6 +127,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
               water: userData.student.water,
               fertilizer: userData.student.seeders,
               connectCode: userData.student.connectCode,
+              canAssignTask: userData.student.canAssignTask,
               waterNeeded: userData.treePoint.water,
               fertilizerNeeded: userData.treePoint.seeders,
               treeStage: userData.treePoint.stage,
@@ -136,6 +141,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
           case "Teacher":
             setUser({
+              id: userData.id, // Assuming teacher data structure has id directly
               firstName: userData.user.firstName,
               lastName: userData.user.lastName,
               email: userData.user.email,
@@ -145,11 +151,26 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
               gender: userData.user.gender,
               dateOfBirth: userData.user.dateOfBirth,
               isAccess: userData.user.isAccess,
+              // Default values for teacher (you may need to adjust based on actual API response)
+              grade: 0,
+              snabelRed: 0,
+              snabelBlue: 0,
+              snabelYellow: 0,
+              xp: 0,
+              water: 0,
+              fertilizer: 0,
+              waterNeeded: 0,
+              fertilizerNeeded: 0,
+              treeStage: 0,
+              treeProgress: 0,
+              connectCode: "",
+              canAssignTask: false,
             } as TeacherUser);
             break;
 
           case "Parent":
             setUser({
+              id: userData.id, // Assuming parent data structure has id directly
               firstName: userData.user.firstName,
               lastName: userData.user.lastName,
               email: userData.user.email,
@@ -158,6 +179,20 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
               gender: userData.user.gender,
               dateOfBirth: userData.user.dateOfBirth,
               isAccess: userData.user.isAccess,
+              // Default values for parent (you may need to adjust based on actual API response)
+              grade: 0,
+              snabelRed: 0,
+              snabelBlue: 0,
+              snabelYellow: 0,
+              xp: 0,
+              water: 0,
+              fertilizer: 0,
+              waterNeeded: 0,
+              fertilizerNeeded: 0,
+              treeStage: 0,
+              treeProgress: 0,
+              connectCode: "",
+              canAssignTask: false,
             } as ParentUser);
             break;
 

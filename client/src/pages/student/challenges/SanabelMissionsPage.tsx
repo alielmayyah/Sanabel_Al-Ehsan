@@ -22,15 +22,14 @@ import { useUserContext } from "../../../context/StudentUserProvider";
 
 const SanabelMissionsPage: React.FC = () => {
   const { user } = useUserContext();
-
+  console.log("User data:", user);
   const grade = String(user?.grade);
-
+  const canAssignTask = user?.canAssignTask;
   const { index, subIndex } = useParams<{ index: any; subIndex: any }>();
   // Ensure index is properly parsed as a number
   const indexAsNumber = parseInt(index, 10);
   // Make sure APIIndex is correctly calculated as a number
   const APIIndex = indexAsNumber + 1;
-  // const sanabel = sanabelType[index].sanabel[subIndex];
 
   const { t } = useTranslation();
 
@@ -119,7 +118,7 @@ const SanabelMissionsPage: React.FC = () => {
             // Fetch Missions
             if (uniqueTypes[subIndex]) {
               const missionsResponse = await axios.get(
-                `http://localhost:3000/students/appear-Taskes-Type-Category/${APIIndex}/${sanabel[subIndex]}`,
+                `http://localhost:3000/students/appear-Taskes-Type-Category/${APIIndex}/${uniqueTypes[subIndex]}`,
                 {
                   headers: {
                     Authorization: `Bearer ${authToken}`,
@@ -128,10 +127,10 @@ const SanabelMissionsPage: React.FC = () => {
               );
 
               if (missionsResponse.status === 200) {
-                console.log(missionsResponse.data.tasks);
-                console.log(APIIndex);
-                console.log(sanabel);
-                console.log(sanabel[subIndex]);
+                console.log("Missions data:", missionsResponse.data.tasks);
+                console.log("API Index:", APIIndex);
+                console.log("All Sanabel:", uniqueTypes);
+                console.log("Current Sanabel:", uniqueTypes[subIndex]);
 
                 // Sort missions so completed ones appear first
                 const sortedMissions = missionsResponse.data.tasks.sort(
@@ -163,11 +162,16 @@ const SanabelMissionsPage: React.FC = () => {
     };
 
     fetchAllData();
-  }, [sanabel, index, subIndex]);
+  }, [index, subIndex, APIIndex]);
 
   const handleMarkComplete = (missionId: number) => {
     setSelectedMissionId(missionId);
     setShowConfirmPopup(true);
+  };
+
+  const getCurrentTime = () => {
+    const now = new Date();
+    return now.toISOString();
   };
 
   const confirmMarkComplete = async () => {
@@ -177,18 +181,20 @@ const SanabelMissionsPage: React.FC = () => {
     const authToken = localStorage.getItem("token");
 
     try {
-      // Replace this URL with your actual API endpoint for marking mission complete
-      const response = await axios.post(
-        `http://localhost:3000/students/complete-mission/${selectedMissionId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+      const response = await fetch("http://localhost:3000/students/add-pros", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          taskId: selectedMissionId,
+          studentIds: [user?.id],
+          time: getCurrentTime(),
+        }),
+      });
 
-      if (response.status === 200) {
+      if (response.ok) {
         // Update the mission status locally
         setMissions((prevMissions: any) =>
           prevMissions.map((mission: any) =>
@@ -200,6 +206,9 @@ const SanabelMissionsPage: React.FC = () => {
 
         setShowConfirmPopup(false);
         setShowCongratsPopup(true);
+      } else {
+        console.error("Failed to mark mission complete");
+        // You might want to show an error popup here
       }
     } catch (error) {
       console.error("Error marking mission complete:", error);
@@ -282,7 +291,7 @@ const SanabelMissionsPage: React.FC = () => {
       <div className="flex flex-col items-center justify-start w-full gap-5 mt-5 overflow-y-auto h-2/3">
         {missions.map((mission: any, index: number) => (
           <motion.div
-            key={index}
+            key={mission.id}
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{
@@ -315,22 +324,25 @@ const SanabelMissionsPage: React.FC = () => {
               </motion.div>
             )}
 
-            {mission.completionStatus !== "Completed" && !grade && (
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 + 0.3 }}
-                className="flex justify-between w-full"
-              >
-                <button
-                  onClick={() => handleMarkComplete(mission.id)}
-                  className={`flex items-center gap-2 px-3 py-1 rounded-lg transition-all duration-200 text-white ${colorBG} hover:opacity-80 active:scale-95`}
+            {mission.completionStatus !== "Completed" &&
+              (!grade || canAssignTask) && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 + 0.3 }}
+                  className="flex justify-between w-full"
                 >
-                  <span className="text-sm font-medium">{t("تم الإنجاز")}</span>
-                  <FaCheck className="text-xs" />
-                </button>
-              </motion.div>
-            )}
+                  <button
+                    onClick={() => handleMarkComplete(mission.id)}
+                    className={`flex items-center gap-2 px-3 py-1 rounded-lg transition-all duration-200 text-white ${colorBG} hover:opacity-80 active:scale-95`}
+                  >
+                    <span className="text-sm font-medium">
+                      {t("تم الإنجاز")}
+                    </span>
+                    <FaCheck className="text-xs" />
+                  </button>
+                </motion.div>
+              )}
 
             <div className="flex items-center justify-between w-full">
               <motion.div
