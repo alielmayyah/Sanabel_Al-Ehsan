@@ -97,7 +97,7 @@ const App: React.FC = () => {
         <NotificationProvider>
           <IonReactRouter>
             <IonRouterOutlet>
-              <div className="bg-white dark:bg-[#121212]  w-screen h-screen">
+              <div className="bg-white dark:bg-[#121212]  w-screen h-screen ">
                 {/*  UNCOMMENT*/}
                 <Switch>
                   {/* // Splash Screen */}

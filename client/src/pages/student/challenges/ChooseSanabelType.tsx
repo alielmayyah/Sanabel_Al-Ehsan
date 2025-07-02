@@ -25,7 +25,11 @@ import redSanabel from "../../../assets/resources/سنبلة حمراء.png";
 import yellowSanabel from "../../../assets/resources/سنبلة صفراء.png";
 import xpIcon from "../../../assets/resources/اكس بي.png";
 
+import { useUserContext } from "../../../context/StudentUserProvider";
+
 const SanabelType: React.FC = () => {
+
+
   const [categories, setCategories] = useState([]);
 
   const sanabelTypeImg = [
@@ -53,7 +57,6 @@ const SanabelType: React.FC = () => {
 
       if (response.status === 200) {
         setCategories(response.data.data); // Store the data array in state
-        console.log(response.data.data); // Log the data array
       }
     } catch (error) {
       console.error("Error fetching data:", error);

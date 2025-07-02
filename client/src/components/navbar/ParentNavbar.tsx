@@ -30,11 +30,11 @@ const navList = [
     icon: <ChallengesIcon size={30} />,
     to: "/teacher/challenges",
   },
-  {
-    title: "المتصدرين",
-    icon: <LeaderboardsIcon size={30} />,
-    to: "/teacher/leaderboards",
-  },
+  // {
+  //   title: "المتصدرين",
+  //   icon: <LeaderboardsIcon size={30} />,
+  //   to: "/teacher/leaderboards",
+  // },
   {
     title: "استعراض",
     icon: <ViewIcon size={30} />,

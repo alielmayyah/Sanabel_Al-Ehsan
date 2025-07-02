@@ -7,6 +7,8 @@ import Boy5 from "../../../assets/avatars/Boys/Boy5";
 import Boy6 from "../../../assets/avatars/Boys/Boy6";
 import Boy7 from "../../../assets/avatars/Boys/Boy7";
 import Boy8 from "../../../assets/avatars/Boys/Boy8";
+import Boy9 from "../../../assets/avatars/Boys/Asset 1@4x.png";
+
 import Girl1 from "../../../assets/avatars/Girls/Girl1";
 import Girl2 from "../../../assets/avatars/Girls/Girl2";
 import Girl3 from "../../../assets/avatars/Girls/Girl3";
@@ -36,7 +38,7 @@ const GetAvatar = ({ userAvatarData = {} }) => {
   };
 
   const avatarComponents = {
-    boy: [Boy1, Boy2, Boy3, Boy4, Boy5, Boy6, Boy7, Boy8],
+    boy: [Boy1, Boy2, Boy3, Boy4, Boy5, Boy6, Boy7, Boy8, Boy9],
     girl: [Girl1, Girl2, Girl3, Girl4, Girl5, Girl6, Girl7, Girl8],
   };
 

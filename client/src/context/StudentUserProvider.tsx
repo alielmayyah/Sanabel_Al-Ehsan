@@ -17,6 +17,18 @@ interface BaseUser {
   gender?: string;
   dateOfBirth?: string | null;
   isAccess?: boolean;
+  grade: number;
+  snabelRed: number;
+  snabelBlue: number;
+  snabelYellow: number;
+  xp: number;
+  water: number;
+  fertilizer: number;
+  waterNeeded: number;
+  fertilizerNeeded: number;
+  treeStage: number;
+  treeProgress: number;
+  connectCode: string;
 }
 
 interface StudentUser extends BaseUser {

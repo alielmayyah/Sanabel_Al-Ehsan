@@ -192,7 +192,7 @@ const Shop: React.FC = () => {
           <h1 className="text-lg text-black text-end">{t("المتجر")}</h1>
 
           <div className="flex-col gap-2 bg-[#FFF8E5] rounded-xl w-full flex justify-between p-2">
-            <div className="flex justify-between">
+            <div className="flex flex-row-reverse justify-between">
               <div className="flex-center">
                 <div className="gap-1 p-1 bg-white flex-center rounded-3xl">
                   {" "}

@@ -1,111 +1,150 @@
-import React from "react";
+import React, { useState } from "react";
+import { ChevronLeft, ArrowLeft } from "lucide-react";
+import appLogo from "../../../assets/login/logo.png";
+
 import { useTranslation } from "react-i18next";
 import GoBackButton from "../../../components/GoBackButton";
-import sanabelLogo from "../../../assets/login/logo.png";
-
 const PrivacyPolicy = () => {
-  const { t } = useTranslation();
+  // Use React state instead of localStorage
+  const [currentLanguage, setCurrentLanguage] = useState("ar");
 
+  const { t } = useTranslation();
   // Privacy Policy content data
   const privacyPolicyContent = [
     {
       title: t("مقدمة"),
       content: [
-        "نرحب بكم في تطبيقنا. تشرح هذه السياسة كيفية تعاملنا مع البيانات التي يتم جمعها من المستخدمين.",
+        t(
+          "نحن ملتزمون بحماية خصوصيتك. تشرح هذه السياسة كيفية جمع واستخدام وحماية معلوماتك الشخصية عند استخدام تطبيقنا."
+        ),
       ],
     },
     {
       title: t("المعلومات التي نجمعها"),
       content: [
-        "المعلومات الشخصية مثل الاسم، العمر، والبريد الإلكتروني.",
-        "بيانات الحساب مثل اسم المستخدم، كلمة المرور، ونوع الحساب (ولي أمر، معلم، طالب).",
-        "معلومات النشاط داخل التطبيق مثل المهام المكتملة.",
-        "بيانات تقنية مثل نوع الجهاز، نظام التشغيل، وعنوان IP لتحسين أداء التطبيق.",
+        t("المعلومات الشخصية مثل الاسم والعمر والبريد الإلكتروني."),
+        t("معلومات الحساب مثل اسم المستخدم وكلمة المرور."),
+        t("بيانات الاستخدام مثل الأنشطة والتفاعلات داخل التطبيق."),
+        t("معلومات تقنية مثل نوع الجهاز وعنوان IP لتحسين الأداء."),
       ],
     },
     {
       title: t("كيفية استخدام المعلومات"),
       content: [
-        "تحسين تجربة المستخدم داخل التطبيق.",
-        "تخصيص المهام والتحديات بما يناسب عمر المستخدم واحتياجاته.",
-        "توفير إحصائيات وتقارير لأولياء الأمور والمعلمين.",
-        "تحليل البيانات لتحسين الأداء والوظائف.",
+        t("تقديم وتحسين خدماتنا وميزات التطبيق."),
+        t("تخصيص تجربة المستخدم حسب الاحتياجات."),
+        t("إرسال إشعارات مهمة حول الخدمة."),
+        t("تحليل البيانات لتطوير منتجات أفضل."),
       ],
     },
     {
       title: t("مشاركة المعلومات"),
       content: [
-        "لا نقوم بمشاركة بياناتك الشخصية مع أطراف ثالثة إلا في الحالات التالية:",
-        "بموافقتك الصريحة على مشاركة بياناتك مع جهات معينة (مثل الجوائز أو الشركاء).",
-        "عند الحاجة للامتثال للقوانين واللوائح.",
-        "لتحقيق الأمان ومنع الاحتيال أو الأنشطة غير القانونية.",
+        t("لا نبيع أو نؤجر معلوماتك الشخصية لأطراف ثالثة."),
+        t("قد نشارك المعلومات في الحالات التالية:"),
+        t("بموافقتك الصريحة والمسبقة."),
+        t("للامتثال للقوانين والأنظمة المعمول بها."),
+        t("لحماية حقوقنا وسلامة المستخدمين."),
       ],
     },
     {
-      title: t("حماية البيانات"),
+      title: t("أمان البيانات"),
       content: [
-        "نتخذ كافة التدابير اللازمة لحماية بياناتك الشخصية من الوصول غير المصرح به أو التعديل أو الكشف أو الإتلاف. تشمل هذه التدابير تقنيات التشفير وإجراءات الأمان المادية والإلكترونية.",
+        t("نستخدم تقنيات التشفير المتقدمة لحماية بياناتك."),
+        t("نطبق إجراءات أمنية صارمة للوصول إلى المعلومات."),
+        t("نقوم بمراجعة وتحديث أنظمة الأمان بانتظام."),
+        t("نحتفظ بالبيانات فقط للمدة اللازمة لتحقيق الأغراض المحددة."),
       ],
     },
     {
-      title: t("حقوق المستخدم"),
+      title: t("حقوقك"),
       content: [
-        "الوصول إلى البيانات الشخصية وتحديثها.",
-        "طلب حذف الحساب والبيانات المرتبطة به.",
-        "تقديم استفسارات أو شكاوى بخصوص خصوصيتك عبر قنوات الدعم الخاصة بالتطبيق.",
+        t("الحق في الوصول إلى بياناتك الشخصية ومراجعتها."),
+        t("الحق في تصحيح أو تحديث معلوماتك."),
+        t("الحق في طلب حذف حسابك وبياناتك."),
+        t("الحق في سحب موافقتك على معالجة البيانات."),
+        t("الحق في تقديم شكوى إلى السلطات المختصة."),
       ],
     },
     {
-      title: t("تحديثات سياسة الخصوصية"),
+      title: t("ملفات تعريف الارتباط"),
       content: [
-        "قد نقوم بتحديث هذه السياسة من وقت لآخر لتلبية المتطلبات القانونية أو تحسين خدماتنا. سيتم إشعار المستخدمين بأي تغييرات رئيسية.",
+        t("نستخدم ملفات تعريف الارتباط لتحسين تجربة التصفح."),
+        t("يمكنك التحكم في إعدادات ملفات تعريف الارتباط من متصفحك."),
+        t("بعض الميزات قد لا تعمل بشكل صحيح بدون ملفات تعريف الارتباط."),
       ],
     },
     {
-      title: t("التواصل"),
+      title: t("تحديثات السياسة"),
       content: [
-        "إذا كانت لديك أي أسئلة أو مخاوف بشأن سياسة الخصوصية هذه، يُرجى التواصل معنا عبر البريد الإلكتروني أو من خلال الدعم داخل التطبيق.",
+        t("قد نقوم بتحديث هذه السياسة من وقت لآخر."),
+        t("سيتم إشعارك بأي تغييرات مهمة عبر التطبيق أو البريد الإلكتروني."),
+        t("استمرار استخدام التطبيق يعني موافقتك على السياسة المحدثة."),
+      ],
+    },
+    {
+      title: t("اتصل بنا"),
+      content: [
+        t("إذا كان لديك أي أسئلة حول سياسة الخصوصية، يرجى التواصل معنا."),
+        t("يمكنك إرسال استفساراتك عبر البريد الإلكتروني أو من خلال التطبيق."),
+        t("نحن ملتزمون بالرد على جميع الاستفسارات في أقرب وقت ممكن."),
       ],
     },
   ];
 
+  const isRTL = currentLanguage === "en";
+
   return (
-    <div className="flex flex-col gap-2 w-full h-full p-4 text-black">
+    <div className="flex flex-col w-full h-screen p-2 bg-white">
       {/* Header Section */}
       <div className="flex items-center justify-between w-full">
         <div className="w-12 h-12"></div>
-        <h1 className="text-black font-bold text-2xl" dir="ltr">
+        <h1 className="text-2xl font-bold text-black" dir="ltr">
           {t("سياسة الخصوصية")}
         </h1>
         <GoBackButton />
       </div>
 
       {/* Logo */}
-      <img src={sanabelLogo} alt="Logo" className="mx-auto my-4 w-1/2" />
+      <img src={appLogo} alt="Logo" className="w-1/2 mx-auto my-4" />
 
-      {/* Privacy Policy Sections */}
       <div
-        className="flex flex-col w-full h-2/3 overflow-y-auto text-end"
-        dir="rtl"
+        className={`flex flex-col w-full h-full gap-2 p-1 text-black ${
+          isRTL ? "text-right" : "text-left"
+        }`}
+        dir={isRTL ? "rtl" : "ltr"}
       >
-        {privacyPolicyContent.map((section, index) => (
-          <section key={index} className="mb-4">
-            <h2 className="text-lg font-bold mb-2 text-blueprimary">
-              {section.title}
-            </h2>
-            {Array.isArray(section.content) ? (
-              <ul className="list-disc list-inside p-2 ">
-                {section.content.map((item, i) => (
-                  <li key={i} className="text-sm py-2">
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-sm">{section.content}</p>
-            )}
-          </section>
-        ))}
+        {/* Privacy Policy Sections */}
+        <div className="flex flex-col flex-1 w-full overflow-y-auto">
+          {privacyPolicyContent.map((section, index) => (
+            <section key={index} className="mb-6">
+              <h2 className="mb-3 text-lg font-bold text-blueprimary">
+                {section.title}
+              </h2>
+              {Array.isArray(section.content) ? (
+                <ul className={`space-y-2 ${isRTL ? "pr-4" : "pl-4"}`}>
+                  {section.content.map((item, i) => (
+                    <li
+                      key={i}
+                      className={`text-sm leading-relaxed flex items-start ${
+                        isRTL ? "text-right" : "text-left"
+                      }`}
+                    >
+                      <span
+                        className={`inline-block w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-2 ${
+                          isRTL ? "ml-3" : "mr-3"
+                        }`}
+                      ></span>
+                      <span className="flex-1">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-sm leading-relaxed">{section.content}</p>
+              )}
+            </section>
+          ))}
+        </div>
       </div>
     </div>
   );

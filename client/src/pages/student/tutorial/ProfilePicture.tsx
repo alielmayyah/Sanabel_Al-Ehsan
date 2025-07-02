@@ -11,6 +11,7 @@ import Boy5 from "../../../assets/avatars/Boys/Boy5";
 import Boy6 from "../../../assets/avatars/Boys/Boy6";
 import Boy7 from "../../../assets/avatars/Boys/Boy7";
 import Boy8 from "../../../assets/avatars/Boys/Boy8";
+import Boy9 from "../../../assets/avatars/Boys/Boy9";
 
 import Girl1 from "../../../assets/avatars/Girls/Girl1";
 import Girl2 from "../../../assets/avatars/Girls/Girl2";
@@ -78,6 +79,10 @@ const boysAvatars: AvatarOption[] = [
   {
     id: 7,
     Component: Boy8,
+  },
+  {
+    id: 8,
+    Component: Boy9,
   },
 ];
 

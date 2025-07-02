@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import GoBackButton from "../../../components/GoBackButton";
 
 import Tickcircle from "../../../icons/Sanabel/Tickcircle";
-import { FaLocationArrow } from "react-icons/fa";
+import { FaLocationArrow, FaCheck } from "react-icons/fa";
 
 import sanabelType from "../../../data/SanabelTypeData";
 import PrayerTimes from "./PrayerTimes";
@@ -17,9 +17,14 @@ import blueSanabel from "../../../assets/resources/سنبلة زرقاء.png";
 import redSanabel from "../../../assets/resources/سنبلة حمراء.png";
 import yellowSanabel from "../../../assets/resources/سنبلة صفراء.png";
 import xpIcon from "../../../assets/resources/اكس بي.png";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useUserContext } from "../../../context/StudentUserProvider";
 
 const SanabelMissionsPage: React.FC = () => {
+  const { user } = useUserContext();
+
+  const grade = String(user?.grade);
+
   const { index, subIndex } = useParams<{ index: any; subIndex: any }>();
   // Ensure index is properly parsed as a number
   const indexAsNumber = parseInt(index, 10);
@@ -61,6 +66,14 @@ const SanabelMissionsPage: React.FC = () => {
   const [categoryName, setCategoryName] = useState("");
   const [sanabel, setSanabel] = useState<string[]>([]);
   const [missions, setMissions] = useState([]);
+
+  // Popup states
+  const [showConfirmPopup, setShowConfirmPopup] = useState(false);
+  const [showCongratsPopup, setShowCongratsPopup] = useState(false);
+  const [selectedMissionId, setSelectedMissionId] = useState<number | null>(
+    null
+  );
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -151,6 +164,51 @@ const SanabelMissionsPage: React.FC = () => {
 
     fetchAllData();
   }, [sanabel, index, subIndex]);
+
+  const handleMarkComplete = (missionId: number) => {
+    setSelectedMissionId(missionId);
+    setShowConfirmPopup(true);
+  };
+
+  const confirmMarkComplete = async () => {
+    if (!selectedMissionId) return;
+
+    setIsLoading(true);
+    const authToken = localStorage.getItem("token");
+
+    try {
+      // Replace this URL with your actual API endpoint for marking mission complete
+      const response = await axios.post(
+        `http://localhost:3000/students/complete-mission/${selectedMissionId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        // Update the mission status locally
+        setMissions((prevMissions: any) =>
+          prevMissions.map((mission: any) =>
+            mission.id === selectedMissionId
+              ? { ...mission, completionStatus: "Completed" }
+              : mission
+          )
+        );
+
+        setShowConfirmPopup(false);
+        setShowCongratsPopup(true);
+      }
+    } catch (error) {
+      console.error("Error marking mission complete:", error);
+      // You might want to show an error popup here
+    } finally {
+      setIsLoading(false);
+      setSelectedMissionId(null);
+    }
+  };
 
   const renderResources = (items: any) =>
     [
@@ -257,6 +315,23 @@ const SanabelMissionsPage: React.FC = () => {
               </motion.div>
             )}
 
+            {mission.completionStatus !== "Completed" && !grade && (
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 + 0.3 }}
+                className="flex justify-between w-full"
+              >
+                <button
+                  onClick={() => handleMarkComplete(mission.id)}
+                  className={`flex items-center gap-2 px-3 py-1 rounded-lg transition-all duration-200 text-white ${colorBG} hover:opacity-80 active:scale-95`}
+                >
+                  <span className="text-sm font-medium">{t("تم الإنجاز")}</span>
+                  <FaCheck className="text-xs" />
+                </button>
+              </motion.div>
+            )}
+
             <div className="flex items-center justify-between w-full">
               <motion.div
                 initial={{ opacity: 0 }}
@@ -269,13 +344,119 @@ const SanabelMissionsPage: React.FC = () => {
                 {renderResources(mission)}
               </motion.div>
 
-              <h1 className="w-2/3 text-sm text-black text-end">
-                {t(mission.title)}
-              </h1>
+              <h1 className="w-2/3 text-sm text-black ">{t(mission.title)}</h1>
             </div>
           </motion.div>
         ))}
       </div>
+
+      {/* Confirmation Popup */}
+      <AnimatePresence>
+        {showConfirmPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+            onClick={() => setShowConfirmPopup(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.5, opacity: 0 }}
+              className="w-full max-w-sm p-6 mx-4 bg-white shadow-2xl rounded-xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="text-center">
+                <div
+                  className={`w-16 h-16 ${colorBG} rounded-full flex items-center justify-center mx-auto mb-4`}
+                >
+                  <FaCheck className="text-2xl text-white" />
+                </div>
+                <h2 className="mb-2 text-xl font-bold text-gray-800">
+                  {t("تأكيد الإنجاز")}
+                </h2>
+                <p className="mb-6 text-gray-600">
+                  {t("هل أنت متأكد من أنك أنجزت هذه المهمة؟")}
+                </p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowConfirmPopup(false)}
+                    className="flex-1 px-4 py-2 font-medium text-gray-800 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300"
+                  >
+                    {t("إلغاء")}
+                  </button>
+                  <button
+                    onClick={confirmMarkComplete}
+                    disabled={isLoading}
+                    className={`flex-1 py-2 px-4 ${colorBG} text-white rounded-lg font-medium hover:opacity-80 transition-all disabled:opacity-50`}
+                  >
+                    {isLoading ? t("جاري التحديث...") : t("تأكيد")}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Congratulations Popup */}
+      <AnimatePresence>
+        {showCongratsPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          >
+            <motion.div
+              initial={{ scale: 0.5, opacity: 0, y: 50 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.5, opacity: 0, y: 50 }}
+              className="w-full max-w-sm p-8 mx-4 text-center bg-white shadow-2xl rounded-xl"
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="flex items-center justify-center w-20 h-20 mx-auto mb-4 bg-green-500 rounded-full"
+              >
+                <Tickcircle className="text-3xl text-white" />
+              </motion.div>
+
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="mb-2 text-2xl font-bold text-gray-800"
+              >
+                {t("🎉 مبروك! 🎉")}
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="mb-6 text-gray-600"
+              >
+                {t("لقد أنجزت المهمة بنجاح")}
+                <br />
+                {t("استمر في التقدم الرائع 💪")}
+              </motion.p>
+
+              <motion.button
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                onClick={() => setShowCongratsPopup(false)}
+                className="w-full px-6 py-3 font-medium text-white transition-colors bg-green-500 rounded-lg hover:bg-green-600"
+              >
+                {t("رائع")}
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

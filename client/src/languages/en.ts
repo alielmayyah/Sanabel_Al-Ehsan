@@ -288,7 +288,7 @@ const en = {
     "تسجيل الطلاب": "Register Students",
     "سجل إنجازات الطلاب الفردية وتقدمهم":
       "Record individual student achievements and their progress",
-   
+
     "ادخل كود دعوة الطفل": "Enter child invitation code",
     "أرسل دعوات للأبناء للانضمام إلى فصولك":
       "Send invitations to children to join your classes",
@@ -965,6 +965,91 @@ const en = {
     "تحديد الكل": "Select All",
     "إلغاء تحديد الكل": "Deselect All",
     "تفاصيل الفصل": "Class Details",
+
+    "تأكيد الإنجاز": "Achievement Confirmation",
+    "هل أنت متأكد من أنك أنجزت هذه المهمة؟":
+      "Are you sure you have completed this task",
+
+    "جاري التحديث...": "Updating...",
+
+    "🎉 مبروك! 🎉": "🎉 Congratulations! 🎉",
+    "لقد أنجزت المهمة بنجاح": "You have successfully completed the task",
+    "استمر في التقدم الرائع 💪": "Keep up the great progress 💪",
+    "تم الإنجاز": " Mark as completed",
+
+  
+    مقدمة: "Introduction",
+    "المعلومات التي نجمعها": "Information We Collect",
+    "كيفية استخدام المعلومات": "How We Use Information",
+    "مشاركة المعلومات": "Information Sharing",
+    "أمان البيانات": "Data Security",
+    حقوقك: "Your Rights",
+    "ملفات تعريف الارتباط": "Cookies",
+    "تحديثات السياسة": "Policy Updates",
+    "اتصل بنا": "Contact Us",
+    "نحن ملتزمون بحماية خصوصيتك. تشرح هذه السياسة كيفية جمع واستخدام وحماية معلوماتك الشخصية عند استخدام تطبيقنا.":
+      "We are committed to protecting your privacy. This policy explains how we collect, use, and protect your personal information when using our application.",
+    "المعلومات الشخصية مثل الاسم والعمر والبريد الإلكتروني.":
+      "Personal information such as name, age, and email address.",
+    "معلومات الحساب مثل اسم المستخدم وكلمة المرور.":
+      "Account information such as username and password.",
+    "بيانات الاستخدام مثل الأنشطة والتفاعلات داخل التطبيق.":
+      "Usage data such as activities and interactions within the app.",
+    "معلومات تقنية مثل نوع الجهاز وعنوان IP لتحسين الأداء.":
+      "Technical information such as device type and IP address to improve performance.",
+    "تقديم وتحسين خدماتنا وميزات التطبيق.":
+      "Providing and improving our services and app features.",
+    "تخصيص تجربة المستخدم حسب الاحتياجات.":
+      "Customizing user experience according to needs.",
+    "إرسال إشعارات مهمة حول الخدمة.":
+      "Sending important notifications about the service.",
+    "تحليل البيانات لتطوير منتجات أفضل.":
+      "Analyzing data to develop better products.",
+    "لا نبيع أو نؤجر معلوماتك الشخصية لأطراف ثالثة.":
+      "We do not sell or rent your personal information to third parties.",
+    "قد نشارك المعلومات في الحالات التالية:":
+      "We may share information in the following cases:",
+    "بموافقتك الصريحة والمسبقة.": "With your explicit and prior consent.",
+    "للامتثال للقوانين والأنظمة المعمول بها.":
+      "To comply with applicable laws and regulations.",
+    "لحماية حقوقنا وسلامة المستخدمين.":
+      "To protect our rights and user safety.",
+    "نستخدم تقنيات التشفير المتقدمة لحماية بياناتك.":
+      "We use advanced encryption technologies to protect your data.",
+    "نطبق إجراءات أمنية صارمة للوصول إلى المعلومات.":
+      "We implement strict security procedures for accessing information.",
+    "نقوم بمراجعة وتحديث أنظمة الأمان بانتظام.":
+      "We regularly review and update security systems.",
+    "نحتفظ بالبيانات فقط للمدة اللازمة لتحقيق الأغراض المحددة.":
+      "We retain data only for the period necessary to achieve the specified purposes.",
+    "الحق في الوصول إلى بياناتك الشخصية ومراجعتها.":
+      "The right to access and review your personal data.",
+    "الحق في تصحيح أو تحديث معلوماتك.":
+      "The right to correct or update your information.",
+    "الحق في طلب حذف حسابك وبياناتك.":
+      "The right to request deletion of your account and data.",
+    "الحق في سحب موافقتك على معالجة البيانات.":
+      "The right to withdraw your consent for data processing.",
+    "الحق في تقديم شكوى إلى السلطات المختصة.":
+      "The right to file a complaint with competent authorities.",
+    "نستخدم ملفات تعريف الارتباط لتحسين تجربة التصفح.":
+      "We use cookies to improve browsing experience.",
+    "يمكنك التحكم في إعدادات ملفات تعريف الارتباط من متصفحك.":
+      "You can control cookie settings from your browser.",
+    "بعض الميزات قد لا تعمل بشكل صحيح بدون ملفات تعريف الارتباط.":
+      "Some features may not work properly without cookies.",
+    "قد نقوم بتحديث هذه السياسة من وقت لآخر.":
+      "We may update this policy from time to time.",
+    "سيتم إشعارك بأي تغييرات مهمة عبر التطبيق أو البريد الإلكتروني.":
+      "You will be notified of any important changes via the app or email.",
+    "استمرار استخدام التطبيق يعني موافقتك على السياسة المحدثة.":
+      "Continued use of the app means your agreement to the updated policy.",
+    "إذا كان لديك أي أسئلة حول سياسة الخصوصية، يرجى التواصل معنا.":
+      "If you have any questions about the privacy policy, please contact us.",
+    "يمكنك إرسال استفساراتك عبر البريد الإلكتروني أو من خلال التطبيق.":
+      "You can send your inquiries via email or through the app.",
+    "نحن ملتزمون بالرد على جميع الاستفسارات في أقرب وقت ممكن.":
+      "We are committed to responding to all inquiries as soon as possible.",
   },
 };
 

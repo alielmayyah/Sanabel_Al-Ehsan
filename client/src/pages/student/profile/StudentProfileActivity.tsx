@@ -75,58 +75,6 @@ const Profile: React.FC = () => {
   const savedLanguage = localStorage.getItem("language") || "ar";
 
   // Calculate relative time with fixed implementation
-  const getRelativeTime = (dateString: string) => {
-    try {
-      const date = new Date(dateString);
-      const now = new Date();
-      const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-      if (isNaN(date.getTime())) {
-        return t("وقت غير صالح");
-      }
-
-      if (diffInSeconds < 60) {
-        return t("منذ لحظات");
-      } else if (diffInSeconds < 3600) {
-        const minutes = Math.floor(diffInSeconds / 60);
-        return t("منذ {{count}} دقيقة", { count: minutes });
-      } else if (diffInSeconds < 86400) {
-        const hours = Math.floor(diffInSeconds / 3600);
-        return t("منذ {{count}} ساعة", { count: hours });
-      } else if (diffInSeconds < 604800) {
-        // Less than a week
-        const days = Math.floor(diffInSeconds / 86400);
-        return t("منذ {{count}} يوم", { count: days });
-      } else if (diffInSeconds < 2592000) {
-        // Less than a month
-        const weeks = Math.floor(diffInSeconds / 604800);
-        return t("منذ {{count}} أسبوع", { count: weeks });
-      } else {
-        const months = Math.floor(diffInSeconds / 2592000);
-        return t("منذ {{count}} شهر", { count: months });
-      }
-    } catch (error) {
-      console.error("Date parsing error:", error);
-      return t("وقت غير معروف");
-    }
-  };
-
-  // Get formatted date for display
-  const getFormattedDate = (dateString: string) => {
-    try {
-      const date = new Date(dateString);
-      return new Intl.DateTimeFormat(savedLanguage, {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(date);
-    } catch (error) {
-      return t("تاريخ غير صالح");
-    }
-  };
-
   // Filter activities based on selected time range
   const filteredActivities = useMemo(() => {
     const now = new Date();

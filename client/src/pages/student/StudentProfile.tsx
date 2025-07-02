@@ -71,12 +71,12 @@ const Profile: React.FC = () => {
 
       <div className="flex flex-col items-center justify-between gap-0">
         <div className="w-32 h-32 -mt-8 border-4 border-white rounded-full">
-          <GetAvatar userAvatarData={avatar} />
+          <GetAvatar userAvatarData={avatar ?? undefined} />
         </div>
         <h1 className="text-black">
           {user?.firstName} {user?.lastName}
         </h1>
-        <h1 className="text-[#B3B3B3]"> {t("طالب")}</h1>
+        {/* <h1 className="text-[#B3B3B3]"> {t("طالب")}</h1> */}
         <h1 className="text-[#B3B3B3]"> {user?.grade}</h1>
 
         <div className="w-full gap-1 flex-center">
