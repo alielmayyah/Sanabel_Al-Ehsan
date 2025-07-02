@@ -44,9 +44,6 @@ const Shop: React.FC = () => {
     { icon: yellowSanabel },
   ];
 
-  const waterCost = 20;
-  const fertilizerCost = 30;
-
   const waterCount = Number(user?.water);
   const fertilizerCount = Number(user?.fertilizer);
 
@@ -61,6 +58,8 @@ const Shop: React.FC = () => {
   const treeStage = Number(user?.treeStage);
   const treeProgress = Number(user?.treeProgress);
 
+  const waterCost = treeProgress === 1 ? 10 : 20;
+  const fertilizerCost = treeProgress === 1 ? 15 : 30;
   const [buyWaterCount, setBuyWaterCount] = useState(0);
   const [buyFertilizerCount, setBuyFertilizerCount] = useState(0);
 

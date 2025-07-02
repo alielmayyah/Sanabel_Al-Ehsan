@@ -48,7 +48,7 @@ const Step1: React.FC<Step1Props> = ({ onContinue, onBack, name, setName }) => {
     console.log(name.firstName);
     console.log(name.parentName);
   };
-
+  const isRTL = i18n.language === "ar";
   // Validation helper to check if a string contains only letters
   const isAlphabetic = (str: string) => /^[A-Za-z\u0621-\u064A ]+$/.test(str);
 
@@ -66,7 +66,7 @@ const Step1: React.FC<Step1Props> = ({ onContinue, onBack, name, setName }) => {
   }
 
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10">
       <div className="absolute">
         <Toaster />
       </div>
@@ -75,8 +75,8 @@ const Step1: React.FC<Step1Props> = ({ onContinue, onBack, name, setName }) => {
 
         <ProgressBar filledBars={1} />
 
-        <div className="flex flex-col gap-2 self-end">
-          <h1 className="text-black font-bold text-2xl text-end " dir="ltr">
+        <div className="flex flex-col self-end gap-2">
+          <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
             {t("ادخل اسمك واسم والدك")}
           </h1>
 
@@ -86,14 +86,14 @@ const Step1: React.FC<Step1Props> = ({ onContinue, onBack, name, setName }) => {
         </div>
       </div>
 
-      <div className="w-full flex flex-col gap-7">
+      <div className="flex flex-col w-full gap-7">
         <div className="flex flex-col">
           <img src={nameImg} alt="" className="w-full" />
           <div className="flex gap-3">
             <GenericInput
               type="text"
-              placeholder={t("اسم والدك")}
-              title={t("اسم والدك")}
+              placeholder={t("اسمك الاخير")}
+              title={t("اسمك الاخير")}
               onChange={(e) => handleNameChange("parentName", e.target.value)}
               value={name.parentName}
             />
@@ -107,8 +107,12 @@ const Step1: React.FC<Step1Props> = ({ onContinue, onBack, name, setName }) => {
           </div>
         </div>
       </div>
-      <div className=" w-full" onClick={finishStep1}>
-        <PrimaryButton style="fill" text={t("متابعة")} arrow="left" />
+      <div className="w-full " onClick={finishStep1}>
+        <PrimaryButton
+          style="fill"
+          text={t("متابعة")}
+          arrow={isRTL ? "left" : "right"}
+        />
       </div>
     </div>
   );

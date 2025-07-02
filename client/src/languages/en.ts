@@ -279,6 +279,7 @@ const en = {
     "ابحث عن فصل": "Search for class",
     "ابحث عن طالب": "Search for student",
     "لا يوجد فصول": "No classes",
+    "لا يوجد طلاب": "No students",
 
     "تسجيل الابناء": "Register Children",
     "دعوة الابناء": "Invite Children",
@@ -1061,6 +1062,9 @@ const en = {
     "!اختر شخصيتك": "Choose your character",
 
     login_failed: "Email or password is incorrect. Please try again.",
+
+    "لم يقم الطالب بإكمال أي مهام بعد":
+      "The student hasn't completed any tasks yet",
   },
 };
 

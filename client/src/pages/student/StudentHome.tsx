@@ -34,7 +34,7 @@ const StudentHome: React.FC = () => {
   const history = useHistory();
   const { t } = useTranslation();
   const { user } = useUserContext();
-  const xp = Number(user?.xp);
+  const xp = 1117856;
 
   const [missionsDoneToday, setMissionsDoneToday] = useState(0);
   // Function to fetch user data

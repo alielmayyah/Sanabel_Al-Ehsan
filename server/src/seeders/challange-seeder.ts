@@ -288,7 +288,7 @@ const challengeData: ChallengeData[] = [
       xpMultiplier: 1,
       blueMultiplier: 0.3 * 0.5,
       yellowMultiplier: 0.3 * 0.5,
-      redMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
     },
     TaskCategory.xp,
     "Total XP Milestones"
