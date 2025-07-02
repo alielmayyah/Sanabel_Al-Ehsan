@@ -17,7 +17,7 @@ import {
 } from "../controllers/studentController";
 import { appearTaskesTypeandCategories } from "../controllers/teacherController";
 
-const router = require("express").Router();
+export const router = require("express").Router();
 
 /**
  * @swagger
@@ -451,4 +451,3 @@ router.delete("/delete-parent", authenticateToken, checkparent, deleteData);
 router.post("/add-pros", authenticateToken, checkparent, addPros);
 router.get("/appear-leaderboard", authenticateToken, checkparent, parentLeaderboard);
 router.get("/appear-student-deatiled/:studentId", authenticateToken, checkparent, appearStudentInDetails);
-module.exports = router;

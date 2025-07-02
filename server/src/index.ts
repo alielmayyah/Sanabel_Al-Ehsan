@@ -2,9 +2,18 @@ import express from "express";
 import cors from "cors";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-require("dotenv").config();
-import {  connectToDb,  } from "./config/db_connection";
-import { Request,Response,NextFunction } from "express";
+import dotenv from "dotenv";
+import { connectToDb } from "./config/db_connection";
+import { Request, Response, NextFunction } from "express";
+// Import routes
+import { router as user_route } from "./routes/user_routes";
+import { router as student_route } from "./routes/student_routes";
+import { router as organization_routes } from "./routes/organization_routes";
+import { router as class_routes } from "./routes/class_routes";
+import { router as teacher_routes } from "./routes/teacher_routes";
+import { router as parent_route } from "./routes/parent_routes";
+
+dotenv.config();
 // Define CORS options
 const corsOptions = {
   origin: (
@@ -14,14 +23,6 @@ const corsOptions = {
     callback(null, true);
   },
 };
-
-// Import routes
-const user_route = require("../src/routes/user_routes");
-const student_route = require("../src/routes/student_routes");
-const organization_routes = require("../src/routes/organization_routes");
-const class_routes = require("../src/routes/class_routes");
-const teacher_routes = require("../src/routes/teacher_routes");
-const parent_route = require("../src/routes/parent_routes");
 
 const app = express();
 const PORT = process.env.SERVER_PORT;
@@ -87,4 +88,3 @@ app.listen(PORT, async () => {
   console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
   await connectToDb();
 });
-

@@ -5,7 +5,7 @@ import User from "../models/user.model";
 import bcrypt from "bcryptjs";
 import StudentTask from "../models/student-task.model";
 import Task from "../models/task.model";
-import StudentChallenge from "../models/student-challenge.model";
+import StudentChallenge, { CompletionStatus } from "../models/student-challenge.model";
 import Challenge from "../models/challenge.model";
 import Organization from "../models/oraganization.model";
 import Class from "../models/class.model";
@@ -16,6 +16,7 @@ import path from "path";
 import fs from "fs";
 import Tree from "../models/tree.model";
 import { Sequelize, QueryTypes, where } from "sequelize";
+import { DateTime } from "luxon";
 import { Op, fn, col, literal } from "sequelize";
 import TaskCategory from "../models/task-category.model";
 import Teacher from "../models/teacher.model";
@@ -1366,6 +1367,153 @@ const updateProfileImage = async (req: Request, res: Response) => {
       .json({ message: "Failed to update profile image", error });
   }
 };
+const addPros = async (req: Request, res: Response) => {
+  try {
+    // Extract user
+    const user = (req as Request & { user?: JwtPayload }).user;
+    if (!user) {
+      return res.status(401).json({ message: "User data not found in request" });
+    }
+
+    // Find student associated with the user
+    const student = await Student.findOne({ where: { userId: user.id } });
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    // Extract and validate request data
+    const { taskId, studentIds, comment = "" } = req.body;
+    if (typeof taskId !== "number") {
+      return res.status(400).json({ message: "Invalid taskId parameter" });
+    }
+
+    // Get today's date in Cairo timezone
+    const today = DateTime.now().setZone("Africa/Cairo").toISODate();
+
+    // Check if task already completed today
+    const alreadyCompleted = await StudentTask.findOne({
+      where: {
+        studentId: student.id,
+        taskId,
+        date: { [Op.eq]: today },
+      },
+    });
+
+    if (alreadyCompleted) {
+      return res.status(400).json({ message: "Task already completed today" });
+    }
+
+    // Fetch task with category
+    const task = await Task.findOne({
+      where: { id: taskId },
+      include: [{ model: TaskCategory, as: "taskCategory" }],
+    });
+
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    // Get challenges that match either category, taskCategory, or tasktype
+    const challengeFilter = {
+      [Op.or]: [
+        { category: { [Op.in]: ["snabelBlue", "snabelRed", "snabelMixed", "snabelYellow", "xp", "alltask", "task", "tasktype"] } },
+        { taskCategory: task.taskCategory?.title || "" },
+        { tasktype: task.type || "" },
+      ],
+    };
+
+    const challenges = await Challenge.findAll({ where: challengeFilter });
+
+    const studentChallenges = await StudentChallenge.findAll({
+      where: {
+        studentId: student.id,
+        challengeId: challenges.map(c => c.id),
+        completionStatus: "NotCompleted",
+      },
+      include: [{ model: Challenge, as: "challenge" }],
+    });
+
+    // Record the student task
+    await StudentTask.create({
+      studentId: student.id,
+      taskId,
+      completionStatus: "Completed",
+      comment,
+      date: today,
+      teacherId: null,
+      parentId: null,
+      studentAssigned: true,
+    });
+
+    // Update student's points from task
+    student.xp += task.xp;
+    student.snabelRed += task.snabelRed;
+    student.snabelBlue += task.snabelBlue;
+    student.snabelYellow += task.snabelYellow;
+
+    // Track if additional rewards were granted through challenges
+    let extraRewards = { xp: 0, snabelRed: 0, snabelBlue: 0, snabelYellow: 0 };
+
+    // Process student challenges
+    for (const studentChallenge of studentChallenges) {
+      const { challenge } = studentChallenge;
+
+      switch (challenge.category) {
+        case "xp":
+          studentChallenge.pointOfStudent += task.xp;
+          break;
+        case "snabelRed":
+          studentChallenge.pointOfStudent += task.snabelRed;
+          break;
+        case "snabelBlue":
+          studentChallenge.pointOfStudent += task.snabelBlue;
+          break;
+        case "snabelYellow":
+          studentChallenge.pointOfStudent += task.snabelYellow;
+          break;
+        case "snabelMixed":
+          studentChallenge.pointOfStudent += task.snabelRed + task.snabelBlue + task.snabelYellow;
+          break;
+        case "alltask":
+          studentChallenge.pointOfStudent += 1;
+          break;
+      }
+
+      if (challenge.taskCategory === task.taskCategory?.title) {
+        studentChallenge.pointOfStudent += 1;
+      }
+
+      if (challenge.tasktype === task.type) {
+        studentChallenge.pointOfStudent += 1;
+      }
+
+      // Mark as completed and apply reward if threshold met
+      if (studentChallenge.pointOfStudent >= challenge.point) {
+        studentChallenge.completionStatus = CompletionStatus.Completed;
+
+        extraRewards.xp += challenge.xp;
+        extraRewards.snabelRed += challenge.snabelRed;
+        extraRewards.snabelBlue += challenge.snabelBlue;
+        extraRewards.snabelYellow += challenge.snabelYellow;
+      }
+
+      await studentChallenge.save();
+    }
+
+    // Apply extra challenge rewards if any
+    student.xp += extraRewards.xp;
+    student.snabelRed += extraRewards.snabelRed;
+    student.snabelBlue += extraRewards.snabelBlue;
+    student.snabelYellow += extraRewards.snabelYellow;
+
+    await student.save();
+
+    return res.status(201).json({ message: "Student task recorded successfully" });
+  } catch (error) {
+    console.error("Error in addPros:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 export {
   addStudent,
@@ -1389,4 +1537,5 @@ export {
   buyWaterSeeder,
   growTheTree,
   updateProfileImage,
+  addPros,
 };

@@ -35,6 +35,7 @@ class Student extends Model {
   declare snabelBlue: CreationOptional<number>;
   declare snabelYellow: CreationOptional<number>;
   declare treeProgress: CreationOptional<number>;
+  declare canAssignTask: CreationOptional<boolean>;
   static associate(models: any) {
     Student.belongsTo(User, { foreignKey: "userId", as: "User" });
     Student.belongsTo(Parent, { foreignKey: "ParentId", as: "Parent" });
@@ -45,11 +46,13 @@ class Student extends Model {
  
   
     Student.belongsToMany(Task, {
-      through: StudentTask,
+      through: {
+        model: StudentTask,
+        unique: false, // ✅ Correct placement
+      },
       foreignKey: "studentId",
       as: "Tasks",
     });
-  
     Student.hasMany(StudentChallenge, {
       foreignKey: "studentId",
       as: "challengeStudent",
@@ -140,6 +143,11 @@ class Student extends Model {
           validate: {
             min: 0,
           },
+        },
+        canAssignTask: {
+          type: DataTypes.BOOLEAN,
+          allowNull: true,
+          defaultValue: false,
         },
       },
       {

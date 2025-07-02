@@ -1,9 +1,14 @@
-import { Sequelize, DataTypes, Model, CreationOptional, ValidationError } from "@sequelize/core";
+import {
+  Sequelize,
+  DataTypes,
+  Model,
+  CreationOptional,
+  ValidationError,
+} from "@sequelize/core";
 import Student from "./student.model";
 import Task from "./task.model";
 import Parent from "./parent.model";
 import Teacher from "./teacher.model";
-import User from "./user.model";
 
 enum CompletionStatus {
   Completed = "Completed",
@@ -21,25 +26,28 @@ class StudentTask extends Model {
   declare date: string;
   declare parentId: number | null;
   declare teacherId: number | null;
+  declare studentAssigned: boolean;
 
   static associate(models: any) {
     StudentTask.belongsTo(models.Student, {
       foreignKey: { name: "studentId", allowNull: false },
-      as: "Student"
+      as: "Student",
     });
+
     StudentTask.belongsTo(models.Task, {
       foreignKey: { name: "taskId", allowNull: false },
-      as: "Task"
+      as: "Task",
     });
+
     StudentTask.belongsTo(models.Parent, {
       foreignKey: { name: "parentId", allowNull: true },
-      as: "Parent"
+      as: "Parent",
     });
+
     StudentTask.belongsTo(models.Teacher, {
       foreignKey: { name: "teacherId", allowNull: true },
-      as: "Teacher"
+      as: "Teacher",
     });
-    
   }
 
   static initModel(sequelize: Sequelize) {
@@ -57,7 +65,7 @@ class StudentTask extends Model {
         },
         taskId: {
           type: DataTypes.INTEGER,
-          allowNull: true,
+          allowNull: false,
           references: { model: Task, key: "id" },
         },
         parentId: {
@@ -69,6 +77,11 @@ class StudentTask extends Model {
           type: DataTypes.INTEGER,
           allowNull: true,
           references: { model: Teacher, key: "id" },
+        },
+        studentAssigned: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
+          defaultValue: false,
         },
         completionStatus: {
           type: DataTypes.STRING,
@@ -98,40 +111,31 @@ class StudentTask extends Model {
       {
         sequelize,
         modelName: "StudentTask",
+        tableName: "StudentTasks",
         timestamps: true,
         indexes: [
           {
-            unique: true,
-            name: "stu_task_date_p_t_unique", // Shortened index name
-            fields: ["studentId", "taskId", "date", "parentId", "teacherId"],
+            name: "StudentTasks_studentId_taskId_unique",
+            fields: ["studentId", "taskId"],
+            unique: false, // ✅ avoid index conflict
           },
         ],
-        
         hooks: {
           beforeValidate: (task: StudentTask) => {
-            if (!(task.parentId || task.teacherId)) {
-              throw new ValidationError("Either parentId or teacherId must be provided.");
-            }
-            if (task.parentId && task.teacherId) {
-              throw new ValidationError("Only one of parentId or teacherId should be set.");
+            const assignerCount =
+              Number(!!task.parentId) +
+              Number(!!task.teacherId) +
+              Number(task.studentAssigned);
+
+            if (assignerCount !== 1) {
+              throw new ValidationError(
+                "Exactly one assigner must be specified: parentId, teacherId, or studentAssigned."
+              );
             }
           },
         },
       }
     );
-  }
-
-  static async canAssignTask(studentId: number, taskId: number, date: string) {
-    // Check if the task already exists for the given student and date
-    const existingTask = (await StudentTask.findOne({
-      where: {
-        studentId,
-        taskId,
-        date,
-      },
-    })) as StudentTask | null;
-
-    return !existingTask; // True if the task can be assigned, false otherwise
   }
 }
 

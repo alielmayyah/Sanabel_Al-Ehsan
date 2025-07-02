@@ -103,10 +103,14 @@ class Task extends Model {
       as: "category",
     });
     Task.belongsToMany(Student, {
-      through: StudentTask,
+      through: {
+        model: StudentTask,
+        unique: false, // ✅ Correct placement
+      },
       foreignKey: "taskId",
       as: "Students",
-    });  
+    });
+     
   }
 }
 

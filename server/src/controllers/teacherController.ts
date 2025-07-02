@@ -21,6 +21,7 @@ import path from "path";
 import fs from "fs";
 import nodemailer from "nodemailer";
 import { generatePassword } from "../helpers/generatePassword";
+import { DateTime } from "luxon"; // Import luxon for date handling
 
 declare global {
   namespace Express {
@@ -402,7 +403,7 @@ const addPros = async (req: Request, res: Response) => {
     if (!teacher) return res.status(404).json({ message: "Teacher data not found in request" });
 
     // Extract request data
-    let { taskId, studentIds, comment = "", time } = req.body;
+    let { taskId, studentIds, comment = "" } = req.body;
 
     // Validate taskId
     if (typeof taskId !== "number") return res.status(400).json({ message: "Invalid taskId parameter" });
@@ -414,38 +415,34 @@ const addPros = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid studentIds parameter" });
     }
 
-    // Validate time format (HH:mm)
-    if (!time || !/^\d{2}:\d{2}$/.test(time)) {
-      return res.status(400).json({ message: "Invalid time format, expected HH:mm" });
-    }
+
 
     // Set today's date with adjusted time
-    const today = new Date();
-    const [hours, minutes] = time.split(":").map(Number);
-    today.setHours(hours + 2, minutes, 0, 0); 
+    const today= DateTime.now().setZone("Africa/Cairo").toISODate(); // "YYYY-MM-DD"
+   
 
-    // Fetch students who already completed the task today
-    const existingRecords = await StudentTask.findAll({
-      where: {
-        studentId: { [Op.in]: studentIds },
-        taskId,
-        createdAt: {
-          [Op.gte]: new Date().setHours(0, 0, 0, 0),
-          [Op.lt]: new Date().setHours(23, 59, 59, 999),
-        },
-      },
-      include: [{ model: Student, as: "student" }],
-    });
+    // // Fetch students who already completed the task today
+    // const existingRecords = await StudentTask.findAll({
+    //   where: {
+    //     studentId: { [Op.in]: studentIds },
+    //     taskId,
+    //      date: {
+    //               [Op.eq]: today,
+    //             },
+    //   },
+    //   include: [{ model: Student, as: "student" }],
+    // });
 
-    const existingStudentIds = existingRecords.map((record) => record.studentId);
-    const newStudentIds = studentIds.filter((id: number) => !existingStudentIds.includes(id));
+    // const existingStudentIds = existingRecords.map((record) => record.studentId);
+    // const newStudentIds = studentIds.filter((id: number) => !existingStudentIds.includes(id));
+    // const uniqueExistingStudents = [...new Set(existingStudentIds)];
 
-    if (existingStudentIds.length > 0) {
-      return res.status(400).json({
-        message: "Some students have already completed this task today",
-        existingStudents: existingStudentIds,
-      });
-    }
+    // if (existingStudentIds.length <0) {
+    //   return res.status(400).json({
+    //     message: "Some students have already completed this task today",
+    //     existingStudents: uniqueExistingStudents,
+    //   });
+    // }
 
     // Fetch task details
     const task = await Task.findOne({
@@ -468,7 +465,7 @@ const addPros = async (req: Request, res: Response) => {
     // Fetch student challenges that are not completed
     const studentChallenges = await StudentChallenge.findAll({
       where: {
-        studentId: { [Op.in]: newStudentIds },
+        studentId: { [Op.in]: studentIds },
         challengeId: challenges.map((c) => c.id),
         completionStatus: "NotCompleted",
       },
@@ -476,15 +473,17 @@ const addPros = async (req: Request, res: Response) => {
     });
 
     // Update students and their challenges in a single loop
-    for (const studentId of newStudentIds) {
+    for (const studentId of studentIds) {
       // Create student task record
       await StudentTask.create({
         studentId,
         taskId,
         completionStatus: "Completed",
         comment,
-        createdAt: today,
-        teacherId : teacher.id,
+        date: today,
+        teacherId: teacher.id,
+        parentId: null,
+        studentAssigned: false,
       });
 
       // Fetch student record

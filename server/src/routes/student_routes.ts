@@ -21,6 +21,7 @@ import {
   buyWaterSeeder,
   growTheTree,
   updateProfileImage,
+  addPros,
 } from "../controllers/studentController";
 import { authenticateToken } from "../middleware/auth";
 import { checkstudent } from "../middleware/checkrole";
@@ -29,7 +30,7 @@ import { processStudentMiddleware } from "../middleware/processExcelfile";
 import { appearClassCategory, getClassesByCategory } from "../controllers/teacherController";
 const upload = multer({ dest: "uploads/" });
 
-const router = require("express").Router();
+export const router = require("express").Router();
 
 /**
  * @swagger
@@ -1149,4 +1150,10 @@ router.get("/class-categories",  authenticateToken, checkstudent,appearClassCate
  */
 
 router.get("/classes-by-category" ,authenticateToken, checkstudent, getClassesByCategory);
-module.exports = router;
+
+router.post(
+  "/add-pros",
+  authenticateToken,
+  checkstudent,
+  addPros
+);
