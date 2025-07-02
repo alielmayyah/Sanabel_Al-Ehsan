@@ -28,7 +28,7 @@ import {
 import {  processTeacherMiddleware } from "../middleware/processExcelfile";
 const upload = multer({ dest: "uploads/" });
 
-const router = require("express").Router();
+export const router = require("express").Router();
 /**
  * @swagger
  * /teachers/appear-student:
@@ -1140,4 +1140,3 @@ router.get("/class-categories",  authenticateToken, checkTeacher,appearClassCate
  */
 
 router.get("/classes-by-category" ,authenticateToken, checkTeacher, getClassesByCategory);
-module.exports = router;

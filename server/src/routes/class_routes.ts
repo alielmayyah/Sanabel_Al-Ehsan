@@ -2,7 +2,7 @@ import multer from "multer";
 import { schoolAndClassProcessMiddleware } from "../middleware/processExcelfile";
 import { createClassByExcel } from "../controllers/classController";
 
-const router = require("express").Router();
+export const router = require("express").Router();
 const upload = multer({ dest: "uploads/" });
 /**
  * @swagger
@@ -51,5 +51,3 @@ router.post(
   schoolAndClassProcessMiddleware,
   createClassByExcel
 );
-
-module.exports = router;

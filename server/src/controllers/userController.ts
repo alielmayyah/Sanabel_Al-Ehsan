@@ -15,7 +15,7 @@ import Challenge from "../models/challenge.model";
 import StudentChallenge from "../models/student-challenge.model";
 import { JwtPayload } from "jsonwebtoken";
 import generateUniqueConnectCode from "../helpers/generateRandomconnectcode";
-import upload from "../config/cloudaryconfig"; // Import multer config
+// import upload from "../config/cloudaryconfig"; // Import multer config
 
 const jwt = require("jsonwebtoken");
 
@@ -187,6 +187,7 @@ const registration = async (req: Request, res: Response) => {
           profileImg,
           treeProgress: 1,
           connectCode,
+          canAssignTask: true, // Set default value for canAssignTask
         });
 
         // Then create all challenges for the student

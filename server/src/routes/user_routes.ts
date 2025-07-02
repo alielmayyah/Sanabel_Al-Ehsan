@@ -1,11 +1,11 @@
 import { updatePassword } from "../controllers/userController";
 import { authenticateToken } from "../middleware/auth";
-import upload from "../config/cloudaryconfig"; // Import multer config
+// import upload from "../config/cloudaryconfig"; // Import multer config
 
-const express = require("express");
-const userController = require("../controllers/userController");
-const authController = require("../controllers/authController");
-const router = express.Router();
+import express from "express";
+import * as userController from "../controllers/userController";
+import * as authController from "../controllers/authController";
+export const router = express.Router();
 
 /**
  * @swagger
@@ -139,7 +139,7 @@ router.patch("/login", userController.login);
 
 router.patch(
   "/registration",
-  upload.single("profileImg"),
+  // upload.single("profileImg"),
   userController.registration
 );
 
@@ -321,4 +321,4 @@ router.patch("/verfication-auth", authController.verifyOTP);
  *         description: Incorrect current password or internal server error
  */
 router.patch("/update-passowrd", authenticateToken, updatePassword);
-module.exports = router;
+

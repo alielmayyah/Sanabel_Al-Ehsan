@@ -2,6 +2,7 @@
 import { Sequelize } from "@sequelize/core";
 import { MySqlDialect } from "@sequelize/mysql";
 
+
 // Sequelize models
 import User from "../models/user.model";
 import Student from "../models/student.model";
@@ -22,13 +23,14 @@ import Tree from "../models/tree.model";
 
 // Seeder data
 import taskCategorySeed from "../seeders/task-category";
-const demoTree = require("../seeders/demo-tree-seeders");
+import demoTree from "../seeders/demo-tree-seeders";
 const demoTaskSeeder = require("../seeders/20241118230008-demo-task");
 const demoChallengeSeeder = require("../seeders/challange-seeder");
 
 // Utils & libraries
 import _ from "lodash";
 
+require("dotenv").config();
 const sequelize = new Sequelize({
   dialect: MySqlDialect,
   database: process.env.MYSQL_DB_NAME,
@@ -57,20 +59,20 @@ const rundb = async () => {
 
     Tree,
   };
-  Object.values(models).forEach(model => {
+  Object.values(models).forEach((model) => {
     model.initModel(sequelize);
   });
-  
+
   // Instead of assigning to sequelize.models (readonly), keep your own:
   const registeredModels = { ...models };
-  
+
   // Call associate with registeredModels
-  Object.values(registeredModels).forEach(model => {
-    if (typeof model.associate === 'function') {
+  Object.values(registeredModels).forEach((model) => {
+    if (typeof model.associate === "function") {
       model.associate(registeredModels);
     }
   });
-  
+
   try {
     await sequelize.sync({ alter: true });
     console.log("Database & models table created/updated!");
@@ -78,7 +80,6 @@ const rundb = async () => {
     console.error("Unable to connect to the database:", error);
   }
 };
-
 
 const connectToDb = async (): Promise<void> => {
   try {
