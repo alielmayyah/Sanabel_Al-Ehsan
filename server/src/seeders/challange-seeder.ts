@@ -271,7 +271,7 @@ const challengeData: ChallengeData[] = [
       xpMultiplier: 1,
       blueMultiplier: 0.3 * 0.5,
       yellowMultiplier: 0.3 * 0.5,
-      redMultiplier: 0.6 * 0.5,
+      redMultiplier: 0.3 * 0.5,
     },
     TaskCategory.snabelMixed,
     "Total Mixed Points Milestones"
@@ -283,7 +283,7 @@ const challengeData: ChallengeData[] = [
       blue: 0,
       yellow: 0,
       red: 0,
-      xp: 20,
+      xp: 0.2,
       trophyMilestones: milestones.totalXP,
       xpMultiplier: 1,
       blueMultiplier: 0.3 * 0.5,
