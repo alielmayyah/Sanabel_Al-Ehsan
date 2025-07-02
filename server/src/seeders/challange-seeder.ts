@@ -283,7 +283,7 @@ const challengeData: ChallengeData[] = [
       blue: 0,
       yellow: 0,
       red: 0,
-      xp: 0.3,
+      xp: 0.2,
       trophyMilestones: milestones.totalXP,
       xpMultiplier: 1,
       blueMultiplier: 0.3 * 0.5,
