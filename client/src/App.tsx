@@ -24,6 +24,7 @@ import Notifications from "./pages/Notifications/Notifications";
 // Student
 import StudentNavbar from "./components/navbar/StudentNavbar";
 import StudentHome from "./pages/student/StudentHome";
+import StudentToDoList from "./pages/student/StudentToDoList";
 import StudentProfile from "./pages/student/StudentProfile";
 import StudentProfileEdit from "./pages/student/profile/StudentProfileEdit";
 import StudentSettings from "./pages/student/profile/StudentSettings";
@@ -153,6 +154,9 @@ const App: React.FC = () => {
                   />
                   {/* Student */}
                   <Route exact path="/student/home" component={StudentHome} />
+                  <Route exact path="/student/todolist" component={StudentToDoList
+          
+                  } />
                   <Route
                     exact
                     path="/student/profile"
