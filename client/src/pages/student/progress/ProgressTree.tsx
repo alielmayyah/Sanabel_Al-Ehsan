@@ -13,18 +13,22 @@ import Shop from "../../../components/tree/Shop";
 const Progress: React.FC = () => {
   const { t } = useTranslation();
   const { user } = useUserContext();
-
+  const treeProgress = Number(user?.treeProgress);
+  console.log(treeProgress);
   return (
     <div className="flex flex-col w-full gap-1 overflow-y-scroll h-3/4 ">
-      <Inventory
-        waterCount={Number(user?.water)}
-        fertilizerCount={Number(user?.fertilizer)}
-        blueCount={Number(user?.snabelBlue)}
-        redCount={Number(user?.snabelRed)}
-        yellowCount={Number(user?.snabelYellow)}
-      />
+      {treeProgress < 51 && (
+        <Inventory
+          waterCount={Number(user?.water)}
+          fertilizerCount={Number(user?.fertilizer)}
+          blueCount={Number(user?.snabelBlue)}
+          redCount={Number(user?.snabelRed)}
+          yellowCount={Number(user?.snabelYellow)}
+        />
+      )}
 
-      <Shop />
+      {treeProgress < 51 && <Shop />}
+
       {/* Tree */}
       <SanabelTree />
     </div>

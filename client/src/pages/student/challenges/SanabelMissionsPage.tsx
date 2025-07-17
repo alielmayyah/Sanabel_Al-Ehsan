@@ -22,7 +22,7 @@ import { useUserContext } from "../../../context/StudentUserProvider";
 
 const SanabelMissionsPage: React.FC = () => {
   const { user } = useUserContext();
-  console.log("User data:", user);
+
   const grade = String(user?.grade);
   const canAssignTask = user?.canAssignTask;
   const { index, subIndex } = useParams<{ index: any; subIndex: any }>();
@@ -74,6 +74,7 @@ const SanabelMissionsPage: React.FC = () => {
   );
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log(missions);
   useEffect(() => {
     const fetchAllData = async () => {
       const authToken = localStorage.getItem("token");

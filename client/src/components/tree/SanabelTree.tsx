@@ -10,6 +10,7 @@ import fertilizerImg from "../../assets/resources/سماد.png";
 
 // Tree
 import { treeStages } from "../../data/Tree";
+import { motion } from "framer-motion";
 
 const SanabelTree = () => {
   const history = useHistory();
@@ -29,10 +30,28 @@ const SanabelTree = () => {
 
   // Check if tree is at final stage
   const isFinalStage = treeProgress >= 51;
-
+  const language = localStorage.getItem("language");
   return (
     <div className="flex flex-col h-full w-full items-center justify-between shadow-md p-2 border-[1px] border-[#33333325] rounded-xl ">
       {/* Tree */}
+
+      {treeProgress >= 51 && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut", type: "spring" }}
+          className="p-2 my-2 text-centershadow-lg rounded-xl"
+        >
+          <h1
+            className="text-lg font-bold leading-relaxed text-center text-green-700"
+            dir={language == "ar" ? "rtl" : "ltr"}
+          >
+            {t(
+              "🌳 تهانينا! لقد أكملت شجرة الإحسان بالكامل! 🌟 أداؤك مميز، وجهودك الرائعة تُثبت أنك بطل الإحسان الحقيقي 💚 استمر في زراعة الخير يومًا بعد يوم! 🙌✨"
+            )}
+          </h1>
+        </motion.div>
+      )}
 
       <div className="flex flex-col w-full gap-1 ">
         <h1 className="text-lg text-black text-end">
