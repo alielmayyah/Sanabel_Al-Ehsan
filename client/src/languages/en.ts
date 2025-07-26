@@ -1065,6 +1065,21 @@ const en = {
 
     "لم يقم الطالب بإكمال أي مهام بعد":
       "The student hasn't completed any tasks yet",
+
+    "إضافة مهمة جديدة": "Add New Mission",
+
+    إضافة: "Add",
+    "قائمة المهام": "Task List",
+    "ابحث عن مهمة": "Search for a task",
+
+    معلقة: "Pending",
+    مكتملة: "Completed",
+    "لا توجد مهام": "No tasks found",
+    "اضغط على زر الإضافة لإنشاء مهمة جديدة":
+      "Click the add button to create a new task",
+
+    "🌳 تهانينا! لقد أكملت شجرة الإحسان بالكامل! 🌟 أداؤك مميز، وجهودك الرائعة تُثبت أنك بطل الإحسان الحقيقي 💚 استمر في زراعة الخير يومًا بعد يوم! 🙌✨":
+      "🌳 Congratulations! You’ve fully completed the Sanabel Tree! 🌟 Your performance is outstanding, and your efforts prove you're a true hero of kindness 💚 Keep planting goodness day after day! 🙌✨",
   },
 };
 

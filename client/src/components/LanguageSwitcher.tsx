@@ -35,12 +35,12 @@ const LanguageSwitcher: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2 px-5 p-3 border-2 rounded-3xl relative ">
+    <div className="relative flex flex-col items-center justify-center gap-2 p-3 px-5 border-2 rounded-3xl ">
       <div
-        className="flex-center gap-2"
+        className="gap-2 flex-center"
         onClick={() => setChangeLanguageMenu(!changeLanguageMenu)}
       >
-        <TbWorld className="text-blueprimary text-2xl" />
+        <TbWorld className="text-2xl text-blueprimary" />
         <h1 className="text-blueprimary">
           {currentLanguage !== ""
             ? `${currentLanguage}`
@@ -53,13 +53,13 @@ const LanguageSwitcher: React.FC = () => {
           <div className="flex flex-col gap-2">
             <div
               onClick={() => changeLanguage("ar")}
-              className="text-white bg-blueprimary rounded-2xl p-1 text-center"
+              className="p-1 text-center text-white bg-blueprimary rounded-2xl"
             >
               العربية
             </div>
             <div
               onClick={() => changeLanguage("en")}
-              className="text-white bg-blueprimary rounded-2xl p-1 text-center"
+              className="p-1 text-center text-white bg-blueprimary rounded-2xl"
             >
               English
             </div>

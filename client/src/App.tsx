@@ -92,6 +92,7 @@ const App: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
 
+  const role = localStorage.getItem("role");
   return (
     <UserProvider>
       <ThemeProvider>
@@ -154,9 +155,11 @@ const App: React.FC = () => {
                   />
                   {/* Student */}
                   <Route exact path="/student/home" component={StudentHome} />
-                  <Route exact path="/student/todolist" component={StudentToDoList
-          
-                  } />
+                  <Route
+                    exact
+                    path="/student/todolist"
+                    component={StudentToDoList}
+                  />
                   <Route
                     exact
                     path="/student/profile"
@@ -182,11 +185,13 @@ const App: React.FC = () => {
                     path="/student/settings/helpcenter"
                     component={StudentHelpCenter}
                   />
+
                   <Route
                     exact
                     path="/student/challenges"
-                    component={ChooseSanabelType}
+                    component={StudentChallenges}
                   />
+
                   <Route
                     exact
                     path="/student/progress"
@@ -196,6 +201,11 @@ const App: React.FC = () => {
                     exact
                     path="/student/leaderboards"
                     component={StudentLeaderboards}
+                  />
+
+                  <Route
+                    path="/student/sanabel/choosesanabeltype"
+                    component={ChooseSanabelType}
                   />
                   <Route
                     path="/student/sanabel/:index/:subIndex"
