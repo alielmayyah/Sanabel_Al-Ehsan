@@ -119,7 +119,7 @@ const ClassDetails: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start w-full h-screen gap-3 p-4">
+    <div className="flex flex-col items-center justify-start w-full h-full gap-3 p-4">
       {/* Header */}
       <div className="flex items-center justify-between w-full">
         <div className="opacity-0 w-[25px]" />
@@ -251,7 +251,7 @@ const ClassDetails: React.FC = () => {
                   </h1>
                   <div className="flex-col flex-center">
                     <span className="text-sm text-gray-500 capitalize">
-                      {student.class?.classname }
+                      {student.class?.classname}
                     </span>
                     <span className="text-sm text-gray-500 capitalize">
                       {student.grade}
@@ -284,10 +284,10 @@ const ClassDetails: React.FC = () => {
                     />
                     <div className="flex-col flex-center">
                       <span className="text-sm text-gray-500 capitalize">
-                        {student.class?.classname }
+                        {student.class?.classname}
                       </span>
                       <span className="text-sm text-gray-500 capitalize">
-                        {student.grade }
+                        {student.grade}
                       </span>
                     </div>
                   </div>

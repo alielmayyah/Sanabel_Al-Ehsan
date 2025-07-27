@@ -249,15 +249,13 @@ const SanabelMissionsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        Loading...
-      </div>
+      <div className="flex items-center justify-center h-full">Loading...</div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex items-center justify-center h-screen text-red-500">
+      <div className="flex items-center justify-center h-full text-red-500">
         {error}
       </div>
     );
@@ -266,7 +264,7 @@ const SanabelMissionsPage: React.FC = () => {
   const currentSanabelType = sanabel[subIndexAsNumber];
 
   return (
-    <div className="flex flex-col items-center w-full h-screen p-4 ">
+    <div className="flex flex-col items-center w-full h-full p-4 ">
       <div className="flex items-center justify-between w-full">
         <div className="opacity-0 w-[25px] h-25" />
         <h1 className="self-center text-xl font-bold text-black" dir="ltr">

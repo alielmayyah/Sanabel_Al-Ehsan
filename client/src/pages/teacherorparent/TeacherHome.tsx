@@ -252,7 +252,7 @@ const TeacherHome = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen gap-1 bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className="flex flex-col items-center justify-start min-h-full gap-1 bg-gradient-to-br from-gray-50 to-blue-50">
       {/* Header Section */}
       <motion.div
         className="relative flex flex-col items-center justify-between w-full p-5 overflow-hidden text-white bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700"

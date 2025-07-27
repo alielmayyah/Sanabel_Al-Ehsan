@@ -357,7 +357,7 @@ const Shop: React.FC<{
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.5 }}
-        className="grid w-screen grid-cols-2 gap-4 px-4"
+        className="grid w-full grid-cols-2 gap-4 px-4"
       >
         {purchaseOptions.map((option, index) => (
           <motion.div

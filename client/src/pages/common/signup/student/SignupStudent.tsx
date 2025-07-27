@@ -130,7 +130,7 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className="w-screen h-screen">
+    <div className="w-full h-full">
       {steps[stepIndex]}
       {stepIndex > 0 && (
         <button

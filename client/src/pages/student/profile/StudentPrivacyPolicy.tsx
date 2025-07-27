@@ -95,7 +95,7 @@ const PrivacyPolicy = () => {
   const isRTL = currentLanguage === "en";
 
   return (
-    <div className="flex flex-col w-full h-screen p-2 bg-white">
+    <div className="flex flex-col w-full h-full p-2 bg-white">
       {/* Header Section */}
       <div className="flex items-center justify-between w-full">
         <div className="w-12 h-12"></div>

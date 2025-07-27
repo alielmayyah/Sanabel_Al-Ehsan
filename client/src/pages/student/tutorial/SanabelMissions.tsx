@@ -114,7 +114,7 @@ const SanabelOnboarding: React.FC = () => {
 
   return (
     <motion.div
-      className={`flex-center  flex-col w-screen h-full p-2 gap-4 py-8 text-white rounded-2xl `}
+      className={`flex-center  flex-col w-full h-full p-2 gap-4 py-8 text-white rounded-2xl `}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -141,7 +141,7 @@ const SanabelOnboarding: React.FC = () => {
       <AnimatePresence mode="wait">
         <motion.div
           key={`${currentTypeIndex}-${currentSanabelIndex}`}
-          className="w-screen p-3 rounded-xl flex-center "
+          className="w-full p-3 rounded-xl flex-center "
           variants={itemVariants}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

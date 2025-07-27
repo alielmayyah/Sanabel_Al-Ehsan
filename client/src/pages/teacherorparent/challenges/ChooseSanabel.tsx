@@ -139,7 +139,7 @@ const SanabelType: React.FC = () => {
 
   return (
     <motion.div
-      className="flex flex-col items-center w-full h-screen p-3"
+      className="flex flex-col items-center w-full h-full p-3"
       initial={{ opacity: 0, y: 50 }} // Start hidden and slightly below
       animate={{ opacity: 1, y: 0 }} // Animate to visible and original position
       exit={{ opacity: 0, y: -50 }} // Exit animation (if applicable)

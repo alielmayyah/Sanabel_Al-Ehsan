@@ -87,7 +87,7 @@ const ParentHome = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen gap-1 py-6 bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className="flex flex-col items-center justify-start min-h-full gap-1 py-6 bg-gradient-to-br from-gray-50 to-blue-50">
       {/* Main Content */}
       <motion.div
         className="grid w-full grid-cols-1 gap-2 px-4 "

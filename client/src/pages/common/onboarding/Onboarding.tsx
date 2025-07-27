@@ -75,7 +75,7 @@ const OnBoarding: React.FC = () => {
       </div>
 
       {/* Animated Image with key and exit animation */}
-      <div className="w-screen h-1/3 flex-center">
+      <div className="w-full h-1/3 flex-center">
         <motion.img
           key={stepCount}
           src={onboardingData[stepCount].img}
@@ -127,7 +127,7 @@ const OnBoarding: React.FC = () => {
 
         {/* Button with Scale Animation */}
 
-        <div className="flex items-center w-screen gap-2 px-4">
+        <div className="flex items-center w-full gap-2 px-4">
           <div onClick={changeStepIncrement} className="w-full">
             {" "}
             <PrimaryButton

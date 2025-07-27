@@ -42,7 +42,7 @@ const Challenges: React.FC = () => {
   const canAssignTask = user?.canAssignTask;
   return (
     <motion.div
-      className="flex flex-col items-center w-full h-screen" // Added pb-4 for bottom padding
+      className="flex flex-col items-center w-full h-full" // Added pb-4 for bottom padding
       id="page-height"
       initial="hidden"
       animate="visible"
