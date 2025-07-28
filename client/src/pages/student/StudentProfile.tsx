@@ -45,10 +45,7 @@ const Profile: React.FC = () => {
   };
   const parentCode = user?.connectCode;
   return (
-    <div
-      className="z-10 flex flex-col items-center justify-between w-full h-full"
-      id="page-height"
-    >
+    <div className="flex flex-col items-center justify-between w-full h-5/6 ">
       <div className="flex items-center justify-between bg-yellowprimary py-7 w-full  p-4 rounded-b-[50px] ">
         {/* Settings Button */}
         <div className="flex gap-2">

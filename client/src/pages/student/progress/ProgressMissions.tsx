@@ -5,13 +5,19 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 // Sanabel type
-
 import sanabelType1Img from "../../../assets/sanabeltype/سنابل الإحسان في العلاقة مع الأسرة والمجتمع.png";
 import sanabelType2Img from "../../../assets/sanabeltype/سنابل الإحسان في العلاقة مع النفس.png";
 import sanabelType3Img from "../../../assets/sanabeltype/سنابل-الإحسان-في-العلاقة-مع-الأرض-والكون.png";
 import sanabelType4Img from "../../../assets/sanabeltype/سنابل-الإحسان-في-العلاقة-مع-الله.png";
 
-import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 // Sanabel
 import blueSanabel from "../../../assets/resources/سنبلة زرقاء.png";
@@ -20,7 +26,6 @@ import yellowSanabel from "../../../assets/resources/سنبلة صفراء.png";
 import mixedSanabel from "../../../assets/resources/سنابل.png";
 
 // Navbar
-
 import missionsDoneImg from "../../../assets/target.png";
 import axios from "axios";
 
@@ -102,8 +107,8 @@ const ProgressMissions: React.FC = () => {
     "سنابل الإحسان في العلاقة مع الأسرة والمجتمع": 0,
     "سنابل الإحسان في العلاقة مع الأرض والكون": 0,
   });
-  // Dynamic chart data
 
+  // Dynamic chart data
   const sanabelType = [
     {
       name: t("العلاقة مع الله"),
@@ -131,6 +136,7 @@ const ProgressMissions: React.FC = () => {
 
   const sanabelColor = [
     {
+      name: "Blue Sanabel", // Added name property
       value:
         sanabelType[0].value * 2 +
         sanabelType[1].value * 2 +
@@ -138,6 +144,7 @@ const ProgressMissions: React.FC = () => {
         sanabelType[3].value * 1,
     },
     {
+      name: "Yellow Sanabel", // Added name property
       value:
         sanabelType[0].value * 2 +
         sanabelType[1].value * 1 +
@@ -145,6 +152,7 @@ const ProgressMissions: React.FC = () => {
         sanabelType[3].value * 1,
     },
     {
+      name: "Red Sanabel", // Added name property
       value:
         sanabelType[0].value * 2 +
         sanabelType[1].value * 1 +
@@ -152,9 +160,15 @@ const ProgressMissions: React.FC = () => {
         sanabelType[3].value * 2,
     },
   ];
+
   const totalSanabel = sanabelColor.reduce((acc, item) => acc + item.value, 0);
+
+  // Filter out zero values for better chart display
+  const filteredSanabelType = sanabelType.filter((item) => item.value > 0);
+  const filteredSanabelColor = sanabelColor.filter((item) => item.value > 0);
+
   return (
-    <div className="flex flex-col w-full gap-3 overflow-y-auto h-3/4 ">
+    <div className="flex flex-col w-full gap-3 overflow-y-auto h-3/4">
       <motion.div
         className="w-full bg-[#E14E54] flex-center justify-between items-center p-2 gap-3 rounded-xl text-lg"
         variants={containerVariants}
@@ -214,87 +228,102 @@ const ProgressMissions: React.FC = () => {
         ))}
       </motion.div>
 
-      <div className="relative flex items-center justify-center w-full my-4">
-        <PieChart width={window.innerWidth} height={350}>
-          <Pie
-            data={sanabelType}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            innerRadius={60}
-            outerRadius={120}
-            fill="#8884d8"
-            paddingAngle={0}
-            label={({ name, value }) =>
-              ` ${((value / total) * 100).toFixed(0)}%`
-            }
-            labelLine={false}
-          >
-            {sanabelType.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
+      {/* First Pie Chart - Only show if there's data */}
+      {total > 0 && (
+        <div className="relative flex items-center justify-center w-full my-4">
+          <ResponsiveContainer width="100%" height={350}>
+            <PieChart>
+              <Pie
+                data={filteredSanabelType}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={120}
+                fill="#8884d8"
+                paddingAngle={0}
+                label={({ name, value }) =>
+                  `${((value / total) * 100).toFixed(0)}%`
+                }
+                labelLine={false}
+              >
+                {filteredSanabelType.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+          <img
+            src={missionsDoneImg}
+            alt=""
+            className="absolute w-1/4 transform -translate-x-1/2 pointer-events-none top-1/2 left-2/4 -translate-y-3/4"
+          />
+        </div>
+      )}
 
-          <Tooltip />
-          <Legend />
-        </PieChart>
-        <img
-          src={missionsDoneImg}
-          alt=""
-          className="absolute w-1/4 transform -translate-x-1/2 top-1/2 left-2/4 -translate-y-3/4"
-        />
-      </div>
+      {/* Show message when no data */}
+      {total === 0 && (
+        <div className="flex items-center justify-center w-full h-64 text-gray-500">
+          <p>{t("لا توجد بيانات لعرضها")}</p>
+        </div>
+      )}
 
-      <div className="w-full bg-[#495638] flex-center justify-between items-center p-2 gap-2  rounded-xl text-md">
+      <div className="w-full bg-[#495638] flex-center justify-between items-center p-2 gap-2 rounded-xl text-md">
         <img src={blueSanabel} className="h-6" alt="" />
         <h1>x{sanabelColor[0].value}</h1>
         <img src={yellowSanabel} className="h-6" alt="" />
         <h1>x{sanabelColor[1].value}</h1>
         <img src={redSanabel} className="h-6" alt="" />
         <h1>x{sanabelColor[2].value}</h1>
-        <h1 className="font-bold text-white text-md " dir="ltr">
+        <h1 className="font-bold text-white text-md" dir="ltr">
           {t("إجمالي السنابل")}
         </h1>
         <img src={mixedSanabel} alt="" className="w-8" />
       </div>
 
-      <div className="relative flex items-center justify-center w-full">
-        <PieChart width={window.innerWidth} height={350}>
-          <Pie
-            data={sanabelColor}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            innerRadius={60}
-            outerRadius={120}
-            fill="#8884d8"
-            paddingAngle={0}
-            label={({ value }) =>
-              ` ${((value / totalSanabel) * 100).toFixed(0)}%`
-            }
-            labelLine={false}
-          >
-            {sanabelType.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={sanabelCOLORS[index % sanabelCOLORS.length]}
-              />
-            ))}
-          </Pie>
-
-          <Tooltip />
-        </PieChart>
-        <img
-          src={mixedSanabel}
-          alt=""
-          className="absolute w-1/4 transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-        />
-      </div>
+      {/* Second Pie Chart - Only show if there's data */}
+      {totalSanabel > 0 && (
+        <div className="relative flex items-center justify-center w-full">
+          <ResponsiveContainer width="100%" height={350}>
+            <PieChart>
+              <Pie
+                data={filteredSanabelColor}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={120}
+                fill="#8884d8"
+                paddingAngle={0}
+                label={({ value }) =>
+                  `${((value / totalSanabel) * 100).toFixed(0)}%`
+                }
+                labelLine={false}
+              >
+                {filteredSanabelColor.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={sanabelCOLORS[index % sanabelCOLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+          <img
+            src={mixedSanabel}
+            alt=""
+            className="absolute w-1/4 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none top-1/2 left-1/2"
+          />
+        </div>
+      )}
     </div>
   );
 };

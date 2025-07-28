@@ -530,7 +530,7 @@ const TodoList = () => {
         console.error("Failed to mark mission complete:", errorData);
         alert(
           t(
-            `Failed to mark mission complete: ${
+            `فشل في تحديد المهمة كمكتملة: ${
               errorData.message || response.statusText
             }`
           )
@@ -538,7 +538,7 @@ const TodoList = () => {
       }
     } catch (error) {
       console.error("Error marking mission complete:", error);
-      alert(t("An error occurred while marking the mission complete."));
+      alert(t("حدث خطأ أثناء تحديد المهمة كمكتملة."));
     } finally {
       setIsLoading(false);
       setSelectedMissionId(null);

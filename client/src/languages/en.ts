@@ -1080,6 +1080,14 @@ const en = {
 
     "🌳 تهانينا! لقد أكملت شجرة الإحسان بالكامل! 🌟 أداؤك مميز، وجهودك الرائعة تُثبت أنك بطل الإحسان الحقيقي 💚 استمر في زراعة الخير يومًا بعد يوم! 🙌✨":
       "🌳 Congratulations! You’ve fully completed the Sanabel Tree! 🌟 Your performance is outstanding, and your efforts prove you're a true hero of kindness 💚 Keep planting goodness day after day! 🙌✨",
+
+    "خطأ: المهمة لا تحتوي على معرف صحيح":
+      "Error: Task does not have a valid ID",
+    "الرجاء اختيار مهمة أولاً.": "Please select a task first.",
+
+    "فشل في تحديد المهمة كمكتملة:": "Failed to mark task as completed:",
+    "حدث خطأ أثناء تحديد المهمة كمكتملة.":
+      "An error occurred while marking the task as completed.",
   },
 };
 
