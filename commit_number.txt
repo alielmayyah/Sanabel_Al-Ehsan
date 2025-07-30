@@ -1,5 +1,0 @@
-<<<<<<< HEAD
-70
-=======
-4 
->>>>>>> parent of 8404c7f (commit number 5)
