@@ -101,7 +101,7 @@ const App: React.FC = () => {
           {/* Outer container that fills the entire viewport */}
           <div className="flex items-center justify-center w-screen h-screen bg-gray-100 dark:bg-gray-900">
             {/* Mobile app container with iPhone 12 dimensions */}
-            <div className="w-[390px] h-[844px] bg-white dark:bg-[#121212] relative overflow-hidden shadow-2xl rounded-[15px] border border-gray-300 dark:border-gray-700">
+            <div className="w-[375px] h-[812px] bg-white dark:bg-[#121212] relative overflow-hidden shadow-2xl rounded-[15px] border border-gray-300 dark:border-gray-700">
               <IonReactRouter>
                 <IonRouterOutlet>
                   <div className="relative w-full h-full">

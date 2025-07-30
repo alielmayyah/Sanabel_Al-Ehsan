@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { IonRouterLink } from "@ionic/react";
-import PrimaryButton from "../../components/PrimaryButton";
-import GenericInput from "../../components/GenericInput";
-import GoBackButton from "../../components/GoBackButton";
+import PrimaryButton from "../../../components/PrimaryButton";
+import GenericInput from "../../../components/GenericInput";
+import GoBackButton from "../../../components/GoBackButton";
 import { FaCheck } from "react-icons/fa";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
@@ -88,16 +88,16 @@ const Password: React.FC = () => {
       : "bg-gray-200";
 
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10">
       <Toaster />
       <div className="flex flex-row-reverse items-center w-full gap-3">
         <GoBackButton />
-        <h1 className="text-black font-bold text-2xl text-end ">
+        <h1 className="text-2xl font-bold text-black text-end ">
           {t("تغيير كلمة السر")}
         </h1>
       </div>
 
-      <div className="flex flex-col gap-10 w-full">
+      <div className="flex flex-col w-full gap-10">
         {/* Old Password */}
         <div className="flex flex-col gap-5">
           <GenericInput
@@ -105,7 +105,7 @@ const Password: React.FC = () => {
             placeholder={t("كلمة السر القديمة")}
             title={t("كلمة السر القديمة")}
             value={tempOldPassword}
-            onChange={(e) => setTempOldPassword(e.target.value)} // Only update old password state
+            onChange={(e: any) => setTempOldPassword(e.target.value)} // Only update old password state
           />
         </div>
 
@@ -121,7 +121,7 @@ const Password: React.FC = () => {
         </div>
 
         {/* Progress Bar */}
-        <div className="flex w-full bg-gray-200 h-2 rounded-xl gap-0">
+        <div className="flex w-full h-2 gap-0 bg-gray-200 rounded-xl">
           <div
             className={`${progressColor} h-2 rounded-xl`}
             style={{ width: progressWidth }}
@@ -129,9 +129,9 @@ const Password: React.FC = () => {
         </div>
 
         {/* Validation Circles */}
-        <div className="flex flex-col gap-3 items-end self-end">
+        <div className="flex flex-col items-end self-end gap-3">
           {validationCircles.map((circle, index) => (
-            <div key={index} className="flex-center gap-3">
+            <div key={index} className="gap-3 flex-center">
               <h1
                 className={classNames(
                   circle.condition ? "text-green-500" : "text-[#8E99A4]"
@@ -147,7 +147,7 @@ const Password: React.FC = () => {
                     : "border-2 border-[#c7cbd3]"
                 )}
               >
-                {circle.condition && <FaCheck className="text-white text-sm" />}
+                {circle.condition && <FaCheck className="text-sm text-white" />}
               </div>
             </div>
           ))}

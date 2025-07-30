@@ -102,6 +102,7 @@ const Login: React.FC = () => {
             // Set user in context
             const { setUser } = useUserContext();
             setUser({
+              id: userData.id,
               firstName: userData.user.firstName,
               lastName: userData.user.lastName,
               email: userData.user.email,
@@ -119,6 +120,7 @@ const Login: React.FC = () => {
               treeProgress: response.data.data.treePoint.treeProgress,
               connectCode: userData.connectCode,
               profileImg: userData.user.profileImg || "", // Add this line
+              canAssignTask: userData.canAssignTask,
             });
           }
         } catch (error) {

@@ -28,62 +28,6 @@ const StudentList: React.FC = () => {
     );
   };
 
-  const studentList = [
-    { name: "محمد منجي", avatar: avatars.boys.boy1 },
-    { name: "محمد عمرو", avatar: avatars.boys.boy2 },
-    { name: "أحمد خالد", avatar: avatars.boys.boy3 },
-    { name: "علي يوسف", avatar: avatars.boys.boy4 },
-    { name: "عبد الله سالم", avatar: avatars.boys.boy5 },
-    { name: "خالد إبراهيم", avatar: avatars.boys.boy6 },
-    { name: "ياسين محمد", avatar: avatars.boys.boy7 },
-    { name: "عمر حازم", avatar: avatars.boys.boy1 },
-    { name: "سيف الدين علاء", avatar: avatars.boys.boy2 },
-    { name: "يوسف حسن", avatar: avatars.boys.boy3 },
-    { name: "مالك أحمد", avatar: avatars.boys.boy4 },
-    { name: "رامز عادل", avatar: avatars.boys.boy5 },
-    { name: "حمزة مصطفى", avatar: avatars.boys.boy6 },
-    { name: "زياد سامي", avatar: avatars.boys.boy7 },
-    { name: "آدم كريم", avatar: avatars.boys.boy1 },
-    { name: "مازن عبد العزيز", avatar: avatars.boys.boy2 },
-    { name: "تميم محمود", avatar: avatars.boys.boy3 },
-    { name: "نور الدين عماد", avatar: avatars.boys.boy4 },
-    { name: "إياد عبد الرحمن", avatar: avatars.boys.boy5 },
-    { name: "باسل أمجد", avatar: avatars.boys.boy6 },
-    { name: "لينا خالد", avatar: avatars.girls.girl1 },
-    { name: "مريم عادل", avatar: avatars.girls.girl2 },
-    { name: "سارة أحمد", avatar: avatars.girls.girl3 },
-    { name: "نوران يوسف", avatar: avatars.girls.girl4 },
-    { name: "شهد محمد", avatar: avatars.girls.girl5 },
-    { name: "ملك كريم", avatar: avatars.girls.girl6 },
-    { name: "هالة خالد", avatar: avatars.girls.girl7 },
-    { name: "ريما أحمد", avatar: avatars.girls.girl8 },
-    { name: "مها إبراهيم", avatar: avatars.girls.girl9 },
-    { name: "آلاء سعيد", avatar: avatars.girls.girl1 },
-    { name: "رنا عمرو", avatar: avatars.girls.girl2 },
-    { name: "جنى خالد", avatar: avatars.girls.girl3 },
-    { name: "ميار محمد", avatar: avatars.girls.girl4 },
-    { name: "رغد أحمد", avatar: avatars.girls.girl5 },
-    { name: "ليان محمود", avatar: avatars.girls.girl6 },
-    { name: "تالين كريم", avatar: avatars.girls.girl7 },
-    { name: "ديما يوسف", avatar: avatars.girls.girl8 },
-    { name: "لارا مازن", avatar: avatars.girls.girl9 },
-    { name: "نور حازم", avatar: avatars.girls.girl1 },
-    { name: "يمنى خالد", avatar: avatars.girls.girl2 },
-    { name: "نادين عمر", avatar: avatars.girls.girl3 },
-    { name: "جود عبد الله", avatar: avatars.girls.girl4 },
-    { name: "لارين سامي", avatar: avatars.girls.girl5 },
-    { name: "تالا خالد", avatar: avatars.girls.girl6 },
-    { name: "لمى أحمد", avatar: avatars.girls.girl7 },
-    { name: "آية إبراهيم", avatar: avatars.girls.girl8 },
-    { name: "فرح خالد", avatar: avatars.girls.girl9 },
-    { name: "سلمى أمجد", avatar: avatars.girls.girl1 },
-    { name: "رزان يوسف", avatar: avatars.girls.girl2 },
-  ];
-
-  const filteredStudents = studentList.filter((student) =>
-    student.name.includes(searchQuery)
-  );
-
   return (
     <div
       className="flex flex-col items-center justify-between gap-10 p-4"
@@ -113,7 +57,7 @@ const StudentList: React.FC = () => {
           />
         </div>
       </div>
-      <div className="flex flex-col w-full gap-2 overflow-y-auto h-">
+      {/* <div className="flex flex-col w-full gap-2 overflow-y-auto h-">
         {filteredStudents.map((student, index) => (
           <div
             className="flex items-center justify-between w-full p-3 border-2 rounded-xl "
@@ -138,7 +82,7 @@ const StudentList: React.FC = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
       <PrimaryButton style={""} text={t("تسجيل حسنات")} arrow={"none"} />
       <TeacherNavbar />
     </div>

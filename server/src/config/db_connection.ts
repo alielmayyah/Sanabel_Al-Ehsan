@@ -2,7 +2,6 @@
 import { Sequelize } from "@sequelize/core";
 import { MySqlDialect } from "@sequelize/mysql";
 
-
 // Sequelize models
 import User from "../models/user.model";
 import Student from "../models/student.model";

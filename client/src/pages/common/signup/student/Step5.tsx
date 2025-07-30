@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useTheme } from "../../../context/ThemeContext";
-import PrimaryButton from "../../../components/PrimaryButton";
+import { useTheme } from "../../../../context/ThemeContext";
+import PrimaryButton from "../../../../components/PrimaryButton";
 import { IonRouterLink } from "@ionic/react";
 
-import GenericInput from "../../../components/GenericInput";
-import BackArrow from "../../../icons/BackArrow";
-import GoBackButton from "../../../components/GoBackButton";
+import GenericInput from "../../../../components/GenericInput";
+import BackArrow from "../../../../icons/BackArrow";
+import GoBackButton from "../../../../components/GoBackButton";
 import { useTranslation } from "react-i18next";
 
 import ProgressBar from "../ProgressBar";
@@ -30,14 +30,14 @@ const Step5: React.FC<Step5Props> = ({
     setParentCode(e.target.value);
   };
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10">
       <div className="flex flex-col w-full gap-3">
         <GoBackButton onClick={onBack} />
 
         <ProgressBar filledBars={5} />
 
-        <div className="flex flex-col gap-2 self-end">
-          <h1 className="text-black font-bold text-2xl text-end " dir="ltr">
+        <div className="flex flex-col self-end gap-2">
+          <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
             {t("ادخل رمز لولي امرك")}
           </h1>
 
@@ -47,7 +47,7 @@ const Step5: React.FC<Step5Props> = ({
         </div>
       </div>
 
-      <div className="flex w-full gap-3 justify-center items-center">
+      <div className="flex items-center justify-center w-full gap-3">
         <GenericInput
           type="text"
           placeholder={t("اصنع رمز لوالديك حتي يمكنهم تحرير تقدمك")}

@@ -45,7 +45,7 @@ const SplashScreen: React.FC = () => {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center w-screen h-5/6 bg-white dark:bg-[#121212]"
+      className="flex flex-col items-center justify-center w-full h-5/6 bg-white dark:bg-[#121212]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
