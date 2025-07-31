@@ -28,8 +28,6 @@ import xpIcon from "../../../assets/resources/اكس بي.png";
 import { useUserContext } from "../../../context/StudentUserProvider";
 
 const SanabelType: React.FC = () => {
-
-
   const [categories, setCategories] = useState([]);
 
   const sanabelTypeImg = [
@@ -113,7 +111,7 @@ const SanabelType: React.FC = () => {
   const currentLanguage = localStorage.getItem("language");
   return (
     <motion.div
-      className="flex flex-col items-center justify-between w-full h-full p-4 px-3 overflow-y-auto "
+      className="flex flex-col items-center justify-between w-full p-4 px-3 "
       id="page-height"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -122,7 +120,7 @@ const SanabelType: React.FC = () => {
       {/* Popup */}
       {reminderPopup && (
         <motion.div
-          className="flex-col flex items-center justify-between w-screen h-[86vh] absolute bottom-0 rounded-t-3xl border-t-2  bg-white z-30 p-4"
+          className="flex-col flex items-center justify-between w-screen h-[9vh] absolute bottom-0 rounded-t-3xl border-t-2  bg-white z-30 p-4"
           initial="hidden"
           animate="visible"
           exit="exit"

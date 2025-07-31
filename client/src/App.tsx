@@ -91,7 +91,15 @@ setupIonicReact();
 const App: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
+  
 
+  if (!localStorage.getItem("language")) {
+    localStorage.setItem("language", "ar");
+  }
+
+  if (!localStorage.getItem("dir")) {
+    localStorage.setItem("dir", "ltr");
+  }
   const role = localStorage.getItem("role");
 
   return (
