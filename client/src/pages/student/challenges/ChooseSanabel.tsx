@@ -139,7 +139,7 @@ const SanabelType: React.FC = () => {
       transition={{ duration: 0.6, ease: "easeInOut" }}
     >
       <motion.div
-        className="flex items-center justify-between w-full"
+        className="flex flex-row-reverse items-center justify-between w-full"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
@@ -153,7 +153,8 @@ const SanabelType: React.FC = () => {
           animate={{ rotate: 0, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
         />
-        <div className="w-[43px]">
+
+        <div className="flex self-end justify-start w-full">
           <GoBackButton />
         </div>
       </motion.div>

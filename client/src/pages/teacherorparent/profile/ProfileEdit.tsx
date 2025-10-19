@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useTheme } from "../../context/ThemeContext";
-import PrimaryButton from "../../components/PrimaryButton";
+import { useTheme } from "../../../context/ThemeContext";
+import PrimaryButton from "../../../components/PrimaryButton";
 import { IonRouterLink } from "@ionic/react";
 
-import GenericInput from "../../components/GenericInput";
-import BackArrow from "../../icons/BackArrow";
-import GoBackButton from "../../components/GoBackButton";
+import GenericInput from "../../../components/GenericInput";
+import BackArrow from "../../../icons/BackArrow";
+import GoBackButton from "../../../components/GoBackButton";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
@@ -32,7 +32,7 @@ import girl6 from "../../assets/signup/Avatar/Girls/girl6.png";
 import girl7 from "../../assets/signup/Avatar/Girls/girl7.png";
 import girl8 from "../../assets/signup/Avatar/Girls/girl8.png";
 import girl9 from "../../assets/signup/Avatar/Girls/girl9.png";
-import i18n from "../../i18n";
+import i18n from "../../../i18n";
 import axios from "axios";
 
 // Grouped arrays for easier access
@@ -129,14 +129,14 @@ const Step1: React.FC = () => {
     }
   };
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10">
       <div className="absolute">
         <Toaster />
       </div>
       <div className="flex flex-row-reverse items-center w-full gap-3">
         <GoBackButton />
 
-        <h1 className="text-black font-bold text-2xl text-end " dir="ltr">
+        <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
           {t("تعديل الملف الشخصي")}
         </h1>
       </div>
@@ -148,7 +148,7 @@ const Step1: React.FC = () => {
           alt={`Avatar`}
           className={`w-32 h-32 bg-redprimary rounded-full `}
         />
-        <div className="flex flex-wrap gap-1 items-center justify-center">
+        <div className="flex flex-wrap items-center justify-center gap-1">
           {(gender === "boy" ? boysAvatars : girlsAvatars).map(
             (avatar, index) => (
               <img
@@ -168,7 +168,7 @@ const Step1: React.FC = () => {
       </div>
 
       {/* First and last name */}
-      <div className="w-full flex flex-col gap-7">
+      <div className="flex flex-col w-full gap-7">
         <div className="flex flex-col">
           <div className="flex gap-3">
             <GenericInput
@@ -191,7 +191,7 @@ const Step1: React.FC = () => {
       {/* First and last name */}
 
       {/* Email */}
-      <div className="flex flex-col gap-3 w-full ">
+      <div className="flex flex-col w-full gap-3 ">
         <GenericInput
           type="email"
           placeholder={t("email_example")}
@@ -217,7 +217,7 @@ const Step1: React.FC = () => {
             <option
               key={i + 1}
               value={`الصف ${i + 1}`}
-              className="CustomFont py-3"
+              className="py-3 CustomFont"
             >
               {t(`الصف ${i + 1}`)}
             </option>
@@ -227,7 +227,7 @@ const Step1: React.FC = () => {
 
       {/* Class */}
 
-      <div className=" w-full" onClick={handleSubmit}>
+      <div className="w-full " onClick={handleSubmit}>
         <PrimaryButton style="fill" text={t("حفظ")} arrow="none" />
       </div>
     </div>

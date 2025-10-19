@@ -344,16 +344,15 @@ const TeacherView: React.FC = () => {
       id="page-height"
     >
       {/* Header */}
-      <div className="flex-col w-full gap-3 flex-center">
-        <div className="flex items-center justify-between w-full">
-          <div className="w-16"></div>
-          <div className="flex flex-col items-center justify-center gap-2">
-            <h1 className="text-2xl font-bold text-black text-end">
-              {t("استعرض الطلاب")}
-            </h1>
-          </div>
-          <GoBackButton />
+
+      <div className="flex flex-row-reverse items-center justify-between w-full">
+        <div className="w-16"></div>
+        <div className="flex flex-col items-center justify-center gap-2">
+          <h1 className="text-2xl font-bold text-black ">
+            {t("استعرض الطلاب")}
+          </h1>
         </div>
+        <GoBackButton />
       </div>
 
       {/* View Type Selector */}
@@ -382,9 +381,9 @@ const TeacherView: React.FC = () => {
       </div>
 
       {/* Search Bar and Layout Options */}
-      <div className="w-full space-y-3">
+      <div className="w-full space-y-3 ">
         {/* Filter and Layout Options Row */}
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-center justify-between w-full f">
           {/* Filter Menu */}
           <div className="relative">
             <div
@@ -456,7 +455,7 @@ const TeacherView: React.FC = () => {
         </div>
 
         {/* Search bar */}
-        <div className="flex items-center justify-between w-full px-2 py-1 border-2 rounded-xl">
+        <div className="flex flex-row-reverse items-center justify-between w-full px-2 py-1 border-2 rounded-xl">
           <div className="w-10 h-10 bg-blueprimary rounded-xl flex-center">
             <SearchIcon className="text-white" size={20} />
           </div>
@@ -467,7 +466,7 @@ const TeacherView: React.FC = () => {
                 ? t("ابحث عن طالب")
                 : t("ابحث عن فصل")
             )}
-            className="w-full py-3 text-black bg-transparent drop-shadow-sm text-end"
+            className="w-full py-3 text-black bg-transparent drop-shadow-sm text-start"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -475,13 +474,11 @@ const TeacherView: React.FC = () => {
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 w-full overflow-y-auto">
+      <div className="flex-1 w-full overflow-y-auto ">
         {/* Classes View */}
         {selectViewType === "classes" && (
           <div className="flex flex-col items-end w-full gap-2">
-            <h1 className="text-xl font-bold text-black text-end">
-              {t("الفصول")}
-            </h1>
+            <h1 className="text-xl font-bold text-black ">{t("الفصول")}</h1>
             <div className="flex flex-col w-full gap-3">
               {isLoading || isLoadingClassXp ? (
                 <div className="flex items-center justify-center w-full py-10">
@@ -506,7 +503,7 @@ const TeacherView: React.FC = () => {
                         size={""}
                       />
                     </div>
-                    <div className="flex flex-col w-full text-end">
+                    <div className="flex flex-col w-full ">
                       <h1 className="text-black capitalize text-md">
                         {item.className}
                       </h1>
@@ -514,10 +511,7 @@ const TeacherView: React.FC = () => {
                         {item.organizationName}
                       </h1>
 
-                      <div
-                        className="px-3 py-1 font-medium text-gray-800 rounded-lg"
-                        dir="rtl"
-                      >
+                      <div className="px-3 py-1 font-medium text-gray-800 rounded-lg">
                         {classXpData[item.classId]?.studentCount + " " || 0}
                         {t("طلاب")}
                       </div>
@@ -540,9 +534,7 @@ const TeacherView: React.FC = () => {
         {/* Students View - with Grid and Row layout options */}
         {selectViewType === "students" && (
           <div className="flex flex-col items-end w-full gap-2">
-            <h1 className="text-xl font-bold text-black text-end">
-              {t("الطلاب")}
-            </h1>
+            <h1 className="text-xl font-bold text-black ">{t("الطلاب")}</h1>
 
             {isLoading ? (
               <div className="flex items-center justify-center w-full py-10">
@@ -587,7 +579,7 @@ const TeacherView: React.FC = () => {
                   {filteredStudents.map((student: any) => (
                     <div
                       key={student.id}
-                      className="flex items-center justify-between w-full p-1 border-2 rounded-xl "
+                      className="flex flex-row-reverse items-center justify-between w-full p-1 border-2 rounded-xl "
                       onClick={() => navigateToStudentDetail(student.id)}
                     >
                       <MedalAndLevel

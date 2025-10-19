@@ -602,7 +602,7 @@ const TodoList = () => {
     >
       {/* Header */}
       <div className="flex-col w-full gap-3 flex-center">
-        <div className="flex items-center justify-between w-full">
+        <div className="flex flex-row-reverse items-center justify-between w-full">
           <div className="w-16 h-16"></div>
           <h1 className="text-2xl font-bold text-black" dir="ltr">
             {t("قائمة المهام")}
@@ -612,16 +612,16 @@ const TodoList = () => {
 
         {/* Search Bar */}
         <div className="flex items-center justify-between w-full px-2 py-1 border-2 rounded-xl">
-          <div className="w-10 h-10 bg-blueprimary rounded-xl flex-center">
-            <SearchIcon className="text-white" size={20} />
-          </div>
           <input
             type="text"
             placeholder={t("ابحث عن مهمة")}
-            className="w-full py-3 text-black bg-transparent drop-shadow-sm text-end"
+            className="w-full py-3 text-black bg-transparent drop-shadow-sm text-start"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+          <div className="w-10 h-10 bg-blueprimary rounded-xl flex-center">
+            <SearchIcon className="text-white" size={20} />
+          </div>
         </div>
 
         {/* Filter Buttons */}

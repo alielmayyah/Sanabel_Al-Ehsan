@@ -45,7 +45,7 @@ const Profile: React.FC = () => {
 
   const handleLanguageToggle = () => {
     const newLanguage = i18n.language === "ar" ? "en" : "ar";
-    const newDir = newLanguage === "ar" ? "ltr" : "rtl";
+    const newDir = newLanguage === "ar" ? "rtl" : "ltr";
 
     // Update the language in i18n
     i18n.changeLanguage(newLanguage);
@@ -111,7 +111,7 @@ const Profile: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-between w-full h-full p-4">
-      <div className="flex items-center justify-between w-full gap-3">
+      <div className="flex flex-row-reverse items-center justify-between w-full gap-3">
         <div className="opacity-0 w-[45px]" />
 
         <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
@@ -131,7 +131,7 @@ const Profile: React.FC = () => {
         {profileButtons.map((item, index) => (
           <div className="flex flex-col w-full -mt-10" key={index}>
             <div
-              className="flex items-center justify-between w-full p-2"
+              className="flex items-center justify-between w-full p-2 flex-row-reverse border-b-[#D5EBF6] border-b-[1px] rounded-lg"
               onClick={() =>
                 item.function ? item.function() : redirectPage(item.to)
               }
@@ -162,7 +162,7 @@ const Profile: React.FC = () => {
                 <ProfileArrow size={25} />
               )}
 
-              <div className="gap-3 flex-center">
+              <div className="flex-row-reverse gap-3 flex-center">
                 <h1
                   className={`${
                     index == 5 ? "text-[#E14E54]" : "text-black dark:text-white"
@@ -187,7 +187,7 @@ const Profile: React.FC = () => {
 
       <div className="flex flex-col w-full -mt-10">
         <div
-          className="flex w-full p-2 justify-between items-center  border-b-[#E14E54] border-b-[1px] rounded-lg"
+          className="flex w-full p-2 justify-between items-center flex-row-reverse  border-b-[#E14E54] border-b-[1px] rounded-lg"
           onClick={logout}
         >
           <ProfileArrow size={25} />

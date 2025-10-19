@@ -10,7 +10,7 @@ const ProgressBar: React.FC<{ filledBars: number }> = ({ filledBars }) => {
   }, [filledBars]);
 
   return (
-    <div className="flex flex-row-reverse w-full gap-1 mb-5">
+    <div className="flex w-full gap-1 mb-5">
       {Array.from({ length: 2 }).map((_, index) => (
         <div
           key={index}

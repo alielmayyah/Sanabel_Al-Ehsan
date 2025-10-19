@@ -108,17 +108,17 @@ const StudentHome: React.FC = () => {
       id="page-height"
     >
       <div className="flex flex-row items-center justify-between w-full">
-        <Notification />
         <Greeting
           name={`${t("مرحباً")} ${user?.firstName}`}
           text={"هيا بنا نصنع الخير معًا"}
         />
+        <Notification />
       </div>
 
       <div className="flex flex-col gap-1 rounded-xl w-full shadow-md p-2 relative border-[1px] border-[#33333325]">
         {/* Medal and Level */}
         <div className="w-full gap-3 flex-center">
-          <div className="flex flex-col items-end w-full ">
+          <div className="flex flex-col items-start w-full ">
             <div className="text-lg font-bold text-black flex-center">
               <p className="text-lg font-bold text-black">
                 {t("المستوى")} {level}

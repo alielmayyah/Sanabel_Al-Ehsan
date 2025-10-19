@@ -216,7 +216,7 @@ const StudentProfileActivity: React.FC<StudentProfileActivityProps> = ({
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.3 }}
-        className={`w-full px-4 pb-6 flex flex-row-reverse justify-between gap-2 sticky  z-10 ${"bg-white"}`}
+        className={`w-full  px-4 pb-6 flex  justify-between gap-2 sticky  z-10 ${"bg-white"}`}
       >
         <motion.button
           variants={buttonVariants}
@@ -358,7 +358,7 @@ const StudentProfileActivity: React.FC<StudentProfileActivityProps> = ({
                   </div>
 
                   {/* Activity Details */}
-                  <div className="flex-1 mr-4 text-right">
+                  <div className="flex-1 mr-4 ">
                     <h3 className={`font-medium ${"text-blueprimary"}`}>
                       {t(t("سنبلة") + " " + t(activity.type))}
                     </h3>

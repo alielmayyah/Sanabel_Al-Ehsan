@@ -1,10 +1,10 @@
 import PrimaryButton from "../../../components/PrimaryButton";
+import GoBackButton from "../../../components/GoBackButton";
 
 import trophyImg from "../../../assets/onboarding/trophy_2.png";
-import parentOrTeacherImg from "../../../assets/choosesignmethod/chooseparentorteacher.png";
-import studentImg from "../../../assets/choosesignmethod/choosestudent.png";
 
-import { IonRouterLink } from "@ionic/react";
+import { IonIcon, IonRouterLink } from "@ionic/react";
+import { personOutline, schoolOutline } from "ionicons/icons"; // Changed businessOutline to schoolOutline for better icon representation
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
@@ -12,19 +12,10 @@ import { useState } from "react";
 const ChooseSignMethod: React.FC = () => {
   const { t } = useTranslation();
   const [showSignupOptions, setShowSignupOptions] = useState(false);
-  const [isTrophyLoaded, setTrophyLoaded] = useState(false);
-  const [isStudentImgLoaded, setStudentImgLoaded] = useState(false);
-  const [isParentTeacherImgLoaded, setParentTeacherImgLoaded] = useState(false);
 
+  // Function to handle the click on "Create Account" button
   const handleSignupClick = () => {
     setShowSignupOptions(true);
-  };
-
-  // Shared animation properties
-  const sharedImageAnimation = {
-    initial: { opacity: 0, y: -100 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 },
   };
 
   return (
@@ -32,43 +23,53 @@ const ChooseSignMethod: React.FC = () => {
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="flex flex-col h-full w-full items-center justify-end p-3 gap-10 pb-10"
+      className="flex flex-col items-center justify-end w-full h-full gap-2 p-3 pb-3" // Added a subtle background gradient
     >
-      <AnimatePresence>
+      <div className="flex self-end justify-start w-full">
+        <GoBackButton />
+      </div>
+      <AnimatePresence mode="wait">
+        {" "}
+        {/* Use mode="wait" for smoother transitions */}
         {!showSignupOptions ? (
           <motion.div
             key="main-screen"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, y: -50 }}
             transition={{ duration: 0.6 }}
-            className="w-full"
+            className="flex flex-col items-center justify-center w-full" // Centered content
           >
-            <motion.div {...sharedImageAnimation} className="w-full">
-              {!isTrophyLoaded && (
-                <div className="loading-placeholder">Loading...</div>
-              )}
+            {/* Trophy Image remains */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="w-full max-w-sm mb-8" // Added max-width for better control on larger screens
+            >
               <img
                 src={trophyImg}
-                className={`w-full pb-3 ${!isTrophyLoaded ? "hidden" : ""}`}
+                className="w-full h-auto" // Ensure image scales correctly
                 alt="Sign Method"
-                onLoad={() => setTrophyLoaded(true)}
               />
             </motion.div>
 
-            <div className="flex flex-col gap-6 w-full">
-              <h1 className="text-[#040415] text-3xl text-center font-bold">
+            <div className="flex flex-col w-full max-w-md gap-6 p-4 bg-white rounded-2xl">
+              {/* Added card-like styling */}
+              <h1 className="text-[#040415] text-3xl text-center font-extrabold leading-tight">
+                {/* Increased font weight and line height */}
                 {t("سجل الآن وابدأ")}
                 <br />
-                <span className="text-blueprimary"> {t("رحلة الإحسان")}</span>
+                <span className="text-blue-600"> {t("رحلة الإحسان")}</span>{" "}
+                {/* Used a more vibrant blue */}
               </h1>
-              <p className="text-[#999] text-center">
+              <p className="text-lg text-center text-gray-600">
+                {/* Adjusted text color and size */}
                 {t("سجل الآن واستمتع بتجربة تفاعلية تبني العطاء والانتماء")}
               </p>
-
-              <IonRouterLink onClick={handleSignupClick}>
+              <IonRouterLink onClick={handleSignupClick} className="w-full">
                 <PrimaryButton style="fill" text="إنشاء حساب" arrow="none" />
               </IonRouterLink>
-              <IonRouterLink routerLink="/login">
+              <IonRouterLink routerLink="/login" className="w-full">
                 <PrimaryButton
                   style="stroke"
                   text="تسجيل الدخول"
@@ -80,69 +81,81 @@ const ChooseSignMethod: React.FC = () => {
         ) : (
           <motion.div
             key="signup-options"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
             transition={{ duration: 0.6 }}
-            className="w-full h-full flex flex-col items-center justify-around py-10 gap-6"
+            className="flex flex-col items-center justify-center w-full h-full gap-3 " // Adjusted gap and centering
           >
             <motion.div
-              initial={{ y: -200, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="w-2/3"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+              className="w-full max-w-sm mb-4"
             >
               <img
                 src={trophyImg}
-                className={`w-full ${!isTrophyLoaded ? "hidden" : ""}`}
+                className="w-full h-auto"
                 alt="Sign Method"
-                onLoad={() => setTrophyLoaded(true)}
               />
             </motion.div>
-
-            <h2 className="text-[#040415] text-2xl font-bold text-center">
+            <h2 className="text-[#040415] text-3xl font-extrabold text-center">
+              {" "}
+              {/* Larger, bolder heading */}
               {t("اختر نوع التسجيل")}
             </h2>
 
-            <div className="flex w-full justify-between gap-3">
+            <div className="flex justify-center w-full max-w-2xl gap-1 px-4 md:flex-row">
+              {" "}
+              {/* Responsive layout for cards */}
+              {/* User Card */}
               <IonRouterLink
                 routerLink="/signupstudent"
-                className="w-full flex flex-col gap-10"
+                className="flex flex-col items-center justify-center flex-1 p-5 px-6 transition-all duration-300 ease-in-out bg-white border-2 border-blue-400 shadow-lg cursor-pointer rounded-2xl hover:shadow-xl hover:scale-105" // Enhanced styling
               >
-                <motion.img
-                  src={studentImg}
-                  initial={{ x: -100, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.8 }}
-                  className={`w-full rounded-full border-2 bg-redprimary ${
-                    !isStudentImgLoaded ? "hidden" : ""
-                  }`}
-                  onLoad={() => setStudentImgLoaded(true)}
-                />
-                <h1 className="text-center text-bold text-xl text-gray-800">
-                  {t("طالب")}
+                <motion.div
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.8 }}
+                  className="mb-4 bg-blue-100 rounded-full shadow-md w-28 h-28 flex-center" // Circle background for icon
+                >
+                  <IonIcon
+                    icon={personOutline}
+                    className="text-blue-600"
+                    style={{ fontSize: "80px" }} // Adjusted icon size
+                  />
+                </motion.div>
+                <h1 className="mb-2 text-2xl font-bold text-center text-gray-800">
+                  {t("مستخدم")}
                 </h1>
+                <p className="text-sm text-center text-gray-500">
+                  {t("سجل كفرد للاستفادة من جميع الميزات")}
+                </p>
               </IonRouterLink>
+              {/* School Card */}
               <IonRouterLink
                 routerLink="/signupparentorteacher"
-                className="w-full flex flex-col gap-10"
+                className="flex flex-col items-center justify-center flex-1 p-5 px-6 transition-all duration-300 ease-in-out bg-white border-2 border-yellow-400 shadow-lg cursor-pointer rounded-2xl hover:shadow-xl hover:scale-105" // Enhanced styling
               >
-                {!isParentTeacherImgLoaded && (
-                  <div className="loading-placeholder">Loading...</div>
-                )}
-                <motion.img
-                  src={parentOrTeacherImg}
-                  initial={{ x: 100, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.8 }}
-                  className={`w-full rounded-full border-2 bg-yellowprimary ${
-                    !isParentTeacherImgLoaded ? "hidden" : ""
-                  }`}
-                  onLoad={() => setParentTeacherImgLoaded(true)}
-                />
-                <h1 className="text-center text-bold text-xl text-gray-800">
-                  {t("ولي امر او  معلم")}
+                <motion.div
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 1.0 }}
+                  className="mb-4 bg-yellow-100 rounded-full shadow-md w-28 h-28 flex-center" // Circle background for icon
+                >
+                  <IonIcon
+                    icon={schoolOutline} // Changed icon to schoolOutline
+                    className="text-yellow-600"
+                    style={{ fontSize: "80px" }} // Adjusted icon size
+                  />
+                </motion.div>
+                <h1 className="mb-2 text-2xl font-bold text-center text-gray-800">
+                  {t("مدرسة")} {/* Changed to "School" */}
                 </h1>
+                <p className="text-sm text-center text-gray-500">
+                  {t("يمكن أن يكون معلمًا أو ولي أمر")}{" "}
+                  {/* Added clarifying text */}
+                </p>
               </IonRouterLink>
             </div>
           </motion.div>

@@ -240,7 +240,7 @@ const SanabelMissionsPage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center w-full h-full p-4 ">
-      <div className="flex items-center justify-between w-full">
+      <div className="flex flex-row-reverse items-center justify-between w-full">
         <div className="opacity-0 w-[25px] h-25" />
         <h1 className="self-center text-xl font-bold text-black" dir="ltr">
           {t(sanabel[subIndex])}

@@ -64,7 +64,7 @@ const en = {
     "👋سنابل الإحسان": "👋Sanabel Al Ehsan",
 
     "سنابل الإحسان هو تطبيق تفاعلي يعزز القيم النبيلة للأطفال":
-      "Sanabel Al-Ihsan is an interactive app that nurtures noble values in children",
+      "Sanabel Al-Ehsan is an interactive app that nurtures noble values in children",
 
     "ازرع سنبلة تُثمر": "Plant a grain",
     "خيراً وأجراً": "Reap goodness and reward",
@@ -81,7 +81,7 @@ const en = {
     "رحلة الإحسان": "Ehsan",
 
     "سجل الآن واستمتع بتجربة تفاعلية تبني العطاء والانتماء":
-      "Register now and begin your journey of Ihsan (Excellence in goodness)",
+      "Register now and begin your journey of Ehsan (Excellence in goodness)",
     "سجل الآن وابدأ": "Register now and start",
 
     fillEmailField: "Fill email field",
@@ -1088,6 +1088,34 @@ const en = {
     "فشل في تحديد المهمة كمكتملة:": "Failed to mark task as completed:",
     "حدث خطأ أثناء تحديد المهمة كمكتملة.":
       "An error occurred while marking the task as completed.",
+
+    مستخدم: "User",
+    "سجل كفرد للاستفادة من جميع الميزات":
+      "Register as an individual to benefit from all features",
+    مدرسة: "School",
+    "يمكن أن يكون معلمًا أو ولي أمر": "Can be a teacher or a parent",
+
+    "لون واحد": "Single Color",
+    تدرج: "Gradient",
+    نقاط: "Dots",
+    خطوط: "Lines",
+
+    دعوة: "Invite",
+    "عذراً!": "Sorry!",
+    "لم يتم العثور على طالب بهذا الكود": "No student found with this code",
+    "حدث خطأ أثناء البحث عن الطالب":
+      "An error occurred while searching for the student",
+    "فشلت عملية الدعوة": "Invitation failed",
+    "حدث خطأ أثناء دعوة الطالب": "An error occurred while inviting the student",
+    "يرجى التحقق من الكود والمحاولة مرة أخرى":
+      "Please check the code and try again",
+    "حاول مرة أخرى": "Try Again",
+
+    "يرجى إدخال كود الطالب": "Please enter the student code",
+    "خطأ في المصادقة": "Authentication error",
+    "حدث خطأ في الاتصال بالسيرفر": "Connection error to server",
+    "الطالب مرتبط بالفعل بولي أمر آخر":
+      "Student is already connected to another parent",
   },
 };
 

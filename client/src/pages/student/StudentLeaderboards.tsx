@@ -334,42 +334,45 @@ const Leaderboards: React.FC = () => {
       <div className="flex flex-col items-center justify-between w-full h-full p-2">
         <div className="flex flex-col items-center justify-between w-full gap-2">
           <div className="flex items-center justify-between w-full gap-1">
-            <div className="gap-2 flex-center">
+            <div className="flex justify-between w-full gap-2">
               {/* Filter Button */}
-              <button
-                onClick={() => setShowFilterModal(true)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 transition-colors ${
-                  hasActiveFilters()
-                    ? "border-blue-600 bg-blue-50 text-blue-600"
-                    : "border-gray-300 bg-white text-gray-600 hover:border-gray-400"
-                }`}
-              >
-                <FilterIcon size={20} />
+              <h1 className="text-2xl font-bold text-black">
+                {t("لوحة المتصدرين")}
+              </h1>
 
-                {hasActiveFilters() && (
-                  <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
-                )}
-              </button>
               {/* Filter Button */}
-              <button
-                onClick={() => setIsSearchButton(!isSearchButton)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 transition-colors ${
-                  hasActiveFilters()
-                    ? "border-blue-600 bg-blue-50 text-blue-600"
-                    : "border-gray-300 bg-white text-gray-600 hover:border-gray-400"
-                }`}
-              >
-                {!isSearchButton ? (
-                  <FaSearch size={20} className="text-blueprimary" />
-                ) : (
-                  <IoMdClose size={20} className="text-redprimary" />
-                )}
-              </button>
+              <div className="flex gap-4 flex-center">
+                <button
+                  onClick={() => setIsSearchButton(!isSearchButton)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 transition-colors ${
+                    hasActiveFilters()
+                      ? "border-blue-600 bg-blue-50 text-blue-600"
+                      : "border-gray-300 bg-white text-gray-600 hover:border-gray-400"
+                  }`}
+                >
+                  {!isSearchButton ? (
+                    <FaSearch size={20} className="text-blueprimary" />
+                  ) : (
+                    <IoMdClose size={20} className="text-redprimary" />
+                  )}
+                </button>
+
+                <button
+                  onClick={() => setShowFilterModal(true)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 transition-colors ${
+                    hasActiveFilters()
+                      ? "border-blue-600 bg-blue-50 text-blue-600"
+                      : "border-gray-300 bg-white text-gray-600 hover:border-gray-400"
+                  }`}
+                >
+                  <FilterIcon size={20} />
+
+                  {hasActiveFilters() && (
+                    <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+                  )}
+                </button>
+              </div>
             </div>
-
-            <h1 className="text-2xl font-bold text-black text-end">
-              {t("لوحة المتصدرين")}
-            </h1>
           </div>
 
           {/* Search Input */}
@@ -398,7 +401,7 @@ const Leaderboards: React.FC = () => {
 
           {/* Active Filters Display */}
           {hasActiveFilters() && (
-            <div className="flex flex-wrap justify-end w-full gap-2">
+            <div className="flex flex-wrap justify-start w-full gap-2">
               {activeFilters.category && (
                 <span className="px-3 py-1 text-sm text-blue-800 capitalize bg-blue-100 rounded-full">
                   {activeFilters.category}
@@ -639,7 +642,7 @@ const Leaderboards: React.FC = () => {
                   .map((item: LeaderboardItem, index: number) => (
                     <motion.div
                       key={item.id}
-                      className="flex items-center justify-between w-full p-1 border-2 rounded-2xl"
+                      className="flex flex-row-reverse items-center justify-between w-full p-1 border-2 rounded-2xl"
                       variants={listItemVariants}
                     >
                       <div className="scale-90">
@@ -658,8 +661,8 @@ const Leaderboards: React.FC = () => {
                           {item.class.classname}
                         </h1>
                       </div>
-                      <div className="gap-2 flex-center">
-                        <div className="flex flex-col text-end">
+                      <div className="flex-row-reverse gap-2 flex-center">
+                        <div className="flex flex-col ">
                           <h1 className="text-black">
                             {item.user.firstName + " " + item.user.lastName}
                           </h1>

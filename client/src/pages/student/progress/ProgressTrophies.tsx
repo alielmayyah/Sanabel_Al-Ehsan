@@ -164,19 +164,19 @@ const Progress: React.FC = () => {
       <div className="flex w-full rounded-2xl bg-[#e6e6e6]">
         <h1
           className={`text-[#999] text-sm p-2 rounded-2xl w-1/2 flex-center ${
-            trophyType === 1 && "bg-yellowprimary text-white"
-          }`}
-          onClick={() => handleTrophyTypeChange(1)}
-        >
-          {t("جوائز أخري")}
-        </h1>
-        <h1
-          className={`text-[#999] text-sm p-2 rounded-2xl w-1/2 flex-center ${
             trophyType === 0 && "bg-yellowprimary text-white"
           }`}
           onClick={() => handleTrophyTypeChange(0)}
         >
           {t("جوائز السنابل")}
+        </h1>
+        <h1
+          className={`text-[#999] text-sm p-2 rounded-2xl w-1/2 flex-center ${
+            trophyType === 1 && "bg-yellowprimary text-white"
+          }`}
+          onClick={() => handleTrophyTypeChange(1)}
+        >
+          {t("جوائز أخري")}
         </h1>
       </div>
 
@@ -244,7 +244,7 @@ const Progress: React.FC = () => {
               className="w-full flex flex-col justify-between items-center shadow-sm p-3 rounded-xl border-[1px] gap-2"
               key={`${trophyType}-${title}`}
             >
-              <div className="flex items-center justify-between w-full">
+              <div className="flex flex-row-reverse items-center justify-between w-full">
                 <div className="flex gap-2">
                   {getTrophyRewards(representativeTrophy).map((item, idx) => (
                     <div className="flex-col flex-center" key={idx}>
@@ -253,7 +253,7 @@ const Progress: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                <div className="flex flex-col items-end gap-1">
+                <div className="flex flex-col gap-1">
                   <img src={trophyImage} alt="trophy" className="w-16" />
                   <h1
                     className="w-full font-bold text-black text-end"
@@ -269,7 +269,7 @@ const Progress: React.FC = () => {
                 {t(representativeTrophy.challenge.description)}
               </p> */}
 
-              <div className="w-full bg-[#fab70050] rounded-3xl h-6 flex justify-end items-center relative overflow-hidden">
+              <div className="w-full flex-row-reverse bg-[#fab70050] rounded-3xl h-6 flex justify-end items-center relative overflow-hidden">
                 {/* Text displaying current and needed points (now shows next milestone instead of target) */}
                 <h1 className="text-[#997000] px-3 relative z-10">
                   {currentPoints}
@@ -278,11 +278,13 @@ const Progress: React.FC = () => {
 
                 {/* Progress bar */}
                 <motion.div
-                  className="bg-[#F3B14E] rounded-3xl h-6 absolute top-0 right-0"
+                  className={`bg-[#F3B14E] rounded-3xl h-6 absolute top-0 ${
+                    i18n.language !== "ar" ? "left-0" : "right-0"
+                  }`}
                   initial={{ width: 0 }}
                   animate={{ width: `${progressPercentage}%` }}
                   transition={{ duration: 0.5 }}
-                ></motion.div>
+                />
               </div>
 
               <div className="flex flex-wrap items-center justify-center w-full gap-1 mt-2">

@@ -1,14 +1,20 @@
 require("dotenv").config();
 
-console.log(JSON.stringify({
-  databaseVariables: {
-    username: process.env.MYSQL_DB_USER,
-    password: process.env.MYSQL_DB_PASS,
-    database: `${process.env.MYSQL_DB_NAME}_prod`,
-    host: process.env.MYSQL_DB_HOST,
-    dialect: "mysql", // Change this to 'mysql2'
-  }
-}, null, 2))
+console.log(
+  JSON.stringify(
+    {
+      databaseVariables: {
+        username: process.env.MYSQL_DB_USER,
+        password: process.env.MYSQL_DB_PASS,
+        database: `${process.env.MYSQL_DB_NAME}_prod`,
+        host: process.env.MYSQL_DB_HOST,
+        dialect: "mysql", // Change this to 'mysql2'
+      },
+    },
+    null,
+    2
+  )
+);
 
 module.exports = {
   development: {

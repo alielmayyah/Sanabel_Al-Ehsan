@@ -121,7 +121,7 @@ const ClassDetails: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-start w-full h-full gap-3 p-4">
       {/* Header */}
-      <div className="flex items-center justify-between w-full">
+      <div className="flex flex-row-reverse items-center justify-between w-full">
         <div className="opacity-0 w-[25px]" />
         <h1 className="self-center text-2xl font-bold text-black">
           {t("تفاصيل الفصل")}
@@ -137,8 +137,8 @@ const ClassDetails: React.FC = () => {
       </div>
 
       {/* Student List Header and Search */}
-      <div className="flex flex-col items-end w-full gap-2">
-        <div className="flex justify-between w-full">
+      <div className="flex flex-col w-full gap-2">
+        <div className="flex flex-row-reverse justify-between w-full">
           <h1 className="text-[#999]">
             {filteredStudents.length} {t("طالب")}
           </h1>
@@ -188,7 +188,7 @@ const ClassDetails: React.FC = () => {
           </div>
 
           {/* Layout Switcher */}
-          <div className="flex items-center gap-2 overflow-hidden bg-gray-200 rounded-xl">
+          <div className="flex flex-row-reverse items-center gap-2 overflow-hidden bg-gray-200 rounded-xl">
             <div
               className={`p-2 cursor-pointer ${
                 layoutType === "grid"
@@ -213,14 +213,14 @@ const ClassDetails: React.FC = () => {
         </div>
 
         {/* Search bar */}
-        <div className="flex items-center justify-between w-full px-2 py-1 border-2 rounded-xl">
+        <div className="flex flex-row-reverse items-center justify-between w-full px-2 py-1 border-2 rounded-xl">
           <div className="w-10 h-10 bg-blueprimary rounded-xl flex-center">
             <SearchIcon className="text-white" size={20} />
           </div>
           <input
             type="text"
             placeholder={t("ابحث عن طالب")}
-            className="w-full py-3 text-black bg-transparent drop-shadow-sm text-end"
+            className="w-full py-3 text-black bg-transparent drop-shadow-sm text-start"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />

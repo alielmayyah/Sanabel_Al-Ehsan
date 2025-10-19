@@ -21,7 +21,7 @@ const LanguageSwitcher: React.FC = () => {
     localStorage.setItem("language", lang);
 
     // Save the dir attribute in localStorage and set it dynamically
-    const dir = lang === "ar" ? "ltr" : "rtl";
+    const dir = lang === "ar" ? "rtl" : "ltr";
     localStorage.setItem("dir", dir);
     document.documentElement.setAttribute("dir", dir);
 

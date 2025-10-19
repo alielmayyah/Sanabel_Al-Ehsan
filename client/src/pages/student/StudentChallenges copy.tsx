@@ -150,7 +150,7 @@ const Challenges: React.FC = () => {
               />
             </div>
 
-            <h1 className="text-2xl font-bold text-center  text-blueprimary">
+            <h1 className="text-2xl font-bold text-center text-blueprimary">
               {t("سنابل ")}
             </h1>
           </IonRouterLink>

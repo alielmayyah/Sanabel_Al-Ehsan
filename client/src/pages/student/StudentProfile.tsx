@@ -46,7 +46,7 @@ const Profile: React.FC = () => {
   const parentCode = user?.connectCode;
   return (
     <div className="flex flex-col items-center justify-between w-full h-5/6 ">
-      <div className="flex items-center justify-between bg-yellowprimary py-7 w-full  p-4 rounded-b-[50px] ">
+      <div className="flex flex-row-reverse items-center justify-between bg-yellowprimary py-7 w-full  p-4 rounded-b-[50px] ">
         {/* Settings Button */}
         <div className="flex gap-2">
           <div
@@ -93,7 +93,7 @@ const Profile: React.FC = () => {
 
       {/* Navbar */}
       <div className="flex flex-col justify-between w-full gap-3 p-4">
-        <div className="flex flex-row-reverse items-center w-full gap-1">
+        <div className="flex items-center w-full gap-1">
           {profileNav.map((item) => (
             <div
               className={`${

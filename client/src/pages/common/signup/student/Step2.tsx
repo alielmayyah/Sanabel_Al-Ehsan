@@ -63,16 +63,18 @@ const Step2: React.FC<Step2Props> = ({
         <Toaster />
       </div>
       <div className="flex flex-col w-full gap-3">
-        <GoBackButton onClick={onBack} />
+        <div className="flex self-end justify-start w-full">
+          <GoBackButton onClick={onBack} />
+        </div>
 
         <ProgressBar filledBars={2} />
 
         <div className="flex flex-col self-end gap-2">
-          <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
+          <h1 className="text-2xl font-bold text-black ">
             {t("اختار النوع (بنت - ولد)")}
           </h1>
 
-          <p className="text-[#B3B3B3] text-sm text-end">
+          <p className="text-[#B3B3B3] text-sm ">
             {t("اكمل حسابك واستمتع بتجربة تفاعلية تبني العطاء والانتماء")}
           </p>
         </div>

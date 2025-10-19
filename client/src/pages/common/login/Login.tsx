@@ -102,6 +102,7 @@ const Login: React.FC = () => {
             // Set user in context
             const { setUser } = useUserContext();
             setUser({
+              id: userData.id,
               firstName: userData.user.firstName,
               lastName: userData.user.lastName,
               email: userData.user.email,
@@ -119,6 +120,7 @@ const Login: React.FC = () => {
               treeProgress: response.data.data.treePoint.treeProgress,
               connectCode: userData.connectCode,
               profileImg: userData.user.profileImg || "", // Add this line
+              canAssignTask: userData.canAssignTask,
             });
           }
         } catch (error) {
@@ -144,13 +146,15 @@ const Login: React.FC = () => {
       </div>
 
       <div className="flex flex-col w-full gap-3">
-        <GoBackButton />
+        <div className="flex self-end justify-start w-full">
+          <GoBackButton />
+        </div>
 
         <div className="flex flex-col self-end gap-2">
-          <h1 className="text-2xl font-bold text-black text-end ">
+          <h1 className="text-2xl font-bold text-black ">
             {t("تسجيل الدخول")}{" "}
           </h1>
-          <p className="text-[#B3B3B3] text-sm  text-end ">
+          <p className="text-[#B3B3B3] text-sm   ">
             {t("سجل الآن واستمتع بتجربة تفاعلية تبني العطاء والانتماء")}{" "}
           </p>
         </div>

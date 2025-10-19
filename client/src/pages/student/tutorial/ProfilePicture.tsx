@@ -610,14 +610,14 @@ const Step1 = () => {
                   }}
                 ></div>
                 <span className="text-xs font-medium text-[#999]">
-                  {pattern.name}
+                  {t(pattern.name)}
                 </span>
               </motion.div>
             ))}
           </div>
 
           <h3 className="mb-3 text-lg font-bold text-blueprimary">
-            لون الخلفية
+            {t("لون الخلفية")}
           </h3>
           <div className="grid grid-cols-4 gap-3">
             {backgrounds.map((bgOption, index) => (
@@ -680,7 +680,9 @@ const Step1 = () => {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
         >
-          <h3 className="mb-3 text-lg font-bold text-blueprimary">لون الشعر</h3>
+          <h3 className="mb-3 text-lg font-bold text-blueprimary">
+            {t("لون الشعر")}
+          </h3>
           <div className="grid grid-cols-4 gap-3">
             {hairColors.map((colorOption, index) => (
               <motion.div
@@ -726,7 +728,7 @@ const Step1 = () => {
           transition={{ duration: 0.3 }}
         >
           <h3 className="mb-3 text-lg font-bold text-blueprimary">
-            لون البشرة
+            {t("لون البشرة")}
           </h3>
           <div className="grid grid-cols-4 gap-3">
             {skinColor.map((colorOption, index) => (

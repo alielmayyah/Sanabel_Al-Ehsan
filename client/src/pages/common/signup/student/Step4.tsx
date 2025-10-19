@@ -32,7 +32,9 @@ const Step4: React.FC<Step4Props> = ({
   return (
     <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
       <div className="flex flex-col w-full gap-3">
-        <GoBackButton onClick={onBack} />
+      <div className="flex self-end justify-start w-full">
+          <GoBackButton onClick={onBack} />
+        </div>
 
         <ProgressBar filledBars={4} />
 

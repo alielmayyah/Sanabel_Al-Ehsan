@@ -117,7 +117,7 @@ const ParentView: React.FC = () => {
     >
       {/* Header */}
       <div className="flex-col w-full gap-3 flex-center">
-        <div className="flex items-center justify-between w-full">
+        <div className="flex flex-row-reverse items-center justify-between w-full">
           <div className="w-16"></div>
           <div className="flex flex-col items-center justify-center gap-2">
             <h1 className="text-2xl font-bold text-black text-end">
@@ -129,7 +129,7 @@ const ParentView: React.FC = () => {
       </div>
 
       {/* Search Bar and Layout Options */}
-      <div className="w-full space-y-3">
+      <div className="w-full space-y-3 ">
         {/* Filter and Layout Options Row */}
         <div className="flex items-center justify-between w-full">
           {/* Filter Menu */}
@@ -196,14 +196,14 @@ const ParentView: React.FC = () => {
         </div>
 
         {/* Search bar */}
-        <div className="flex items-center justify-between w-full px-2 py-1 border-2 rounded-xl">
+        <div className="flex flex-row-reverse items-center justify-between w-full px-2 py-1 border-2 rounded-xl">
           <div className="w-10 h-10 bg-blueprimary rounded-xl flex-center">
             <SearchIcon className="text-white" size={20} />
           </div>
           <input
             type="text"
             placeholder={t("ابحث عن طالب")}
-            className="w-full py-3 text-black bg-transparent drop-shadow-sm text-end"
+            className="w-full py-3 text-black bg-transparent drop-shadow-sm "
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -213,10 +213,8 @@ const ParentView: React.FC = () => {
       {/* Content Area */}
       <div className="flex-1 w-full overflow-y-auto">
         {/* Students View - with Grid and Row layout options */}
-        <div className="flex flex-col items-end w-full gap-2">
-          <h1 className="text-xl font-bold text-black text-end">
-            {t("الطلاب")}
-          </h1>
+        <div className="flex flex-col items-start w-full gap-2">
+          <h1 className="text-xl font-bold text-black ">{t("الطلاب")}</h1>
 
           {isLoading ? (
             <div className="flex items-center justify-center w-full py-10">
@@ -261,7 +259,7 @@ const ParentView: React.FC = () => {
                 {filteredStudents.map((student: any) => (
                   <div
                     key={student.id}
-                    className="flex items-center justify-between w-full p-1 border-2 rounded-xl "
+                    className="flex flex-row-reverse items-center justify-between w-full p-1 border-2 rounded-xl "
                     onClick={() => navigateToStudentDetail(student.id)}
                   >
                     <MedalAndLevel

@@ -71,16 +71,18 @@ const Step1: React.FC<Step1Props> = ({ onContinue, onBack, name, setName }) => {
         <Toaster />
       </div>
       <div className="flex flex-col w-full gap-3">
-        <GoBackButton onClick={onBack} />
+        <div className="flex justify-start w-full">
+          <GoBackButton onClick={onBack} />
+        </div>
 
         <ProgressBar filledBars={1} />
 
-        <div className="flex flex-col self-end gap-2">
-          <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl font-bold text-black text-start ">
             {t("ادخل اسمك واسم والدك")}
           </h1>
 
-          <p className="text-[#B3B3B3] text-sm text-end">
+          <p className="text-[#B3B3B3] text-sm text-start">
             {t("اكمل حسابك واستمتع بتجربة تفاعلية تبني العطاء والانتماء")}
           </p>
         </div>
@@ -92,17 +94,17 @@ const Step1: React.FC<Step1Props> = ({ onContinue, onBack, name, setName }) => {
           <div className="flex gap-3">
             <GenericInput
               type="text"
-              placeholder={t("اسمك الاخير")}
-              title={t("اسمك الاخير")}
-              onChange={(e) => handleNameChange("parentName", e.target.value)}
-              value={name.parentName}
-            />
-            <GenericInput
-              type="text"
               placeholder={t("اسمك")}
               title={t("اسمك الأول")}
               onChange={(e) => handleNameChange("firstName", e.target.value)}
               value={name.firstName}
+            />
+            <GenericInput
+              type="text"
+              placeholder={t("اسمك الاخير")}
+              title={t("اسمك الاخير")}
+              onChange={(e) => handleNameChange("parentName", e.target.value)}
+              value={name.parentName}
             />
           </div>
         </div>

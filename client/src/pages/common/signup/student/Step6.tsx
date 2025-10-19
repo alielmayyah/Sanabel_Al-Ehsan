@@ -90,17 +90,18 @@ const Step6: React.FC<Step6Props> = ({
   }
   console.log(character);
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10">
       <div className="absolute">
         <Toaster />
       </div>
       <div className="flex flex-col w-full gap-3">
-        <GoBackButton onClick={onBack} />
-
+        <div className="flex self-end justify-start w-full">
+          <GoBackButton onClick={onBack} />
+        </div>
         <ProgressBar filledBars={6} />
 
-        <div className="flex flex-col gap-2 self-end">
-          <h1 className="text-black font-bold text-2xl text-end " dir="ltr">
+        <div className="flex flex-col self-end gap-2">
+          <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
             {t("اضع صورة شخصية لك")}
           </h1>
 
@@ -110,7 +111,7 @@ const Step6: React.FC<Step6Props> = ({
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-5 items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-5">
         {(gender === "boy" ? boysAvatars : girlsAvatars).map(
           (avatar, index) => (
             <img

@@ -132,7 +132,7 @@ const Profile: React.FC = () => {
       className="z-10 flex flex-col items-center justify-between w-full h-full"
       id="page-height"
     >
-      <div className="flex items-center justify-end bg-yellowprimary py-7 w-full  p-4 rounded-b-[25px] ">
+      <div className="flex flex-row-reverse items-center justify-end bg-yellowprimary py-7 w-full  p-4 rounded-b-[25px] ">
         <div className="self-end bg-white flex-center b rounded-xl">
           <GoBackButton />
         </div>
@@ -156,7 +156,7 @@ const Profile: React.FC = () => {
       </div>
       {/* Navbar */}
       <div className="flex flex-col justify-between w-full gap-3 p-4">
-        <div className="flex flex-row-reverse items-center w-full gap-1">
+        <div className="flex items-center w-full gap-1">
           {profileNav.map((item) => (
             <div
               className={`${

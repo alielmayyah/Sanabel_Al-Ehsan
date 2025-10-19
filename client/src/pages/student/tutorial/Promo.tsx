@@ -124,7 +124,7 @@ const SanabelFeaturesPage = () => {
       </motion.div>
 
       <div className="flex flex-col items-center justify-center w-full ">
-        <div className="flex flex-row-reverse justify-between w-full h-3 gap-1">
+        <div className="flex justify-between w-full h-3 gap-1">
           {features.map((_, i) => (
             <motion.div
               key={i}

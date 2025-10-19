@@ -181,20 +181,23 @@ const SanabelType: React.FC = () => {
       )}
       {/* Popup */}
 
-      <div className="flex items-center justify-between w-full mb-4">
+      <div className="flex flex-row-reverse items-center justify-between w-full mb-4">
         <motion.div
-          className="font-bold text-black text-end"
+          className="font-bold text-black cursor-pointer"
           initial={{ x: 50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.7 }}
           onClick={() => setReminderPopup(!reminderPopup)}
         >
-          <FaCircleQuestion className="text-[#333] text-3xl" />
+          <FaCircleQuestion
+            className="text-[#333] text-3xl"
+            onClick={() => setReminderPopup(!reminderPopup)}
+          />
         </motion.div>
 
-        <div className="flex flex-col items-end justify-center w-full gap-2">
+        <div className="flex flex-col justify-center w-full gap-2">
           <motion.h1
-            className="text-2xl font-bold text-black text-end"
+            className="text-2xl font-bold text-black"
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.7 }}
@@ -203,7 +206,7 @@ const SanabelType: React.FC = () => {
           </motion.h1>
 
           <motion.p
-            className="text-[#B3B3B3] text-sm text-end"
+            className="text-[#B3B3B3] text-sm "
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.2 }}
@@ -274,6 +277,12 @@ const SanabelType: React.FC = () => {
               onClick={() => history.push(`/student/sanabel/${index}`)}
             >
               <div className="flex items-center justify-between w-full">
+                <img
+                  src={sanabelTypeImg[index]}
+                  alt=""
+                  className="w-1/4 h-auto"
+                  loading="lazy"
+                />
                 <div className="flex gap-2">
                   {resources.map((resource, resourceIndex) => (
                     <div
@@ -290,23 +299,17 @@ const SanabelType: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                <img
-                  src={sanabelTypeImg[index]}
-                  alt=""
-                  className="w-1/4 h-auto"
-                  loading="lazy"
-                />
               </div>
               <div className="flex flex-col items-end w-full">
                 <div className="gap-2 flex-center">
+                  <h1 className={`${colorClass} text-start text-sm font-bold`}>
+                    {t(items.title)}
+                  </h1>
                   <SanabelArrow
                     className={`${colorClass} ${
                       currentLanguage == "en" && "rotate-180"
                     }`}
                   />
-                  <h1 className={`${colorClass} text-end text-sm font-bold`}>
-                    {t(items.title)}
-                  </h1>
                 </div>
               </div>
             </motion.div>

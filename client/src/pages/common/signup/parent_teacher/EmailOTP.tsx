@@ -128,15 +128,17 @@ const EmailOTP: React.FC<OTPProps> = ({
       ) : (
         <>
           <div className="flex flex-col w-full gap-3">
-            <GoBackButton />
+            <div className="flex self-end justify-start w-full">
+              <GoBackButton />
+            </div>
 
             <div className="flex flex-col self-end gap-2">
-              <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
+              <h1 className="text-2xl font-bold text-black ">
                 {isOtpSent
                   ? t("التحقق من البريد الإلكتروني")
                   : t("انشاء حساب جديد")}
               </h1>
-              <p className="text-[#B3B3B3] text-sm text-end">
+              <p className="text-[#B3B3B3] text-sm ">
                 {!isOtpSent ? (
                   t("انشاء حساب واستمتع بتجربة تفاعلية تبني العطاء والانتماء")
                 ) : (
@@ -155,12 +157,8 @@ const EmailOTP: React.FC<OTPProps> = ({
           <div className="flex flex-col w-full gap-7 ">
             {isOtpSent ? (
               <div className="flex flex-col items-center gap-6">
-                <h1 className="self-end text-[#121212] ">{t("الرمز")}</h1>
-                <div
-                  className={`flex gap-3   ${
-                    i18n.language === "en" && "flex-row-reverse"
-                  } `}
-                >
+                <h1 className=" text-[#121212] ">{t("الرمز")}</h1>
+                <div className={`flex gap-3 flex-row-reverse  `}>
                   {otp.map((digit, index) => (
                     <input
                       key={index}

@@ -265,7 +265,7 @@ const SanabelMissionsPage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center w-full h-full p-4 ">
-      <div className="flex items-center justify-between w-full">
+      <div className="flex flex-row-reverse justify-between w-full items-c enter flex-re">
         <div className="opacity-0 w-[25px] h-25" />
         <h1 className="self-center text-xl font-bold text-black" dir="ltr">
           {currentSanabelType ? t(currentSanabelType) : ""}
@@ -327,9 +327,9 @@ const SanabelMissionsPage: React.FC = () => {
               key={idx}
               className={`flex w-full flex-col items-end justify-between sanabel-shadow-bottom h-max rounded-xl p-4 gap-2 border-t-2 ${colorBorderTop}`}
             >
-              <div className="flex items-center justify-between w-full">
+              <div className="flex flex-row-reverse items-center justify-between w-full">
                 <div className="flex gap-2">{renderResources(mission)}</div>
-                <h1 className="w-2/3 text-sm text-black text-end">
+                <h1 className="w-2/3 text-sm text-black ">
                   {t(mission.title)}
                 </h1>
               </div>

@@ -62,9 +62,9 @@ const OnBoarding: React.FC = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col items-center justify-between w-full h-full gap-2 p-3 pt-5 pb-10"
+      className="flex flex-col items-center justify-between w-full h-full gap-2 p-1 pt-5 pb-6"
     >
-      <div className="flex items-center justify-between w-full">
+      <div className="flex flex-row-reverse items-center justify-between w-full">
         <div
           className="p-3 px-5 border-2 cursor-pointer rounded-3xl text-blueprimary"
           onClick={skipOnboarding}
@@ -89,7 +89,7 @@ const OnBoarding: React.FC = () => {
 
       {/* Progress indicators */}
       <motion.div
-        className="flex-row-reverse w-full gap-3 flex-center"
+        className="flex-row w-full gap-3 flex-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
@@ -127,7 +127,7 @@ const OnBoarding: React.FC = () => {
 
         {/* Button with Scale Animation */}
 
-        <div className="flex items-center w-full gap-2 px-4">
+        <div className="flex flex-row-reverse items-center w-full gap-2 px-4">
           <div onClick={changeStepIncrement} className="w-full">
             {" "}
             <PrimaryButton
@@ -139,14 +139,14 @@ const OnBoarding: React.FC = () => {
 
           {stepCount !== 0 && (
             <div
-              className="flex-center p-3 border-2 border-[#EAECF0] rounded-xl self-end w-1/4"
+              className="flex-center  p-3 border-2 border-[#EAECF0] rounded-xl self-end w-1/4"
               onClick={changeStepDecrement}
             >
               <BackArrow
                 size={25}
-                className={` text-[#B3B3B3] ${
-                  i18n.language === "en" && "rotate-180"
-                }`}
+                className={`${
+                  i18n.language === "en" ? "rotate-180" : ""
+                } text-[#B3B3B3]`}
               />
             </div>
           )}

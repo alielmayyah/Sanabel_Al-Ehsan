@@ -157,13 +157,7 @@ const HelpCenter = () => {
         className="w-1/2 mx-auto my-4 max-w-48"
       />
 
-      <p
-        className={`text-[#666] text-sm mb-4 ${
-          textDirection === "rtl" ? "text-right" : "text-left"
-        }`}
-      >
-        {t("helpCenterDescription")}
-      </p>
+      <p className={`text-[#666] text-sm mb-4`}>{t("helpCenterDescription")}</p>
 
       {/* Help Center Sections */}
       <div className="flex flex-col w-full overflow-y-auto h-2/3">

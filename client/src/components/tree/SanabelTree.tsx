@@ -54,7 +54,7 @@ const SanabelTree = () => {
       )}
 
       <div className="flex flex-col w-full gap-1 ">
-        <h1 className="text-lg text-black text-end">
+        <h1 className="text-lg text-black text-start">
           {t("شجرة سنابل الإحسان")}
         </h1>
 

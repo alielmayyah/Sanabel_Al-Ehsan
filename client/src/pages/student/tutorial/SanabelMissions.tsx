@@ -122,7 +122,7 @@ const SanabelOnboarding: React.FC = () => {
     >
       {/* Header */}
       <motion.div
-        className="flex flex-row-reverse items-center gap-4 mb-2"
+        className="flex items-center gap-4 mb-2"
         variants={itemVariants}
       >
         <div className="w-16 h-16 p-2 rounded-full shadow-lg bg-white/20">
@@ -132,7 +132,7 @@ const SanabelOnboarding: React.FC = () => {
             className="object-contain w-full h-full"
           />
         </div>
-        <div className="w-3/4 text-end">
+        <div className="w-3/4 ">
           <h2 className="text-lg">{t(type.title)}</h2>
         </div>
       </motion.div>
@@ -150,7 +150,7 @@ const SanabelOnboarding: React.FC = () => {
         >
           <div className="flex flex-col h-full gap-4">
             {/* Sanabel header */}
-            <div className="flex flex-row-reverse items-center gap-3 text-end">
+            <div className="flex items-center gap-3 ">
               <div className="flex items-center justify-center flex-shrink-0 p-2 rounded-full w-14 h-14 bg-white/20">
                 {
                   <img
@@ -170,7 +170,7 @@ const SanabelOnboarding: React.FC = () => {
 
             {/* Missions */}
 
-            <h4 className="flex flex-row-reverse items-center gap-2 my-2 text-lg font-semibold">
+            <h4 className="flex items-center gap-2 my-2 text-lg font-semibold">
               <span>{t("تحديات")}</span>
               <div className="flex-1 h-px bg-white/30"></div>
             </h4>
@@ -178,7 +178,7 @@ const SanabelOnboarding: React.FC = () => {
               {sanabel.missions.map((mission, idx) => (
                 <motion.div
                   key={idx}
-                  className="flex flex-row-reverse items-center gap-3 p-3 transition-colors border-2 rounded-lg text-end border-white/20"
+                  className="flex items-center gap-3 p-3 transition-colors border-2 rounded-lg border-white/20"
                   initial={{ opacity: 0, x: 10 }}
                   animate={{
                     opacity: 1,

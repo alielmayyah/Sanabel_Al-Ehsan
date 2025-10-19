@@ -187,9 +187,9 @@ const SanabelType: React.FC = () => {
       )}
       {/* Popup */}
 
-      <div className="flex items-center justify-between w-full mb-4">
+      <div className="flex flex-row-reverse items-center justify-between w-full mb-4">
         <motion.div
-          className="font-bold text-black text-end"
+          className="font-bold text-black "
           initial={{ x: 50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.7 }}
@@ -198,9 +198,9 @@ const SanabelType: React.FC = () => {
           <FaCircleQuestion className="text-[#333] text-3xl" />
         </motion.div>
 
-        <div className="flex flex-col items-end justify-center w-full gap-2">
+        <div className="flex flex-col items-start justify-center w-full gap-2">
           <motion.h1
-            className="text-2xl font-bold text-black text-end"
+            className="text-2xl font-bold text-black "
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.7 }}
@@ -209,7 +209,7 @@ const SanabelType: React.FC = () => {
           </motion.h1>
 
           <motion.p
-            className="text-[#B3B3B3] text-sm text-end"
+            className="text-[#B3B3B3] text-sm "
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.2 }}
@@ -279,7 +279,7 @@ const SanabelType: React.FC = () => {
               transition={{ duration: 1 }}
               onClick={() => history.push(`/teacher/sanabel/${index}`)}
             >
-              <div className="flex items-center justify-between w-full">
+              <div className="flex flex-row-reverse items-center justify-between w-full">
                 <div className="flex gap-2">
                   {resources.map((resource, resourceIndex) => (
                     <div
@@ -304,13 +304,13 @@ const SanabelType: React.FC = () => {
                 />
               </div>
 
-              <div className="gap-2 flex-center">
+              <div className="flex-row-reverse gap-2 flex-center">
                 <SanabelArrow
                   className={`${colorClass} ${
                     currentLanguage == "en" && "rotate-180"
                   }`}
                 />
-                <h1 className={`${colorClass} text-end text-sm font-bold`}>
+                <h1 className={`${colorClass} text-start text-sm font-bold`}>
                   {t(items.title)}
                 </h1>
               </div>

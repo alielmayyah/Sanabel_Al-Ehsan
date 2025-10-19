@@ -86,12 +86,83 @@ import ParentHome from "./pages/teacherorparent/ParentHome";
 import ParentInvite from "./pages/teacherorparent/ParentInvite";
 import ParentView from "./pages/teacherorparent/ParentView";
 import { NotificationProvider } from "./pages/Notifications/NotificationContext";
+
+// No Internet Component
+import NoInternetPage from "./pages/common/NoInternet";
+
 setupIonicReact();
+
+// Custom hook for internet connection detection
+const useInternetConnection = () => {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [hasBeenOffline, setHasBeenOffline] = useState(false);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      // Optional: Show a toast notification that connection is restored
+      if (hasBeenOffline) {
+        console.log("Connection restored!");
+        // You can add a toast notification here if you have a toast system
+      }
+    };
+
+    const handleOffline = () => {
+      setIsOnline(false);
+      setHasBeenOffline(true);
+      console.log("Connection lost!");
+    };
+
+    // Add event listeners
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    // Additional check with a ping to ensure real connectivity
+    const checkRealConnection = async () => {
+      if (!navigator.onLine) {
+        setIsOnline(false);
+        return;
+      }
+
+      try {
+        // Try to fetch a small resource to verify real connectivity
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+        await fetch("https://www.google.com/favicon.ico", {
+          mode: "no-cors",
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+        setIsOnline(true);
+      } catch (error) {
+        setIsOnline(false);
+        setHasBeenOffline(true);
+      }
+    };
+
+    // Check connection every 30 seconds
+    const intervalId = setInterval(checkRealConnection, 30000);
+
+    // Initial check
+    checkRealConnection();
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+      clearInterval(intervalId);
+    };
+  }, [hasBeenOffline]);
+
+  return isOnline;
+};
 
 const App: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
-  
+  const isOnline = useInternetConnection();
 
   if (!localStorage.getItem("language")) {
     localStorage.setItem("language", "ar");
@@ -102,204 +173,201 @@ const App: React.FC = () => {
   }
   const role = localStorage.getItem("role");
 
+  // Show No Internet page if offline
+  if (!isOnline) {
+    return <NoInternetPage />;
+  }
+
   return (
     <UserProvider>
       <ThemeProvider>
         <NotificationProvider>
           {/* Outer container that fills the entire viewport */}
-          <div className="flex items-center justify-center w-screen h-screen bg-gray-100 dark:bg-gray-900">
+          <div className="flex items-center justify-center w-screen h-screen bg-white ">
             <IonReactRouter>
               <IonRouterOutlet>
-                <div className="relative w-full h-full">
-                  {/*  UNCOMMENT*/}
-                  <Switch>
-                    {/* // Splash Screen */}
-                    {/* <Route exact path="/" component={StudentHome} /> */}
-                    <Route exact path="/" component={SplashScreen} />
+                <Switch>
+                  {/* // Splash Screen */}
 
-                    {/*  UNCOMMENT*/}
-                    {/* Onboarding */}
-                    <Route exact path="/onboarding" component={OnBoarding} />
-                    <Route
-                      exact
-                      path="/choosesignmethod"
-                      component={ChooseSignMethod}
-                    />
-                    <Route
-                      exact
-                      path="/student/tutorial"
-                      component={StudentTutorial}
-                    />
-                    {/* Signup */}
-                    <Route
-                      exact
-                      path="/signupstudent"
-                      component={SignupStudent}
-                    />
-                    <Route
-                      exact
-                      path="/signupparentorteacher"
-                      component={SignupParentOrTeacher}
-                    />
-                    {/* Login */}
-                    <Route exact path="/login" component={Login} />
-                    <Route
-                      exact
-                      path="/forgotpassword"
-                      component={ForgotPassword}
-                    />
-                    <Route
-                      exact
-                      path="/changepassword"
-                      component={ChangePassword}
-                    />
-                    <Route
-                      exact
-                      path="/changeprofilepassword"
-                      component={StudentProfilePassword}
-                    />
-                    {/* Notifications */}
-                    <Route
-                      exact
-                      path="/notifications"
-                      component={Notifications}
-                    />
-                    {/* Student */}
-                    <Route exact path="/student/home" component={StudentHome} />
-                    <Route
-                      exact
-                      path="/student/todolist"
-                      component={StudentToDoList}
-                    />
-                    <Route
-                      exact
-                      path="/student/profile"
-                      component={StudentProfile}
-                    />
-                    <Route
-                      exact
-                      path="/student/profile/edit"
-                      component={StudentProfileEdit}
-                    />
-                    <Route
-                      exact
-                      path="/student/settings"
-                      component={StudentSettings}
-                    />
-                    <Route
-                      exact
-                      path="/student/settings/privacypolicy"
-                      component={StudentPrivacyPolicy}
-                    />
-                    <Route
-                      exact
-                      path="/student/settings/helpcenter"
-                      component={StudentHelpCenter}
-                    />
+                  <Route exact path="/" component={SplashScreen} />
 
-                    <Route
-                      exact
-                      path="/student/challenges"
-                      component={StudentChallenges}
-                    />
+                  {/* Onboarding */}
+                  <Route exact path="/onboarding" component={OnBoarding} />
+                  <Route
+                    exact
+                    path="/choosesignmethod"
+                    component={ChooseSignMethod}
+                  />
+                  <Route
+                    exact
+                    path="/student/tutorial"
+                    component={StudentTutorial}
+                  />
+                  {/* Signup */}
+                  <Route
+                    exact
+                    path="/signupstudent"
+                    component={SignupStudent}
+                  />
+                  <Route
+                    exact
+                    path="/signupparentorteacher"
+                    component={SignupParentOrTeacher}
+                  />
+                  {/* Login */}
+                  <Route exact path="/login" component={Login} />
+                  <Route
+                    exact
+                    path="/forgotpassword"
+                    component={ForgotPassword}
+                  />
+                  <Route
+                    exact
+                    path="/changepassword"
+                    component={ChangePassword}
+                  />
+                  <Route
+                    exact
+                    path="/changeprofilepassword"
+                    component={StudentProfilePassword}
+                  />
+                  {/* Notifications */}
+                  <Route
+                    exact
+                    path="/notifications"
+                    component={Notifications}
+                  />
+                  {/* Student */}
+                  <Route exact path="/student/home" component={StudentHome} />
+                  <Route
+                    exact
+                    path="/student/todolist"
+                    component={StudentToDoList}
+                  />
+                  <Route
+                    exact
+                    path="/student/profile"
+                    component={StudentProfile}
+                  />
+                  <Route
+                    exact
+                    path="/student/profile/edit"
+                    component={StudentProfileEdit}
+                  />
+                  <Route
+                    exact
+                    path="/student/settings"
+                    component={StudentSettings}
+                  />
+                  <Route
+                    exact
+                    path="/student/settings/privacypolicy"
+                    component={StudentPrivacyPolicy}
+                  />
+                  <Route
+                    exact
+                    path="/student/settings/helpcenter"
+                    component={StudentHelpCenter}
+                  />
 
-                    <Route
-                      exact
-                      path="/student/progress"
-                      component={StudentProgress}
-                    />
-                    <Route
-                      exact
-                      path="/student/leaderboards"
-                      component={StudentLeaderboards}
-                    />
+                  <Route
+                    exact
+                    path="/student/challenges"
+                    component={StudentChallenges}
+                  />
 
-                    <Route
-                      path="/student/sanabel/choosesanabeltype"
-                      component={ChooseSanabelType}
-                    />
-                    <Route
-                      path="/student/sanabel/:index/:subIndex"
-                      component={SanabelMissionsPage}
-                    />
-                    <Route
-                      path="/student/sanabel/:index"
-                      component={ChooseSanabel}
-                    />
+                  <Route
+                    exact
+                    path="/student/progress"
+                    component={StudentProgress}
+                  />
+                  <Route
+                    exact
+                    path="/student/leaderboards"
+                    component={StudentLeaderboards}
+                  />
 
-                    {/* Teacher */}
-                    <Route exact path="/teacher/home" component={TeacherHome} />
-                    <Route
-                      exact
-                      path="/teacher/profile"
-                      component={TeacherProfile}
-                    />
+                  <Route
+                    path="/student/sanabel/choosesanabeltype"
+                    component={ChooseSanabelType}
+                  />
+                  <Route
+                    path="/student/sanabel/:index/:subIndex"
+                    component={SanabelMissionsPage}
+                  />
+                  <Route
+                    path="/student/sanabel/:index"
+                    component={ChooseSanabel}
+                  />
 
-                    <Route
-                      exact
-                      path="/teacher/challenges"
-                      component={TeacherChooseSanabelType}
-                    />
+                  {/* Teacher */}
+                  <Route exact path="/teacher/home" component={TeacherHome} />
+                  <Route
+                    exact
+                    path="/teacher/profile"
+                    component={TeacherProfile}
+                  />
 
-                    <Route
-                      path="/teacher/sanabel/:index/:subIndex"
-                      component={TeacherSanabelMissionsPage}
-                    />
-                    <Route
-                      path="/teacher/sanabel/:index"
-                      component={TeacherChooseSanabel}
-                    />
+                  <Route
+                    exact
+                    path="/teacher/challenges"
+                    component={TeacherChooseSanabelType}
+                  />
 
-                    <Route
-                      path="/teacher/leaderboards"
-                      component={StudentLeaderboards}
-                    />
+                  <Route
+                    path="/teacher/sanabel/:index/:subIndex"
+                    component={TeacherSanabelMissionsPage}
+                  />
+                  <Route
+                    path="/teacher/sanabel/:index"
+                    component={TeacherChooseSanabel}
+                  />
 
-                    <Route exact path="/teacher/view" component={TeacherView} />
-                    <Route
-                      exact
-                      path="/teacher/classes/:classId"
-                      component={ClassDetails}
-                    />
-                    <Route exact path="/sanabeltest" component={SanabelTest} />
+                  <Route
+                    path="/teacher/leaderboards"
+                    component={StudentLeaderboards}
+                  />
 
-                    <Route
-                      exact
-                      path="/teacher/student/:studentId"
-                      component={StudentDetails}
-                    />
-                    <Route
-                      exact
-                      path="/parent/student/:studentId"
-                      component={StudentDetails}
-                    />
-                    {/* Registration */}
-                    <Route
-                      exact
-                      path="/teacher/studentslist"
-                      component={StudentsList}
-                    />
-                    <Route
-                      exact
-                      path="/teacher/classlist"
-                      component={ClassList}
-                    />
-                    <Route
-                      exact
-                      path="/teacher/teamslist"
-                      component={TeamsList}
-                    />
+                  <Route exact path="/teacher/view" component={TeacherView} />
+                  <Route
+                    exact
+                    path="/teacher/classes/:classId"
+                    component={ClassDetails}
+                  />
+                  <Route exact path="/sanabeltest" component={SanabelTest} />
 
-                    {/* Parent */}
-                    <Route exact path="/parent/home" component={ParentHome} />
-                    <Route
-                      exact
-                      path="/parent/invite"
-                      component={ParentInvite}
-                    />
-                    <Route exact path="/parent/view" component={ParentView} />
-                  </Switch>
-                </div>
+                  <Route
+                    exact
+                    path="/teacher/student/:studentId"
+                    component={StudentDetails}
+                  />
+                  <Route
+                    exact
+                    path="/parent/student/:studentId"
+                    component={StudentDetails}
+                  />
+                  {/* Registration */}
+                  <Route
+                    exact
+                    path="/teacher/studentslist"
+                    component={StudentsList}
+                  />
+                  <Route
+                    exact
+                    path="/teacher/classlist"
+                    component={ClassList}
+                  />
+                  <Route
+                    exact
+                    path="/teacher/teamslist"
+                    component={TeamsList}
+                  />
+
+                  {/* Parent */}
+                  <Route exact path="/parent/home" component={ParentHome} />
+                  <Route exact path="/parent/invite" component={ParentInvite} />
+                  <Route exact path="/parent/view" component={ParentView} />
+                </Switch>
               </IonRouterOutlet>
             </IonReactRouter>
           </div>

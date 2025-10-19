@@ -45,7 +45,7 @@ const Profile: React.FC = () => {
 
   const handleLanguageToggle = () => {
     const newLanguage = i18n.language === "ar" ? "en" : "ar";
-    const newDir = newLanguage === "ar" ? "ltr" : "rtl";
+    const newDir = newLanguage === "ar" ? "rtl" : "ltr";
 
     // Update the language in i18n
     i18n.changeLanguage(newLanguage);
@@ -118,19 +118,19 @@ const Profile: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-between w-full h-full p-4">
       <div className="flex items-center justify-between w-full gap-3">
-        <div className="opacity-0 w-[45px]" />
+        <GoBackButton />
 
         <h1 className="text-2xl font-bold text-black text-end " dir="ltr">
           {t("الاعدادات")}
         </h1>
-        <GoBackButton />
+        <div className="opacity-0 w-[45px]" />
       </div>
 
       <div className="flex flex-col items-center justify-around w-full h-3/5">
         {profileButtons.map((item, index) => (
           <div className="flex flex-col w-full -mt-10" key={index}>
             <div
-              className="flex items-center justify-between w-full p-2"
+              className="flex flex-row-reverse items-center justify-between w-full p-2"
               onClick={() =>
                 item.function ? item.function() : redirectPage(item.to)
               }
@@ -161,7 +161,7 @@ const Profile: React.FC = () => {
                 <ProfileArrow size={25} />
               )}
 
-              <div className="gap-3 flex-center">
+              <div className="flex-row-reverse gap-3 flex-center">
                 <h1
                   className={`${
                     index == 5 ? "text-[#E14E54]" : "text-black dark:text-white"

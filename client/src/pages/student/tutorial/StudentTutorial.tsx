@@ -119,7 +119,7 @@ const StudentTutorial: React.FC = () => {
   }, [stepCount, currentTypeIndex, typeColors]);
 
   const navigationButton = (
-    <div className="flex items-center w-full gap-2">
+    <div className="flex flex-row-reverse items-center w-full gap-2 ">
       <div className="flex-1 border-2 border-white rounded-2xl">
         <PrimaryButton
           style="fill"
@@ -146,14 +146,33 @@ const StudentTutorial: React.FC = () => {
     <div
       className={`flex flex-col items-center justify-between p-4 h-full w-full ${bgColor} transition-colors duration-500`}
     >
-      {/* Progress indicator */}
-      <div className="flex flex-row-reverse justify-center gap-2">
+      <div className="relative flex items-center justify-center w-full gap-2">
         {steps.map((_, index) => (
-          <div
-            key={index}
-            className={`h-2 rounded-full transition-all duration-300 
-        ${stepCount === index ? "w-8 bg-yellow-500" : "w-2 bg-gray-300"}`}
-          />
+          <div key={index} className="relative flex items-center">
+            {/* Dot */}
+            <div
+              className={`h-3 w-3 rounded-full z-10 transition-all duration-300 border-white ${
+                stepCount >= index ? "bg-yellow-500" : "bg-gray-300"
+              }`}
+            />
+            {/* Connector line */}
+            {index < steps.length - 1 && (
+              <div
+                className={`absolute top-1/2 -translate-y-1/2  w-8 bg-gray-300 overflow-hidden ${
+                  i18n.language === "en" ? "right-2" : "left-2"
+                }`}
+              >
+                <div
+                  className={`h-full bg-yellow-500 transition-all duration-500 origin-${
+                    i18n.language === "en" ? "right" : "left"
+                  }`}
+                  style={{
+                    transform: `scaleX(${stepCount > index ? 1 : 0})`,
+                  }}
+                />
+              </div>
+            )}
+          </div>
         ))}
       </div>
 

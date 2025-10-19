@@ -27,24 +27,24 @@ const navbar = [
 const Progress: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { t } = useTranslation();
-  const [selectProgressType, setSelectProgressType] = useState(3);
+  const [selectProgressType, setSelectProgressType] = useState(0);
 
   return (
     <div
-      className="flex flex-col h-full w-full items-center justify-between p-4 gap-0"
+      className="flex flex-col items-center justify-between w-full h-full gap-0 p-4"
       id="page-height"
     >
-      <div className="flex flex-col gap-0 justify-center items-end w-full">
-        <h1 className="text-black font-bold text-2xl text-end ">
+      <div className="flex flex-col items-start justify-center w-full gap-0">
+        <h1 className="text-2xl font-bold text-black ">
           {t("تقدمك نحو الخير")}
         </h1>
 
-        <p className="text-[#B3B3B3] text-sm  text-end ">
+        <p className="text-[#B3B3B3] text-sm   ">
           {t("تابع إنجازاتك وازرع سنابل الخير كل يوم")}
         </p>
       </div>
 
-      <div className="flex w-full bg-[#E6E6E6] rounded-3xl p-1 gap-2 justify-between items-center">
+      <div className="flex w-full bg-[#E6E6E6] rounded-3xl p-1 gap-1 justify-between items-center">
         {navbar.map((item, index) => (
           <div
             key={index}
@@ -52,13 +52,13 @@ const Progress: React.FC = () => {
               selectProgressType === index
                 ? "flex-[2] bg-blueprimary text-white shadow-lg"
                 : "flex-[1] bg-gray-100 text-gray-700 hover:bg-blue-100"
-            } rounded-2xl py-2 items-center justify-center gap-2`}
+            } rounded-2xl py-1 items-center justify-center gap-1`}
             onClick={() => setSelectProgressType(index)}
           >
             <img
               src={item.icon}
               alt="icon"
-              className="p-2 bg-white rounded-full w-12 h-12 shadow-md"
+              className="w-12 h-12 p-2 bg-white rounded-full shadow-md"
             />
             <h1
               className={`text-sm font-medium ${

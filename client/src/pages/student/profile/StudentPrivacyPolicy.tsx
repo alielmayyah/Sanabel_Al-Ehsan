@@ -97,7 +97,7 @@ const PrivacyPolicy = () => {
   return (
     <div className="flex flex-col w-full h-full p-2 bg-white">
       {/* Header Section */}
-      <div className="flex items-center justify-between w-full">
+      <div className="flex flex-row-reverse items-center justify-between w-full">
         <div className="w-12 h-12"></div>
         <h1 className="text-2xl font-bold text-black" dir="ltr">
           {t("سياسة الخصوصية")}
@@ -108,12 +108,7 @@ const PrivacyPolicy = () => {
       {/* Logo */}
       <img src={appLogo} alt="Logo" className="w-1/2 mx-auto my-4" />
 
-      <div
-        className={`flex flex-col w-full h-full gap-2 p-1 text-black ${
-          isRTL ? "text-right" : "text-left"
-        }`}
-        dir={isRTL ? "rtl" : "ltr"}
-      >
+      <div className={`flex flex-col w-full h-full gap-2 p-1 text-black`}>
         {/* Privacy Policy Sections */}
         <div className="flex flex-col flex-1 w-full overflow-y-auto">
           {privacyPolicyContent.map((section, index) => (
@@ -126,14 +121,10 @@ const PrivacyPolicy = () => {
                   {section.content.map((item, i) => (
                     <li
                       key={i}
-                      className={`text-sm leading-relaxed flex items-start ${
-                        isRTL ? "text-right" : "text-left"
-                      }`}
+                      className={`text-sm leading-relaxed flex items-start`}
                     >
                       <span
-                        className={`inline-block w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-2 ${
-                          isRTL ? "ml-3" : "mr-3"
-                        }`}
+                        className={`inline-block w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-2 `}
                       ></span>
                       <span className="flex-1">{item}</span>
                     </li>

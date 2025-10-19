@@ -20,15 +20,15 @@ const Greeting: React.FC<GreetingProps> = ({ name, text, hello }) => {
   return (
     <div className="gap-3 p-0 flex-center">
       <div className="gap-3 flex-center">
-        <div className="flex flex-col text-end">
+        <div className="w-16 h-16">
+          <GetAvatar userAvatarData={avatar ?? {}} />
+        </div>{" "}
+        <div className="flex flex-col ">
           <h1 className="text-[#040415] dark:text-white">
             {hello === "yes" && t("مرحباً")} {name}
           </h1>
           <h2 className="text-[#B3B3B3]">{t(text)}</h2>
         </div>
-        <div className="w-16 h-16">
-          <GetAvatar userAvatarData={avatar ?? {}} />
-        </div>{" "}
       </div>
     </div>
   );

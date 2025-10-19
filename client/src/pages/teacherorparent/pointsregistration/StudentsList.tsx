@@ -623,26 +623,25 @@ const StudentList = () => {
     <div
       className="flex flex-col items-center justify-between gap-5 p-4"
       id="page-height"
-      dir="ltr"
     >
       {/* Header and Search */}
       <div className="flex-col w-full gap-3 flex-center">
-        <div className="flex items-center justify-between w-full">
+        <div className="flex flex-row-reverse items-center justify-between w-full">
           <div className="w-16 h-16"></div>
-          <h1 className="text-2xl font-bold text-black" dir="ltr">
+          <h1 className="text-2xl font-bold text-black">
             {getCurrentStepTitle()}
           </h1>
           <GoBackButton />
         </div>
         {!isStudentsSelected && (
-          <div className="flex items-center justify-between w-full px-2 py-1 border-2 rounded-xl">
+          <div className="flex flex-row-reverse items-center justify-between w-full px-2 py-1 border-2 rounded-xl">
             <div className="w-10 h-10 bg-blueprimary rounded-xl flex-center">
               <SearchIcon className="text-white" size={20} />
             </div>
             <input
               type="text"
               placeholder={t("ابحث عن طالب")}
-              className="w-full py-3 text-black bg-transparent drop-shadow-sm text-end"
+              className="w-full py-3 text-black bg-transparent drop-shadow-sm text-start"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -727,7 +726,7 @@ const StudentList = () => {
         <div className="flex flex-col justify-start w-full h-full gap-2 overflow-y-auto">
           {filteredStudents.map((student, index) => (
             <div
-              className="flex items-center justify-between w-full p-3 border-2 rounded-xl"
+              className="flex flex-row-reverse items-center justify-between w-full p-3 border-2 rounded-xl"
               key={student.id}
             >
               <div
@@ -740,7 +739,7 @@ const StudentList = () => {
               >
                 <FaCheck />
               </div>
-              <div className="gap-3 flex-center">
+              <div className="flex-row-reverse gap-3 flex-center">
                 <div className="flex flex-col gap-0">
                   <h1 className="text-black">
                     {`${student.user.firstName} ${student.user.lastName}`}
@@ -827,13 +826,11 @@ const StudentList = () => {
                     }`}
                     onClick={() => setSelectedTaskId(index)}
                   >
-                    <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center justify-between w-full gap-2">
                       <div className="flex w-20 gap-2">
                         {renderResources(task)}
                       </div>
-                      <h3 className="text-right text-black text-md">
-                        {t(task.title)}
-                      </h3>
+                      <h3 className="text-black text-md">{t(task.title)}</h3>
                     </div>
                   </div>
                 ))}

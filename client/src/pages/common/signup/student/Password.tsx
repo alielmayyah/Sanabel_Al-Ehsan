@@ -87,24 +87,26 @@ const Password: React.FC<{
       : "bg-gray-200";
 
   return (
-    <div className="flex flex-col h-full w-full items-center justify-between p-5 gap-10 pb-10">
+    <div className="flex flex-col items-center justify-between w-full h-full gap-10 p-5 pb-10">
       <div className="absolute">
         <Toaster></Toaster>
       </div>
       <div className="flex flex-col w-full gap-3">
-        <GoBackButton />
+        <div className="flex self-end justify-start w-full">
+          <GoBackButton />
+        </div>
 
-        <div className="flex flex-col gap-2 self-end">
-          <h1 className="text-black font-bold text-2xl text-end ">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl font-bold text-black text-start ">
             {t("Create Password")}
           </h1>
-          <p className="text-[#B3B3B3] text-sm  text-end ">
+          <p className="text-[#B3B3B3] text-sm  text-start ">
             {t("Secure your account with a strong password")}
           </p>
         </div>
       </div>
 
-      <div className="flex flex-col gap-10 w-full">
+      <div className="flex flex-col w-full gap-10">
         <div className="flex flex-col gap-5">
           <GenericInput
             type="password"
@@ -114,15 +116,15 @@ const Password: React.FC<{
             onChange={handlePasswordChange} // Updated onChange
           />
         </div>
-        <div className="flex w-full bg-gray-200 h-2 rounded-xl gap-0">
+        <div className="flex w-full h-2 gap-0 bg-gray-200 rounded-xl">
           <div
             className={`${progressColor} h-2 rounded-xl`}
             style={{ width: progressWidth }}
           ></div>
         </div>
-        <div className="flex flex-col gap-3 items-end self-end">
+        <div className="flex flex-col items-start gap-3">
           {validationCircles.map((circle) => (
-            <div className="flex-center gap-3 ">
+            <div className="flex-row-reverse gap-3 flex-center ">
               <h1
                 className={classNames(
                   circle.condition ? "text-green-500" : "text-[#8E99A4]"
@@ -138,7 +140,7 @@ const Password: React.FC<{
                     : "border-2 border-[#c7cbd3]"
                 )}
               >
-                {circle.condition && <FaCheck className="text-white text-sm" />}
+                {circle.condition && <FaCheck className="text-sm text-white" />}
               </div>
             </div>
           ))}
