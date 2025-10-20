@@ -71,7 +71,7 @@ const ForgotPassword: React.FC = () => {
 
     try {
       const response = await axios.patch(
-        "http://localhost:3000/users/send-otp",
+        "https://sanabel.wonderlearn.net/users/send-otp",
         { email: emailToUse }
       );
 
@@ -96,7 +96,7 @@ const ForgotPassword: React.FC = () => {
 
     try {
       const response = await axios.patch(
-        "http://localhost:3000/users/verify-otp",
+        "https://sanabel.wonderlearn.net/users/verify-otp",
         { email: emailToUse, otp: otpCode }
       );
 

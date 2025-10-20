@@ -115,15 +115,15 @@ const Leaderboards: React.FC = () => {
 
       let url = "";
       if (userRole === "Teacher") {
-        url = `http://localhost:3000/teachers/leader-board${
+        url = `https://sanabel.wonderlearn.net/teachers/leader-board${
           queryString ? `?${queryString}` : ""
         }`;
       } else if (userRole === "Parent") {
-        url = `http://localhost:3000/parents/appear-leaderboard${
+        url = `https://sanabel.wonderlearn.net/parents/appear-leaderboard${
           queryString ? `?${queryString}` : ""
         }`;
       } else {
-        url = `http://localhost:3000/students/appear-Leaderboard${
+        url = `https://sanabel.wonderlearn.net/students/appear-Leaderboard${
           queryString ? `?${queryString}` : ""
         }`;
       }

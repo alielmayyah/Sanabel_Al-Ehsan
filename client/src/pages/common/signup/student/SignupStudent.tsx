@@ -114,7 +114,7 @@ const Signup: React.FC = () => {
     // Handle API submission here
     try {
       const response = await axios.patch(
-        "http://localhost:3000/users/registration",
+        "https://sanabel.wonderlearn.net/users/registration",
         formData
       );
 

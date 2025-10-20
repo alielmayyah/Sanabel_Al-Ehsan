@@ -70,7 +70,7 @@ const TeacherView: React.FC = () => {
     }
     try {
       const response = await fetch(
-        `http://localhost:3000/teachers/appear-student`,
+        `https://sanabel.wonderlearn.net/teachers/appear-student`,
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }
@@ -96,7 +96,7 @@ const TeacherView: React.FC = () => {
     }
     try {
       const response = await fetch(
-        `http://localhost:3000/teachers/appear-class`,
+        `https://sanabel.wonderlearn.net/teachers/appear-class`,
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }
@@ -129,7 +129,7 @@ const TeacherView: React.FC = () => {
       for (const classItem of classesData) {
         try {
           const response = await fetch(
-            `http://localhost:3000/teachers/appear-student-class/${classItem.classId}`,
+            `https://sanabel.wonderlearn.net/teachers/appear-student-class/${classItem.classId}`,
             {
               headers: { Authorization: `Bearer ${authToken}` },
             }
@@ -183,7 +183,7 @@ const TeacherView: React.FC = () => {
       for (const classItem of classesData) {
         try {
           const response = await fetch(
-            `http://localhost:3000/teachers/appear-student-class/${classItem.classId}`,
+            `https://sanabel.wonderlearn.net/teachers/appear-student-class/${classItem.classId}`,
             {
               headers: { Authorization: `Bearer ${authToken}` },
             }

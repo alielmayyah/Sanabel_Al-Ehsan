@@ -408,8 +408,8 @@ const StudentList = () => {
       // Using fetch instead of axios
       const response = await fetch(
         role == "Teacher"
-          ? `http://localhost:3000/teachers/appear-student`
-          : `http://localhost:3000/parents/appear-student-by-parent`,
+          ? `https://sanabel.wonderlearn.net/teachers/appear-student`
+          : `https://sanabel.wonderlearn.net/parents/appear-student-by-parent`,
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }
@@ -459,8 +459,8 @@ const StudentList = () => {
       // Using fetch instead of axios
       const response = await fetch(
         role == "Teacher"
-          ? `http://localhost:3000/teachers/add-pros`
-          : `http://localhost:3000/parents/add-pros`,
+          ? `https://sanabel.wonderlearn.net/teachers/add-pros`
+          : `https://sanabel.wonderlearn.net/parents/add-pros`,
         {
           method: "POST",
           headers: {

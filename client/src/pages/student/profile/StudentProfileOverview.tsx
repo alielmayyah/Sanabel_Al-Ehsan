@@ -59,7 +59,7 @@ const Profile: React.FC = () => {
 
     try {
       const response = await axios.get(
-        "http://localhost:3000/students/calculate-completed-tasks-by-category",
+        "https://sanabel.wonderlearn.net/students/calculate-completed-tasks-by-category",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -124,7 +124,12 @@ const Profile: React.FC = () => {
       className="z-10 flex flex-col items-start justify-start w-full h-full p-4 overflow-y-auto "
       id="page-height"
     >
-      <MedalAndLevel level={level} color={"text-black text-sm"} dir={""} size={""} />
+      <MedalAndLevel
+        level={level}
+        color={"text-black text-sm"}
+        dir={""}
+        size={""}
+      />
 
       <div className="flex flex-col gap-1">
         <motion.div

@@ -20,7 +20,7 @@ const useFetchTasksCompleted = () => {
 
     try {
       const response = await axios.get(
-        "http://localhost:3000/students/calculate-completed-tasks-by-category",
+        "https://sanabel.wonderlearn.net/students/calculate-completed-tasks-by-category",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

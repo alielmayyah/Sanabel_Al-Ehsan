@@ -180,7 +180,7 @@ const Shop: React.FC = () => {
         buyFertilizerCount * fertilizerCost + buyWaterCount * waterCost;
 
       const response = await axios.patch(
-        "http://localhost:3000/students/buy-water-seeder",
+        "https://sanabel.wonderlearn.net/students/buy-water-seeder",
         {
           water: buyWaterCount,
           seeders: buyFertilizerCount,
@@ -228,7 +228,7 @@ const Shop: React.FC = () => {
       const token = localStorage.getItem("token");
       console.log(token);
       const response = await axios.patch(
-        "http://localhost:3000/students/grow-tree",
+        "https://sanabel.wonderlearn.net/students/grow-tree",
         {}, // Empty request body or you can add payload data here if needed
         {
           headers: {
@@ -253,7 +253,7 @@ const Shop: React.FC = () => {
       </div>
       {isProgressReady == false ? (
         <div className="flex flex-col w-full h-full gap-1">
-          <h1 className="text-lg text-black text-end">{t("المتجر")}</h1>
+          <h1 className="text-lg text-black text-start">{t("المتجر")}</h1>
 
           <div className="flex-col gap-2 bg-[#FFF8E5] rounded-xl w-full flex justify-between p-2">
             <div className="flex flex-row-reverse justify-between">

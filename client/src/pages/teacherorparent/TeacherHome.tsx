@@ -43,7 +43,7 @@ const TeacherHome = () => {
     }
     try {
       const response = await fetch(
-        `http://localhost:3000/teachers/appear-student`,
+        `https://sanabel.wonderlearn.net/teachers/appear-student`,
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }
@@ -70,7 +70,7 @@ const TeacherHome = () => {
     }
     try {
       const response = await fetch(
-        `http://localhost:3000/teachers/appear-class`,
+        `https://sanabel.wonderlearn.net/teachers/appear-class`,
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }
@@ -99,7 +99,7 @@ const TeacherHome = () => {
     try {
       // First, get all categories
       const categoriesResponse = await axios.get(
-        "http://localhost:3000/teachers/tasks-category",
+        "https://sanabel.wonderlearn.net/teachers/tasks-category",
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }
@@ -116,7 +116,7 @@ const TeacherHome = () => {
           try {
             // Get sanabel types for this category
             const typesResponse = await axios.get(
-              `http://localhost:3000/teachers/appear-Taskes-Type/${categoryId}`,
+              `https://sanabel.wonderlearn.net/teachers/appear-Taskes-Type/${categoryId}`,
               {
                 headers: { Authorization: `Bearer ${authToken}` },
               }
@@ -137,7 +137,7 @@ const TeacherHome = () => {
               for (const type of uniqueTypes) {
                 try {
                   const missionsResponse = await axios.get(
-                    `http://localhost:3000/teachers/appear-Taskes-Type-Category/${categoryId}/${type}`,
+                    `https://sanabel.wonderlearn.net/teachers/appear-Taskes-Type-Category/${categoryId}/${type}`,
                     {
                       headers: { Authorization: `Bearer ${authToken}` },
                     }

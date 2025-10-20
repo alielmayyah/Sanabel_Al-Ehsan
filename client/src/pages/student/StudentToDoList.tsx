@@ -110,7 +110,7 @@ const AddMissionModal = ({
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:3000/students/tasks-category",
+        "https://sanabel.wonderlearn.net/students/tasks-category",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -142,7 +142,7 @@ const AddMissionModal = ({
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:3000/students/appear-Taskes-Type/${categoryId}`,
+        `https://sanabel.wonderlearn.net/students/appear-Taskes-Type/${categoryId}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -190,7 +190,7 @@ const AddMissionModal = ({
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:3000/students/appear-Taskes-Type-Category/${categoryId}/${type}`,
+        `https://sanabel.wonderlearn.net/students/appear-Taskes-Type-Category/${categoryId}/${type}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -503,18 +503,21 @@ const TodoList = () => {
     const authToken = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:3000/students/add-pros", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({
-          taskId: selectedMissionId,
-          studentIds: [user?.id],
-          time: getCurrentTime(),
-        }),
-      });
+      const response = await fetch(
+        "https://sanabel.wonderlearn.net/students/add-pros",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({
+            taskId: selectedMissionId,
+            studentIds: [user?.id],
+            time: getCurrentTime(),
+          }),
+        }
+      );
 
       if (response.ok) {
         setTodoItems((prev) =>

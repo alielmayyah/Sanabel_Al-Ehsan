@@ -90,8 +90,8 @@ const Profile: React.FC = () => {
     try {
       const response = await axios.get(
         role === "Teacher"
-          ? `http://localhost:3000/teachers/appear-student-deatiled/${studentId}`
-          : `http://localhost:3000/parents/appear-student-deatiled/${studentId}`,
+          ? `https://sanabel.wonderlearn.net/teachers/appear-student-deatiled/${studentId}`
+          : `https://sanabel.wonderlearn.net/parents/appear-student-deatiled/${studentId}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

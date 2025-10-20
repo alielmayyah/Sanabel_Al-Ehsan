@@ -83,7 +83,7 @@ const SanabelMissionsPage: React.FC = () => {
       try {
         // Fetch Category Name
         const categoryResponse = await axios.get(
-          "http://localhost:3000/students/tasks-category",
+          "https://sanabel.wonderlearn.net/students/tasks-category",
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -98,7 +98,7 @@ const SanabelMissionsPage: React.FC = () => {
 
           // Fetch Sanabel
           const sanabelResponse = await axios.get(
-            `http://localhost:3000/students/appear-Taskes-Type/${APIIndex}`,
+            `https://sanabel.wonderlearn.net/students/appear-Taskes-Type/${APIIndex}`,
             {
               headers: {
                 Authorization: `Bearer ${authToken}`,
@@ -119,7 +119,7 @@ const SanabelMissionsPage: React.FC = () => {
             // Fetch Missions
             if (uniqueTypes[subIndex]) {
               const missionsResponse = await axios.get(
-                `http://localhost:3000/students/appear-Taskes-Type-Category/${APIIndex}/${uniqueTypes[subIndex]}`,
+                `https://sanabel.wonderlearn.net/students/appear-Taskes-Type-Category/${APIIndex}/${uniqueTypes[subIndex]}`,
                 {
                   headers: {
                     Authorization: `Bearer ${authToken}`,
@@ -182,18 +182,21 @@ const SanabelMissionsPage: React.FC = () => {
     const authToken = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:3000/students/add-pros", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({
-          taskId: selectedMissionId,
-          studentIds: [user?.id],
-          time: getCurrentTime(),
-        }),
-      });
+      const response = await fetch(
+        "https://sanabel.wonderlearn.net/students/add-pros",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({
+            taskId: selectedMissionId,
+            studentIds: [user?.id],
+            time: getCurrentTime(),
+          }),
+        }
+      );
 
       if (response.ok) {
         // Update the mission status locally

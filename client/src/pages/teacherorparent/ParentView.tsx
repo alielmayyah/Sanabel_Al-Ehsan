@@ -44,7 +44,7 @@ const ParentView: React.FC = () => {
     }
     try {
       const response = await fetch(
-        `http://localhost:3000/parents/appear-student-by-parent`,
+        `https://sanabel.wonderlearn.net/parents/appear-student-by-parent`,
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }

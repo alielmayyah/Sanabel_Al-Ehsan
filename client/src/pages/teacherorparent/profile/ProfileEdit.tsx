@@ -117,7 +117,7 @@ const Step1: React.FC = () => {
     // Handle API submission here
     try {
       const response = await axios.post(
-        "http://localhost:3000/users/registration",
+        "https://sanabel.wonderlearn.net/users/registration",
         formData
       );
       if (response.status === 200) {

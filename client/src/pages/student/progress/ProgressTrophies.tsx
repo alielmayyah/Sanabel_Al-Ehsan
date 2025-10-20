@@ -49,8 +49,8 @@ const Progress: React.FC = () => {
     try {
       const response = await axios.get(
         trophyType === 1
-          ? "http://localhost:3000/students/student-trophy-secondaire"
-          : "http://localhost:3000/students/student-trophy-primaire",
+          ? "https://sanabel.wonderlearn.net/students/student-trophy-secondaire"
+          : "https://sanabel.wonderlearn.net/students/student-trophy-primaire",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

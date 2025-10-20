@@ -77,7 +77,7 @@ const EmailOTP: React.FC<OTPProps> = ({
     setIsLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3000/users/send-auth",
+        "https://sanabel.wonderlearn.net/users/send-auth",
         { email }
       );
 
@@ -107,7 +107,7 @@ const EmailOTP: React.FC<OTPProps> = ({
 
     try {
       const response = await axios.patch(
-        "http://localhost:3000/users/verfication-auth",
+        "https://sanabel.wonderlearn.net/users/verfication-auth",
         { email, otp: otpCode }
       );
 
@@ -161,7 +161,7 @@ const EmailOTP: React.FC<OTPProps> = ({
             {isOtpSent ? (
               <div className="flex flex-col items-center gap-6">
                 <h1 className=" text-[#121212] ">{t("الرمز")}</h1>
-                <div className={`flex gap-3 flex-row-reverse  `}>
+                <div className={`flex gap-3  `} dir="ltr">
                   {otp.map((digit, index) => (
                     <input
                       key={index}
@@ -216,7 +216,7 @@ const EmailOTP: React.FC<OTPProps> = ({
                 className="text-[#B3B3B3] text-center"
                 onClick={handleSendOTP}
               >
-                {t("لم تتلق رمز")} <span dir="ltr">OTP</span> {t("بعد؟")}{" "}
+                {t("لم تتلق رمز")} <span>OTP</span> {t("بعد؟")}{" "}
                 <span className="text-blueprimary ">{t("إعادة الإرسال")}</span>
               </h1>
             )}

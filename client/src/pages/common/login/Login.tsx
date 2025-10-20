@@ -52,10 +52,13 @@ const Login: React.FC = () => {
   // Modified handleLogin function with proper firstTimer handling
   const handleLogin = async () => {
     try {
-      const response = await axios.patch("http://localhost:3000/users/login", {
-        email,
-        password,
-      });
+      const response = await axios.patch(
+        "https://sanabel.wonderlearn.net/users/login",
+        {
+          email,
+          password,
+        }
+      );
 
       if (response.status === 200) {
         // Store auth token
@@ -86,7 +89,7 @@ const Login: React.FC = () => {
         // Fetch user data immediately after login
         try {
           const userDataResponse = await axios.get(
-            "http://localhost:3000/students/data",
+            "https://sanabel.wonderlearn.net/students/data",
             {
               headers: {
                 Authorization: `Bearer ${response.data.data.user.token}`,

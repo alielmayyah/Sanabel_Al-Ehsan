@@ -61,7 +61,7 @@ const ClassDetails: React.FC = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/teachers/appear-student-class/${classId}`,
+        `https://sanabel.wonderlearn.net/teachers/appear-student-class/${classId}`,
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }

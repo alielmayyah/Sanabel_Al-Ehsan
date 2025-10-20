@@ -44,7 +44,7 @@ const Profile: React.FC = () => {
 
     try {
       const response = await axios.get(
-        "http://localhost:3000/students/student-task-completed",
+        "https://sanabel.wonderlearn.net/students/student-task-completed",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

@@ -31,8 +31,8 @@ const fetchCategoryName = async (index: number) => {
     console.log("Fetching category name...");
     const response = await axios.get(
       role === "Teacher"
-        ? "http://localhost:3000/teachers/tasks-category"
-        : "http://localhost:3000/parents/tasks-category",
+        ? "https://sanabel.wonderlearn.net/teachers/tasks-category"
+        : "https://sanabel.wonderlearn.net/parents/tasks-category",
       {
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -68,8 +68,8 @@ const fetchSanabelTypes = async (categoryId: number) => {
     console.log(`Fetching sanabel types for category ID ${categoryId}...`);
     const response = await axios.get(
       role === "Teacher"
-        ? `http://localhost:3000/teachers/appear-Taskes-Type/${categoryId}`
-        : `http://localhost:3000/parents/appear-Taskes-Type/${categoryId}`,
+        ? `https://sanabel.wonderlearn.net/teachers/appear-Taskes-Type/${categoryId}`
+        : `https://sanabel.wonderlearn.net/parents/appear-Taskes-Type/${categoryId}`,
       {
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -110,8 +110,8 @@ const fetchMissions = async (categoryId: number, sanabelType: string) => {
     );
     const response = await axios.get(
       role === "Teacher"
-        ? `http://localhost:3000/teachers/appear-Taskes-Type-Category/${categoryId}/${sanabelType}`
-        : `http://localhost:3000/parents/appear-Taskes-Type-Category/${categoryId}/${sanabelType}`,
+        ? `https://sanabel.wonderlearn.net/teachers/appear-Taskes-Type-Category/${categoryId}/${sanabelType}`
+        : `https://sanabel.wonderlearn.net/parents/appear-Taskes-Type-Category/${categoryId}/${sanabelType}`,
       {
         headers: {
           Authorization: `Bearer ${authToken}`,

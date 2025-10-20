@@ -789,7 +789,7 @@ const Step1 = () => {
       };
 
       const response = await axios.patch(
-        "http://localhost:3000/students/update-profile-image",
+        "https://sanabel.wonderlearn.net/students/update-profile-image",
         formattedAvatarData,
         {
           headers: {

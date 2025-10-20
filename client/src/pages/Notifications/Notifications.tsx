@@ -159,7 +159,7 @@ const Notifications: React.FC = () => {
     try {
       // Fetch Sanabel trophies
       const sanabelResponse = await axios.get(
-        "http://localhost:3000/students/student-trophy-primaire-completed",
+        "https://sanabel.wonderlearn.net/students/student-trophy-primaire-completed",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -169,7 +169,7 @@ const Notifications: React.FC = () => {
 
       // Fetch Other trophies
       const otherResponse = await axios.get(
-        "http://localhost:3000/students/student-trophy-secondaire-completed",
+        "https://sanabel.wonderlearn.net/students/student-trophy-secondaire-completed",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

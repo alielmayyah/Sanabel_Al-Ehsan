@@ -72,7 +72,7 @@ const TeacherView: React.FC = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/parents/search-student-by-code/${code.trim()}`,
+        `https://sanabel.wonderlearn.net/parents/search-student-by-code/${code.trim()}`,
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }
@@ -125,7 +125,7 @@ const TeacherView: React.FC = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/parents/connect-student-to-parent`,
+        `https://sanabel.wonderlearn.net/parents/connect-student-to-parent`,
         {
           method: "PATCH",
           headers: {

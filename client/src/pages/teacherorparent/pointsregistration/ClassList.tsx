@@ -574,7 +574,7 @@ const ClassList: React.FC = () => {
     }
     try {
       const response = await fetch(
-        `http://localhost:3000/teachers/appear-class`,
+        `https://sanabel.wonderlearn.net/teachers/appear-class`,
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }
@@ -604,7 +604,7 @@ const ClassList: React.FC = () => {
       for (const classItem of classes) {
         try {
           const response = await fetch(
-            `http://localhost:3000/teachers/appear-student-class/${classItem.classId}`,
+            `https://sanabel.wonderlearn.net/teachers/appear-student-class/${classItem.classId}`,
             {
               headers: { Authorization: `Bearer ${authToken}` },
             }
@@ -653,7 +653,7 @@ const ClassList: React.FC = () => {
       for (const classItem of classesData) {
         try {
           const response = await fetch(
-            `http://localhost:3000/teachers/appear-student-class/${classItem.classId}`,
+            `https://sanabel.wonderlearn.net/teachers/appear-student-class/${classItem.classId}`,
             {
               headers: { Authorization: `Bearer ${authToken}` },
             }
@@ -720,7 +720,7 @@ const ClassList: React.FC = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/teachers/appear-student-class/${classId}`,
+        `https://sanabel.wonderlearn.net/teachers/appear-student-class/${classId}`,
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }
@@ -770,12 +770,11 @@ const ClassList: React.FC = () => {
   const deselectAllStudents = () => {
     setSelectedStudentIds([]);
   };
-  
+
   const getCurrentTime = () => {
     const now = new Date();
     return now.toISOString();
   };
-
 
   const addProgress = async () => {
     if (!selectedStudentIds.length || selectedTaskId === null) return;
@@ -788,24 +787,27 @@ const ClassList: React.FC = () => {
         return;
       }
 
-      const response = await fetch(`http://localhost:3000/teachers/add-pros`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({
-          taskId:
-            taskdata.findIndex(
-              (task) =>
-                task.type === selectedTask.type &&
-                task.title === selectedTask.title
-            ) + 1,
-          studentIds: selectedStudentIds.map((id) => studentsData[id].id),
-          comment: "Great job!",
-          time: getCurrentTime(),
-        }),
-      });
+      const response = await fetch(
+        `https://sanabel.wonderlearn.net/teachers/add-pros`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({
+            taskId:
+              taskdata.findIndex(
+                (task) =>
+                  task.type === selectedTask.type &&
+                  task.title === selectedTask.title
+              ) + 1,
+            studentIds: selectedStudentIds.map((id) => studentsData[id].id),
+            comment: "Great job!",
+            time: getCurrentTime(),
+          }),
+        }
+      );
 
       if (response.ok) {
         console.log("Progress added successfully");

@@ -61,7 +61,7 @@ const Profile: React.FC = () => {
     try {
       // Fetch Sanabel trophies
       const sanabelResponse = await axios.get(
-        "http://localhost:3000/students/student-trophy-primaire-completed",
+        "https://sanabel.wonderlearn.net/students/student-trophy-primaire-completed",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -71,7 +71,7 @@ const Profile: React.FC = () => {
 
       // Fetch Other trophies (using the same endpoint in your example, but you might want to change this)
       const otherResponse = await axios.get(
-        "http://localhost:3000/students/student-trophy-secondaire-completed",
+        "https://sanabel.wonderlearn.net/students/student-trophy-secondaire-completed",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -163,7 +163,9 @@ const Profile: React.FC = () => {
             ))
           ) : (
             <div className="col-span-4 text-center">
-              <p>{t("No trophies found. Complete challenges to earn trophies!")}</p>
+              <p>
+                {t("No trophies found. Complete challenges to earn trophies!")}
+              </p>
             </div>
           )}
         </motion.div>

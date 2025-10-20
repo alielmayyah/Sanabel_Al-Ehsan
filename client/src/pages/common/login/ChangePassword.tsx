@@ -88,7 +88,7 @@ const ChangePassword: React.FC = () => {
 
     try {
       const response = await axios.patch(
-        "http://localhost:3000/users/reset-password",
+        "https://sanabel.wonderlearn.net/users/reset-password",
         {
           email: email,
           newPassword: password,

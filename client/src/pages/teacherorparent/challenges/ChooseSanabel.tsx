@@ -75,8 +75,8 @@ const SanabelType: React.FC = () => {
     try {
       const response = await axios.get(
         role == "Teacher"
-          ? "http://localhost:3000/teachers/tasks-category"
-          : "http://localhost:3000/parents/tasks-category",
+          ? "https://sanabel.wonderlearn.net/teachers/tasks-category"
+          : "https://sanabel.wonderlearn.net/parents/tasks-category",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -105,8 +105,8 @@ const SanabelType: React.FC = () => {
     try {
       const response = await axios.get(
         role == "Teacher"
-          ? `http://localhost:3000/teachers/appear-Taskes-Type/${APIIndex}`
-          : `http://localhost:3000/parents/appear-Taskes-Type/${APIIndex}`,
+          ? `https://sanabel.wonderlearn.net/teachers/appear-Taskes-Type/${APIIndex}`
+          : `https://sanabel.wonderlearn.net/parents/appear-Taskes-Type/${APIIndex}`,
 
         {
           headers: {

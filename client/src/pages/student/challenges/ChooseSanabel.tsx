@@ -72,7 +72,7 @@ const SanabelType: React.FC = () => {
 
     try {
       const response = await axios.get(
-        "http://localhost:3000/students/tasks-category",
+        "https://sanabel.wonderlearn.net/students/tasks-category",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -100,7 +100,7 @@ const SanabelType: React.FC = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/students/appear-Taskes-Type/${APIIndex}`,
+        `https://sanabel.wonderlearn.net/students/appear-Taskes-Type/${APIIndex}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

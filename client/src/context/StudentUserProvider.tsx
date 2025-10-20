@@ -71,9 +71,9 @@ const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 // API endpoints mapping
 const API_ENDPOINTS = {
-  Student: "http://localhost:3000/students/data",
-  Teacher: "http://localhost:3000/teachers/teacher-data",
-  Parent: "http://localhost:3000/parents/parent-data",
+  Student: "https://sanabel.wonderlearn.net/students/data",
+  Teacher: "https://sanabel.wonderlearn.net/teachers/teacher-data",
+  Parent: "https://sanabel.wonderlearn.net/parents/parent-data",
 };
 
 // Provide the context
